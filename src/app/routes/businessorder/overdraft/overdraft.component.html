@@ -1,0 +1,106 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 欠款发货申请单
+  <div class="pull-right">
+    <button type="button" (click)="queryDialog()" class="btn btn-info btn-sm margin-top-bottom-25">查询</button>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="singleData">
+  <table class="table table-striped" [mfData]="singleData" #mf="mfDataTable" [mfActivePage]="search['pagenum']"
+    [mfRowsOnPage]="search['pagesize']">
+    <tbody>
+      <tr *ngFor="let item of singleData">
+        <td class="row" style="width:100%;">
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>编号:</label>
+            <a target="_blank" [routerLink]="['/overdraft', item.id]">{{item.billno}}</a>
+          </div>
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>客户单位:</label> {{item.customer | customer}}
+          </div>
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>申请人:</label> {{item.cuser.realname}}
+          </div>
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>业务员:</label> {{item.salemanname}}
+          </div>
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>欠款金额:</label> {{item.tjine | number:'1.2-2'}}
+          </div>
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>已还金额:</label> {{item.yijine | number:'1.2-2'}}
+          </div>
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>未还金额:</label> {{item.weijine | number:'1.2-2'}}
+          </div>
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>待还金额:</label> {{item.hjine | number:'1.2-2'}}
+          </div>
+          <!-- <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>卖方单位:</label> {{item.wcustomer | customer}}
+          </div> -->
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>卖方单位:</label> {{item.wcustomer.name}}
+          </div>
+          <div class=" col-md-3 col-sm-6 form-control-static">
+            <label>状态:</label> {{item.status}}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>search['pagesize']">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="8" [(ngModel)]="currentPage"
+            [rotate]="true" previousText="上一页" nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true"
+            [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+          <!-- <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator> -->
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+<!--查询弹窗-->
+<div class="modal" bsModal #queryModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidequeryModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">单据编号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="search['billno']" class="form-control" placeholder="请输入订单编号" />
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">客户公司</label>
+              <div class="col-sm-9">
+                <wisk-companysearch [(company)]="companyOfName" [isonline]="false"></wisk-companysearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">业务员</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="saleman"></wisk-usersearch>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

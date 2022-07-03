@@ -1,0 +1,80 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">采购退货</em>
+  <div class="pull-right" *ngIf="!cgtuihuo['isv']">
+    <button class="btn btn-info btn-bloc" type="button" (click)="verify()">审核</button>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row ">
+    <div class="col-lg-4 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">供应商：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cgtuihuo['supplier'] | customer}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">机构：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cgtuihuo['org'] | org}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">状态：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cgtuihuo['status'] | cgtuihuostatus}}</div>
+      </div>
+    </div>
+    <!--<div class="col-lg-3 col-md-6 fieldsetdnn">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 control-label form-control-static">退货单位：</div>
+          <div class="col-md-8 col-xs-6 form-control-static">{{cgtuihuo['vuser'].realname}}</div>
+        </div>
+      </div>-->
+  </div>
+  <div class="row ">
+    <div class="col-lg-4 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">合同编号：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cgtuihuo['billno']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cgtuihuo | agentuser}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单时间：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cgtuihuo['cdate']}}</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class=" col-lg-4 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">采购公司：</div>
+        <div class="col-md-8 col-xs-6 form-control-static" style="white-space: inherit;">{{cgtuihuo['buyer'] | customer}}</div>
+      </div>
+    </div>
+
+    <div class=" col-lg-4 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">备注：</div>
+        <div class=" col-md-8 col-xs-6 form-control-static" style="white-space: inherit;">{{cgtuihuo['beizhu']}}</div>
+      </div>
+    </div>
+
+    <div class=" col-lg-4 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">内采价格：</div>
+        <div class=" col-md-8 col-xs-6 form-control-static" style="white-space: inherit;">{{cgtuihuo['innersalePrice']}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 380)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>

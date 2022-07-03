@@ -1,0 +1,64 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 基础价格表
+  <div class="pull-right">
+    <button type="button" (click)="uncheckAll()" class="btn btn-info btn-bloc">取消选择</button>
+    <button type="button" (click)="changePrice()" class="btn btn-info btn-bloc">调价</button>
+    <button type="button" (click)="addDialog()" class="btn btn-info btn-bloc">创建</button>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--创建弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gns" [(ngModel)]="model['gnid']" (onChange)="getChandi(model['gnid'])" [style]="{'width':'100%','font-size':'15px'}"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">产地</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="chandis" [(ngModel)]="model['chandiid']" [style]="{'width':'100%','font-size':'15px'}"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" name="beizhu" placeholder="请输入备注" class="form-control" [(ngModel)]="model['comments']" />
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">价格</label>
+              <div class="col-sm-9">
+                <input type="text" name="price" placeholder="请输入价格" class="form-control" [(ngModel)]="model['price']" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="submitBprice()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,237 @@
+.fieldsetdnn {
+  padding-bottom: 5px;
+  border-bottom: 1px dashed #eee;
+  padding-top: 5px;
+}
+
+.form-group.mb {
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.viewpanelhead {
+  background-color: #ffffff;
+  margin-bottom: 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  border-color: #cfdbe2;
+  border-top-width: 3px;
+}
+
+.form-control-static {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.form-horizontal .control-label {
+  text-align: right;
+  margin-bottom: 0;
+  padding-top: 7px;
+}
+
+.viewpanel {
+  background-color: #ffffff;
+  margin-bottom: 5px;
+  border: 1px solid transparent;
+  border-color: #cfdbe2;
+}
+
+.fieldsetdnn .control-label {
+  text-align: right;
+  margin-bottom: 0;
+  padding-top: 7px;
+}
+
+.form-bottom {
+  margin-top: 20px;
+}
+
+.form-inline {
+  margin-bottom: 20px;
+}
+
+.ui-widget {
+  width: 100%;
+}
+
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button {
+  width: 100%;
+}
+
+.panel.panel-default {
+  border-top-width: 1px;
+}
+
+.wid100 {
+  width: 600px;
+}
+
+.content-heading {
+  margin-bottom: 0px;
+}
+/*垂直方向盒子*/
+.col-flex {
+	display:-webkit-box;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient:vertical;
+    -webkit-box-direction:normal;
+    -moz-box-orient:vertical;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    flex-flow:column;
+    -webkit-flex-direction:column;
+    /* flex-wrap:wrap;
+    -webkit-flex-wrap:wrap; */
+}
+/*水平方向盒子*/
+.row-flex {
+	display:-webkit-box;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+	-webkit-box-orient:horizontal;
+    -webkit-box-direction:normal;
+    -moz-box-orient:horizontal;
+    -moz-box-direction:normal;
+    flex-direction:row;
+    flex-flow:row;
+    -webkit-flex-direction:row;
+    /* flex-wrap:wrap;
+    -webkit-flex-wrap:wrap; */
+	box-sizing:border-box;
+}
+/*权重，所占比例*/
+.flex-weight{
+	-webkit-box-flex:1;
+	-webkit-flex:1;
+	flex:1;
+	-moz-box-flex: 1;
+    -o-box-flex: 1;
+    -ms-flex: 1;
+}
+/*盒子内容对齐方式*/
+.flex-align {
+	-webkit-align-items:center;
+	-ms-align-items:center;
+	align-items:center;
+	-webkit-justify-content:center;
+	justify-content:center;
+	text-align: center;
+	-webkit-box-align: center; 
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    -webkit-box-pack: center; 
+    -moz-box-pack: center; 
+    -ms-flex-pack: center;
+}
+.col {
+	-webkit-align-items:center;
+    -ms-align-items:center;
+    align-items:center;
+    -webkit-justify-content:center;
+    justify-content:center;
+    text-align: center;
+    -webkit-box-align: center; 
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    -webkit-box-pack: center; 
+    -moz-box-pack: center; 
+    -ms-flex-pack: center;
+}
+.flex-aligns {
+	-webkit-align-content:center;
+	align-content:center;
+	-webkit-justify-content:center;
+	justify-content:center;
+	text-align: center;
+	-webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+}
+/*垂直居中*/
+.flex-col-align {
+	-webkit-align-items:center;
+	-ms-align-items:center;
+	align-items:center;
+	-webkit-box-align: center; 
+    -moz-box-align: center;
+    -ms-flex-align: center;
+}
+.flex-col-aligns {
+	-webkit-align-content:center;
+	align-content:center;
+	-webkit-box-align: center; 
+    -moz-box-align: center;
+    -ms-flex-align: center;
+}
+/*水平居中*/
+.flex-row-align {
+	-webkit-justify-content:center;
+	justify-content:center;
+	
+	 -webkit-box-pack: center; 
+    -moz-box-pack: center; 
+    -ms-flex-pack: center;
+}
+/*优惠券样式*/
+.youhuiquan {
+	margin:15px;
+	background-color:rgb(255,120,105);
+	color:rgb(255,255,255);
+}
+.youhuiquan-main {
+	padding:10px 15px;
+}
+.youhuiquan-qian {
+	font-size:30px;
+}
+.youhuiquan-content {
+	font-size:12px;
+}
+.youhuiquan-content-top {
+	font-size:12px;
+	padding-top:10px;
+}
+.youhuiquan-aide {
+	padding:10px 15px;
+	border-style:none none none dotted;
+	border-width:3px;
+	border-color:rgb(255,255,255);
+	width:80px;
+}
+.youhuiquan-button {
+	border:1px solid #ddd;
+	border-radius:3px;
+	font-size:12px;
+	color:rgb(255,255,255);
+}
+.youhuiquan-in {
+	color:rgb(175,35,15);
+}
+.youhuiquan-out {
+	color:rgb(120,120,120);
+}
+.youhuiquan-outlist {
+	margin:15px;
+	background-color:rgb(187,187,187);
+	color:rgb(255,255,255);
+}
+.youhuiquan-status {
+	font-size:40px;
+	font-weight:800;
+}

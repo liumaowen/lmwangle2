@@ -1,0 +1,141 @@
+/*!
+ *
+ * Angle - Bootstrap Admin App + AngularJS
+ *
+ * Version: 3.8
+ * Author: @themicon_co
+ * Website: http://themicon.co
+ * License: https://wrapbootstrap.com/help/licenses
+ *
+ */
+
+// Override bootstrap variables
+@import "app/variables";
+// Bootstrap
+@import "bootstrap/bootstrap/_mixins";
+// Global definition of media queries
+@import "app/media-queries";
+// Utilities
+@import "app/utils-definitions";
+// Bootstrap reset
+@import "app/bootstrap-reset";
+// Typography
+@import "app/typo";
+// Layout
+@import "app/layout";
+@import "app/layout-extra";
+@import "app/layout-animation";
+@import "app/top-navbar";
+@import "app/sidebar";
+@import "app/offsidebar";
+// Components
+@import "app/breadcrumbs";
+@import "app/loading-bar";
+@import "app/animate";
+@import "app/button-extra";
+@import "app/placeholder";
+@import "app/panels";
+@import "app/progress-extra";
+// @import "app/radial-bar";
+@import "app/user-block";
+@import "app/circles";
+// @import "app/timeline";
+@import "app/dropdown-extra";
+@import "app/row-extra";
+@import "app/half-float";
+// @import "app/masonry-grid";
+@import "app/widget";
+// @import "app/typeahead";
+@import "app/table-grid";
+@import "app/todo";
+// @import "app/file-upload";
+// @import "app/chart-flot";
+// @import "app/chart-easypie";
+@import "app/form-elements";
+// @import "app/summernote";
+// @import "app/code-editor";
+// Tables
+@import "app/table-extras";
+// @import "app/table-angulargrid";
+// Plugins
+@import "app/slim-scroll";
+// @import "app/calendar";
+// @import "app/spinner";
+// @import "app/gmap";
+// @import "app/vector-map";
+// Mailbox
+// @import "app/mailbox";
+// Plans
+// @import "app/plans";
+// Utilities
+@import "app/utils";
+// Print CSS
+@import "app/print";
+// Settings
+@import "app/settings";
+//aggird 文字换行居中
+.ag-header-cell.wis-ag-postion .ag-header-cell-text {
+  position: absolute;
+  top: -15px;
+}
+
+//aggird 文字换行居中
+.ag-header-group-cell.wis-ag-center .ag-header-group-text {
+  display: block;
+  text-align: center;
+}
+
+.text-red {
+  color: red;
+}
+
+.ag-blue .ag-group-cell {
+  color: red;
+}
+
+#toast-container {
+  top: 55px;
+}
+
+//上传按钮
+.file-upload {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  [type=file] {
+    cursor: pointer;
+    display: block;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+  }
+}
+
+//收藏夹显示全屏
+.modal-all {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active a,
+body .ui-tabview.ui-tabview-bottom .ui-tabview-nav li.ui-state-active a,
+body .ui-tabview.ui-tabview-left .ui-tabview-nav li.ui-state-active a,
+body .ui-tabview.ui-tabview-right .ui-tabview-nav li.ui-state-active a {
+  color: #656565 !important;
+  font-weight: 700;
+}
+@media (max-width: 767px){
+  .layout-fixed .wrapper>section {
+    margin-top:172px!important;
+  }
+}
+.inputswitchmain{
+  background-color: #2196F3!important;
+  border-radius: 10px!important;
+}

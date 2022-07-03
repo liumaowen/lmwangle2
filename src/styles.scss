@@ -1,0 +1,78 @@
+/* You can add global styles to this file, and also import other style files */
+.multiselectmain .ui-multiselect-panel{
+  width:100%!important;
+}
+.required::after {
+  content: '* ';
+  color: red;
+}
+.requiredlabel{
+  padding-right: 10px!important;
+  padding-left:0!important;
+}
+.requiredbefore::before {
+  content: '* ';
+  color: red;
+}
+//== Vendor
+@import '../node_modules/font-awesome/css/font-awesome.css';
+@import '../node_modules/simple-line-icons/css/simple-line-icons.css';
+//== Bootstrap
+@import "./app/shared/styles/bootstrap.scss";
+//== Application
+@import "./app/shared/styles/app.scss";
+//== toaster.css
+@import '../node_modules/angular2-toaster/toaster.css';
+//== sweetalert
+@import '../node_modules/sweetalert/dist/sweetalert.css';
+/* You can add global styles to this file, and also import other style files */
+
+//== Vendor
+@import '../node_modules/weather-icons/css/weather-icons.css';
+@import '../node_modules/weather-icons/css/weather-icons-wind.css';
+@import '../node_modules/spinkit/css/spinkit.css';
+@import '../node_modules/loaders.css/loaders.css';
+@import '../node_modules/ng2-dnd/style.css';
+@import '../node_modules/ag-grid/dist/styles/ag-grid.css';
+@import '../node_modules/ag-grid/dist/styles/theme-blue.css';
+@import '../node_modules/ika.jvectormap/jquery-jvectormap-1.2.2.css';
+@import '../node_modules/jqcloud2/dist/jqcloud.css';
+@import '../node_modules/summernote/dist/summernote.css';
+@import '../node_modules/fullcalendar/dist/fullcalendar.min.css';
+@import '../node_modules/codemirror/lib/codemirror.css';
+//== 引入primeng样式
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeng/resources/themes/bootstrap/theme.css";
+// 适配手机按钮显示问题
+@media (min-width: 0px) and (max-width: 768px) {
+  .wide-show {
+    display: none;
+  }
+  .narrow-show {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .wide-show {
+    display: block;
+  }
+  .narrow-show {
+    display: none;
+  }
+}
+.ui-messages-info{
+  padding: 0!important;
+}
+.rukutixing p {
+  color: red!important;
+}
+// ag-grid过滤增加滚动条
+.ag-blue .ag-virtual-list-container {
+  overflow: visible!important;
+  white-space: nowrap!important;
+}
+.ag-blue .ag-set-filter-item {
+  text-overflow: clip!important;
+  overflow: visible!important;
+}

@@ -1,0 +1,70 @@
+<div class="modal-body">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <form (ngSubmit)="querymdmgn()">
+        <div class="form-group mb fieldsetdnn row row col-md-5">
+          <label class="col-sm-5 control-label">
+            <span style="float: right;">品名：</span>
+          </label>
+          <div class="col-sm-7">
+            <input name="itemname" [(ngModel)]="mdmgnsearch['itemname']" class="form-control" placeholder="请输入品名描述">
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn row row col-md-5">
+          <label class="col-sm-5 control-label">
+            <span style="float: right;">分类：</span>
+          </label>
+          <div class="col-sm-7">
+            <input name="categoryname" [(ngModel)]="mdmgnsearch['categoryname']" class="form-control" placeholder="请输入分类关键字">
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn row row col-md-2">
+          <button type="submit" (click)="querymdmgn()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </form>
+      <div *ngIf="gnData">
+        <table class="table table-striped" [mfData]="gnData" #mf="mfDataTable">
+          <thead>
+            <tr>
+                <th></th>
+                <th>品名描述</th>
+                <th>品名编码</th>
+                <th>分类描述</th>
+                <th>分类编码</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of mf.data">
+                <td>
+                  <label style="width:100%;">
+                    <div class="checkbox c-checkbox" style="text-align: center;" style="width:100%;">
+                        <input type="checkbox" [(ngModel)]="item.checked"><span class="fa fa-check" style="margin-left: 15px;"></span>
+                    </div>
+                  </label>
+                </td>
+                <td (click)="selecttr(item)">{{item.itemname}}</td>
+                <td (click)="selecttr(item)">{{item.itemcode}}</td>
+                <td (click)="selecttr(item)">{{item.categorydesc}}</td>
+                <td (click)="selecttr(item)">{{item.categorycode}}</td>
+            </tr>
+          </tbody>
+          <tfoot *ngIf="mdmgnsearchtotal>mdmgnsearch['pagesize']">
+            <tr>
+                <td colspan="10">
+                <pagination class="pagination-md" [totalItems]="mdmgnsearchtotal" [maxSize]="8" [(ngModel)]="currentPage"
+                    [rotate]="true" previousText="上一页" nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true"
+                    [rotate]="false" (pageChanged)="mdmgnsearchChanged($event)">
+                </pagination>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="form-inline text-center">
+    <button type="button" (click)="creategoogscode()" class="btn btn-primary btn-large">保存</button>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 运费
+  <div class="pull-right">
+    <button type="button" (click)="saveModel()" class="btn btn-info btn-sm margin-top-bottom-25">保存修改
+    </button>
+    <a [routerLink]="['/yunfee']">
+      <button type="button" class="btn btn-info btn-sm margin-top-bottom-25">返回</button>
+    </a>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="col-md-12 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 form-control-static">起始地:</div>
+      <div class="col-md-8 form-control-static">
+        <input type="text" [(ngModel)]="model['cangkuname']" class="form-control" disabled/>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 form-control-static">目的地 省:</div>
+      <div class="col-md-8 form-control-static">
+        <input type="text" [(ngModel)]="model['provincename']" class="form-control" disabled/>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 control-label form-control-static">目的地 市:</div>
+      <div class="col-md-8 form-control-static">
+        <input type="text" [(ngModel)]="model['cityname']" class="form-control" disabled/>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 control-label form-control-static">目的地 县:</div>
+      <div class="col-md-8 form-control-static">
+        <input type="text" [(ngModel)]="model['countyname']" class="form-control" disabled/>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 control-label form-control-static">载重范围:</div>
+      <div class="col-md-8 form-control-static">
+        <input type="number" [(ngModel)]="model['wstart']" placeholder="请输入运输范围的开始值,只能为数字" class="form-control" required/>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 control-label form-control-static"></div>
+      <div class="col-md-8 form-control-static">
+        <input type="number" [(ngModel)]="model['wend']" placeholder="请输入运输范围的结束值,只能为数字" class="form-control" required/>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 control-label form-control-static">价格:</div>
+      <div class="col-md-8 form-control-static">
+        <input type="text" [(ngModel)]="model['yunprice']" placeholder="请输入运输价格,只能为数字" class="form-control" required/>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 control-label form-control-static">价格类型:</div>
+      <div class="col-md-8 form-control-static">
+        <p-dropdown [options]="ists" [(ngModel)]="model['ist']" [style]="{'width':'100%'}"></p-dropdown>
+      </div>
+    </div>
+  </div>
+</div>
+
+<toaster-container></toaster-container>

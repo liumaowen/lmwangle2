@@ -1,0 +1,313 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 试题管理
+  <div class="pull-right">
+    <button type="button" (click)="hideQuestions(false)" class="btn btn-info btn-sm margin-top-bottom-25">显示</button>
+    <button type="button" (click)="hideQuestions(true)" class="btn btn-info btn-sm margin-top-bottom-25">隐藏</button>
+    <button type="button" (click)="allcheck()" class="btn btn-info btn-sm margin-top-bottom-25">全选</button>
+    <button type="button" (click)="queryDialog()" class="btn btn-info btn-sm margin-top-bottom-25">查询</button>
+    <button type="button" (click)="createDialog()" class="btn btn-info btn-sm margin-top-bottom-25">创建试题</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="questionUploader()">上传试题</button>
+    <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/question/%E8%AF%95%E9%A2%98%E6%A8%A1%E6%9D%BF.xls">
+    <button type="button" class="btn btn-info btn-bloc">模板下载</button>
+    </a>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="singleData.length">
+  <table class="table table-striped" [mfData]="singleData" #mf="mfDataTable" [mfActivePage]="querys['pageNum']"
+    [mfRowsOnPage]="querys['pageSize']">
+    <tbody>
+      <tr *ngFor="let item of mf.data">
+        <td style="width:5%; display:block; padding-top : 16px">
+          <label style="width:100%;">
+            <div class="checkbox c-checkbox" style="text-align: center;" style="width:100%;">
+              <input type="checkbox" [(ngModel)]="item.checked" (ngModelChange)="checkboxchange($event)"><span class="fa fa-check"
+                style="margin-left: 16px;"></span>
+            </div>
+          </label>
+        </td>
+        <td class="row" style="width:100%;">
+          <div class="col-lg-12 col-md-12 col-sm-12 form-control-static">
+            <label>题干:</label> {{item.title}}
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 form-control-static">
+            <label>试题类型:</label> {{item.questiontype===0?'单选题':item.questiontype===1?'多选题':'判断题'}}
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 form-control-static">
+            <label>选项A:</label> {{item.optiona}}
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 form-control-static">
+            <label>选项B:</label> {{item.optionb}}
+          </div>
+          <div *ngIf='item.questiontype !== 2' class="col-lg-12 col-md-12 col-sm-12 form-control-static">
+            <label>选项C:</label> {{item.optionc}}
+          </div>
+          <div *ngIf='item.questiontype !== 2' class="col-lg-12 col-md-12 col-sm-12 form-control-static">
+            <label>选项D:</label> {{item.optiond}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>创建时间:</label> {{item.cdate | date:'yyyy-MM-dd HH:mm:ss'}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>正确答案:</label> {{item.answer}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>难易度:</label> {{item.level===0?'易':'难'}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>状态:</label> {{item.yhide ? '隐藏' : '启用'}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>题干类型:</label> {{item.titletype}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>试题负责人:</label> {{item.vusername}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>试题负责机构:</label> {{item.orgname}}
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <a (click)="del(item['id'])">删除</a>|
+            <a (click)="update(item)">更新</a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>querys['pageSize']">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="8" [(ngModel)]="currentPage"
+            [rotate]="true" previousText="上一页" nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true"
+            [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<toaster-container></toaster-container>
+
+
+<!--查询弹窗-->
+<div class="modal" bsModal #queryModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidequeryModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">开始时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="start || maxDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">结束时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate" [minDate]="end"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">题干</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="querys['title']" class="form-control" placeholder="请输入题干关键字" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">试题负责机构</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="orgs" [(ngModel)]="querys['orgid']" [style]="{'width':'100%','font-size':'15px'}"
+                  [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">试题负责人</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="vuser" placeholder="请输入试题负责人"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">试题上传人</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="cuser" placeholder="请输入试题上传人"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">试题类型</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="questiontypesQuery" [(ngModel)]="querys['questiontype']"
+                  [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">题干类型</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="titletypes" [(ngModel)]="querys['titletype']"
+                  [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">状态</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="yhideQuery" [(ngModel)]="querys['yhide']"
+                  [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <!-- <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button> -->
+          <button type="button" (click)="query(undefined)" class="btn btn-primary btn-large">查询</button>
+          <button type="button" (click)="query(2)" class="btn btn-primary btn-large">导出</button>
+          <button type="button" (click)="query(3)" class="btn btn-primary btn-large">隐藏</button>
+          <button type="button" (click)="query(4)" class="btn btn-primary btn-large">开启</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--创建弹窗-->
+<div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{isupdate?'更新':'创建'}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">试题类型</label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <p-dropdown [options]="questiontypes" [(ngModel)]="model['questiontype']" (onChange)="selectetype()"
+                  [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">题干</label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <textarea name="yaoqiu" cols="30" rows="3" placeholder="请输入题干" [(ngModel)]="model['title']"
+                  class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label"
+                style="justify-content: space-between;display: flex;">选项<span>A:</span></label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <input type="text" placeholder="" [(ngModel)]="model['optiona']" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label" style="justify-content: space-between;display: flex;">&nbsp;
+                <span>B:</span></label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <input type="text" placeholder="" [(ngModel)]="model['optionb']" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="model['questiontype']!=2">
+              <label class="col-sm-3 control-label" style="justify-content: space-between;display: flex;">&nbsp;
+                <span>C:</span></label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <input type="text" placeholder="" [(ngModel)]="model['optionc']" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="model['questiontype']!=2">
+              <label class="col-sm-3 control-label" style="justify-content: space-between;display: flex;">&nbsp;
+                <span>D:</span></label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <input type="text" placeholder="" [(ngModel)]="model['optiond']" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">正确答案</label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <p-dropdown *ngIf="model['questiontype']!=1" [options]="answers" [(ngModel)]="model['answer']"
+                  [style]="{'width':'100%'}" placeholder="请选择正确答案"></p-dropdown>
+                <p-multiSelect *ngIf="model['questiontype']===1" [options]="answers" [(ngModel)]="answer"
+                  [filter]="false" defaultLabel="请选择正确答案" maxSelectedLabels="40" [style]="{'width':'100%'}"
+                  styleClass="multiselectmain">
+                </p-multiSelect>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">难易度</label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <p-dropdown [options]="levels" [(ngModel)]="model['level']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">题干类型</label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <p-dropdown [options]="titletypes" [(ngModel)]="model['titletype']" [style]="{'width':'100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">隐藏</label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <p-dropdown [options]="yhide" [(ngModel)]="model['yhide']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">正确描述</label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <input type="text" placeholder="请填写正确描述" [(ngModel)]="model['beizhu']" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">负责人</label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <wisk-usersearch [(user)]="vuser" placeholder="请输入试题负责人"></wisk-usersearch>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">负责机构</label>
+              <div class="col-sm-9" style="padding-left: 0;">
+                <p-dropdown [options]="orgs" [(ngModel)]="model['orgid']" [style]="{'width':'100%','font-size':'15px'}"
+                  [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div> -->
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <!-- <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button> -->
+          <button type="button" (click)="addQuestion()"
+            class="btn btn-primary btn-large">{{isupdate?'更新':'创建'}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #parentModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>

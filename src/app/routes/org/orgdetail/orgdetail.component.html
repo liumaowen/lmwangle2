@@ -1,0 +1,121 @@
+<div class="pr">
+  <!-- <div class="button-toolbar clearfix mb">
+    <div class="btn-group">
+      <h4>
+        <em class="fa">编辑节点</em>
+      </h4>
+    </div>
+  </div> -->
+
+  <div class="panel panel-default">
+    <div class="row" style="margin-left:15px;">
+      <div class="btn-group">
+        <h4>
+          <em class="fa">编辑节点</em>
+        </h4>
+      </div>
+
+      <div class="panel-body">
+        <!-- <form class="form-horizontal viewpanelhead"> -->
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">id</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['id']" class="form-control" disabled="disabled" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">name</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['name']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">sortorder</label>
+          <div class="col-lg-8">
+            <input type="number" [(ngModel)]="model['sortorder']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">parentid</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['parentid']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">kid</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['kid']" class="form-control" />
+          </div>
+        </div>
+
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">负责人</label>
+          <div class="col-lg-8">
+            <div class="input-group">
+              <input type="text" [(ngModel)]="model['realname']" class="form-control" disabled="disabled" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default btn-width" (click)="adduserDialog(1)">
+                  <i class="fa fa-caret-down"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">负责人2</label>
+          <div class="col-lg-8">
+            <div class="input-group">
+              <input type="text" [(ngModel)]="model['realname2']" class="form-control" disabled="disabled" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default btn-width" (click)="adduserDialog(2)">
+                  <i class="fa fa-caret-down"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">stringa</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['stringa']" class="form-control" />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-5">
+          <button (click)="updateModel()" type="button" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" bsModal #createProModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecreateProModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">人员选择</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <div class="col-sm-12">
+                <wisk-usersearch [(user)]="user"></wisk-usersearch>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="adduser()" class="btn btn-info btn-large">选择</button>
+          <button type="button" (click)="hidecreateProModal()" class="btn btn-primary btn-large">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<toaster-container></toaster-container>

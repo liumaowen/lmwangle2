@@ -1,0 +1,4 @@
+<p-autoComplete [style]="{width:'100%'}" [(ngModel)]="billno" inputStyleClass="form-control" [suggestions]="results"
+  [delay]="1000" [minLength]='1' (completeMethod)="search($event)" field="name" placeholder="输入订单编号"
+  (onSelect)="checkbillno($event)">
+</p-autoComplete>

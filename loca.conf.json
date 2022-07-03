@@ -1,0 +1,20 @@
+{
+  "/store": {
+    "target": "http://localhost:8082/",
+    "target2": "http://192.168.0.211:8082/",
+    "target1": "http://192.168.0.47:8082/",
+    "secure": false
+  },
+  "/bi": {
+    "target": "http://192.168.0.53:8088/",
+    "secure": false
+  },
+  "/wisdom": {
+    "target": "http://192.168.0.75:30124/",
+    "secure": false
+  },
+  "/smgcoresvc":{
+    "target": "http://192.168.0.75:30022/",
+    "secure": false
+  }
+}

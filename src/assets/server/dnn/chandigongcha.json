@@ -1,0 +1,5780 @@
+[
+  {
+    "chandiid": 7,
+    "name": "宝钢宝山（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "6-9"
+        }
+      ],
+      "yongtu": [
+	    {
+          "value": "压型板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "净化板"
+        },
+		{
+          "value": "畜牧专用板"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+		{
+          "value": "贵阳"
+        },
+		{
+          "value": "博兴"
+        },
+		{
+          "value": "福建泉州"
+        },
+		{
+          "value": "成都新兴镇"
+        },
+		{
+          "value": "哈马德"
+        },
+		{
+          "value": "上海中钢库"
+        },
+		{
+          "value": "重庆茄子溪中交码头库"
+        },
+        {
+          "value": "九江战备码头"
+        },
+        {
+          "value": "广州广裕码头"
+        },
+        {
+          "value": "重庆九龙坡码头"
+        },
+        {
+          "value": "大连辽渔码头"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+   {
+    "chandiid": 9645,
+    "name": "宝钢（岩棉板）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "复合板"
+        },
+		{
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "加工厂所在地"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9161,
+    "name": "宝钢宝山（折弯件）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "复合板"
+        },
+		{
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "博兴"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8911,
+    "name": "首钢京唐（锌铝镁）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "8-11"
+        },
+		{
+          "value": "20-28"
+        },
+		{
+          "value": "9-14"
+        },
+		{
+          "value": "6-9"
+        },
+		{
+          "value": "4-7"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "抗震支架"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "博兴"
+        },
+		{
+          "value": "江苏江阴"
+        },
+		{
+          "value": "江苏无锡"
+        },		
+		{
+          "value": "兴瀚库"
+        },
+		{
+          "value": "上海"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "曹妃甸"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 13667,
+    "name": "酒钢钢铁（锌铝镁）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "8-11"
+        },
+		{
+          "value": "6-9"
+        },
+		{
+          "value": "4-7"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "光伏支架"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "抗震支架"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "博兴"
+        },
+		{
+          "value": "厦门"
+        },
+		{
+          "value": "上海"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "曹妃甸"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 12265,
+    "name": "烨辉中国（至彩）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "8-11"
+        },
+		{
+          "value": "6-9"
+        },
+		{
+          "value": "4-7"
+        },
+		{
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "墙面板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "抗震支架"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "博兴"
+        },
+		{
+          "value": "厦门"
+        },
+		{
+          "value": "上海"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "常熟"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 12060,
+    "name": "首钢京唐（铝锌镁）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "8-11"
+        },
+		{
+          "value": "6-9"
+        },
+		{
+          "value": "4-7"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "抗震支架"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "博兴"
+        },
+		{
+          "value": "兴瀚库"
+        },
+		{
+          "value": "上海"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "曹妃甸"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 13472,
+    "name": "新天钢（铝锌镁）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "8-12"
+        },
+		{
+          "value": "6-9"
+        },
+		{
+          "value": "4-7"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "光伏支架"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "抗震支架"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "博兴"
+        },
+		{
+          "value": "兴瀚库"
+        },
+		{
+          "value": "上海"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "曹妃甸"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5476,
+    "name": "宝钢青山（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "6-9"
+        }
+      ],
+      "yongtu": [
+	    {
+          "value": "压型板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "净化板"
+        },
+		{
+          "value": "畜牧专用板"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+        {
+          "value": "九江战备码头"
+        },
+        {
+          "value": "广州广裕码头"
+        },
+		{
+          "value": "重庆茄子溪中交码头库"
+        },
+        {
+          "value": "重庆九龙坡码头"
+        },
+        {
+          "value": "大连辽渔码头"
+        },
+		{
+          "value": "安陆"
+        },
+        {
+          "value": "武汉青山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid":9664,
+    "name": "首钢顺义（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-9"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+	    {
+          "value": "兴瀚库"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid":11367,
+    "name": "鞍钢蒂森（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-12"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "中山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid":11369,
+    "name": "米塔尔（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-12"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "中山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid":11368,
+    "name": "津西金兰（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-12"
+        },
+		{
+          "value": "6-10"
+        },
+		{
+          "value": "5-13"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "中山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid":11300,
+    "name": "宝钢镀锌（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "8-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "楼承板"
+        },
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid":10005,
+    "name": "思文科德（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "6-9"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "折弯件"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "佛山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8255,
+    "name": "邯郸彩涂（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "6-9"
+        }
+      ],
+      "yongtu": [
+	    {
+          "value": "压型板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "净化板"
+        },
+		{
+          "value": "畜牧专用板"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+        {
+          "value": "邯郸"
+        },
+        {
+          "value": "广州广裕码头"
+        },
+        {
+          "value": "重庆九龙坡码头"
+        },
+        {
+          "value": "大连辽渔码头"
+        },
+		{
+          "value": "成都"
+        },
+        {
+          "value": "武汉青山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4263,
+    "name": "武钢股份（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "武汉"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8520,
+    "name": "山东华荣（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "卡塔尔"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6463,
+    "name": "山东荣达（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8,
+    "name": "烨辉中国（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [	  
+	   {
+          "value": "净化板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "复合板"
+        },
+		{
+          "value": "管道"
+        },
+        {
+          "value": "隔间面板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "常熟"
+        },
+		{
+          "value": "博兴"
+        },
+		{
+          "value": "青岛"
+        },
+        {
+          "value": "河南周口"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9,
+    "name": "马钢股份（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+		{
+          "value": "8-10"
+        },
+        {
+          "value": "小于4吨"
+        }
+      ],
+      "yongtu": [
+		{
+          "value": "压型板"
+        },
+				{
+          "value": "复合板"
+        },
+				{
+          "value": "钢品板（GP）"
+        },
+		{
+          "value": "家电板"
+        },
+        {
+          "value": "电梯板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "马鞍山"
+        },
+		{
+          "value": "重庆中交库"
+        },
+        {
+          "value": "上海"
+        },
+        {
+          "value": "南鲲码头"
+        },
+		{
+          "value": "重庆建设码头"
+        },
+        {
+          "value": "马鞍山政平库"
+        },
+		{
+          "value": "广州马钢仓库"
+        },
+		{
+          "value": "佛山九江定安码头"
+        },
+        {
+          "value": "上海今江码头"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6520,
+    "name": "冠州彩涂（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+		{
+          "value": "3-6"
+        },
+        {
+          "value": "小于4吨"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "成都"
+        },
+        {
+          "value": "山东"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 10,
+    "name": "宝钢黄石（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "2-5.5"
+        },
+		{
+          "value": "4-7.5 "
+        }
+      ],
+      "yongtu": [
+    	{
+          "value": "压型板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "净化板"
+        },
+		{
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "黄石"
+        },
+		{
+          "value": "成都"
+        },
+		{
+          "value": "重庆"
+        },
+		{
+          "value": "上海"
+        },
+		{
+          "value": "南昌"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 11,
+    "name": "联合铁钢（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "压型板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "畜牧专用板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "江阴"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 12,
+    "name": "攀钢彩涂（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4-6"
+        },
+		{
+          "value": "8-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "净化板"
+        },
+        {
+          "value": "压型板"
+        },
+		{
+          "value": "复合板"
+        },
+        {
+          "value": "家电板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "成都"
+        },
+        {
+          "value": "重庆"
+        },
+		{
+          "value": "云南曲靖"
+        },
+		{
+          "value": "云南"
+        },
+        {
+          "value": "贵州"
+        },
+		{
+          "value": "广东惠州"
+        },
+		{
+          "value": "新疆阜康"
+        },
+        {
+          "value": "广西南宁"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4011,
+    "name": "首钢彩涂（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+		{
+          "value": "6-9"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "压型板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "净化板"
+        },
+		{
+          "value": "家电"
+        },
+        {
+          "value": "畜牧专用板"
+        }
+      ],
+      "jiaohuoaddr": [
+	  {
+          "value": "兴瀚库"
+        },
+        {
+          "value": "博兴旭祥库"
+        },
+		{
+          "value": "泉州东石码头"
+        },
+		{
+          "value": "曹妃甸仓库"
+        },
+		{
+          "value": "首瀚鑫仓库"
+        },
+		{
+          "value": "曹妃甸昊友库"
+        },
+        {
+          "value": "上海罗泾码头"
+        },		
+		{
+          "value": "福建泉州龙祥码头"
+        },
+		{
+          "value": "广东佛山定安码头"
+        },
+        {
+          "value": "广东南沙货运码头"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4451,
+    "name": "鞍钢股份（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-6"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "鞍山"
+        },
+		{
+          "value": "湖州"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7147,
+    "name": "万利钢铁（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "广东顺德北滘镇"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9971,
+    "name": "承钢（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-14"
+        },
+		    {
+          "value": "9-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电板"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7259,
+    "name": "本钢股份（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-8"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海宝山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7329,
+    "name": "山东润海（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑压型"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "泰国"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5604,
+    "name": "博兴科瑞（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-9"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "博兴"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6068,
+    "name": "鞍钢股份（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "6-9"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+		{
+          "value": "楼承板"
+        },
+        {
+          "value": "折弯件"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "天津"
+        },
+		{
+          "value": "邯郸"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6803,
+    "name": "宝钢湛江（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-11"
+        },
+		{
+          "value": "11-14"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "广东顺德北滘镇"
+        },
+		{
+          "value": "上海宝山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7785,
+    "name": "华烨镀锌（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4.5吨以下"
+        },
+		{
+          "value": "11-14"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "HAMAD PORT"
+        },
+		{
+          "value": "上海宝山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "±10%"
+        },
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+	    {
+          "value": "±10%"
+        },
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 14,
+    "name": "首钢京唐（镀锌）",
+    "attr": {
+      "oneweight": [
+	    {
+          "value": "3-6"
+        },
+        {
+          "value": "4-7"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "8-11"
+        },
+		{
+          "value": "11-13"
+        }
+		
+      ],
+      "yongtu": [
+        {
+          "value": "楼承板"
+        },
+		{
+          "value": "太阳能支架"
+        },
+		{
+          "value": "家电板"
+        },
+		{
+          "value": "门板"
+        },
+		{
+          "value": "轻钢房屋支架板"
+        },
+		{
+          "value": "光伏支架板"
+        },
+		{
+          "value": "压型板"
+        },
+		{
+          "value": "冲压板"
+        },
+		{
+          "value": "钢板仓"
+        },
+		{
+          "value": "轻钢龙骨"
+        },
+		{
+          "value": "通风管道"
+        },
+        {
+          "value": "汽车板"
+        },
+        {
+          "value": "彩基板"
+        }
+      ],
+      "jiaohuoaddr": [
+	  {
+          "value": "兴瀚库"
+        },
+        {
+          "value": "山东博兴"
+        },
+		{
+          "value": "曹妃甸昊友库"
+        },
+        {
+          "value": "天津"
+        },
+        {
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5373,
+    "name": "博斯格（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "2-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建材"
+        },
+        {
+          "value": "彩基板"
+        },
+        {
+          "value": "建筑用板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "苏州"
+        },
+        {
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 13271,
+    "name": "山东汇金（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "2-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建材"
+        },
+        {
+          "value": "彩基板"
+        },
+        {
+          "value": "建筑用板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "博兴"
+        },
+        {
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5778,
+    "name": "大港彩涂（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "2-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "鹿寨"
+        },
+		{
+          "value": "博兴兴福镇"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4373,
+    "name": "本钢股份（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-7"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑用板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 16,
+    "name": "邯郸钢铁（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-7.5"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "钢板仓"
+        },
+		{
+          "value": "楼承板"
+        },
+		{
+          "value": "檩条"
+        },
+		{
+          "value": "通风管道"
+        },
+		{
+          "value": "立体停车设备"
+        },
+		{
+          "value": "门业"
+        },
+		{
+          "value": "电缆桥架"
+        },
+		{
+          "value": "家电板"
+        },
+		{
+          "value": "太阳能支架"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "邯郸仓库"
+        },
+		{
+          "value": "常州"
+        },
+		{
+          "value": "江苏无锡"
+        },
+        {
+          "value": "上海仓库"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "成都仓库"
+        },
+		{
+          "value": "拉萨"
+        },
+        {
+          "value": "重庆火车站"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5826,
+    "name": "马钢镀锌（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4.5"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+		{
+          "value": "楼承板"
+        },
+		{
+          "value": "檩条"
+        },
+		{
+          "value": "通风管道"
+        },
+		{
+          "value": "立体停车设备"
+        },
+		{
+          "value": "门业"
+        },
+		{
+          "value": "电缆桥架"
+        },
+		{
+          "value": "太阳能支架"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "科伦坡"
+        },
+        {
+          "value": "上海仓库"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "成都仓库"
+        },
+        {
+          "value": "重庆火车站"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        },
+		{
+          "value": "10%"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        },
+		{
+          "value": "5%"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8428,
+    "name": "宝钢梅山（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4.5"
+        },
+        {
+          "value": "3-7"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+		{
+          "value": "楼承板"
+        },
+		{
+          "value": "檩条"
+        },
+		{
+          "value": "通风管道"
+        },
+		{
+          "value": "立体停车设备"
+        },
+		{
+          "value": "门业"
+        },
+		{
+          "value": "电缆桥架"
+        },
+		{
+          "value": "太阳能支架"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "科伦坡"
+        },
+        {
+          "value": "上海仓库"
+        },
+		{
+          "value": "梅盛鑫源库"
+        },
+		{
+          "value": "斯里兰卡"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "成都仓库"
+        },
+        {
+          "value": "重庆火车站"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        },
+		{
+          "value": "5%"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        },
+		{
+          "value": "5%"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5694,
+    "name": "邯钢邯宝（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-7.5"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "邯郸仓库"
+        },
+        {
+          "value": "上海仓库"
+        },
+        {
+          "value": "佛山"
+        },
+        {
+          "value": "重庆火车站"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8639,
+    "name": "天津轧一（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-8"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "电缆桥架"
+        },
+		{
+          "value": "制管"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "邯郸仓库"
+        },
+        {
+          "value": "上海仓库"
+        },
+        {
+          "value": "佛山"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4023,
+    "name": "唐钢股份（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-7.5"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [	   
+        {
+          "value": "唐山仓库"
+        },
+		{
+          "value": "唐钢华冶库"
+        },
+		{
+          "value": "上海"
+        },
+		{
+          "value": "佛山"
+        },
+		{
+          "value": "天津东湖库"
+        },
+		{
+          "value": "宝矍库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 11988,
+    "name": "唐钢二冷无花（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-7.5"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [	   
+        {
+          "value": "唐山仓库"
+        },
+		{
+          "value": "唐钢华冶库"
+        },
+		{
+          "value": "上海"
+        },
+		{
+          "value": "佛山"
+        },
+		{
+          "value": "天津东湖库"
+        },
+		{
+          "value": "唐山天马库"
+        },
+		{
+          "value": "宝矍库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6878,
+    "name": "唐钢无花（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-7.5"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "唐山仓库"
+        },
+		{
+          "value": "天津汇金"
+        },
+		{
+          "value": "宝矍库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6719,
+    "name": "河北兆建 镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-7.5"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "唐山仓库"
+        },
+		{
+          "value": "宝矍库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6744,
+    "name": "河北中重 镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "6-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "资源中心仓库"
+        },
+		{
+          "value": "宝矍库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9070,
+    "name": "淀川盛馀 彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "合肥"
+        },
+		{
+          "value": "宝矍库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9083,
+    "name": "淀川盛馀 镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "合肥"
+        },
+		{
+          "value": "宝矍库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 10995,
+    "name": "鞍钢股份 镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "天津"
+        },
+		{
+          "value": "宝矍库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 12479,
+    "name": "鞍钢天铁 镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "天津"
+        },
+		{
+          "value": "河北邯郸"
+        },
+		{
+          "value": "宝矍库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6267,
+    "name": "黄石山力 镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "资源中心仓库"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4056,
+    "name": "武钢股份（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-7.5"
+        },
+		{
+          "value": "4-8"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+        {
+          "value": "武汉"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7569,
+    "name": "本钢浦项（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-7.5"
+        },
+		{
+          "value": "4-8"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-11"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+        {
+          "value": "佛山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4319,
+    "name": "邯钢科弘（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-7.5"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "常熟仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4800,
+    "name": "烨辉镀锌（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+		{
+          "value": "4-6"
+        },
+        {
+          "value": "6-8"
+        },
+        {
+          "value": "8-12"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建材"
+        },
+		 {
+          "value": "楼承板"
+        },
+		 {
+          "value": "五金配件"
+        },
+		 {
+          "value": "檩条"
+        },
+		 {
+          "value": "压型板"
+        },
+		 {
+          "value": "钢板仓"
+        },
+		 {
+          "value": "支架"
+        },
+		 {
+          "value": "通风管道"
+        },
+		 {
+          "value": "电器配件"
+        },
+		 {
+          "value": "冲压板"
+        },
+        {
+          "value": "轻钢龙骨"
+        },
+        {
+          "value": "彩基板"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "常熟"
+        },
+        {
+          "value": "佛山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "-4pa"
+        },
+        {
+          "value": "-3pa"
+        },
+        {
+          "value": "-2pa"
+        },
+        {
+          "value": "-1pa"
+        },
+        {
+          "value": "0pa"
+        },
+        {
+          "value": "1pa"
+        },
+        {
+          "value": "2pa"
+        },
+        {
+          "value": "3pa"
+        },
+        {
+          "value": "4pa"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        },
+        {
+          "value": "0-3"
+        },
+        {
+          "value": "0-5"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5100,
+    "name": "国丰钢铁（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "6-8"
+        },
+		{
+          "value": "3-7"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建材"
+        },
+        {
+          "value": "彩基板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "淄博"
+        },
+		{
+          "value": "唐山"
+        },
+		{
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5121,
+    "name": "冠州钢铁（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "电梯"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "山西"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4511,
+    "name": "邯钢电镀锌（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "6-9"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "-"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "邯郸仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5242,
+    "name": "天铁无花（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4-7"
+        },
+        {
+          "value": "5-10"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "8-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建材"
+        },
+        {
+          "value": "彩基板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "山东博兴"
+        },
+        {
+          "value": "天津"
+        },
+        {
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5735,
+    "name": "包头钢铁（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4-7"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "8-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑用板"
+        },
+        {
+          "value": "建材"
+        },
+		{
+          "value": "净化板"
+        },
+        {
+          "value": "彩基板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "山东博兴"
+        },
+        {
+          "value": "包头"
+        },
+		 {
+          "value": "天津"
+        },
+        {
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4485,
+    "name": "日照钢铁（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "天津"
+        },
+		{
+          "value": "上海"
+        },
+        {
+          "value": "青白江"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        },
+        {
+          "value": "±0.03"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        },
+        {
+          "value": "±0.01"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6557,
+    "name": "江阴宗承（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "0-2"
+        },
+        {
+          "value": "6-10"
+        },
+        {
+          "value": "4-7"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-11"
+        },
+        {
+          "value": "9-13"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建材"
+        },
+        {
+          "value": "彩基板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "江苏江阴"
+        },
+        {
+          "value": "上海罗泾码头"
+        },
+        {
+          "value": "广东佛山定安码头"
+        },
+        {
+          "value": "广东南沙货运"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 15,
+    "name": "首钢有花（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "3.5-6"
+        },
+        {
+          "value": "4-7"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-11"
+        },
+        {
+          "value": "9-13"
+        }
+      ],
+      "yongtu": [
+	    {
+          "value": "楼承板"
+        },
+		{
+          "value": "太阳能支架"
+        },
+		{
+          "value": "家电板"
+        },
+		{
+          "value": "门板"
+        },
+		{
+          "value": "轻钢房屋支架板"
+        },
+		{
+          "value": "光伏支架板"
+        },
+		{
+          "value": "压型板"
+        },
+		{
+          "value": "冲压板"
+        },
+		{
+          "value": "钢板仓"
+        },
+		{
+          "value": "轻钢龙骨"
+        },
+		{
+          "value": "通风管道"
+        },
+        {
+          "value": "汽车板"
+        },
+        {
+          "value": "彩基板"
+        }
+      ],
+      "jiaohuoaddr": [
+	  {
+          "value": "兴瀚库"
+        },
+        {
+          "value": "首瀚鑫仓库"
+        },
+		{
+          "value": "曹妃甸昊友库"
+        },
+        {
+          "value": "上海罗泾码头"
+        },
+        {
+          "value": "广东佛山定安码头"
+        },
+        {
+          "value": "广东南沙货运"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6012,
+    "name": "武汉钢铁（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-8"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建材"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 10831,
+    "name": "天津新宇（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+		{
+          "value": "压型板"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "CAUCEDO PORT"
+        },
+		{
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8340,
+    "name": "天津新宇（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5T"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "CAUCEDO PORT"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "正负10%"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "正负10%"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6310,
+    "name": "克罗德（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4.5MT"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "通风设备"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "HAMAD PORT"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8453,
+    "name": "常熟华冶（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4.5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "哈马德"
+        },
+		{
+          "value": "RIYADH"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "±10%"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "±10%"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8221,
+    "name": "华菱安赛尔（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4.5吨以下"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+        {
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海港"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 10174,
+    "name": "攀钢镀锌（镀锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "8-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海港"
+        },
+		{
+          "value": "成都"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 17,
+    "name": "联合铁钢（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+	   {
+          "value": "建筑板"
+        },
+		{
+          "value": "家电板"
+        },
+		{
+          "value": "电器柜"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "江阴"
+        },
+        {
+          "value": "佛山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7110,
+    "name": "广东宝冠（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "4-6"
+        }
+      ],
+      "yongtu": [
+	   {
+          "value": "建筑板"
+        },
+		{
+          "value": "家电板"
+        },
+		{
+          "value": "电器柜"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "肇庆大旺"
+        },
+        {
+          "value": "佛山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 18,
+    "name": "梅山光板（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+        {
+          "value": "南京"
+        },
+		{
+          "value": "武汉"
+        },
+        {
+          "value": "九江战备码头"
+        },
+        {
+          "value": "广州广裕码头"
+        },
+        {
+          "value": "重庆九龙坡码头"
+        },
+        {
+          "value": "大连辽渔码头"
+        },
+        {
+          "value": "鞍山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9418,
+    "name": "宝钢黄石（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "屋面板"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+		{
+          "value": "重庆茄子溪中交码头库"
+        },
+        {
+          "value": "南京"
+        },
+		{
+          "value": "武汉"
+        },
+        {
+          "value": "九江战备码头"
+        },
+        {
+          "value": "广州广裕码头"
+        },
+        {
+          "value": "重庆九龙坡码头"
+        },
+        {
+          "value": "黄石"
+        },
+        {
+          "value": "鞍山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 3994,
+    "name": "烨辉中国（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+		{
+          "value": "4-6"
+        },
+        {
+          "value": "6-8"
+        },
+        {
+          "value": "8-12"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "烤箱板"
+        },
+		{
+          "value": "檩条"
+        },
+		{
+          "value": "屋面板"
+        },
+		{
+          "value": "背光源"
+        },
+        {
+          "value": "太阳能背板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "常熟"
+        },
+        {
+          "value": "佛山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "-4pa"
+        },
+        {
+          "value": "-3pa"
+        },
+        {
+          "value": "-2pa"
+        },
+        {
+          "value": "-1pa"
+        },
+        {
+          "value": "0pa"
+        },
+        {
+          "value": "1pa"
+        },
+        {
+          "value": "2pa"
+        },
+        {
+          "value": "3pa"
+        },
+        {
+          "value": "4pa"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        },
+        {
+          "value": "0-3"
+        },
+        {
+          "value": "0-5"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4024,
+    "name": "攀钢铝锌（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "8-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "檩条"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "成都"
+        },
+        {
+          "value": "佛山"
+        },
+        {
+          "value": "重庆"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8682,
+    "name": "天津新宇（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-8"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "檩条"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "乐从仓库"
+        },
+        {
+          "value": "佛山"
+        },
+        {
+          "value": "重庆"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8319,
+    "name": "唐钢股份（锌铝镁）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-10"
+        },
+		{
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "抗震支架"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "成都"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "唐山"
+        },
+		{
+          "value": "上海"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 13040,
+    "name": "唐钢二冷（锌铝镁）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-10"
+        },
+		{
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "抗震支架"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "成都"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "唐山"
+        },
+		{
+          "value": "上海"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 12105,
+    "name": "宝钢铝锌（锌铝镁）",
+    "attr": {
+      "oneweight": [
+	    {
+          "value": "3-5"
+        },
+        {
+          "value": "7-10"
+        },
+		{
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电板"
+        },
+		{
+          "value": "建筑"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "抗震支架"
+        },
+        {
+          "value": "楼承板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "成都"
+        },
+		{
+          "value": "辽渔码头"
+        },
+        {
+          "value": "佛山"
+        },
+		{
+          "value": "唐山"
+        },
+		{
+          "value": "上海"
+        },
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4450,
+    "name": "首钢铝锌（镀铝锌）",
+    "attr": {
+      "oneweight": [
+		{
+          "value": "3-5"
+        },
+        {
+          "value": "3.5-6"
+        },
+        {
+          "value": "4-7"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "8-11"
+        }
+      ],
+      "yongtu": [
+	   {
+          "value": "电器柜背板"
+        },
+		{
+          "value": "楼承板"
+        },
+		{
+          "value": "家电板"
+        },
+		{
+          "value": "压型板"
+        },
+		{
+          "value": "彩基板"
+        },
+		{
+          "value": "电器柜内部结构"
+        }
+      ],
+      "jiaohuoaddr": [
+	  {
+          "value": "兴瀚库"
+        },
+        {
+          "value": "首瀚鑫仓库"
+        },
+		{
+          "value": "九江南鲲码头"
+        },
+		{
+          "value": "黄石钢厂库"
+        },
+        {
+          "value": "曹妃甸昊友库"
+        },
+        {
+          "value": "上海罗泾码头"
+        },
+		{
+          "value": "山东博兴"
+        },
+		{
+          "value": "广东九江安定码头"
+        },		
+        {
+          "value": "广东南沙货运码头"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        },
+        {
+          "value": "-0.04"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 4827,
+    "name": "宝钢铝锌（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+		{
+          "value": "重庆茄子溪中交码头"
+        },
+		{
+          "value": "广州广裕码头"
+        },
+		{
+          "value": "南京"
+        },
+        {
+          "value": "大连辽渔码头"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5061,
+    "name": "酒泉钢铁（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9764,
+    "name": "博思格（镀铝锌）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "重庆"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6308,
+    "name": "马钢欧邦（覆膜板）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "1-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "马鞍山"
+        },
+		{
+          "value": "重庆建设码头"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9870,
+    "name": "河钢新材（覆膜板）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "0-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "青岛市崂山区"
+        },
+		{
+          "value": "青岛"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8873,
+    "name": "安徽宝华（覆膜板）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "1-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "马鞍山"
+        },
+		{
+          "value": "安徽"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6773,
+    "name": "冠州钢铁（压型板）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "河南三门峡"
+        },
+		{
+          "value": "重庆建设码头"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5871,
+    "name": "武钢新日铁（冷轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+		{
+          "value": "佛山"
+        },
+        {
+          "value": "武汉"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 11260,
+    "name": "宝钢湛江（锌铝镁）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+		{
+          "value": "佛山"
+        },
+        {
+          "value": "武汉"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 11352,
+    "name": "烨辉中国（锌铝镁）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+		{
+          "value": "佛山"
+        },
+        {
+          "value": "常熟"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 11241,
+    "name": "宝钢湛江（冷轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-7"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "中山"
+        },
+		{
+          "value": "佛山"
+        },
+        {
+          "value": "武汉"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "±0.04"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 10064,
+    "name": "日照钢铁（冷轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "折弯件"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "上海"
+        },
+		{
+          "value": "佛山"
+        },
+        {
+          "value": "武汉"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7509,
+    "name": "新美达（冷轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-9"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "制作镀锌卷"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "天津港"
+        },
+		{
+          "value": "佛山"
+        },
+        {
+          "value": "武汉"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "+/-10%"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "+/-5%"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7420,
+    "name": "烨辉中国（冷轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电"
+        },
+        {
+          "value": "冰箱面板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "烨辉工厂"
+        },
+        {
+          "value": "武汉"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6041,
+    "name": "唐钢股份（压型钢板）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "1-6"
+        },
+        {
+          "value": "6-9"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+	    {
+          "value": "三门峡"
+        },
+        {
+          "value": "唐山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+   {
+    "chandiid": 6969,
+    "name": "宝钢宝山（压型钢板）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "1-6"
+        },
+        {
+          "value": "3-5"
+        },
+        {
+          "value": "7-10"
+        },
+        {
+          "value": "10-12"
+        },
+        {
+          "value": "10-15"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+	    {
+          "value": "寿光羊口"
+        },
+        {
+          "value": "唐山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6172,
+    "name": "太原钢铁（不锈钢）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "0-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "加工"
+        }
+      ],
+      "jiaohuoaddr": [
+	    {
+          "value": "山西"
+        },
+        {
+          "value": "唐山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 10109,
+    "name": "酒钢（不锈钢）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "0-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "加工"
+        }
+      ],
+      "jiaohuoaddr": [
+	    {
+          "value": "山西"
+        },
+        {
+          "value": "唐山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 11648,
+    "name": "墙煌（铝镁锰）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "5-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "围护材料"
+        }
+      ],
+      "jiaohuoaddr": [
+	    {
+          "value": "博兴"
+        },
+        {
+          "value": "唐山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7202,
+    "name": "丽岛钢铁（铝镁锰）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "1-4"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "单板"
+        }
+      ],
+      "jiaohuoaddr": [
+	    {
+          "value": "常州"
+        },
+        {
+          "value": "唐山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 14129,
+    "name": "正伟铝业（铝镁锰）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "1-4"
+        },
+		{
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "压型钢板"
+        }
+      ],
+      "jiaohuoaddr": [
+	    {
+          "value": "常州"
+        },
+        {
+          "value": "四川"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6416,
+    "name": "山东亚泰新（铝镁锰）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+	    {
+          "value": "成都"
+        },
+		{
+          "value": "上海嘉定"
+        },
+        {
+          "value": "唐山仓库"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6925,
+    "name": "烨辉中国（铝镁锰）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [	  
+	   {
+          "value": "净化板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "复合板"
+        },
+        {
+          "value": "隔间面板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "常熟"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6991,
+    "name": "邯郸钢铁（镀锌檩条）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-4"
+        }
+      ],
+      "yongtu": [	  
+	   {
+          "value": "净化板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "复合板"
+        },
+        {
+          "value": "檩条"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "成都"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8078,
+    "name": "无锡联创（镀锌檩条）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-11"
+        }
+      ],
+      "yongtu": [	  
+	   {
+          "value": "净化板"
+        },
+        {
+          "value": "压型板"
+        },
+        {
+          "value": "建筑"
+        },
+        {
+          "value": "檩条"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "无锡"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 7017,
+    "name": "新乡天润（保护膜）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "无"
+        }
+      ],
+      "yongtu": [	  
+	   {
+          "value": "辉彩"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "新乡"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9305,
+    "name": "烨辉中国（辉彩）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+		{
+          "value": "3-6"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "博兴"
+        },
+		{
+          "value": "常熟"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9256,
+    "name": "马钢股份（洁彩）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+		{
+          "value": "3-6"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "净化板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "马鞍山"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "10%"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "10%"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 13973,
+    "name": "维实涂镀（洁彩）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+		{
+          "value": "3-6"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "净化板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "马鞍山"
+        },
+		{
+          "value": "浙江"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 14250,
+    "name": "维实涂镀（彩涂）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        },
+		{
+          "value": "3-6"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "净化板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "马鞍山"
+        },
+		{
+          "value": "浙江"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 9306,
+    "name": "马钢股份（恒牧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+
+        },
+		{
+          "value": "3-6"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑板"
+        },
+		{
+          "value": "复合板"
+        },
+		{
+          "value": "压型板"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "马钢"
+        },
+		{
+          "value": "博兴"
+        },
+		{
+          "value": "江苏徐州"
+        },
+		{
+          "value": "河南新乡"
+        },
+		{
+          "value": "河北邢台"
+        },
+		{
+          "value": "重庆中交库"
+        },
+		{
+          "value": "淮安涟水"
+        },
+		{
+          "value": "马鞍山"
+        },
+		{
+          "value": "上海"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5941,
+    "name": "日照钢铁（热轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "6-8"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+		{
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "佛山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 10361,
+    "name": "鞍钢股份（热轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "2-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+		{
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "天津"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8152,
+    "name": "宝钢宝山（热轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3.5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        },
+		{
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "哈马德"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "10%"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "10%"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 8622,
+    "name": "烨辉中国（复合板）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "3-5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "复合板"
+        },
+		{
+          "value": "家电"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "泰州"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 10399,
+    "name": "邯郸钢铁（酸洗）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "冲压件"
+        },
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "邯郸"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 6173,
+    "name": "邯郸钢铁（冷轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7-11"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "檩条"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "邯郸市曲周县"
+        },
+		{
+          "value": "邯郸"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 5971,
+    "name": "邯钢邯宝（冷轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "8-10"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "建筑"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "邯郸"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "以钢厂标准为准"
+        }
+      ]
+    }
+  },
+  {
+    "chandiid": 11726,
+    "name": "鞍钢天铁（冷轧）",
+    "attr": {
+      "oneweight": [
+        {
+          "value": "7.0~7.5"
+        }
+      ],
+      "yongtu": [
+        {
+          "value": "家电用途"
+        }
+      ],
+      "jiaohuoaddr": [
+        {
+          "value": "中山"
+        }
+      ],
+      "houdugongcha": [
+        {
+          "value": "负2~4个C左右"
+        }
+      ],
+      "widthgongcha": [
+        {
+          "value": "2~3个C左右"
+        }
+      ]
+    }
+  }
+]

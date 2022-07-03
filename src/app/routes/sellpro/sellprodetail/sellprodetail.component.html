@@ -1,0 +1,186 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">备案详情</em>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn" style="font-weight:bold;">项目简介</div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">名称：</div>
+        <div class="col-md-8 col-xs-6 form-control-static show-hide">{{sellpro['proname']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">地址：</div>
+        <div class="col-md-8 col-xs-6 form-control-static show-hide">{{sellpro['area']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">阶段：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['prostage']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">类别：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['protype']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">来源：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['infoorigin']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">行业：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['industry']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提供方：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['porgname']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">接收方：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['org'].name}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提供者：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['pusername']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">接收者：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['cuser'].realname}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-md-2 col-xs-4 control-label form-control-static">简介：</div>
+    <div class="col-md-10 col-xs-8 form-control-static show-hide" style="word-wrap: break-word;">{{sellpro['introduction']}}</div>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn" style="font-weight:bold;">报备事项</div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">立即报备：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['isreport'] | flag}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">主推钢厂：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{msteelmill}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">接触级别：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['jiechujibie']}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn" style="font-weight:bold;">跟踪事项</div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">客户单位：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['customer']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">产品类别：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['gn']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">产地：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{chandi}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">数量：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['weight']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">规格：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['guige']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">颜色/镀锌量：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['color']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">建筑面积：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['buildarea']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">最终成交：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['isdeal'] | flag}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">成交时间：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['edate']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static show-hide">协调事项：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['xietiao']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">备注：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{sellpro['beizhu']}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn" style="font-weight:bold;">知会人员</div>
+  <div class="row fieldsetdnn">
+    <div class=" form-control-static" style="word-wrap: break-word;">{{people}}</div>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn" style="font-weight:bold;">跟踪记录</div>
+  <div class="row fieldsetdnn" *ngFor="let item of list; let i = index;">
+    <div class=" form-control-static" style="word-wrap: break-word;">{{i + 1}}、{{item.cuser.realname}}--{{item.cdate}}：{{item.msg}}</div>
+  </div>
+</div>

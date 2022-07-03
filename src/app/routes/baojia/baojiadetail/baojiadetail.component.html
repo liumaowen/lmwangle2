@@ -1,0 +1,113 @@
+<div>
+
+  <div class="content-heading">
+    <em class="fa fa-book"></em> 价格政策
+    <div class="pull-right">
+      <button type="button" class="btn btn-info btn-bloc" (click)="delet()">删除</button>
+      <button type="button" class="btn btn-info btn-bloc" (click)="vorunv()">
+        <span *ngIf="!model?.isv">启用</span>
+        <span *ngIf="model?.isv">关闭</span>
+      </button>
+      <a [routerLink]="['/baojia']">
+        <button type="button" class="btn btn-info btn-bloc">返回</button>
+      </a>
+    </div>
+  </div>
+
+  <div>
+
+    <form  class="form-horizontal viewpanelhead padding-right-30">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 fieldsetdnn">
+          <div class="row">
+            <div class="col-md-4 col-xs-4 control-label form-control-static">名称:</div>
+            <div class="col-md-8 col-xs-8 form-control-static">{{model?.name}} {{model?.jijia}}</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-6 fieldsetdnn">
+          <div class="row">
+            <div class="col-md-5 col-xs-4 control-label form-control-static">制单人:</div>
+            <div class="col-md-7 col-xs-8 form-control-static">{{model?.cuser?.realname}}</div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-6 fieldsetdnn">
+          <div class="row">
+            <div class="col-md-4 col-xs-4 control-label form-control-static">时间:</div>
+            <div class="col-md-8 col-xs-8 form-control-static">
+              {{model?.cdate}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="viewpanel">
+      (1)可选条件
+      <table  class="table table-condensed table-bordered table-striped table-bordered">
+        <tr >
+          <td></td>
+          <td style="text-align: center;">条件</td>
+          <td style="text-align: center;">选项</td>
+        </tr>
+        <tr *ngFor="let item of model?.conditions;let index = index;">
+          <td>{{index + 1}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.list}}</td>
+        </tr>
+      </table>
+      (2)注意事项
+      <table  class="table table-condensed table-bordered table-striped table-bordered">
+        <tr >
+          <td ></td>
+          <td style="text-align: center;">处理</td>
+          <td style="text-align: center;">注意事项</td>
+          <td style="text-align: center;">表达式</td>
+        </tr>
+        <tr *ngFor="let item of model?.checks;let index = index;">
+          <td>{{index + 1}}</td>
+          <td>{{item.chuli}} {{item.error}}</td>
+          <td>{{item.beizhu}}</td>
+          <td>{{item.expression}}</td>
+
+        </tr>
+      </table>
+
+      <div *ngFor="let jiajia of model?.jiajias;let index = index;">
+        (3-{{index + 1}}){{jiajia.name}}
+        <table  class="table table-condensed table-bordered table-striped table-bordered">
+          <tr >
+            <td></td>
+            <td style="text-align: center;">加价</td>
+            <td style="text-align: center;">表达式说明</td>
+            <td style="text-align: center;">表达式</td>
+            <td style="text-align: center;">测试值</td>
+          </tr>
+          <tr *ngFor="let item of jiajia.list;let index = index;">
+            <td>{{index + 1}}</td>
+            <td>{{item.value}}</td>
+            <td>{{item.beizhu}}</td>
+            <td>{{item.expression}}</td>
+            <td>{{item.test}}</td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+
+
+    (4)报价表公式检查
+    <table  class="table table-condensed table-bordered table-striped table-bordered">
+      <tr >
+        <td></td>
+        <td style="text-align: center;">测试值</td>
+      </tr>
+      <tr>
+        <td *ngFor="let item of model?.reviews; let index = index;">{{index + 1}}</td>
+        <!--<td>{{JSON.stringify(item)}}</td>-->
+        <td>{{review}}</td>
+      </tr>
+    </table>
+  </div>
+
+
+</div>

@@ -1,0 +1,73 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 物流供应商名录
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="queryDialog()">查询</button>
+  </div>
+</div>
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+<toaster-container></toaster-container>
+<!--  查询弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">供应商名称</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="search['actualfeename']" placeholder="请输入供应商名称" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--修改供应商分类对话框-->
+<div class="modal" bsModal #supplierModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closeSupplierModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改供应商分类</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">分类</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="suppliertypes" [(ngModel)]="model['suppliertype']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirm()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>

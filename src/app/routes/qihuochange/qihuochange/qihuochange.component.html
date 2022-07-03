@@ -1,0 +1,39 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 期货变更时序表
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)='createdialog()'>创建</button>
+  </div>
+</div>
+
+<toaster-container></toaster-container>
+
+<div class="modal" bsModal #qihuochangedialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="createclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">期货订单编号:</label>
+              <div class="col-sm-9">
+                <app-wiskfindbybillno [(billno)]="qihuobillno"></app-wiskfindbybillno>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="createqihuochange()" class="btn btn-primary btn-large">创建</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

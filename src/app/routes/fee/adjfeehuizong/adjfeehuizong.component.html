@@ -1,0 +1,103 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 调整费用汇总表
+  <div class="pull-right">
+    <!-- <button type="button" (click)="batchHandleFee()" class="btn btn-info btn-bloc">批量处理</button> -->
+    <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
+    <button type="button" (click)="agExport()" class="btn btn-info btn-bloc">导出</button>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">开始时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="end || maxDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">结束时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate" [minDate]="start"></p-calendar>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">费用类型</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="types" [(ngModel)]="requestparams['type']" [style]="{'width':'100%','font-size':'15px'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">单据类型</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="billtypes" [(ngModel)]="requestparams['billtype']" [style]="{'width':'100%','font-size':'15px'}"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">记账方向</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="accountdirections" [(ngModel)]="requestparams['accountdirection']" [style]="{'width':'100%','font-size':'15px'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">应收应付</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="payorreceives" [(ngModel)]="requestparams['payorreceive']" [style]="{'width':'100%','font-size':'15px'}"></p-dropdown>
+
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">制单人</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="cuser"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">机构</label>
+              <div class="col-sm-9">
+                <wisk-orglist [(org)]="requestparams['orgid']"></wisk-orglist>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">费用公司</label>
+              <div class="col-sm-9">
+                <wis-feecompanysearch [(company)]="companyOfCode"></wis-feecompanysearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">支付公司</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="paycustomers" [(ngModel)]="requestparams['paycustomerid']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

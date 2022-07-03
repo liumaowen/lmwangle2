@@ -1,0 +1,6 @@
+
+<select [ngModel]="org" (ngModelChange)="org=$event;"
+        style="width: 100%; display: block; height: 35px;border-radius: 3px;border-color: rgba(0, 0, 0, 0.15);font-size: 13px;">
+  <option value="" style="">请选择机构</option>
+  <option *ngFor="let item of orgs" [value]='item.id'>{{item.name}}</option>
+</select>

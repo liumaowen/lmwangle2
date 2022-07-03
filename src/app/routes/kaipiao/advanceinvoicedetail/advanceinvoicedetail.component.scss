@@ -1,0 +1,58 @@
+.ui-widget {
+  width: 100%;
+}
+
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button {
+  width: 100%;
+}
+
+.panel.panel-default {
+  border-top-width: 1px;
+}
+
+.wid100 {
+  width: 600px;
+}
+
+.content-heading {
+  margin-bottom: 0px;
+}
+
+.wis-auto {
+  width: calc(100% + 40px);
+  margin: 0 -20px; // overflow: auto;
+}
+
+//调拨单tab标签页
+.fieldsetdnn {
+  padding: 5px 30px;
+  border-bottom: 1px dashed #eee;
+}
+
+.form-control-static {
+  font-size: 0.9em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.zuofei{
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  position: absolute;
+  z-index: 100;
+  top: 0px;
+  left: 0px;
+}
+.zuofeiword {
+  font-size: 54pt;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  margin-left: -80px;
+  color: rgb(212, 101, 106);
+  transform:rotate(-45deg);
+}

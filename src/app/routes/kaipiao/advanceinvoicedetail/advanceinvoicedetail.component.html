@@ -1,0 +1,538 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 提前开票单
+  <div class="pull-right wide-show">
+    <button  type="button" (click)="showUploadOrder()" class="btn btn-info btn-sm margin-top-bottom-25">上传双方盖章合同</button>
+    <button  type="button" (click)="edit()" class="btn btn-info btn-sm margin-top-bottom-25">添加快递信息</button>
+    <button  type="button" (click)="importordermodal()" class="btn btn-info btn-sm margin-top-bottom-25">引入合同明细</button>
+    <button type="button" (click)="tijiao()" class="btn btn-info btn-sm margin-top-bottom-25">提交审核</button>
+    <button  type="button" (click)="cancel()" class="btn btn-info btn-sm margin-top-bottom-25" style="background-color:#FF7F24;border-color:#FF7F24;color:#ffffff;">撤销开票单</button>
+    <button  type="button" (click)="delete()" class="btn btn-info btn-sm margin-top-bottom-25" style="background-color:red;border-color:red;color:#ffffff;">删除</button>
+    <button  *ngIf = "salebill['status'] === 1" type="button" (click)="deletedetList()" class="btn btn-info btn-sm margin-top-bottom-25" style="background-color:red;border-color:red;color:#ffffff;">批量删除明细</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showUploadOrder()">上传双方盖章合同</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="edit()">修改</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="importordermodal()">引入合同明细</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="tijiao()">提交审核</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="cancel()" style="color:#FF7F24;">撤销开票单</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="delete()" style="color:red;">删除</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 form-control-static">发票抬头：</div>
+        <div class="col-md-7 col-xs-6 form-control-static" [title]="salebill['buyer']['name']">{{salebill['buyer']['name']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">开票单位：</div>
+        <div class="col-md-7 col-xs-6 form-control-static" [title]="salebill['seller']['name']">
+          {{salebill['seller']['name']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">机构：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['orgname']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">制单人：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['cuser']['realname']}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">审核人：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['vuser']['realname']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">复核人：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['checkuser']['realname']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">发票类型：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['type'] | saletype}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">客户款项情况：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['yue']}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">保证完成时间：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['finishdate']| date:'yyyy-MM-dd'}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">开票时间：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['invoicedate']| date:'yyyy-MM-dd'}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">发票号码：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['invoiceno']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">收票人：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['shoujianren']}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">收票人电话：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['shoujiantel']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">快递公司：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['express']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">状态：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['status'] | qihuostatus}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">单号：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['billno']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-6 col-md-6 ">
+      <div class="row">
+        <div class="col-md-2 col-xs-6 control-label form-control-static">邮寄地址：</div>
+        <div class="col-md-7 col-xs-6 form-control-static" style="white-space:normal;" [title]="salebill['maddress']">
+          {{salebill['maddress']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-6 col-md-6 ">
+      <div class="row">
+        <div class="col-md-2 col-xs-6 control-label form-control-static">开票原因：</div>
+        <div class="col-md-7 col-xs-6 form-control-static" [title]="salebill['reason']">
+          {{salebill['reason']}}
+        </div>
+      </div>
+    </div> 
+  </div>
+
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">备注：</div>
+        <div class="col-md-7 col-xs-6 form-control-static" [title]="salebill['beizhu']">
+          <!-- <input type="text" class="form-control" [(ngModel)]="salebill['beizhu']" [disabled]="true" style="color:red;"/> -->
+          {{salebill['beizhu']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6" *ngIf="salebill['orderurl'] !== null">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">合同地址：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          <a (click)="showfujianmodal()">查看合同</a>
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">快递单号：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['expressno']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">是否到付：</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{salebill['isarrivalpay'] ? '是' : '否'}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 399)+'px'}" #agGrid class="ag-blue wis-auto" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+
+<toaster-container></toaster-container>
+
+
+<!--修改主表信息弹窗-->
+<div class="modal" bsModal #modifyModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidemodifyModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加快递信息</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12" *ngIf = "salebill['status'] === 1">
+              <label class="col-sm-3 control-label">快递公司</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="expresses" [(ngModel)]="editbill['express']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12" *ngIf = "salebill['status'] === 1">
+              <label class="col-sm-3 control-label">邮寄地址</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="addrs" [(ngModel)]="editbill['maddressid']" [style]="{'width':'calc(100% - 46px)'}"></p-dropdown>
+                <span class="input-group-btn" style="display:-webkit-inline-box">
+                  <button type="button" class="btn btn-default" (click)="addAddrDialog()">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12" *ngIf = "salebill['status'] === 1">
+              <label class="col-sm-3 control-label">提前开票原因</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="editbill['reason']" class="form-control" placeholder="请输入提前开票原因" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12" *ngIf = "salebill['status'] === 1">
+              <label class="col-sm-3 control-label">保证完成日期</label>
+              <div class="col-sm-9">
+                <p-calendar [(ngModel)]="finishdate" placeholder="保证完成日期" [minDate]="minDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12" *ngIf = "salebill['status'] === 1">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="editbill['beizhu']" class="form-control" placeholder="请输入备注说明" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12" *ngIf = "salebill['status'] === 3">
+              <label class="col-sm-3 control-label">发票号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="editbill['invoiceno']" class="form-control" placeholder="请输入发票号码，逗号分隔" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12" *ngIf = "salebill['status'] === 3">
+              <label class="col-sm-3 control-label">开票日期</label>
+              <div class="col-sm-9">
+                <p-calendar [(ngModel)]="invoicedate" placeholder="开票日期"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12" *ngIf = "salebill['status'] === 3">
+              <label class="col-sm-3 control-label">快递单号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="editbill['expressno']" class="form-control" placeholder="请输入快递单号，逗号分隔" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="submitmod()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--修改明细弹窗-->
+<div class="modal" bsModal #billgnModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidebillgnModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改明细</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">开票品名</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gnlist" [(ngModel)]="params['invoicegn']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">重量</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="params['weight']" class="form-control" placeholder="请输入重量" (blur)="getprice()"/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">含税单价</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="params['price']" class="form-control" placeholder="请输入含税单价" (blur)="getjine()"/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">含税金额</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="params['jine']" class="form-control" placeholder="请输入含税金额" (blur)="getprice()"/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">其他单位重量</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="params['unitweight']" class="form-control" placeholder="请输入其他单位重量" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="submitmodify()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--编辑发票号码弹窗-->
+<div class="modal" bsModal #invoiceModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideinvoiceModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">编辑发票号码</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票号码</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="invoice['no']" class="form-control" placeholder="请输入发票号码，逗号分隔" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">开票日期</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="请选择开票日期"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="resetInvoice()" class="btn btn-info btn-large">重置</button>
+          <button type="button" (click)="saveInvoiceNo()" class="btn btn-primary btn-large">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加地址弹窗-->
+<div class="modal" bsModal #addrModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideaddrModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加地址</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <label class="col-sm-3 control-label">地址：</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="provinces" [(ngModel)]="addr['provinceid']" [style]="{'width':'100%','font-size':'15px'}" (onChange)="getcity()"
+                  [placeholder]="'请选择省份'"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label"></label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="citys" [(ngModel)]="addr['cityid']" [style]="{'width':'100%','font-size':'15px'}" (onChange)="getcounty()"
+                  [placeholder]="'请选择市'"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label"></label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="countys" [(ngModel)]="addr['countyid']" [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县/区'"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <label class="col-sm-3 control-label">详细地址：</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入详细地址" [(ngModel)]="addr['detail']" class="form-control" required/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <label class="col-sm-3 control-label">联系人：</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入联系人" [(ngModel)]="addr['lianxiren']" class="form-control" required/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <label class="col-sm-3 control-label">联系方式：</label>
+              <div class="col-sm-9">
+                <input type="number" minlength="11" maxlength="11" placeholder="请输入联系方式" [(ngModel)]="addr['phone']" class="form-control"
+                  required/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="addAddr()" class="btn btn-primary btn-large">添加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="zuofei" *ngIf="salebill['isdel']">
+  <span class="zuofeiword">已作废</span>
+</div> -->
+<!-- 附件弹出框 -->
+<div class="modal" bsModal #fujianModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closefujian()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">附件列表</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <table class="table table-striped" [mfData]="orderurls" #mf="mfDataTable">
+              <thead>
+                <tr>
+                  <th style="width: 50%">
+                    <mfDefaultSorter by="url">链接</mfDefaultSorter>
+                  </th>
+                  <th style="width: 50%">
+                    <mfDefaultSorter>操作</mfDefaultSorter>
+                  </th>
+                </tr>
+              </thead>
+      
+              <tbody>
+                <tr *ngFor="let model of mf.data">
+                  <td><a [href]="model['url']" target="_blank">{{model['url']}}</a></td>
+                  <td>
+                    <button type="button" (click)="delfujian(model['key'])" class="btn btn-info btn-sm margin-top-bottom-25">
+                      删除
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--上传合同-->
+<div class="modal" bsModal #orderModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeUploadOrder()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>

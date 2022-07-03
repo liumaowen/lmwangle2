@@ -1,0 +1,80 @@
+<div>
+  <div class="button-toolbar clearfix mb">
+    <div class="btn-group">
+      <h4>
+        <em class="fa"></em>
+      </h4>
+    </div>
+  </div>
+
+  <div class="modal-body" style="padding-top:0;">
+    <div class="panel panel-default" *ngIf="!tableData">
+      <div class="row" style="margin-left:0">
+        <h4 class="col-sm-12">没有数据！</h4>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="tableData">
+      <table class="table table-striped" [mfData]="tableData" #mf="mfDataTable" [mfRowsOnPage]="100">
+        <thead>
+          <tr>
+            <th style="width: 10%">
+              <mfDefaultSorter by="city">客户编号</mfDefaultSorter>
+            </th>
+            <th style="width: 10%">
+              <mfDefaultSorter by="city">客户名称</mfDefaultSorter>
+            </th>
+            <th style="width: 20%">
+              <mfDefaultSorter by="city">客户地址</mfDefaultSorter>
+            </th>
+            <th style="width: 20%">
+              <mfDefaultSorter by="city">联系电话</mfDefaultSorter>
+            </th>
+            <th style="width: 20%">
+              <mfDefaultSorter by="city">邮寄地址</mfDefaultSorter>
+            </th>
+            <th style="width: 10%">
+              <mfDefaultSorter by="city">邮编</mfDefaultSorter>
+            </th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let customer of mf.data">
+            <td>
+              {{customer.money.customer.id}}
+            </td>
+            <td>
+              {{customer.money.customer.name}}
+            </td>
+            <td>
+              {{customer.money.customer.address}}
+            </td>
+            <td>
+              {{customer.money.customer.contactway}}
+            </td>
+            <td>
+              {{customer.money.customer.maddress}}
+            </td>
+            <td>
+              {{customer.money.customer.zipcode}}
+            </td>
+          </tr>
+        </tbody>
+        <!-- <tfoot *ngIf="totalItems>querys['pagesize']">
+            <tr>
+              <td colspan="10">
+                <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="7" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+                  nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+              </td>
+            </tr>
+          </tfoot> -->
+      </table>
+    </div>
+
+
+  </div>
+
+</div>
+
+<toaster-container></toaster-container>

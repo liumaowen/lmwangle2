@@ -1,0 +1,72 @@
+<div class="table-grid table-grid-desktop">
+  <div class="col col-md">
+
+    <div class="button-toolbar clearfix mb">
+      <div class="btn-group">
+        <h4>
+          <em class="fa fa-book"></em>用户信息--{{user['realname']}}
+        </h4>
+      </div>
+    </div>
+
+
+    <div class="pr">
+      <!-- START mailbox list-->
+      <div class="mb-boxes">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked">
+
+              <li routerLinkActive="active">
+                <a [routerLink]="['/user',userid, 'edit']">
+                  <em class="fa fa-fw fa-lg fa-bank"></em>
+                  <span>基本信息</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/user',userid, 'project']">
+                  <em class="fa fa-fw fa-lg fa-truck"></em>
+                  <span>员工项目</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/user',userid, 'role']">
+                  <em class="fa fa-fw fa-lg fa-bank"></em>
+                  <span>所属角色</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/user',userid, 'permision']">
+                  <em class="fa fa-fw fa-lg fa-user"></em>
+                  <span>所属权限</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/user',userid, 'customer']">
+                  <em class="fa fa-fw fa-lg fa-envelope"></em>
+                  <span>拥有客户</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/user',userid, 'saleman']">
+                  <em class="fa fa-fw fa-lg fa-envelope"></em>
+                  <span>关联业务员</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/user',userid, 'receipt']">
+                  <em class="fa fa-fw fa-lg fa-envelope"></em>
+                  <span>临时代理人</span>
+                </a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <router-outlet></router-outlet>
+  </div>
+</div>

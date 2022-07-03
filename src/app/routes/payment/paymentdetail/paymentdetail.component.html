@@ -1,0 +1,92 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 付款登记单
+  <div class="pull-right">
+    <a [routerLink]="['/payment']">
+      <button type="button" class="btn btn-info btn-sm margin-top-bottom-25">返回
+      </button>
+    </a>
+    <button *ngIf="flag['verify']" type="button" (click)="verify()" class="btn btn-info btn-sm margin-top-bottom-25">审核
+    </button>
+    <span *NgOpera="124">
+      <button *ngIf=" model['isv']" type="button" (click)="fukuanlode()"
+        class="btn btn-info btn-sm margin-top-bottom-25">生成PDF
+      </button>
+    </span>
+    <span *NgOpera="124">
+    <button *ngIf=" model['isv']" type="button" (click)="print()"
+      class="btn btn-info btn-sm margin-top-bottom-25">打印预览
+    </button>
+    </span>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 form-control-static">编号:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['billno']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">金额:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['jine']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">金额(大写):</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['bigjine']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">客户单位:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['receivecustomer']['name']" class="form-control" required disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">客户银行:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['shoukuanbank']" class="form-control" required disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">客户账户:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['shoukuanaccount']" class="form-control" required disabled="disabled" />
+      </div>
+    </div>
+  </div>
+
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">创建时间:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['cdate']" class="form-control" disabled="disabled" required />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">创建人:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['cuser']['realname']" class="form-control" disabled="disabled" required/>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<toaster-container></toaster-container>

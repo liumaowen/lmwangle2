@@ -1,0 +1,137 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 基价调整记录明细
+  <font *ngIf="isv" color="red">单击击差价列进行编辑价格差</font>
+  <div class="pull-right">
+    <button *ngIf="isv" type="button" (click)="save()" class="btn btn-info btn-sm margin-top-bottom-25">提交</button>
+    <span *NgOpera="57">
+      <button *ngIf="!flag['verify']" type="button" (click)="auditBprice()" class="btn btn-info btn-sm margin-top-bottom-25">同意
+      </button>
+    </span>
+    <span *NgOpera="55">
+      <button *ngIf="!flag['verify']" type="button" (click)="notagree()" class="btn btn-info btn-sm margin-top-bottom-25">不同意
+      </button>
+    </span>
+    <button type="button" (click)="back()" class="btn btn-info btn-sm margin-top-bottom-25">返回</button>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto" style="overflow:'auto'">
+  <div class="row fieldsetdnn">
+      <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 form-control-static">调价编号:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">{{bpricelogmodel['billno']}}</div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">是否审核:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{bpricelogmodel['isv'] | isTranslated}}
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">是否删除:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{bpricelogmodel['isdel'] | isTranslated}}
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">版本:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{bpricelogmodel['version']}}
+            </div>
+          </div>
+        </div>
+  </div>
+  <div class="row fieldsetdnn">
+      <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">申请人:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{bpricelogmodel['cuser']['realname']}}
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">申请时间:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{bpricelogmodel['cdate'] | date:'y-MM-dd'}}
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">审核人:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{bpricelogmodel['vuser']['realname']}}
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">审核时间:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              <label style="color: red;font-weight: bold;">{{bpricelogmodel['vdate']}}</label>
+            </div>
+          </div>
+        </div>
+  </div>
+  <div class="row fieldsetdnn">
+      <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">申请人:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{bpricelogmodel['cuser']['realname']}}
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">申请时间:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{bpricelogmodel['cdate'] | date:'y-MM-dd'}}
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">审核人:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{bpricelogmodel['vuser']['realname']}}
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">审核时间:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              <label style="color: red;font-weight: bold;">{{bpricelogmodel['vdate']}}</label>
+            </div>
+          </div>
+        </div>
+  </div>
+  <div class="row fieldsetdnn">
+      <div class=" col-lg-6 col-md-12 ">
+          <div class="row">
+            <div class="col-lg-2 col-md-2 col-xs-6 control-label form-control-static">备注:</div>
+            <div class="col-lg-10 col-md-10 col-xs-6 form-control-static">
+              <input type="text" class="form-control" [(ngModel)]="bpricelogmodel['beizhu']" [disabled]="!edit" />
+            </div>
+          </div>
+        </div>
+  </div>
+  
+</div>
+
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 409)+'px'}" #agGrid class="ag-blue wis-auto" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+
+<toaster-container></toaster-container>

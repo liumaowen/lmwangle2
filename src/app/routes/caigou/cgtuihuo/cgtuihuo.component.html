@@ -1,0 +1,109 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 采购退货时序表
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">查询</button>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="cgtuihuoData">
+  <table class="table table-striped" [mfData]="cgtuihuoData" #mf="mfDataTable" [mfRowsOnPage]="10">
+    <tbody>
+    <tr *ngFor="let item of mf.data">
+      <td class="row" style="width:100%;">
+        <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+          <label>编号:</label>
+          <a [routerLink]="['/cgtuihuo', item.id]">{{item.billno}}</a>
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+          <label>供应商:</label> {{item['supplier'] | customer}}
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+          <label>业务员:</label> {{item | agentuser}}
+        </div>
+        <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+          <label>类型:</label> {{item.status | cgtuihuostatus}}
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+          <label>创建时间:</label> {{item.cdate | date:'yyyy-MM-dd HH:mm:ss'}}
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+          <label>总重量:</label> {{item.tweight}}
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+          <label>金额:</label> {{item.tjine | number:'1.2-2'}}
+        </div>
+      </td>
+    </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>search['pagesize']">
+    <tr>
+      <td colspan="10">
+        <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="7" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+                    nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+        <!-- <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator> -->
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+</div>
+
+<!--  查询采购退货的弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">退货单编号</label>
+              <div class="col-sm-9">
+                <input type="text" name="billno" [(ngModel)]="search['billno']" placeholder="请输入退货单编号" class="form-control">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">供应商</label>
+              <div class="col-sm-9">
+                <wisk-suppliersearch [(company)]="search['supplierid']"></wisk-suppliersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">采购公司</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="companyIsWiskind" [(ngModel)]="search['buyerid']"
+                  placeholder="选择采购单位" [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">制单人</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="search['cuserid']" ></wisk-usersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">退货单状态</label>
+              <div class="col-sm-9">
+                <ng-select  [allowClear]="true" [items]="statusdet" (selected)="selectestatus($event)" placeholder="退货单状态">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

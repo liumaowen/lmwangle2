@@ -1,0 +1,152 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 公告列表
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="queryDialog()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="createDialog()">添加</button>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="tableData">
+  <table class="table table-striped" [mfData]="tableData" #mf="mfDataTable" [mfRowsOnPage]="10">
+    <tbody>
+      <tr *ngFor="let model of mf.data">
+        <td class="row" style="width:100%;">
+
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>标题:</label>
+            <a [routerLink]="['/notice',model['id']]">{{model.title}}</a>
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>链接地址:</label>
+            <span (click)="openurl(model.url)">{{model.url}}</span>
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>创建日期:</label>
+            {{model.cdate | date: 'yyyy-MM-dd'}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>创建人:</label>
+            {{model.cuser.realname}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static" [title]="model['start']?(model['start']+'-'+model['end']):''">
+            <label>有效时间段:</label>
+            {{model['start']?(model['start']+'-'+model['end']):''}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>推送公告:</label>
+            {{model['isopen']?'是':'否'}}
+            <button *ngIf="model['isopen']" type="button" class="btn btn-info btn-bloc" (click)="close(model)" style="background-color:red;border-color:red;color:#ffffff;margin-left:10px;">一键关闭</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>querys['pagenum']">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="7" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+            nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<!--  查询的弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">标题名称</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="querys['title']" placeholder="请输入标题名称" class="form-control">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 創建的彈窗 -->
+<div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">公告标题</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="model['title']" placeholder="请输入公告标题" class="form-control">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">链接地址</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入链接地址" [(ngModel)]="model['url']" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">有效时间段</label>
+              <div class="col-sm-4  wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始时间" [minDate]="maxDate" [showTime]="true"></p-calendar>
+              </div>
+              <div class="col-sm-1">
+                至
+              </div>
+              <div class="col-sm-4  wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束时间" [minDate]="start || maxDate" [showTime]="true"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">公告内容</label>
+              <div class="col-sm-9">
+                <textarea type="text" [(ngModel)]="model['content']" placeholder="请输入公告内容" class="form-control"></textarea>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重填</button>
+            <button type="button" (click)="addNotice()" class="btn btn-primary btn-large">添加</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<toaster-container></toaster-container>

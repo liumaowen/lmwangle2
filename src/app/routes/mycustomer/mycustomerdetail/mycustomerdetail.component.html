@@ -1,0 +1,80 @@
+<div class="table-grid table-grid-desktop">
+  <div class="col col-md">
+
+    <div class="button-toolbar clearfix mb">
+      <div class="btn-group">
+        <h4>
+          <em class="fa fa-book"></em>我的客户信息
+        </h4>
+      </div>
+    </div>
+
+
+    <div class="pr">
+      <!-- START mailbox list-->
+      <div class="mb-boxes">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked">
+              <li routerLinkActive="active">
+                <a [routerLink]="['/mycustomer',customerid, 'edit']">
+                  <em class="fa fa-fw fa-lg fa-bank"></em>
+                  <span>基本信息</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/mycustomer',customerid, 'address']" ui-sref="app.customer-view.address({id:customerid})">
+                  <em class="fa fa-fw fa-lg fa-truck"></em>
+                  <span>送货地址</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/mycustomer',customerid, 'bankaccount']" ui-sref="app.customer-view.bankaccount({id:customerid})">
+                  <em class="fa fa-fw fa-lg fa-bank"></em>
+                  <span>银行账号</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/mycustomer',customerid, 'users']" ui-sref="app.customer-view.users({id:customerid})">
+                  <em class="fa fa-fw fa-lg fa-user"></em>
+                  <span>员工信息</span>
+                </a>
+              </li>
+              <li routerLinkActive="active">
+                <a [routerLink]="['/customer',customerid, 'money']" ui-sref="app.customer-view.money({id:customerid})">
+                  <em class="fa fa-fw fa-lg fa-money"></em>
+                  <span>账户明细</span>
+                </a>
+              </li>
+
+              <!-- <li class="p-h">
+                <a [routerLink]="['/mycustomer',customerid, 'edit']">
+                  <em class="fa fa-fw fa-lg fa-bank"></em>
+                  <span>基本信息</span>
+                </a>
+                <a [routerLink]="['/mycustomer',customerid, 'address']" ui-sref="app.customer-view.address({id:customerid})">
+                  <em class="fa fa-fw fa-lg fa-truck"></em>
+                  <span>送货地址</span>
+                </a>
+                <a [routerLink]="['/mycustomer',customerid, 'bankaccount']" ui-sref="app.customer-view.bankaccount({id:customerid})">
+                  <em class="fa fa-fw fa-lg fa-bank"></em>
+                  <span>银行账号</span>
+                </a>
+                <a [routerLink]="['/mycustomer',customerid, 'users']" ui-sref="app.customer-view.users({id:customerid})">
+                  <em class="fa fa-fw fa-lg fa-user"></em>
+                  <span>员工信息</span>
+                </a>
+
+              </li> -->
+
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- END mailbox list-->
+    </div>
+  </div>
+  <div class="col">
+    <router-outlet></router-outlet>
+  </div>
+</div>

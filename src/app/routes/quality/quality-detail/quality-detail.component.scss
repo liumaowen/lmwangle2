@@ -1,0 +1,20 @@
+.panel.panel-default {
+    border-top-width: 1px;
+}
+.wis-auto {
+    width: calc(100% + 40px);
+    margin: 0 -20px; // overflow: auto;
+}
+
+//调拨单tab标签页
+.fieldsetdnn {
+    padding: 5px 30px;
+    border-bottom: 1px dashed #eee;
+}
+
+.form-control-static {
+    font-size: 0.9em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

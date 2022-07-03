@@ -1,0 +1,244 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 钢厂出货在途明细表{{msg}}
+  <div class="pull-right wide-show">
+    <button type="button" class="btn btn-info btn-bloc" (click)="cancelPerSale()">取消预售</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="showPresaleModal()">预售</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="rukuUploader()">匹配入库</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="openclassicmodal()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="editcangku(0)">修改到货仓库</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="editcangku(1)">修改车船号</button>
+    <div class="btn-group" dropdown>
+      <button type="button" tooltip="下载模板请点击右边箭头" placement="bottom" class="btn btn-info btn-sm margin-top-bottom-25" (click)="carshipnumUploader()">匹配车船号
+      </button>
+      <button id="button-split" type="button" dropdownToggle class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
+        aria-controls="dropdown-split">
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-split" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-split">
+        <li role="menuitem">
+          <a class="dropdown-item" href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/%E5%8C%B9%E9%85%8D%E8%BD%A6%E8%88%B9%E5%8F%B7.xls">下载模板</a>
+        </li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn-info btn-bloc" (click)="showDaohuoModal()">入库</button>
+    <!-- <button type="button" class="btn btn-info btn-bloc" (click)="ruku(false)">入库</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="ruku(true)">入库并调拨</button> -->
+    <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/zaitu_kucun_ruku.xls">
+      <button type="button" class="btn btn-info btn-bloc">匹配入库模板下载</button>
+    </a>
+    <button type="button" (click)="agExport()" class="btn btn-info btn-bloc">导出</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showPresaleModal()">预售</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="editcangku(0)">修改到货仓库</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="editcangku(0)">修改到货仓库</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="editcangku(1)">修改车船号</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showDaohuoModal()">入库</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="agExport()">导出</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeclassicmodal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default ">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">品名</label>
+                <div class="col-sm-9">
+                  <input (click)="mdmgndialog.show()" class="form-control" style="height:33px;" [(ngModel)]="search['gn']" placeholder="请选择品名" readonly>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6" *ngFor="let item of attrs">
+                <label class="col-sm-3 control-label">{{item.name}}</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="item.options" [(ngModel)]="search[item.value]" [style]="{'width':'100%'}" [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">机构</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="items" [(ngModel)]="search['orgid']" [style]="{'width':'100%'}" [filter]="true"
+                    filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">仓库</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="ckitems" [(ngModel)]="search['cangkuid']" [style]="{'width':'100%'}"
+                    [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">捆包号</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="search['kunbaohao']" class="form-control" placeholder="请输入捆包号">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">资源号</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="search['grno']" class="form-control" placeholder="请输入资源号">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="select()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 文件上传弹窗 -->
+<div class="modal" bsModal #parentModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" bsModal #daohuoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDaohuoModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">请填写入库时间</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">库龄</label>
+              <div class="col-sm-8 wiskind-calendar">
+                <p-calendar [(ngModel)]="kuling" placeholder="请填写库龄" [maxDate]="maxdate"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" class="btn btn-info btn-bloc" (click)="ruku(false)">入库</button>
+          <button type="button" class="btn btn-info btn-bloc" (click)="ruku(true)">入库并调拨</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" bsModal #presaleModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closePresaleModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">填写调货合同单号</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">合同单号</label>
+              <div class="col-sm-9">
+                <input [(ngModel)]="tiaohuobillno" class="form-control" placeholder="请输入调货合同单号">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" class="btn btn-info btn-bloc" (click)="perSale()">预售</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 文件上传弹窗（匹配车船号） -->
+<div class="modal" bsModal #carshipnumModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideCarshipnum()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam2" [accept]="accept" (select)="uploads2($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>

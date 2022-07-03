@@ -1,0 +1,224 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">采购订单明细 </h4>
+  <div class="pull-right">
+    <button class="btn btn-info btn-bloc" type="button" (click)="openquery()">查询</button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="impcaigoudet()">引入</button>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+<div class="modal-body">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+    class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+<div class="modal-footer">
+  <div class="form-inline text-center">
+
+  </div>
+</div>
+
+<!--查询对话框-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">开始时间</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始日期" [maxDate]="startmax" (onSelect)="selectstart()">
+                </p-calendar>
+              </div>
+              <label class="col-md-2 control-label">结束时间</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束日期" [maxDate]="endmax" (onSelect)="selectend()">
+                </p-calendar>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">机构</label>
+              <div class="col-md-4">
+                <wisk-orglist [(org)]="search['orgid']"></wisk-orglist>
+              </div>
+              <label class="col-md-2 control-label">制单人</label>
+              <div class="col-md-4">
+                <wisk-usersearch [(user)]="search['cuserid']"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">单据编号</label>
+              <div class="col-md-4">
+                <input type="text" name="billno" [(ngModel)]="search['billno']" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">业务员</label>
+              <div class="col-md-4">
+                <wisk-usersearch [(user)]="search['salemanid']"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">资源号</label>
+              <div class="col-md-4">
+                <input type="text" name="grno" [(ngModel)]="search['grno']" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">单据类别</label>
+              <div class="col-md-4">
+                <p-dropdown [options]="dantypes" [(ngModel)]="search['dantype']" [style]="{'width':'calc(100%)'}"
+                  [placeholder]="'请选择单据类别'"></p-dropdown>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-2 control-label">供应商</label>
+              <div class="col-sm-10">
+                <!--<wisk-customersearch [(customer)]="search['sellerid']" ></wisk-customersearch>-->
+                <wisk-suppliersearch [(company)]="search['sellerid']"></wisk-suppliersearch>
+              </div>
+              <!--<label class="col-md-2 control-label">客户单位</label>
+              <div class="col-md-4">
+                <wisk-customersearch [(customer)]="search['kehuid']" ></wisk-customersearch>
+              </div>-->
+            </div>
+            <div class="mb fieldsetdnn">
+              <label class="col-md-2 control-label">品名</label>
+              <div class="col-md-4">
+                <input (click)="mdmgndialog.show()" class="form-control" style="height:33px;" [(ngModel)]="search['gn']" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div class="mb fieldsetdnn" *ngFor="let item of attrs">
+              <label class="col-md-2 control-label">{{item.name}}</label>
+              <div class="col-md-4">
+                <p-dropdown [options]="item.options" [(ngModel)]="search['classifys'][item.value]" [style]="{'width':'100%'}" [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+
+            <!-- <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">品名</label>
+              <div class="col-md-4">
+                <p-dropdown name="gn" [options]="gns" (onChange)="selectedgn($event.value)" placeholder="选择品名"
+                  [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+              <label class="col-md-2 control-label">产地</label>
+              <div class="col-md-4">
+                <p-dropdown name="chandi" [options]="chandis" (onChange)="selectedchandi($event.value)"
+                  placeholder="选择产地" [style]="{'width': '100%'}" [disabled]="!isChandi">
+                </p-dropdown>
+              </div>
+            </div> -->
+            <!-- <div *ngIf="showGuige">
+              <div class="row fieldsetdnn" *ngFor="let item of attrs">
+                <label class="col-sm-2 control-label"><span style="float: right;">{{item.label}}</span></label>
+                <div class="col-sm-10">
+                  <p-dropdown [options]="item.options" placeholder='选择{{item.label}}'
+                    (onChange)="selectedguige($event.value,item.name)" [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" class="btn btn-primary btn-large" (click)="query()">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--添加弹窗-->
+<div class="modal" bsModal #addModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="addcoles()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建采购付款单</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <!-- <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">是否期货</label>
+              <div class="col-sm-9">
+                <ng-select [allowClear]="true" [items]="danjutypes" (selected)="selectisqihuo($event)" placeholder="请选择是否期货">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">产地</label>
+              <div class="col-sm-9">
+                <ng-select [allowClear]="true" [items]="gangchangs" (selected)="selectegangchang($event)"
+                  placeholder="请选择产地">
+                </ng-select>
+              </div>
+            </div> -->
+            
+            <!-- <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">收货机构</label>
+              <div class="col-sm-9">
+                <wisk-orglist [(org)]="model['sorgid']"></wisk-orglist>
+              </div>
+            </div> -->
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">付款金额</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="model['jine']" class="form-control" placeholder="请输入收款金额">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">付款类型</label>
+              <div class="col-sm-9">
+                <ng-select [allowClear]="true" [items]="kinds" (selected)="selecteskind($event)" placeholder="请选择付款类型">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">结算方式</label>
+              <div class="col-sm-9">
+                <ng-select [allowClear]="true" [items]="types" (selected)="selectestype($event)" placeholder="请选择结算方式">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input [(ngModel)]="model['beizhu']" class="form-control" placeholder="请输入备注">
+              </div>
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <button type="button" (click)="addfukuan()" class="btn btn-primary btn-large">创建</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>

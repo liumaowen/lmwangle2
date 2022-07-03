@@ -1,0 +1,53 @@
+<div class="content-heading">
+    <em class="fa fa-list-alt"></em> 定金明细表
+    <div class="pull-right">
+      <button type="button" class="btn btn-info btn-bloc" (click)="showdialog()">查询</button>
+      <!-- <button type="button" class="btn btn-info btn-bloc" (click)="agExport()">导出</button> -->
+    </div>
+  </div>
+  
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 229)+'px'}" #agGrid  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="dingjingridOptions">
+  </ag-grid-angular>
+  
+  <!--查询相关-->
+  <div class="modal" bsModal #querydingjin="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="closedialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">查询</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">客户名称</label>
+              <div class="col-md-10">
+                <wisk-companysearch [(company)]="buyer"></wisk-companysearch>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+                <label class="col-md-2 control-label">卖方单位</label>
+                <div class="col-md-10">
+                    <app-wiskinnercompany (wiskindcompany)="innercompany($event)" ></app-wiskinnercompany>
+                </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+            <div class="form-inline text-center">
+              <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <toaster-container ></toaster-container>
+  

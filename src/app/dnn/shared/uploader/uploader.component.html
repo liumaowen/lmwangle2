@@ -1,0 +1,62 @@
+<div class="modal-body">
+  <p *ngIf="!uploader.queue.length" class="lead text-center">没有上传文件</p>
+  <div *ngIf="uploader.queue.length">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>名称</th>
+          <th *ngIf="uploader?.options?.isHTML5">大小</th>
+          <th *ngIf="uploader?.options?.isHTML5">进度</th>
+          <th>状态</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of uploader.queue">
+          <td>
+            <strong>{{ item.file?.name }}</strong>
+          </td>
+          <td *ngIf="uploader?.options?.isHTML5" nowrap>{{ item.file.size/1024/1024 | number:'.2' }} MB</td>
+          <td *ngIf="uploader?.options?.isHTML5">
+            <div class="progress" style="margin-bottom: 0;">
+              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item?.progress + '%' }"></div>
+            </div>
+          </td>
+          <td class="text-center">
+            <span *ngIf="item.file?item.file['isSuccess']:''">
+              <em class="fa fa-check fa-fw"></em>
+            </span>
+            <span *ngIf="item.file?item.file['isCancel']:''">
+              <em class="fa fa-ban-circle fa-fw"></em>
+            </span>
+            <span *ngIf="item.file?item.file['isError']:''">
+              <em class="fa fa-times fa-fw"></em>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <div class="progress progress-xs">
+      <div role="progressbar" class="progress-bar"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6">
+      <label for="filexls" class="file-upload">
+        <button class="btn btn-default btn-block">
+          <em class="fa fa-folder-open"></em>选择</button>
+        <input id="filexls" type="file" ng2FileSelect [uploader]="uploader" [accept]="accept" multiple/>
+      </label>
+    </div>
+    <div class="col-xs-6">
+      <button type="button" (click)="uploads()" [disabled]="!uploader.getNotUploadedItems().length" class="btn btn-info pull-right">
+        <span class="icon-cloud-upload mr"></span>上传
+      </button>
+    </div>
+  </div>
+
+</div>

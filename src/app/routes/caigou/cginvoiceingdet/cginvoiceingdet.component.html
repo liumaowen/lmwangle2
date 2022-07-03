@@ -1,0 +1,115 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 采购发票未登记明细表
+  <div class="pull-right">
+    <div class="btn-group" dropdown>
+      <button type="button" tooltip="下载模板请点击右边箭头" placement="bottom" class="btn btn-info btn-sm margin-top-bottom-25" (click)="showUploader()">批量创建发票</button>
+      <button id="button-split" type="button" dropdownToggle class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
+              aria-controls="dropdown-split">
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-split" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-split">
+        <li role="menuitem"><a class="dropdown-item" href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/ImportCginvoiceno.xls">下载模板</a>
+        </li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">查询</button>
+    <button type="button" (click)="agExport()"  class="btn btn-info btn-bloc">导出</button>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 229)+'px'}" #agGrid  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+
+<!--查询相关-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">供应商</label>
+              <div class="col-sm-9">
+                <wisk-suppliersearch [(company)]="search['supplierid']"></wisk-suppliersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">机构</label>
+              <div class="col-sm-9">
+                <wisk-orglist [(org)]="search['orgid']"></wisk-orglist>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <input (click)="mdmgndialog.show()" [(ngModel)]="search['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <p-dropdown name="gn" [options]="gns" (onChange)="selectedgn($event.value)" placeholder="选择品名" [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div> -->
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">资源号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="search['grno']" class="form-control" placeholder="请输入资源号">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<toaster-container ></toaster-container>
+<!--上传发票号批量创建发票弹窗-->
+<div class="modal" bsModal #uploaderModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideuploadDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>

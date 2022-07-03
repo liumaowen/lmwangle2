@@ -1,0 +1,95 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 资金占用利息汇总表详情
+  <div class="pull-right">
+
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">买方公司：</div>
+        <div class="col-md-8 col-xs-6 form-control-static"  [tooltip]="fundinterestsum['buyer']['name']">{{fundinterestsum['buyer']['name']}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">单据编号：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fundinterestsum['billno']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">创建人：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fundinterestsum['cuser']['realname']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">创建时间：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fundinterestsum['cdate'] | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">卖方公司：</div>
+        <div class="col-md-8 col-xs-6 form-control-static"  [tooltip]="fundinterestsum['seller']['name']">{{fundinterestsum['seller']['name']}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">总利息：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fundinterestsum['tjine']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">实付利息：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fundinterestsum['shifutjine']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">是否实付：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fundinterestsum['iszhifu'] | flag}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">利息欠款金额：</div>
+        <div class="col-md-8 col-xs-6 form-control-static" >{{fundinterestsum['qiankuanlixijine']}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">欠款天数：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fundinterestsum['qiankuandays']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static" [tooltip]="'预计还款日期'">预计还款日期：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fundinterestsum['yedate'] | date:'yyyy-MM-dd'}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">欠款原因：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fundinterestsum['qiankuanreason']}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wis-auto">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 290)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 0px;" class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>

@@ -1,0 +1,227 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 库存管理统计表
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+
+
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--查询弹窗-->
+<!-- <div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">品名：</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gns" (onChange)="selectedgn1($event.value)" [(ngModel)]="requestparams['gno']"
+                  placeholder="选择品名" [filter]="true" [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">产地：</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="chandis" [(ngModel)]="requestparams['chandiid']" placeholder="选择产地"
+                  [filter]="true" [style]="{'width': '100%'}" [disabled]="!isChandi">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">创建人：</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="cuser"></wisk-usersearch>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!--上传弹窗-->
+<!-- <div class="modal" bsModal #uploadModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div> -->
+<!--修改弹窗-->
+<!-- <div class="modal" bsModal #updateModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideupdateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-4 control-label">低库存预警</label>
+              <div class="col-sm-8 ">
+                <input type="number" name="minweight" [(ngModel)]="editparams['minweight']" class="form-control">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-4 control-label">开单量预警</label>
+              <div class="col-sm-8">
+                <input type="number" name="orderweight" [(ngModel)]="editparams['orderweight']" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="save()" class="btn btn-primary btn-large">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!--添加库存明细对话框-->
+<!-- <div class="modal" bsModal #createdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="dialogcoles()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加明细</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">品名：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gns" (onChange)="selectedgn($event.value)" [(ngModel)]="requestparams['gno']"
+                  placeholder="选择品名" [filter]="true" [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">产地：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="chandis" (onChange)="selectedchandi($event.value)" placeholder="选择产地"
+                  [filter]="true" [style]="{'width': '100%'}" [disabled]="!isChandi" [(ngModel)]="model['chandio']">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">厚度：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="houdus" placeholder='请选择厚度' [(ngModel)]="model['houdu']"
+                   [filter]="true" [style]="{'width': '100%'}" [disabled]="!showGuige">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">宽度：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="widths" placeholder='请选择宽度' [(ngModel)]="model['width']"
+                   [filter]="true" [style]="{'width': '100%'}" [disabled]="!showGuige">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">颜色：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="colors" placeholder='请选择颜色' [(ngModel)]="model['color']"
+                   [filter]="true" [style]="{'width': '100%'}" [disabled]="!showGuige">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">镀层：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="ducengs" placeholder='请选择镀层' [(ngModel)]="model['duceng']"
+                   [filter]="true" [style]="{'width': '100%'}" [disabled]="!showGuige">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">材质：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="caizhis" placeholder='请选择材质' [(ngModel)]="model['caizhi']"
+                   [filter]="true" [style]="{'width': '100%'}" [disabled]="!showGuige">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">低库存预警量：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="model['minweight']" class="form-control" placeholder="请输入低库存预警量"
+                  >
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">开单预警量：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="model['orderweight']" class="form-control" placeholder="请输入开单预警量"
+                  >
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="create()" class="btn btn-primary btn-large">创建</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

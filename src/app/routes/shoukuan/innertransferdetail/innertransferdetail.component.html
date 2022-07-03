@@ -1,0 +1,173 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 内部转账登记单
+  <div class="pull-right">
+    <button type="button" (click)="update()"
+      class="btn btn-info btn-sm margin-top-bottom-25">保存
+    </button>
+    <button type="button" (click)="submitverify()"
+      class="btn btn-info btn-sm margin-top-bottom-25">提交审核
+    </button>
+    <button type="button" (click)="del()"
+      class="btn btn-info btn-sm margin-top-bottom-25">删除
+    </button>
+
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 form-control-static">编号：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['billno']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">金额：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['jine']" class="form-control" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款公司：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <!-- <input type="text" [(ngModel)]="model['skcustomer']['name']" class="form-control" disabled="disabled" /> -->
+        <p-dropdown [options]="wiskind" [(ngModel)]="model['skcustomerid']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"
+                  (onChange)="getbank(model['skcustomerid'],1)"></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">付款公司：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <!-- <input type="text" [(ngModel)]="model['paycustomer']['name']" class="form-control" disabled="disabled" />
+         -->
+         <p-dropdown [options]="wiskind" [(ngModel)]="model['paycustomerid']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"
+                  (onChange)="getbank(model['paycustomerid'],0)"></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款银行：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <!-- <input type="text" [(ngModel)]="model['skbankname']" class="form-control" disabled="disabled" required /> -->
+        <p-dropdown [options]="receivebankaccounts" [(ngModel)]="model['skbankid']" (onChange)="getcardno(model['skbankid'],1)"
+                [style]="{'width':'100%'}"></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">付款银行：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <!-- <input type="text" [(ngModel)]="model['paybankname']" class="form-control" disabled="disabled" /> -->
+        <p-dropdown [options]="fubankaccounts" [(ngModel)]="model['paybankid']" (onChange)="getcardno(model['paybankid'],0)"
+        [style]="{'width':'100%'}"></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款账号：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['skaccount']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">付款账号：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['payaccount']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款类型：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <!-- <span class="form-control" disabled="disabled">{{model.type|innertranster}}</span> -->
+        <p-dropdown [options]="types" [(ngModel)]="model['type']" [style]="{'width':'100%'}"></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">创建人：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <span class="form-control" disabled="disabled">{{model | agentuser}}</span>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款时间：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <p-calendar [(ngModel)]="actualdatetime" placeholder="收款时间" [maxDate]="endmax"></p-calendar>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">创建时间：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['cdate']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">状态：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <span class="form-control" disabled>
+          {{status}}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">审核人：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <span class="form-control" disabled>
+          {{model.vuser?model.vuser['realname']:''}}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">生成付款方凭证：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <span class="form-control" disabled>
+          {{model.isppz|flag}}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">备注：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['beizhu']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">生成收款方凭证：</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <span class="form-control" disabled>
+          {{model.isppz|flag}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>

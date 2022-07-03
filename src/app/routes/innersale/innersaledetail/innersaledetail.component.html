@@ -1,0 +1,283 @@
+<div class="button-toolbar clearfix mb">
+  <div class="btn-group">
+    <h4>
+      <em class="fa fa-book"></em>内部采购单明细&nbsp;&nbsp;&nbsp;</h4>
+  </div>
+  <font color="red">温馨提示：内采单不能锁货，请及时提交审核</font>
+  <div class="pull-right ml-lg">
+    <button type="button" (click)="removebill(innersale)" class="btn btn-info btn-sm margin-top-bottom-25"
+      style="background-color:red;border-color:red;color:#ffffff;">删除内采单</button>
+    <button *ngIf="flag['submitV']" type="button" (click)="update()" class="btn btn-info btn-sm margin-top-bottom-25">内采类型</button>
+    <button *ngIf="flag['save']" type="button" (click)="importFav()" class="btn btn-info btn-bloc">引入收藏夹数据</button>
+    <button *ngIf="flag['save']" type="button" (click)="importKucun()" class="btn btn-info btn-bloc">引入库存数据</button>
+    <button *ngIf="flag['submitV']" type="button" (click)="submitVuser()" class="btn btn-info btn-bloc">提交审核</button>
+    <!-- <button *ngIf="flag['isback']" type="button" (click)="back(innersale['id'])"
+      class="btn btn-info btn-bloc">回退</button>
+    <button *ngIf="flag['verify']" type="button" (click)="verify(innersale['id'],innersale['version'])"
+      class="btn btn-info btn-bloc">审核</button> 
+    <button *ngIf="flag['sverify']" type="button" (click)="sverify(innersale['id'],innersale['version'])"
+      class="btn btn-info btn-bloc">审核</button> -->
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">卖方机构:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{innersale['sorgname']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">买方机构:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{innersale['borgname']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">采购单号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{innersale['billno']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{innersale | agentuser}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">卖方审核人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{innersale['svusername']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">买方审核人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{innersale['vuser'] ? innersale['vuser']['realname'] : null}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">是否审核:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{innersale['isv']|flag}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">创建时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{innersale['cdate']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">总件数:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{innersale['tcount']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">总吨位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{innersale['tweight']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div  class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">内采类型:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+           {{category}}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="innersale['category'] === 4" class=" col-lg-3 col-md-6 ">
+      <div  class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议编号:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+           {{innersale['zhiliangyiyibillno']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div *ngIf="innersale['category'] === 4" class=" col-lg-3 col-md-6 ">
+      <div  class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议说明:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+           {{innersale['rsbeizhu']}}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="innersale['category'] === 4" class=" col-lg-3 col-md-6 ">
+      <div  class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议类型:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+           {{rstypename}}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="innersale['category'] === 4" class=" col-lg-3 col-md-6 ">
+      <div  class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议金额:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+           {{innersale['rsjine']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">客户名称:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+           {{innersale['customer']?.name}}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="innersale['category'] === 3" class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">竞价说明:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{innersale['reason']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">内采原因:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input class="form-control" type="text" [(ngModel)]="innersale['beizhu']" (blur)="updateInnersale()">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 380)+'px','min-height':200+'px'}" #agGrid
+    style="width: calc(100% + 40px);height:100%;margin:0 -20px;padding: 0 20px;" class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+
+  <toaster-container></toaster-container>
+</div>
+
+
+<!-- 采购价格调整的弹窗 -->
+<div>
+  <div class="modal" bsModal #priceModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="hidePriceDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">采购价格调整</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <form [formGroup]="priceForm" class="form-validate mb-lg" role="form" name="loginForm" novalidate="">
+                <div class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label">采购价格</label>
+                  <div class="col-sm-9">
+                    <input type="number" name="price" formControlName="price" [(ngModel)]="sprice['feeprice']"
+                      class="form-control" placeholder="请输入要调整的价格" />
+                    <span
+                      *ngIf="priceForm.controls['price'].hasError('required') && (priceForm.controls['price'].dirty || priceForm.controls['price'].touched)"
+                      class="text-danger">请填写采购价格</span>
+                    <span
+                      *ngIf="priceForm.controls['price'].hasError('pattern') && (priceForm.controls['price'].dirty || priceForm.controls['price'].touched)"
+                      class="text-danger">价格不能为负数且只能输入两位小数</span>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <button type="button" (click)="modifyprice()" class="btn btn-primary btn-large">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!--添加弹窗-->
+<div class="modal" bsModal #addModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideaddModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+          <label class="col-sm-3 control-label">内采类型</label>
+          <div class="col-sm-9">
+            <p-dropdown [options]="addtype" [(ngModel)]="innersale['category']" [style]="{'width':'100%'}"></p-dropdown>
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+          <label class="col-sm-3 control-label">客户名称</label>
+          <div class="col-sm-9">
+            <wisk-findbysale [(company)]="customer"></wisk-findbysale>
+          </div>
+        </div>
+        <div *ngIf="innersale['category'] === 3" class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+          <label class="col-sm-3 control-label">竞价说明</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="innersale['reason']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+          <label class="col-sm-3 control-label">内采原因</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="innersale['beizhu']" class="form-control" />
+          </div>
+        </div>
+        <div *ngIf="innersale['category'] === 4" class="form-group mb fieldsetdnn row">
+          <label class="col-sm-3 control-label required">处理类型
+          </label>
+          <div class="col-sm-9">
+            <p-dropdown [options]="rstypes" placeholder="选择处理类型" [(ngModel)]="innersale['rstype']"
+              [style]="{'width': '100%'}">
+            </p-dropdown>
+          </div>
+        </div>
+        <div *ngIf="innersale['category'] === 4" class="form-group mb fieldsetdnn row">
+          <label class="col-sm-3 control-label required">说明
+          </label>
+          <div class="col-sm-9">
+            <input type="text" name="rsbeizhu" [(ngModel)]="innersale['rsbeizhu']" class="form-control" />
+          </div>
+        </div>
+        <div *ngIf="innersale['category'] === 4" class="form-group mb fieldsetdnn row">
+          <label class="col-sm-3 control-label required">赔付金额
+          </label>
+          <div class="col-sm-9">
+            <input type="number" name="rsjine" [(ngModel)]="innersale['rsjine']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button *ngIf="innersale['category'] === 4" type="button" (click)="choice()" class="btn btn-primary btn-large">选择质量异议</button>
+          <button *ngIf="innersale['category'] !== 4" type="button" (click)="addreason()" class="btn btn-primary btn-large">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

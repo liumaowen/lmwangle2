@@ -1,0 +1,589 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em>
+  <font color="red">选择待提货的货物，然后填写提货人信息，才能创建提货单</font>
+  <div class="pull-right">
+    <div *ngIf="isshowmatchcar" class="btn-group" dropdown>
+      <button type="button" tooltip="下载模板请点击右边箭头" placement="bottom" class="btn btn-info btn-sm margin-top-bottom-25" (click)="carnumberUploader()">匹配车号</button>
+      <button id="button-split" type="button" dropdownToggle class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
+        aria-controls="dropdown-split">
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-split" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-split">
+        <li role="menuitem">
+          <a class="dropdown-item" href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/匹配车号.xls">下载模板</a>
+        </li>
+      </ul>
+    </div>
+    <button *ngIf="!flag['isonline']" type="button" style="background-color:red;border-color:red;color:#ffffff;"
+      (click)="emancipation()" class="btn btn-info btn-bloc">释放货物</button>
+    <button type="button" (click)="showProduceTaskDialog()" class="btn btn-info btn-bloc">加工任务单创建</button>
+    <button type="button" (click)="showDialog()" class="btn btn-info btn-bloc">提单创建</button>
+    <button *ngIf="isshowmatchcar" type="button" (click)="showMatchcar()" class="btn btn-info btn-bloc">约车创建</button>
+  </div>
+  <div style="font-size: 20px;padding-top: 5px;">
+    共有{{total['count']}}件，总重{{total['tweight'] | number:'1.3-3'}}吨,总米数{{total['tlength'] | number:'1.3-3'}}米,总金额￥{{total['tmoney'] | number:'1.2-2'}}
+  </div>
+  <div style="font-size: 16px;padding-top: 5px;" *ngIf="!flag['isonline']">
+    可释放定金金额￥{{shifangmap['keshifangdingjin'] | number:'1.0-2'}}，释放后剩余定金金额￥{{shifangmap['dingjinshengyu'] | number:'1.0-2'}}，可释放配款金额￥{{shifangmap['keshifangallocation'] | number:'1.0-2'}}，预估欠款金额￥{{shifangmap['qiankuanjine'] | number:'1.0-2'}}
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--创建弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <form [formGroup]="offlineForm" class="form-validate mb-lg" role="offlineForm" name="offlineForm" novalidate=""
+      (submit)="submittihuo()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">创建
+            <span *ngIf="!flag['isonline']" style="color:red;font-size:10px;font-weight: none;">（创建之前可以匹配车号，创建之后也可以修改）</span>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <!-- 2018.01.11 转货权开发 cpf DEL start
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">提货类型</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" formControlName="tihuotype" value="0" [(ngModel)]="params['tihuotype']" (click)="ordinery(0)" />
+                  <span class="fa fa-circle"></span>普通
+                </label>
+                  <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" formControlName="tihuotype" value="1" [(ngModel)]="params['tihuotype']" (click)="transfer(1)"/>
+                  <span class="fa fa-circle"></span>转货
+                </label>
+                </div>
+              </div>
+            -->
+              <div *ngIf="isshow">
+                <div class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label">车牌号</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="chehao" [(ngModel)]="params['chehao']" class="form-control"
+                      placeholder="请输入车牌号" />
+                    <span
+                      *ngIf="offlineForm.controls['chehao'].hasError('pattern') && (offlineForm.controls['chehao'].dirty || offlineForm.controls['chehao'].touched)"
+                      class="text-danger">车牌号填写不规范</span>
+                  </div>
+                </div>
+
+                <div class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label">提货司机</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="siji" [(ngModel)]="params['siji']" class="form-control"
+                      placeholder="请输入司机姓名" />
+                    <span
+                      *ngIf="offlineForm.controls['siji'].hasError('pattern') && (offlineForm.controls['siji'].dirty || offlineForm.controls['siji'].touched)"
+                      class="text-danger">姓名填写不规范</span>
+                  </div>
+                </div>
+
+                <div class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label">手机号</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="sijitel" [(ngModel)]="params['sijitel']" class="form-control"
+                      placeholder="请输入司机电话" maxlength="11" />
+                    <span
+                      *ngIf="offlineForm.controls['sijitel'].hasError('pattern') && (offlineForm.controls['sijitel'].dirty || offlineForm.controls['sijiid'].touched)"
+                      class="text-danger">手机号填写不规范</span>
+                  </div>
+                </div>
+
+                <div class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label">身份证</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="sijiid" [(ngModel)]="params['sijiid']" class="form-control"
+                      placeholder="请输入司机身份证" maxlength="18" minlength="15" />
+                    <span
+                      *ngIf="offlineForm.controls['sijiid'].hasError('pattern') && (offlineForm.controls['sijiid'].dirty || offlineForm.controls['sijiid'].touched)"
+                      class="text-danger">身份证填写不规范</span>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="isqihuo" class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">是否最后一次期货提货</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio1" type="radio" formControlName="islasttihuo" value="0"
+                      (click)="showdingjintype(0)" [(ngModel)]="params['islasttihuo']" />
+                    <span class="fa fa-circle"></span>否
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio2" type="radio" formControlName="islasttihuo" value="1"
+                      (click)="showdingjintype(1)" [(ngModel)]="params['islasttihuo']" />
+                    <span class="fa fa-circle"></span>是
+                  </label>
+                </div>
+              </div>
+              <!-- <div *ngIf="isshowdingjintype" class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">定金释放模式</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio1" type="radio" formControlName="dingjintype" value="0"
+                      [(ngModel)]="params['dingjinshifangtype']" />
+                    <span class="fa fa-circle"></span>不释放
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio1" type="radio" formControlName="dingjintype" value="1"
+                      [(ngModel)]="params['dingjinshifangtype']" />
+                    <span class="fa fa-circle"></span>比例释放
+                  </label>
+                   <label class="radio-inline c-radio">
+                      <input id="inlineradio2" type="radio" formControlName="dingjintype" value="2"
+                        [(ngModel)]="params['dingjinshifangtype']" />
+                      <span class="fa fa-circle"></span>特殊释放
+                    </label>
+                </div>
+              </div> -->
+
+              <!-- <div *ngIf="isshowdingjintype" class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label"></label>
+                  <div class="col-sm-9">
+                    <font color="red"> 选择特殊释放，当你创建完成提单之后可以去对应的期货订单中进行定金的释放。</font>
+                  </div>
+                </div> -->
+              
+              <div class="form-group mb fieldsetdnn row" *ngIf="flag['isonline']&&isshow">
+                <label class="col-sm-3 control-label">目的地址</label>
+                <div class="col-sm-9">
+                  <input type="text" formControlName = "enddest" placeholder="请输入详细地址" [(ngModel)]="params['enddest']" class="form-control"
+                    required (blur)="selecteddes1(params['enddest'])" />
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row" *ngIf="flag['isonline']&&isshow">
+                <div class="col-sm-4" style="padding-left:15px;">
+                  <p-dropdown [options]="provinces" formControlName = "provinceid" [(ngModel)]="params['provinceid']" 
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省份'" (onChange)="getcity()">
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-4" style="padding-left:15px;">
+                  <p-dropdown [options]="citys" formControlName = "cityid" [(ngModel)]="params['cityid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty()">
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-4" style="padding-left:15px;">
+                  <p-dropdown [options]="countys" formControlName = "countyid"  [(ngModel)]="params['countyid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
+                  </p-dropdown>
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn row" *ngIf="flag['isonline']&&isshow">
+                <label class="col-sm-3 control-label">物流员</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="wuliuyuan" formControlName="wuliuyuan" [(ngModel)]="params['wuliuyuan']" [style]="{'width':'100%','font-size':'15px'}"
+                    [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">备注</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="params['beizhu']" formControlName="beizhu" class="form-control"
+                    placeholder="请输入备注">
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">出库费结算方式</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio1" type="radio" formControlName="chukufeetype2" [value]="0"
+                      [(ngModel)]="params['chukufeetype2']" />
+                    <span class="fa fa-circle"></span>现结
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio2" type="radio" formControlName="chukufeetype2" [value]="1"
+                      [(ngModel)]="params['chukufeetype2']" />
+                    <span class="fa fa-circle"></span>月结
+                  </label>
+                  <label class="radio-inline c-radio">
+                      <input id="inlineradio3" type="radio" formControlName="chukufeetype2" [value]="2"
+                        [(ngModel)]="params['chukufeetype2']" />
+                      <span class="fa fa-circle"></span>免付
+                    </label>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+            <div class="form-inline text-center">
+              <button type="submit" class="btn btn-primary btn-large">创建</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- 创建约车单 -->
+<div class="modal" bsModal #matchcarModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closeMatchcar()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">新建约车单</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form [formGroup]="matchcarForm" class="form-validate mb-lg" role="form" name="loginForm" novalidate="">
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">运输方式</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="transtypes" formControlName="transtype" [(ngModel)]="matchcar['transtype']"
+                    [style]="{'width':'calc(100%)'}" [placeholder]="'请选择运输方式'" [disabled]="isbaojiadisabled">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">具体卸货地址</label>
+                <div class="col-sm-8">
+                  <p-dropdown [title]="matchcar['destination']" [options]="destList"
+                    [(ngModel)]="matchcar['destination']" formControlName="destination" [style]="{'width':'100%'}"
+                    [filter]="true" filterBy="label,value.name" [placeholder]="'请选择卸货地址'"
+                    (onChange)="selecteddes($event.value)" [disabled]="isbaojiadisabled">
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-1">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="addAddrDialog()"
+                      [disabled]="isbaojiadisabled">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">省市县</label>
+                <div class="col-sm-3">
+                  <p-dropdown [options]="provinces" formControlName="provinceid" [(ngModel)]="matchcar['provinceid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省份'" (onChange)="getcity()"
+                    >
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-3">
+                  <p-dropdown [options]="citys" formControlName="cityid" [(ngModel)]="matchcar['cityid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty()"
+                    >
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-3">
+                  <p-dropdown [options]="countys" formControlName="countyid" [(ngModel)]="matchcar['countyid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'" >
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">卸货联系人</label>
+                <div class="col-sm-9">
+                  <input type="text" formControlName="xhlianxiren" [(ngModel)]="matchcar['xhlianxiren']"
+                    class="form-control" placeholder="请输入卸货联系人">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">卸货电话</label>
+                <div class="col-sm-9">
+                  <input type="text" formControlName="xhlianxirenphone" [(ngModel)]="matchcar['xhlianxirenphone']"
+                    class="form-control" placeholder="请输入卸货电话" maxlength="11" />
+                  <span
+                    *ngIf="matchcarForm.controls['xhlianxirenphone'].hasError('pattern') && (matchcarForm.controls['xhlianxirenphone'].dirty || matchcarForm.controls['xhlianxirenphone'].touched)"
+                    class="text-danger">手机号填写不规范</span>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">入库抬头</label>
+                <div class="col-sm-9">
+                  <input type="text" formControlName="rukutaitou" [(ngModel)]="matchcar['rukutaitou']"
+                    class="form-control">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">提货凭证</label>
+                <div class="col-sm-9">
+                  <input type="text" formControlName="pingzheng" [(ngModel)]="matchcar['pingzheng']"
+                    class="form-control">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">代付吊费:</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input type="radio" [value]="false" formControlName="isdiaofee"
+                      [(ngModel)]="matchcar['isdiaofee']" />
+                    <span class="fa fa-circle"></span>否
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input type="radio" [value]="true" formControlName="isdiaofee"
+                      [(ngModel)]="matchcar['isdiaofee']" />
+                    <span class="fa fa-circle"></span>是
+                  </label>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">推送业务员约车单信息及价格确认:</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input type="radio" [value]="false" formControlName="istuisong"
+                      [(ngModel)]="matchcar['istuisong']" />
+                    <span class="fa fa-circle"></span>否
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input type="radio" [value]="true" formControlName="istuisong"
+                      [(ngModel)]="matchcar['istuisong']" />
+                    <span class="fa fa-circle"></span>是
+                  </label>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">推送业务员约车确认:</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input type="radio" [value]="false" formControlName="isneedsale"
+                      [(ngModel)]="matchcar['isneedsale']" />
+                    <span class="fa fa-circle"></span>否
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input type="radio" [value]="true" formControlName="isneedsale"
+                      [(ngModel)]="matchcar['isneedsale']" />
+                    <span class="fa fa-circle"></span>是
+                  </label>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-9">
+                  <input type="text" formControlName="beizhu" [(ngModel)]="matchcar['beizhu']" class="form-control">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="creatematchcar()" [disabled]="!matchcarForm['valid']"
+            class="btn btn-primary btn-large">新建</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加地址弹窗-->
+<div class="modal" bsModal #addrdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="addrdialogclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加地址</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <label class="col-sm-2 control-label">运输地址：</label>
+              <div class="col-sm-10">
+                <!-- <input type="text" (blur)="addrchange($event)" placeholder="请输入运输地址" [(ngModel)]="addr" class="form-control" required /> -->
+                 <textarea name="addr" cols="30" rows="3" placeholder="请输入运输地址" [(ngModel)]="addr"
+                  class="form-control"></textarea>
+               
+              </div>
+              <div class="col-sm-12"
+                style="background-color: rgb(255, 203, 200);margin-top:10px;border-radius: 5px;padding:6px;">
+                地址、姓名、电话用空格或者逗号分开!!!<br />
+                例：北京市朝阳区姚家园3楼 马云 13593464918
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="addAddr()" class="btn btn-primary btn-large">添加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--上传多个捆包号筛选明细弹窗-->
+<div class="modal" bsModal #parentModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="uploaderhideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 加工任务单在线下发货汇总创建-->
+<div class="modal" bsModal #produceTaskDialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideProduceTaskDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">包装方式</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="packages" [(ngModel)]="tasklist['packagetype']" [style]="{'width':'calc(100%)'}"
+                  [placeholder]="'请选择包装方式'"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">卷内径</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="neijings" [(ngModel)]="tasklist['neijing']" [style]="{'width':'calc(100%)'}"
+                  [placeholder]="'请选择卷内径'"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">加工费</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入加工费" class="form-control" [(ngModel)]="tasklist['fee']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">联系电话</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入联系电话" class="form-control" [(ngModel)]="tasklist['phone']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">加工交期</label>
+              <div class="col-sm-5">
+                <p-calendar [(ngModel)]="start" placeholder="加工交期" [minDate]="mindate" >
+                </p-calendar>
+              </div>
+              <div class="col-sm-4">
+                <p-dropdown [options]="am_pms" [(ngModel)]="am_pm" [style]="{'width':'calc(100%)'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">盖章单位</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="companyIsWiskind" [(ngModel)]="tasklist['sellerid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">木托数量</label>
+              <div class="col-sm-9">
+                <input type="number" placeholder="请输入木托数量" class="form-control" [(ngModel)]="tasklist['mutuo']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">钢带数量</label>
+              <div class="col-sm-9">
+                <input type="number" placeholder="可不填" class="form-control" [(ngModel)]="tasklist['gangdai']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">修边</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" name="xiubin-radio" value="true" [(ngModel)]="tasklist['isxiubian']" />
+                  <span class="fa fa-circle"></span>是
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" name="xiubain-radio" value="false" [(ngModel)]="tasklist['isxiubian']" />
+                  <span class="fa fa-circle"></span>否
+                </label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">保留原标签</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" name="label-radio" value="true" [(ngModel)]="tasklist['isretain']" />
+                  <span class="fa fa-circle"></span>是
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" name="label-radio" value="false" [(ngModel)]="tasklist['isretain']" />
+                  <span class="fa fa-circle"></span>否
+                </label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12  col-md-6">
+              <label class="col-sm-3 control-label">打包带材料</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="types" [(ngModel)]="tasklist['cailiao']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div *ngIf="tasklist['cailiao'] === '2'" class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">其他打包带材料</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="tasklist['cailiaobeizhu']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="createTaskInOffline()" class="btn btn-primary btn-large">创建</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #releaseDialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideReleaseDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">释放货物</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">释放原因</label>
+              <div class="col-sm-9">
+                <input type="text" name="reason" placeholder="请输入释放原因" class="form-control" [(ngModel)]="reason" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="createRelease()" class="btn btn-primary btn-large">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

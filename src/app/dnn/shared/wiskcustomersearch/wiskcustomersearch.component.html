@@ -1,0 +1,1 @@
+<p-autoComplete [style]="{width:'100%'}" [(ngModel)]="customer" inputStyleClass="form-control" [suggestions]="results" [delay]="1000" [minLength]='1' (completeMethod)="search($event)" field="name" placeholder="输入公司名称" [disabled]="disabled"></p-autoComplete>

@@ -1,0 +1,103 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">净料价格核算</em>
+  <div class="pull-right">
+    <!-- <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">创建</button> -->
+  </div>
+</div>
+<div class="wis-panel wis-panel-default" *ngFor="let item of classifylist">
+  <div class="row">
+    <div class="col-xs-12 form-control-static">
+      <label style="margin-left:10px;">费用名称：</label>{{item.name}}
+        <a (click)="add(item)" *ngIf="item.name==='品名'" style="margin-left:10px;">增加</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 form-control-static" *ngIf="!item.list.length&&item.name!=='开平加工费'">
+        <label style="margin-left:10px;">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</label>{{item.value | number:"1.2-2"}}
+      </div>
+      <div class="col-xs-12 form-control-static" *ngIf="item.name==='开平加工费'">
+        <label style="margin-left:10px;">吨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</label>{{item.value}}
+        <a (click)="modify(item)" *ngIf="item.name==='开平加工费'" style="margin-left:10px;">修改吨数范围</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 form-control-static" *ngIf="!item.list.length">
+      <label style="margin-left:10px;">操&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作：</label>
+      <a (click)="modify(item)">修改</a>
+    </div>
+    <div class="row" *ngFor="let item1 of item.list">
+      <div class="col-md-4 col-xs-12 form-control-static">
+        <label style="margin-left:10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>{{item1.name}}
+      </div>
+      <div class="col-md-4 col-xs-12 form-control-static" *ngIf="item.name!=='品名'">
+        <label style="margin-left:10px;">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</label>{{item1.value}}
+      </div>
+      <div class="col-md-4 col-xs-12 form-control-static" *ngIf="item.name!=='品名'">
+        <!-- <label style="margin-left:10px;">操&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;做：</label> -->
+        <a (click)="modify(item1)">修改</a>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<div class="modal" bsModal #modifyModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改{{modifyHeadName}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">{{modifyHeadName}}</label>
+              <div class="col-sm-9">
+                <input type="number" name="minday" [(ngModel)]="classify['value']" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="mod()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" bsModal #addModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">增加品名</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gns" 
+                  [(ngModel)]="jingliaomodel['name']" placeholder="选择品名" [filter]="true"
+                  [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="addpinming()" class="btn btn-primary btn-large">添加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>

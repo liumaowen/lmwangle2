@@ -1,0 +1,58 @@
+<div class="wrapper">
+    <div class="block-center mt-xl wd-xl">
+        <!-- START panel-->
+        <div class="panel panel-dark panel-flat">
+            <div class="panel-heading text-center">
+                <a href="#">
+                    <img class="block-center img-rounded" src="assets/img/logo.png" alt="Image" />
+                </a>
+            </div>
+            <div class="panel-body" *ngIf="!isqrcode">
+                <p class="text-center pv">请输入手机号和验证码登录.</p>
+                <form [formGroup]="loginForm" class="form-validate mb-lg" role="form" name="loginForm" novalidate="" (submit)="login()">
+                    <div class="form-group has-feedback">
+                        <input id="exampleInputusername1" type="text" formControlName="phone" placeholder="手机号" autocomplete="off" [(ngModel)]="users['username']" required="" class="form-control" style="margin-right:100px;" />
+                        <span class="fa fa-user form-control-feedback text-muted"></span>
+                        <span *ngIf="loginForm.controls['phone'].hasError('required') && (loginForm.controls['phone'].dirty || loginForm.controls['phone'].touched)" class="text-danger">请填写手机号</span>
+                        <span *ngIf="loginForm.controls['phone'].hasError('phone') && (loginForm.controls['phone'].dirty || loginForm.controls['phone'].touched)" class="text-danger">手机号不存在请重试</span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <div class="row-flex">
+                            <div class="flex-weight" style="padding-right:5px; float:left;">
+                                <input id="exampleInputPassword1" type="password" formControlName="password" placeholder="验证码" autocomplete="off" [(ngModel)]="users['password']" required="" class="form-control" />
+                                <span class="fa fa-lock form-control-feedback text-muted" style="right:115px;"></span>
+                            </div>
+                            <a class="btn btn-primary center" (click)="!paraevent || yanzhengma()" [ngClass]="{'disabled-true':!paraevent}">
+                                {{paracont}}
+                            </a>
+                        </div>
+                        <span *ngIf="loginForm.controls['password'].hasError('required') && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" class="text-danger">请填写验证码</span>
+                    </div>
+                    <button class="btn btn-block btn-primary mt-lg" type="submit">登录</button>
+                </form>
+                <div *ngIf="authMsg" class="alert alert-danger text-center">{{authMsg}}</div>
+                <div style="text-align:center;"><a (click)="change()" >扫二维码登录</a></div>
+            </div>
+            <div class="panel-body" *ngIf="isqrcode" style="text-align:center;">
+                <div *ngIf="istimeout" ><img class="block-center img-rounded" style="height:250px;width:250px;" src="assets/img/outtime.png" alt="Image" /></div>
+                <div *ngIf="!istimeout">
+                    <qr-code [value]="qrcodemsg" [size]="250" [level]="'H'"></qr-code>
+                </div>
+                <p style="padding-top:25px;"><a style="padding-right:10px;" (click)="back()">使用验证码登录</a><a style="padding-left:10px;" (click)="refresh()">刷新</a></p>
+            </div>
+        </div>
+        <!-- END panel-->
+        
+        <div class="p-lg text-center">
+            <span>&copy;</span>
+            <span>{{ settings.app.year }}</span>
+            <span>-</span>
+            <span>{{ settings.app.name }}</span>
+            <br/>
+            <span>{{ settings.app.version }}</span>
+            <br/>
+            <span>{{ settings.app.description }}</span>
+            <br/>
+        </div>
+    </div>
+</div>

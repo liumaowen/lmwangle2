@@ -1,0 +1,371 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">返利明细表</em>
+  <div class="pull-right">
+    <button class="btn btn-info btn-bloc" type="button" (click)="openquery()">查询</button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="showcreate()">返利登记</button>
+    <!-- <button class="btn btn-info btn-bloc" type="button" (click)="submitshenhe()">提交审核</button> -->
+  </div>
+</div>
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+<!--新建返利对话框-->
+<div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closeq()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">返利登记</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <!--<form name="create" class="form-horizontal">-->
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">返利月份</label>
+              <div class="col-sm-9">
+                <wisk-yearmonthselect (select)="selectmonth($event)" [(month)]="month"></wisk-yearmonthselect>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">供应商</label>
+              <div class="col-sm-9">
+                <!--<wisk-customersearch [(customer)]="caigou['sellerid']" placeholder="请输入卖方单位"></wisk-customersearch>-->
+                <wisk-suppliersearch [(company)]="supplier"></wisk-suppliersearch>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">机构</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="orgtypes" [(ngModel)]="cgfanli['orgid']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <input (click)="showmdmgndialog(0)" [(ngModel)]="cgfanli['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">产地</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="chandioptions" [disabled]="!cgfanli['gn']" [(ngModel)]="cgfanli['chandi']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <!-- <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <p-dropdown name="gn" [options]="gns" (onChange)="selectedgn($event.value)" placeholder="选择品名"
+                  [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">产地</label>
+              <div class="col-sm-9">
+                <p-dropdown name="chandi" [(ngModel)]="cgfanli['chandiid']" [options]="chandis"
+                  (onChange)="selectedchandi($event.value)" placeholder="选择产地" [style]="{'width': '100%'}"
+                  [disabled]="!isChandi">
+                </p-dropdown>
+              </div>
+            </div> -->
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">补贴类型</label>
+              <div class="col-sm-9">
+                <input type="text" name="bttype" [(ngModel)]="cgfanli['bttype']" class="form-control">
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">享受补贴量</label>
+              <div class="col-sm-9">
+                <input type="text" name="weight" [(ngModel)]="cgfanli['weight']" class="form-control"
+                  (blur)="calcpjine()">
+              </div>
+            </div>
+
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">补贴单价</label>
+              <div class="col-sm-9">
+                <input type="text" name="price" [(ngModel)]="cgfanli['price']" class="form-control"
+                  (blur)="calcpjine()">
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">应补贴金额</label>
+              <div class="col-sm-9">
+                <input type="text" name="ybjine" [(ngModel)]="cgfanli['ybjine']" class="form-control">
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" name="beizhu" [(ngModel)]="cgfanli['beizhu']" class="form-control">
+              </div>
+            </div>
+            <!--</form>-->
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="create()" class="btn btn-primary btn-large">新建</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改补贴类型 -->
+<div class="modal" bsModal #bttypeModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="bttypeclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改补贴类型</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">补贴类型：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modify['bttype']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="submitmodify()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改享受补贴量 -->
+<div class="modal" bsModal #weightModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="weightclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改享受补贴量</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">享受补贴量：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modify['weight']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="submitmodify()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改补贴单价 -->
+<div class="modal" bsModal #priceModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="priceclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改补贴单价</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">补贴单价：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modify['price']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="submitmodify()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改已补贴金额 -->
+<div class="modal" bsModal #ybjineModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="ybjinelose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改{{jinemsg}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">{{jinemsg}}：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modify['jine']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="submitmodify()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改备注 -->
+<div class="modal" bsModal #beizhuModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="beizhulose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改备注</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">备注：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modify['beizhu']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="submitmodify()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--查询对话框-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">开始月份</label>
+              <div class="col-md-4 wiskind-calendar">
+                <wisk-yearmonthselect (select)="selectstartmonth($event)"></wisk-yearmonthselect>
+              </div>
+              <label class="col-md-2 control-label">结束月份</label>
+              <div class="col-md-4 wiskind-calendar">
+                <wisk-yearmonthselect (select)="selectendmonth($event)"></wisk-yearmonthselect>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <input (click)="showmdmgndialog(1)" [(ngModel)]="search['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">产地</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="chandioptions" [disabled]="!search['gn']" [(ngModel)]="search['chandi']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <!-- <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">产地</label>
+              <div class="col-md-10">
+                <ng-select [allowClear]="true" [items]="gangchangs" (selected)="selectegangchang($event)"
+                  placeholder="请选择产地">
+                </ng-select>
+              </div>
+            </div> -->
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" class="btn btn-primary btn-large" (click)="query()">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--选择月份对话框-->
+<div class="modal" bsModal #monthModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closemonth()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">选择审核月份</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">需审核月份</label>
+              <div class="col-sm-9">
+                <wisk-yearmonthselect (select)="selectshenhemonth($event)"></wisk-yearmonthselect>
+              </div>
+            </div>
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button" class="btn btn-primary btn-large" (click)="submit()">提交</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>

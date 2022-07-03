@@ -1,0 +1,55 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 报价管理
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">上传报价政策</button>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="singleData">
+  <table class="table table-striped" [mfData]="singleData" #mf="mfDataTable" [mfRowsOnPage]="1000">
+    <tbody>
+      <tr *ngFor="let item of mf.data">
+        <td class="row" style="width:100%;">
+          <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+            <label>名称:</label>
+            <a [routerLink]="['/baojia/baojiadet', item.id]">{{item.name}}</a>
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>品名:</label> {{item.gn}}
+          </div>
+          <div class=" col-lg-2 col-md-2 col-sm-6 form-control-static">
+            <label>启用:</label> {{item.isv | isTranslated}}
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>制单人:</label> {{item.realname}}
+          </div>
+          <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+            <label>日期:</label> {{item.cdate | date:'yyyy-MM-dd HH:mm:ss'}}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<toaster-container></toaster-container>
+
+<!-- 上传文件的弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+
+      <div class="form-inline">
+
+
+      </div>
+    </div>
+  </div>
+</div>

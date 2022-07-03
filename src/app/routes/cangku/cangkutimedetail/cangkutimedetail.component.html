@@ -1,0 +1,191 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 仓库发货时间段管理
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="openAddsDialog()">批量添加</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="openDelsDialog()">批量删除</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="getState()">查看状态</button>
+  </div>
+</div>
+
+<div class="well" [ngStyle]="{'height': (settings.bodyHeight - 222)+'px'}" style="margin-bottom: 0;">
+  <!-- <div ui-calendar="calendarOptions" ng-model="eventSources" style="min-width: 620px;"></div> -->
+  <div #fullcalendar class="calendar" style="min-width: 620px;"></div>
+</div>
+
+
+<toaster-container></toaster-container>
+
+
+<!--批量添加-->
+<div class="modal" bsModal #classifyModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hideclassifyModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">批量添加</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-1 control-label">日期</label>
+              <div class="col-sm-5 has-feedback">
+                <p-calendar [(ngModel)]="addsstart" placeholder="开始日期" [minDate]="endmax" [maxDate]="addsend"></p-calendar>
+              </div>
+              <label class="col-sm-1 control-label special-label">至</label>
+              <div class="col-sm-5 has-feedback">
+                <p-calendar [(ngModel)]="addsend" placeholder="结束日期" [minDate]="addsstart || endmax"></p-calendar>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-1 control-label">时间</label>
+              <div class="col-sm-5">
+                <div class="row">
+                  <div class="col-md-6 has-feedback">
+                    <input type="number" [min]="0" [max]="23" placeholder="开始时" class="form-control" [(ngModel)]="model['sh']">
+                    <span class="fa form-control-feedback text-muted">时</span>
+                  </div>
+
+                  <div class="col-md-6 has-feedback">
+                    <input type="number" [min]="0" [max]="59" placeholder="开始分" class="form-control" [(ngModel)]="model['sm']">
+                    <span class="fa form-control-feedback text-muted">分</span>
+                  </div>
+                </div>
+              </div>
+              <label class="col-sm-1 control-label special-label">至</label>
+              <div class="col-sm-5 has-feedback">
+                <div class="row">
+                  <div class="col-md-6 has-feedback">
+                    <input type="number" [min]="0" [max]="23" placeholder="结束时" class="form-control" [(ngModel)]="model['eh']">
+                    <span class="fa form-control-feedback text-muted">时</span>
+                  </div>
+
+                  <div class="col-md-6 has-feedback">
+                    <input type="number" [min]="0" [max]="59" placeholder="结束分" class="form-control" [(ngModel)]="model['em']">
+                    <span class="fa form-control-feedback text-muted">分</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-1 control-label">高级</label>
+              <div class="col-sm-8">
+                <div class="checkbox c-checkbox">
+                  <label>
+                    <input type="checkbox" [(ngModel)]="model['weekend']">
+                    <span class="fa fa-check"></span> 不排除周末</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-inline text-center">
+              <button type="button" (click)="adds()" class="btn btn-primary btn-large">确定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- 批量删除 -->
+
+<div class="modal" bsModal #deleteModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hidedeleteModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">批量删除</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-1 control-label">日期</label>
+              <div class="col-sm-5 has-feedback">
+                <p-calendar [(ngModel)]="addsstart" placeholder="开始日期" [maxDate]="addsend"></p-calendar>
+              </div>
+              <label class="col-sm-1 control-label special-label">至</label>
+              <div class="col-sm-5 has-feedback">
+                <p-calendar [(ngModel)]="addsend" placeholder="结束日期" [minDate]="addsstart"></p-calendar>
+              </div>
+            </div>
+
+            <div class="form-inline text-center">
+              <button type="button" (click)="dels()" class="btn btn-primary btn-large">确定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 添加 -->
+
+<div class="modal" bsModal #addModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hideaddModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-1 control-label">时间</label>
+              <div class="col-sm-5">
+                <div class="row">
+                  <div class="col-md-6 has-feedback">
+                    <input type="number" [min]="0" [max]="23" placeholder="开始时" class="form-control" [(ngModel)]="model['sh']">
+                    <span class="fa form-control-feedback text-muted">时</span>
+                  </div>
+
+                  <div class="col-md-6 has-feedback">
+                    <input type="number" [min]="0" [max]="59" placeholder="开始分" class="form-control" [(ngModel)]="model['sm']">
+                    <span class="fa form-control-feedback text-muted">分</span>
+                  </div>
+                </div>
+              </div>
+              <label class="col-sm-1 control-label special-label">至</label>
+              <div class="col-sm-5 has-feedback">
+                <div class="row">
+                  <div class="col-md-6 has-feedback">
+                    <input type="number" [min]="0" [max]="23" placeholder="结束时" class="form-control" [(ngModel)]="model['eh']">
+                    <span class="fa form-control-feedback text-muted">时</span>
+                  </div>
+
+                  <div class="col-md-6 has-feedback">
+                    <input type="number" [min]="0" [max]="59" placeholder="结束分" class="form-control" [(ngModel)]="model['em']">
+                    <span class="fa form-control-feedback text-muted">分</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-inline text-center">
+              <button type="button" (click)="add()" class="btn btn-primary btn-large">确定</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

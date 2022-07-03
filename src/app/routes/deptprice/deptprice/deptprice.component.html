@@ -1,0 +1,76 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 机构调价时序表
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="showclassicModal()">查询</button>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="tableData">
+  <table class="table table-striped" [mfData]="tableData" #mf="mfDataTable" [mfRowsOnPage]="10">
+    <tbody>
+      <tr *ngFor="let item of mf.data">
+        <td class="row" style="width:100%;">
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>编号:</label>
+            <a [routerLink]="['/deptpricedet', item.id]">{{item.billno}}{{item.id}}</a>
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>机构:</label> {{item.cuser.org.name}}
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>创建日期:</label> {{item['cdate'] | date:'yyyy-MM-dd'}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>创建人:</label>{{item.cuser.realname}}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>search['pagesize']">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="7" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+            nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+          <!-- <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator> -->
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<!--  查询采购补差的弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">编号</label>
+              <div class="col-sm-9">
+                <input type="text" name="addr" [(ngModel)]="search['billno']" placeholder="请输入单据编号" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<toaster-container></toaster-container>

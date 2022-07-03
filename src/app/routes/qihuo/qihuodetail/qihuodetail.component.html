@@ -1,0 +1,2330 @@
+<div class="button-toolbar clearfix mb">
+  <div class="btn-group">
+    <h4>
+      <em class="fa fa-book"></em>{{ordertitle}}</h4>
+  </div>
+  <div class="pull-right ml-lg wide-show" *ngIf="qihuomodel['status']!==7">
+    <button *ngIf="qihuoflag['issubmit'] && (qihuomodel['ordertype'] == 0 || qihuomodel['ordertype'] == 1)" type="button" (click)="qualitShow()" class="btn btn-info btn-sm margin-top-bottom-25">质量异议</button>
+    <button type="button" (click)="caigoudan()" *ngIf="(qihuomodel['qihuostatus']===4 || qihuomodel['qihuostatus']===5|| qihuomodel['qihuostatus']===6||
+        qihuomodel['qihuostatus']===7|| qihuomodel['qihuostatus']===8)&& neiwuwaiwu " class="btn btn-info btn-sm margin-top-bottom-25">生成采购单</button>
+    <button *ngIf="qihuomodel['ordertype']===9 && !qihuomodel['vuserid']" type="button" (click)="showtiaohuobid()" class="btn btn-info btn-sm margin-top-bottom-25">引入调货竞价</button>
+    <!-- <button *ngIf="qihuoflag['isrecall']" type="button" (click)="oneRecall()" class="btn btn-info btn-sm margin-top-bottom-25" style="background-color:red;border-color:red;color:#ffffff;">一键撤回</button> -->
+    <button *ngIf="qihuoflag['isrecall'] || qihuoflag['isorderchange']" type="button" (click)="orderchange()" class="btn btn-info btn-sm margin-top-bottom-25" style="background-color:red;border-color:red;color:#ffffff;">{{qihuoflag['qihuochangestatus'] === 0?'合同变更':'变更提交'}}</button>
+    <button type="button" (click)="getZhibaoUrl()" class="btn btn-info btn-sm margin-top-bottom-25">查看质保书</button>
+    <button type="button" (click)="showProduceWuliu()" *ngIf="qihuomodel['type'] === 1 && qihuomodel['ordertype'] === 14 && qihuomodel['isv']"
+      class="btn btn-info btn-sm margin-top-bottom-25" >成品竞价</button>
+    <button type="button" (click)="shownoticewuliuyuan()" *ngIf="qihuomodel['type'] === 1 && qihuomodel['ordertype'] !== 14 && qihuomodel['qihuostatus'] !== 8" class="btn btn-info btn-sm margin-top-bottom-25">通知物流专员</button>
+    <button type="button" (click)="getContactProject()" class="btn btn-info btn-sm margin-top-bottom-25">关联项目
+    </button>
+    <span *NgOpera="644">
+      <button *ngIf="!qihuomodel['noticecaigou'] && !isSaleman" type="button" (click)="adddingjindialog()"
+        class="btn btn-info btn-sm margin-top-bottom-25">添加定金
+      </button>
+      <button type="button" (click)="addallocationdialog()" class="btn btn-info btn-sm margin-top-bottom-25">配款
+      </button>
+      <button *ngIf="!isSaleman" type="button" (click)="shifangallocationdialog()" class="btn btn-info btn-sm margin-top-bottom-25">释放配款
+      </button>
+      <button 
+        *ngIf="(tihuoid || qihuomodel['qihuostatus']===1 || qihuoflag['qihuochangestatus'] === 1) && !isSaleman" 
+        type="button" 
+        (click)="shifangdingjindialog()"
+        class="btn btn-info btn-sm margin-top-bottom-25">
+      释放定金
+      </button>
+    </span>
+    <!-- <button type="button" *ngIf="!hesuanDate" (click)="hesuandingjin()"
+        class="btn btn-info btn-sm margin-top-bottom-25">定金核算
+      </button> -->
+
+    <button type="button" (click)="contractUploader()" class="btn btn-info btn-sm margin-top-bottom-25">非标准合同上传
+    </button>
+    <button type="button" (click)="lookContract()" class="btn btn-info btn-sm margin-top-bottom-25">查看合同
+    </button>
+    <button *ngIf="!qihuomodel['noticecaigou'] && qihuomodel['qihuostatus'] !== 8" type="button" (click)="showzuofei()"
+      class="btn btn-info btn-sm margin-top-bottom-25">订单作废
+    </button>
+    <button ype="button" (click)="openmodifymain()"
+      class="btn btn-info btn-sm margin-top-bottom-25" *ngIf="!qihuomodel['vuserid'] || qihuoflag['qihuochangestatus'] === 1">修改订单
+    </button>
+    <button *ngIf="qihuoflag['detail']" type="button" (click)="addmdmgoodscode()"
+      class="btn btn-info btn-sm margin-top-bottom-25">添加明细
+    </button>
+    <!-- <button *ngIf="qihuoflag['detail']" type="button" (click)="addmdmgoodscode()"
+      class="btn btn-info btn-sm margin-top-bottom-25">添加MDM明细
+    </button> -->
+    <!-- <button *ngIf="qihuoflag['fp']" type="button" (click)="addproductdialog()" class="btn btn-info btn-sm margin-top-bottom-25">添加成品
+    </button> -->
+    <button *ngIf="qihuoflag['issubmit']" type="button" (click)="submitvuserdialog()"
+      class="btn btn-info btn-sm margin-top-bottom-25">提交审核
+    </button>
+    <!-- <button *ngIf="qihuoflag['isv']" type="button" (click)="verifyqihuo()" class="btn btn-info btn-sm margin-top-bottom-25">审核
+    </button> -->
+    <button *ngIf="qihuoflag['fisv'] && qihuomodel['qihuostatus'] !== 8" type="button" (click)="removeverify()"
+      class="btn btn-info btn-sm margin-top-bottom-25">撤销审核
+    </button>
+    <div *ngIf="isshownoticecaigou" style="display: inline-block">
+      <span *NgOpera="547">
+        <button *ngIf="!qihuoflag['noticecaigou'] && qihuomodel['qihuostatus'] !== 8" type="button" (click)="noticecaigou()"
+          class="btn btn-info btn-sm margin-top-bottom-25">通知采购
+        </button>
+        <button *ngIf="qihuoflag['noticecaigou'] && qihuomodel['qihuostatus'] !== 8" type="button" (click)="cancelnoticecaigou()"
+          class="btn btn-info btn-sm margin-top-bottom-25">取消通知采购
+        </button>
+      </span>
+    </div>
+    <div *ngIf="!isshownoticecaigou" style="display: inline-block">
+      <!-- <span *NgOpera="547"> -->
+      <button type="button" (click)="noticerukuapply()" *ngIf="!qihuoflag['isnoticerukuapply']"
+        class="btn btn-info btn-sm margin-top-bottom-25">入库申请
+      </button>
+      <!-- </span> -->
+    </div>
+    <button type="button" (click)="makepdf()" class="btn btn-info btn-sm margin-top-bottom-25">生成PDF
+    </button>
+    <button type="button" (click)="print()" class="btn btn-info btn-sm margin-top-bottom-25">打印预览
+    </button>
+    <button *ngIf="qihuoflag['isfinish'] && qihuomodel['qihuostatus'] !== 8" type="button" (click)="finishqihuo(qihuomodel['id'])"
+      class="btn btn-info btn-sm margin-top-bottom-25">完成订单
+    </button>
+  </div>
+  <div class="pull-right narrow-show" *ngIf="qihuomodel['status']!==7">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem" *ngIf="qihuomodel['ordertype']===9">
+          <a class="dropdown-item" (click)="showtiaohuobid()">引入调货竞价</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="qihuomodel['ordertype']===9"></li>
+        <!-- <li role="menuitem" *ngIf="qihuoflag['isrecall']">
+          <a class="dropdown-item" (click)="oneRecall()" style="color:red;">一键撤回</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="qihuoflag['isrecall']"></li> -->
+        <li role="menuitem" *ngIf="qihuoflag['isrecall'] || qihuoflag['isorderchange']">
+          <a class="dropdown-item" (click)="orderchange()" style="color:red;">{{qihuoflag['qihuochangestatus'] === 0?'合同变更':'变更提交'}}</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="qihuoflag['isrecall'] || qihuoflag['isorderchange']"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="getZhibaoUrl()">查看质保书</a>
+        </li>
+        <li class="divider dropdown-divider" ></li>
+        <li role="menuitem" *ngIf="qihuomodel['type'] === 1 && qihuomodel['ordertype'] === 14 && qihuomodel['isv']">
+          <a class="dropdown-item" (click)="showProduceWuliu()">成品竞价</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="qihuomodel['type'] === 1 && qihuomodel['ordertype'] === 14 && qihuomodel['isv']"></li>
+        <li role="menuitem" *ngIf="qihuomodel['type'] === 1 && qihuomodel['ordertype'] !== 14 && qihuomodel['qihuostatus'] !== 8">
+          <a class="dropdown-item" (click)="shownoticewuliuyuan()">通知物流专员</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="qihuomodel['type'] === 1 && qihuomodel['ordertype'] !== 14 && qihuomodel['qihuostatus'] !== 8"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="getContactProject()">关联项目</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <ul *NgOpera="644" style="list-style: none;padding-left: 0;">
+          <li role="menuitem" *ngIf="!qihuomodel['noticecaigou'] && !isSaleman">
+            <a class="dropdown-item" (click)="adddingjindialog()" class="ul_li">添加定金</a>
+          </li>
+          <li class="divider dropdown-divider" *ngIf="!qihuomodel['noticecaigou'] && !isSaleman"></li>
+          <li role="menuitem">
+            <a class="dropdown-item" (click)="addallocationdialog()" class="ul_li">配款</a>
+          </li>
+          <li class="divider dropdown-divider"></li>
+          <li role="menuitem" *ngIf="!isSaleman">
+            <a class="dropdown-item" (click)="shifangallocationdialog()" class="ul_li">释放配款</a>
+          </li>
+          <li class="divider dropdown-divider" *ngIf="!isSaleman"></li>
+          <li role="menuitem" *ngIf="(tihuoid || qihuomodel['qihuostatus']===1 || qihuoflag['qihuochangestatus'] === 1)&& !isSaleman">
+            <a class="dropdown-item" (click)="shifangallocationdialog()" class="ul_li">释放定金</a>
+          </li>
+          <li class="divider dropdown-divider" *ngIf="(tihuoid || qihuomodel['qihuostatus']===1 || qihuoflag['qihuochangestatus'] === 1) && !isSaleman"></li>
+        </ul>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="contractUploader()">非标准合同上传</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="lookContract()">查看合同</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem" *ngIf="!qihuomodel['noticecaigou'] && qihuomodel['qihuostatus'] !== 8">
+          <a class="dropdown-item" (click)="showzuofei()">订单作废</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="!qihuomodel['noticecaigou'] && qihuomodel['qihuostatus'] !== 8"></li>
+        <li role="menuitem" *ngIf="!qihuomodel['vuserid'] || qihuoflag['qihuochangestatus'] === 1">
+          <a class="dropdown-item" (click)="openmodifymain()">修改订单</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="!qihuomodel['vuserid'] || qihuoflag['qihuochangestatus'] === 1"></li>
+        <li role="menuitem" *ngIf="qihuoflag['detail']">
+          <a class="dropdown-item" (click)="addmdmgoodscode()">添加明细</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="qihuoflag['detail']"></li>
+        <li role="menuitem" *ngIf="qihuoflag['issubmit']">
+          <a class="dropdown-item" (click)="submitvuserdialog()">提交审核</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="qihuoflag['issubmit']"></li>
+        <li role="menuitem" *ngIf="qihuoflag['fisv'] && qihuomodel['qihuostatus'] !== 8">
+          <a class="dropdown-item" (click)="removeverify()">撤销审核</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="qihuoflag['fisv'] && qihuomodel['qihuostatus'] !== 8"></li>
+        <div *ngIf="isshownoticecaigou">
+          <ul *NgOpera="547" style="list-style: none;padding-left: 0;">
+            <li role="menuitem" *ngIf="!qihuoflag['noticecaigou'] && qihuomodel['qihuostatus'] !== 8">
+              <a class="dropdown-item" (click)="noticecaigou()" class="ul_li">通知采购</a>
+            </li>
+            <li class="divider dropdown-divider" *ngIf="!qihuoflag['noticecaigou'] && qihuomodel['qihuostatus'] !== 8"></li>
+            <li role="menuitem" *ngIf="qihuoflag['noticecaigou'] && qihuomodel['qihuostatus'] !== 8">
+              <a class="dropdown-item" (click)="cancelnoticecaigou()" class="ul_li">取消通知采购</a>
+            </li>
+            <li class="divider dropdown-divider" *ngIf="qihuoflag['noticecaigou'] && qihuomodel['qihuostatus'] !== 8"></li>
+          </ul>
+        </div>
+        <ul *ngIf="!isshownoticecaigou" style="list-style: none;padding-left: 0;">
+          <li role="menuitem" *ngIf="!qihuoflag['isnoticerukuapply']">
+            <a class="dropdown-item" (click)="noticerukuapply()" class="ul_li">入库申请</a>
+          </li>
+          <li class="divider dropdown-divider" *ngIf="!qihuoflag['isnoticerukuapply']"></li>
+        </ul>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="makepdf()">生成PDF</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="print()">打印预览</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem" *ngIf="qihuoflag['isfinish'] && qihuomodel['qihuostatus'] !== 8">
+          <a class="dropdown-item" (click)="finishqihuo(qihuomodel['id'])">完成订单</a>
+        </li>
+        <li class="divider dropdown-divider" *ngIf="qihuoflag['isfinish'] && qihuomodel['qihuostatus'] !== 8"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <!-- <legend></legend>   -->
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">买方公司:</div>
+        <div class="col-md-8 col-xs-6 form-control-static" style="white-space: normal;">
+          {{qihuomodel['buyer']['name']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">卖方公司:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['seller']['name']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">所属机构:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['org']['name']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">支付方式:</div>
+        <div class="col-md-8 col-xs-6 form-control-static" style="color:red;font-weight: 800;">
+          {{qihuomodel['paytype'] | orderpaytype}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">约定定金:</div>
+        <div class="col-md-8 col-xs-6">
+          <!-- {{qihuomodel['dingjin']}} -->
+          <input [disabled]="qihuoflag['isdingjinedit']" type="number" placeholder="请输入约定定金"
+            [(ngModel)]="qihuomodel['dingjin']" class="form-control" (blur)="calcyufurate()" />
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">约定比率:</div>
+        <div class="col-md-8 col-xs-6">
+          <input class="form-control" style="display: inline-block;" maxlength="8" name="amount" type="text"
+            [disabled]="qihuoflag['isdingjinedit']" [(ngModel)]="oldyufurate" placeholder="请输入约定比率"
+            (blur)="calcdingjin()" />
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">实付初始定金:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['orderdingjin'] | number:"1.2-2"}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">实付比率:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['shifurate']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">订单编号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['billno']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">订单金额:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['tjine'] | number:"1.2-2"}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">现有定金:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['shifudingjin'] | number:"1.2-2"}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">实付配款:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['allocation'] | number:"1.2-2"}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">订单类型:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['ordertype'] | ordertype}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">订单状态:</div>
+        <div *ngIf="qihuomodel['status']!==7" class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['qihuostatus'] | qihuostatus}}</div>
+        <div *ngIf="qihuomodel['status']===7" class="col-md-8 col-xs-6 form-control-static">
+          已作废</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['cuser']['realname']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['cdate']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['vuser']['realname']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['vdate']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">交货公差:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['jiaohuogongcha']}}
+          <!-- <input [disabled]="qihuoflag['isdingjinedit']" type="text" (blur)='modify()' placeholder="请输入交货公差" [(ngModel)]="qihuomodel['jiaohuogongcha']" class="form-control" /> -->
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">外部交货期限:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['jiaohuoqixian']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">交货地点:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['jiaohuoaddr']}}
+          <!-- <input [disabled]="qihuoflag['isdingjinedit']" type="text" (blur)='modify()' placeholder="请输入交货地点" [(ngModel)]="qihuomodel['jiaohuoaddr']" class="form-control" /> -->
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">总重量:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{qihuomodel['tweight']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">规格性质:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['guigetype']|guigetype}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">客户性质:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['kehutype']|kehutype}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">运输类型:</div>
+        <div class="col-md-8 col-xs-6 form-control-static" *ngIf="qihuomodel['qihuostatus'] !== 8">{{qihuomodel['type'] | transtype}}</div>
+        <div class="col-md-8 col-xs-6 form-control-static" *ngIf="qihuomodel['qihuostatus'] === 8">{{qihuomodel['typename']}}</div>
+      </div>
+    </div>    
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">收货地址:</div>
+        <div class="col-md-8 col-xs-6 form-control-static" style="white-space: normal;">{{songaddress}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-7 form-control-static"></div>
+        <div class="col-md-8 col-xs-5 ">
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-7 form-control-static">资金占用月利率:</div>
+        <div class="col-md-8 col-xs-5 ">
+          <p-dropdown [options]="zijinmonthrates" (onChange)="modify(qihuomodel)"
+            [(ngModel)]="qihuomodel['zijimonthrate']" placeholder="选择利率" [filter]="true" [style]="{'width': '100%'}" [disabled]="qihuoflag['isdingjinedit']">
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">欠款周期:</div>
+        <div class="col-md-8 col-xs-6 form-control-static" style="color:red;font-weight: 800;">
+          {{qihuomodel['witharrears']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">项目名称:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['projectname']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">所属行业:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qihuomodel['categoryname']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-4 control-label form-control-static">仓储费标准:</div>
+        <div class="col-md-5 col-xs-5 ">
+          <p-dropdown [options]="storagefees" (onChange)="modify(qihuomodel)" [(ngModel)]="qihuomodel['storagefee']"
+            placeholder="选择仓储费" [filter]="true" [style]="{'width': '100%'}" [disabled]="qihuoflag['isdingjinedit']">
+          </p-dropdown>
+        </div>
+        <div class="col-md-3 col-xs-3" style="padding:0px;">元/天/吨</div>
+      </div>
+    </div>
+    <div class="row fieldsetdnn">
+      <div class="col-lg-4 col-md-4">
+        <div class="row">
+          <div class="col-lg-2 col-md-3 col-xs-6 control-label form-control-static">销售备注:</div>
+          <div class="col-lg-10 col-md-9 col-xs-6 form-control-static" style="padding-top:0;padding-bottom:0;">
+            <input type="text" placeholder="请输入备注" [(ngModel)]="qihuomodel['beizhu']" (blur)="modify(qihuomodel)"
+              class="form-control" [disabled]="qihuoflag['isdingjinedit']" />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4">
+        <div class="row">
+          <div class="col-lg-2 col-md-3 col-xs-6 control-label form-control-static">款项要求:</div>
+          <div class="col-lg-10 col-md-9 col-xs-6 form-control-static" style="padding-top:0;padding-bottom:0;">
+            <input type="text" placeholder="请输入款项要求" [(ngModel)]="qihuomodel['fund']" (blur)="modify(qihuomodel)"
+              class="form-control" [disabled]="qihuoflag['isdingjinedit']" />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-xs-6 control-label form-control-static">通知提货后提货天数:</div>
+          <div class="col-lg-6 col-md-6 col-xs-6 form-control-static" style="padding-top:0;padding-bottom:0;">
+            <input type="text" placeholder="请输入1~15内的数字" [(ngModel)]="qihuomodel['noticetihuoday']"
+              (blur)="modify(qihuomodel)" class="form-control" [disabled]="qihuoflag['isdingjinedit']"  />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row fieldsetdnn">
+      <div *ngIf = "qihuomodel['ordertype'] == 0 || qihuomodel['ordertype'] == 1" class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 control-label form-control-static">是否处理质量异议:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+            {{qihuomodel['ischuliquality']?'是':'否'}}
+          </div>
+        </div>
+      </div>
+      <div *ngIf = "qihuomodel['ischuliquality']" class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议单号:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+            {{qihuomodel['zhiliangyiyibillno']}}
+          </div>
+        </div>
+      </div>
+      <div *ngIf = "qihuomodel['ischuliquality']" class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 control-label form-control-static">资源赔付说明:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+            {{qihuomodel['rsbeizhu']}}
+          </div>
+        </div>
+      </div>
+      <div *ngIf = "qihuomodel['ischuliquality']" class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 control-label form-control-static">资源赔付金额:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+            {{qihuomodel['rsjine']}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row fieldsetdnn">
+      <div *ngIf = "qihuomodel['ischuliquality']" class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 control-label form-control-static">销售赔付说明:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+            {{qihuomodel['salebeizhu']}}
+          </div>
+        </div>
+      </div>
+      <div *ngIf = "qihuomodel['ischuliquality']" class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 control-label form-control-static">销售赔付金额:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+            {{qihuomodel['salejine']}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row fieldsetdnn">
+      <div class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 form-control-static">在途预售：</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+            {{qihuomodel['yzaitu'] ? '是' : '否'}}
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="viewpanel">
+      <p-tabView [style]="{'padding-top': '3px'}" [activeIndex]="tabviewindex" (onChange)="handleChange($event)">
+        <p-tabPanel header="{{qihuodetname}}"
+          [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+          <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 556)+'px'}" #agGrid
+            style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+            [gridOptions]="gridOptions">
+          </ag-grid-angular>
+        </p-tabPanel>
+        <p-tabPanel *ngIf="qihuoflag['fp']" header="成品销售明细"
+          [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+          <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 556)+'px'}" #agGridq
+            style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+            [gridOptions]="pgridOptions">
+          </ag-grid-angular>
+        </p-tabPanel>
+        <p-tabPanel header="已入库基料"
+          [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+          <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 556)+'px'}" #agGridq
+            style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+            [gridOptions]="bmgridOptions">
+          </ag-grid-angular>
+        </p-tabPanel>
+        <p-tabPanel header="{{orderdetname}}"
+          [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+          <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 556)+'px'}" #agGridq
+            style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+            [gridOptions]="ordergridOptions">
+          </ag-grid-angular>
+        </p-tabPanel>
+        <p-tabPanel header="定金明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+          <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 556)+'px'}" #agGrid
+            style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+            [gridOptions]="dingjingridOptions">
+          </ag-grid-angular>
+        </p-tabPanel>
+        <p-tabPanel header="配款明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+          <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 556)+'px'}" #agGrid
+            style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+            [gridOptions]="allocationgridOptions">
+          </ag-grid-angular>
+        </p-tabPanel>
+        <p-tabPanel header="物流竞价明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+          <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 556)+'px'}" #agGrid
+            style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+            [gridOptions]="wuliuOffergridOptions">
+          </ag-grid-angular>
+        </p-tabPanel>
+        <p-tabPanel header="期货变更记录" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+          <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 556)+'px'}" #agGrid
+            style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+            [gridOptions]="qihuochangegridOptions">
+          </ag-grid-angular>
+        </p-tabPanel>
+
+      </p-tabView>
+    </div>
+  </div>
+  <toaster-container></toaster-container>
+
+  <!--添加期货明细对话框-->
+  <div class="modal" bsModal #createqihuodialog="bs-modal" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="qihuodialogcoles()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">添加明细</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div *ngIf="one">
+                <div class="form-group mb fieldsetdnn row row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">品名：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="gns" (onChange)="selectedgn($event.value)"
+                      [(ngModel)]="qihuodetmodel['gnid']" placeholder="选择品名" [filter]="true"
+                      [style]="{'width': '100%'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">产地：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="chandis" (onChange)="selectedchandi($event.value)" placeholder="选择产地"
+                      [(ngModel)]="qihuodetmodel['chandiid']" [filter]="true" [style]="{'width': '100%'}"
+                      [disabled]="!isChandi">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div *ngIf="showGuige">
+                  <div class="form-group mb fieldsetdnn row col-md-6" *ngFor="let item of attrs">
+                    <label class="col-sm-3 control-label">
+                      <span style="float: right;">{{item.label}}：</span>
+                    </label>
+                    <div class="col-sm-9">
+                      <p-dropdown [options]="item.options" placeholder='请选择{{item.label}}'
+                        (onChange)="selectedguige($event,item.name)" [filter]="true" [style]="{'width': '100%'}">
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="two">
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">厚度公差：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <!-- <input [(ngModel)]="qihuodetmodel['houdugongcha']" #houdugongcha class="form-control" placeholder="请输入厚度公差" required> -->
+                    <p-dropdown [options]="houdugongchas" placeholder='请选择厚度公差'
+                      [(ngModel)]="qihuodetmodel['houdugongcha']" [filter]="true" [style]="{'width': '100%'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div *ngIf="isqihuo" class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">考核价：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input [(ngModel)]="qihuodetmodel['neibujiesuanprice']" class="form-control" placeholder="请输入内部结算价"
+                      disabled required>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">宽度公差：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <!-- <input [(ngModel)]="qihuodetmodel['widthgongcha']" class="form-control" placeholder="请输入宽度公差" required> -->
+                    <p-dropdown [options]="widthgongchas" placeholder='请选择宽度公差'
+                      [(ngModel)]="qihuodetmodel['widthgongcha']" [filter]="true" [style]="{'width': '100%'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">销售价格：</span>
+                  </label>
+                  <div class="col-sm-6">
+                    <input [(ngModel)]="qihuodetmodel['saleprice']" class="form-control" placeholder="请输入销售价格" disabled
+                      required>
+                  </div>
+                  <div class="col-sm-3">
+                    <button type="button" (click)="feeadddialogshow()" class="btn btn-info btn-large">添加</button>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">订货量：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input [(ngModel)]="qihuodetmodel['dinghuoliang']" class="form-control" placeholder="请输入订货量"
+                      required>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">单卷重：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <!-- <input [(ngModel)]="qihuodetmodel['oneweight']" class="form-control" placeholder="请输入单卷重量" required> -->
+                    <p-dropdown [options]="oneweights" [(ngModel)]="qihuodetmodel['oneweight']" placeholder='请选择单卷重'
+                      [filter]="true" [style]="{'width': '100%','height': '35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">数量公差：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input [(ngModel)]="qihuodetmodel['weightgongcha']" class="form-control" placeholder="请输入数量公差"
+                      required>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">交货地点：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="jiaohuoaddrs" placeholder='交货地点' [(ngModel)]="qihuodetmodel['jiaohuoaddr']"
+                      [filter]="true" [style]="{'width': '100%','height': '35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">交货日期：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-calendar [(ngModel)]="qihuodetmodel['jiaohuodate']" placeholder="交货时间">
+                    </p-calendar>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">用途：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <!-- <input [(ngModel)]="qihuodetmodel['yongtu']" class="form-control" placeholder="请输入用途" required> -->
+                    <p-dropdown [options]="yongtus" placeholder='请选择用途' [(ngModel)]="qihuodetmodel['yongtu']"
+                      [filter]="true" [style]="{'width': '100%','height': '35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">下单备注：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input [(ngModel)]="qihuodetmodel['beizhu']" class="form-control" placeholder="请输入备注" required>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">销售价格是否低于指导价：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="zhidaoprices" [(ngModel)]="qihuodetmodel['zhidaojiagedesc']"
+                      [style]="{'width':'100%'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">是否急单：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="isurgent" [(ngModel)]="qihuodetmodel['isurgent']" [style]="{'width':'100%'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div *ngIf="qihuomodel['ordertype']===11||qihuomodel['ordertype']===12"
+                  class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">货物类型</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="materialtypes" [(ngModel)]="qihuodetmodel['materialtype']"
+                      [style]="{'width':'100%'}" (onChange)="selectedtype($event.value)">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div *ngIf="islindiao" class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">所在仓库：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="cangkus" [(ngModel)]="qihuodetmodel['cangkuid']" placeholder="选择仓库"
+                      [style]="{'width': '100%','height': '35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div *ngIf="qihuomodel['isweishi']">
+                  <div class="form-group mb fieldsetdnn row col-md-6">
+                    <label class="col-sm-3 control-label">
+                      <span style="float: right;">新单位：</span>
+                    </label>
+                    <div class="col-sm-9">
+                      <p-dropdown [options]="units" placeholder="选择新单位" [(ngModel)]="qihuodetmodel['unitname']" [style]="{'width':'100%'}">
+                      </p-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group mb fieldsetdnn row col-md-6" >
+                    <label class="col-sm-3 control-label">
+                      <span style="float: right;">新单位数量：</span>
+                    </label>
+                    <div class="col-sm-9">
+                      <input type="number" [(ngModel)]="qihuodetmodel['unitweight']" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group mb fieldsetdnn row col-md-6" >
+                    <label class="col-sm-3 control-label">
+                      <span style="float: right;">新单位单价：</span>
+                    </label>
+                    <div class="col-sm-9">
+                      <input type="number" [(ngModel)]="qihuodetmodel['unitprice']" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                
+                <div *ngIf="isShowInterestfree">
+                  <div class="form-group mb fieldsetdnn row col-md-6">
+                    <label class="col-sm-3 control-label"><span style="float: right;">是否免息：</span></label>
+                    <div class="col-sm-9">
+                      <label class="radio-inline c-radio">
+                        <input type="radio" [value]="true" name="interestfree1"
+                          [(ngModel)]="qihuodetmodel['isinterestfree']" />
+                        <span class="fa fa-circle"></span>是
+                      </label>
+                      <label class="radio-inline c-radio">
+                        <input type="radio" [value]="false" name="interestfree1"
+                          [(ngModel)]="qihuodetmodel['isinterestfree']" />
+                        <span class="fa fa-circle"></span>否
+                      </label>
+                      <label class="radio-inline" [tooltip]="'部门负责人-中心负责人-总经理-财务经理'">
+                        <a style="font-size:12px;">免息审批流程&nbsp;<em class="fa fa-question"></em></a>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-group mb fieldsetdnn row col-md-6" *ngIf="qihuodetmodel['isinterestfree']">
+                    <label class="col-sm-3 control-label">
+                      <span style="float: right;">免息天数（包含公司免息时间15天）：</span>
+                    </label>
+                    <div class="col-sm-9">
+                      <input type="number" [(ngModel)]="qihuodetmodel['interestfreedays']" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group mb fieldsetdnn row col-md-6" *ngIf="qihuodetmodel['isinterestfree']">
+                    <label class="col-sm-3 control-label">
+                      <span style="float: right;">免息原因：</span>
+                    </label>
+                    <div class="col-sm-9">
+                      <input [(ngModel)]="qihuodetmodel['interestfreereason']" class="form-control" />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div *ngIf="iscountshow" class="form-group mb fieldsetdnn row col-md-6"
+                style="padding-right:0px;padding-left:15px;">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">长度：</span>
+                </label>
+                <div class="col-sm-7">
+                  <input type="text" [(ngModel)]="qihuodetmodel['length']" class="form-control" />
+                </div>毫米/张
+              </div>
+
+              <div *ngIf="iscountshow" class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">张数：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input type="text" [(ngModel)]="qihuodetmodel['count']" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+            <div *ngIf="one">
+              <button type="button" (click)="createselectNull()" class="btn btn-info btn-large">重选</button>
+              <button type="button" (click)="nextdialog()" class="btn btn-primary btn-large">下一步</button>
+            </div>
+            <div *ngIf="two">
+              <button type="button" (click)="createselectNull()" class="btn btn-info btn-large">重选</button>
+              <button type="button" (click)="create()" class="btn btn-primary btn-large">创建</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--添加MDM期货明细对话框-->
+<div class="modal" bsModal #createmdmqihuodialog="bs-modal" tabindex="-1" role="dialog"
+aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="createmdmqihuodialogcoles()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <button type="button" [disabled]="editflag.iseditguige" (click)="querymat()" style="float: right;margin-right:15px;" class="btn btn-primary" *ngIf="one">
+          查询
+        </button>
+        <input type="text" style="float: right;width: 150px;height: 30px;margin: 0 10px" [(ngModel)]="qihuodetmodel['matcode']" placeholder="请输入物料编码" class="form-control"  *ngIf="one" />
+        <h4 class="modal-title">{{editflag.zhidan?'修改':'添加'}}明细</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div *ngIf="one">
+              <div class="form-group mb fieldsetdnn row row col-md-6">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">品名：</span>
+                </label>
+                <div class="col-sm-8">
+                  <input (click)="mdmgndialog.show()" [(ngModel)]="goodscode['gn']" class="form-control" placeholder="请选择品名" readonly [disabled]="editflag.zhidan">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row row col-md-6">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">分类描述：</span>
+                </label>
+                <div class="col-sm-8">
+                  <input [(ngModel)]="goodscode['categorydesc']" class="form-control" placeholder="请选择品名" disabled>
+                </div>
+              </div>
+              <div *ngIf="showGuige">
+                <div class="form-group mb fieldsetdnn row col-md-6" *ngFor="let item of attrs">
+                  <label class="col-sm-4 control-label requiredlabel">
+                    <span style="float: right;" [ngClass]="{'requiredbefore':item.isrequired}">{{item.name}}：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown [options]="item.options" placeholder='请选择{{item.label}}'
+                      [(ngModel)]="goodscode[item.value]" (onChange)="selectattr(item,$event.value)" [filter]="true" [style]="{'width': '100%'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="two">
+              <div *ngFor="let item of chandigongchas">
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">{{item.name}}：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="item.options" placeholder='请选择{{item.name}}'
+                      [(ngModel)]="qihuodetmodel[item.value]" [filter]="true" [style]="{'width': '100%'}" [disabled]="editflag.iseditguige">
+                    </p-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">订货量：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="qihuodetmodel['dinghuoliang']" class="form-control" placeholder="请输入订货量"
+                    required [disabled]="editflag.iseditguige">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">销售价格：</span>
+                </label>
+                <div class="col-sm-6">
+                  <input [(ngModel)]="qihuodetmodel['saleprice']" class="form-control" placeholder="请输入销售价格" disabled
+                    required>
+                </div>
+                <div class="col-sm-3">
+                  <button type="button" [disabled]="editflag.zhidan" (click)="feeadddialogshow()" class="btn btn-info btn-large">添加</button>
+                </div>
+              </div>
+              <div *ngIf="isqihuo" class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">考核价：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="qihuodetmodel['neibujiesuanprice']" class="form-control" placeholder="请输入内部结算价"
+                    disabled required>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">数量公差：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="qihuodetmodel['weightgongcha']" class="form-control" placeholder="请输入数量公差"
+                    required [disabled]="editflag.iseditguige">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">交货日期：</span>
+                </label>
+                <div class="col-sm-9">
+                  <p-calendar [(ngModel)]="qihuodetmodel['jiaohuodate']" placeholder="交货时间" [disabled]="editflag.iseditguige">
+                  </p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">下单备注：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="qihuodetmodel['beizhu']" class="form-control" placeholder="请输入备注" required [disabled]="editflag.iseditguige">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">销售价格是否低于指导价：</span>
+                </label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="zhidaoprices" [(ngModel)]="qihuodetmodel['zhidaojiagedesc']"
+                    [style]="{'width':'100%'}" [disabled]="editflag.iseditguige">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">是否急单：</span>
+                </label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="isurgent" [(ngModel)]="qihuodetmodel['isurgent']" [style]="{'width':'100%'}" [disabled]="editflag.iseditguige">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div *ngIf="qihuomodel['ordertype']===11||
+                          qihuomodel['ordertype']===12||
+                          qihuomodel['ordertype']===15"
+                class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">货物类型</span>
+                </label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="materialtypes" [(ngModel)]="qihuodetmodel['materialtype']"
+                    [style]="{'width':'100%'}" (onChange)="selectedtype($event.value)">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div *ngIf="islindiao" class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">所在仓库：</span>
+                </label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="cangkus" [(ngModel)]="qihuodetmodel['cangkuid']" placeholder="选择仓库"
+                    [style]="{'width': '100%','height': '35px'}">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div *ngIf="isShowInterestfree">
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label"><span style="float: right;">是否免息：</span></label>
+                  <div class="col-sm-9">
+                    <label class="radio-inline c-radio">
+                      <input type="radio" [value]="true" name="interestfree1"
+                        [(ngModel)]="qihuodetmodel['isinterestfree']" [disabled]="editflag.iseditguige" />
+                      <span class="fa fa-circle"></span>是
+                    </label>
+                    <label class="radio-inline c-radio">
+                      <input type="radio" [value]="false" name="interestfree1"
+                        [(ngModel)]="qihuodetmodel['isinterestfree']" [disabled]="editflag.iseditguige" />
+                      <span class="fa fa-circle"></span>否
+                    </label>
+                    <label class="radio-inline" [tooltip]="'部门负责人-中心负责人-总经理-财务经理'">
+                      <a style="font-size:12px;">免息审批流程&nbsp;<em class="fa fa-question"></em></a>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6" *ngIf="qihuodetmodel['isinterestfree']">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">免息天数（包含公司免息时间15天）：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="number" [(ngModel)]="qihuodetmodel['interestfreedays']" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6" *ngIf="qihuodetmodel['isinterestfree']">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">免息原因：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input [(ngModel)]="qihuodetmodel['interestfreereason']" class="form-control" />
+                  </div>
+                </div>
+
+              </div>
+              <div *ngIf="qihuomodel['isweishi']">
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">新单位：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="units" placeholder="选择新单位" [(ngModel)]="qihuodetmodel['unitname']" [style]="{'width':'100%'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6" >
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">新单位数量：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="number" [(ngModel)]="qihuodetmodel['unitweight']" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6" >
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">新单位单价：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="number" [(ngModel)]="qihuodetmodel['unitprice']" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6" >
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">打包要求：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-multiSelect 
+                    [options]="packageyaoqius"
+                    [(ngModel)]="qihuodetmodel['dabaoyaoqiu']"
+                    display="chip"
+                    [style]="{'width':'100%'}">
+                    </p-multiSelect>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+            <div *ngIf="iscountshow" class="form-group mb fieldsetdnn row col-md-6"
+              style="padding-right:0px;padding-left:15px;">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">长度：</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="text" [(ngModel)]="qihuodetmodel['length']" class="form-control" />
+              </div>毫米/张
+            </div>
+            <div *ngIf="iscountshow&&!qihuomodel['isweishi']" class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">张数：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="qihuodetmodel['count']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div *ngIf="one">
+            <button type="button" (click)="mdmreset()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="nextdialog1()" class="btn btn-primary btn-large">下一步</button>
+          </div>
+          <div *ngIf="two">
+            <button type="button" (click)="mdmreset()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="mdmcreate()" class="btn btn-primary btn-large">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn [mdmgnsearch]="mdmgnsearch" (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+
+  <!--添加实付定金-->
+  <div class="modal" bsModal #dingjindialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closedingjindialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">添加定金</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">账户余额：</span>
+                </label>
+                <div class="col-sm-9">
+                  {{curyue}}
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">实付定金：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="dingjin['dingjin']" class="form-control" placeholder="请输入实付定金" required>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="adddingjin()" class="btn btn-primary btn-large">添加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--释放实付定金-->
+  <div class="modal" bsModal #shifangdingjin="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closeshifangdialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">释放定金</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">实付定金：</span>
+                </label>
+                <div class="col-sm-9">
+                  {{qihuomodel['shifudingjin']}}
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">释放定金：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="dingjin['dingjin']" class="form-control" placeholder="请输入释放定金金额" required>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">释放原因：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="dingjin['releasereason']" class="form-control" placeholder="请输入释放原因" required>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="shifang()" class="btn btn-primary btn-large">释放</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--添加成品明细对话框-->
+  <div class="modal" bsModal #productdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closeproductdialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">添加成品</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">宽度：</span>
+                </label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="widths" placeholder='请选择宽度' [(ngModel)]="productmodel['width']"
+                    [style]="{'width': '100%'}" [filter]="true">
+                  </p-dropdown>
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">长度：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="productmodel['length']" #houdugongcha class="form-control" placeholder="请输入长度"
+                    required>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">重量：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="productmodel['weight']" #houdugongcha class="form-control" placeholder="请输入重量"
+                    required>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">销售价：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="productmodel['saleprice']" class="form-control" placeholder="请输入销售价" required>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="productselectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="createproduct()" class="btn btn-primary btn-large">创建</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 修改物料编码弹出框 -->
+  <div class="modal" bsModal #gcmodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closegcmodify()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">规格属性修改</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">属性值：</span>
+                </label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="values" [(ngModel)]="newattrid" placeholder="选择要修改的值" [filter]="true"
+                    [style]="{'width': '100%'}"></p-dropdown>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="modifygc()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 修改主表信息 -->
+  <div class="modal" bsModal #mainmodifydialog="bs-modal" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="closemaindialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">修改</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid'] || qihuoflag['qihuochangestatus'] === 1">
+                <label class="col-sm-3 control-label">买方单位:</label>
+                <div class="col-sm-9">
+                  <wisk-findbysale [(company)]="buyer" (select)="showaddr($event)"></wisk-findbysale>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid']">
+                <label class="col-sm-3 control-label">卖方公司</label>
+                <div class="col-sm-9">
+                  <app-wiskinnercompany [selectedCompany]="editqihuo['sellerid']"
+                    (wiskindcompany)="innercompany($event)">
+                  </app-wiskinnercompany>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid'] || qihuoflag['qihuochangestatus'] === 1">
+                <label class="col-sm-3 control-label">配送方式:</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio1" type="radio" name="i-radio" [value]="0" [(ngModel)]="editqihuo['type']" />
+                    <span class="fa fa-circle"></span>自提
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio2" type="radio" name="i-radio" [value]="1" [(ngModel)]="editqihuo['type']" (ngModelChange)="getAddr()"/>
+                    <span class="fa fa-circle"></span>代运
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio3" type="radio" name="i-radio" [value]="2" [(ngModel)]="editqihuo['type']" />
+                    <span class="fa fa-circle"></span>转货
+                  </label>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid'] || qihuoflag['qihuochangestatus'] === 1">
+                <label class="col-sm-3 control-label">收货地址:</label>
+                <div class="col-sm-7">
+                  <p-dropdown [options]="addrs" [(ngModel)]="editqihuo['addrid']" [style]="{'width':'100%'}"
+                    [filter]="true" filterBy="label,value.name">
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-2">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="addAddrDialog()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid']">
+                <label class="col-sm-3 control-label">交货地点:</label>
+                <div class="col-sm-9">
+                  <input type="text" name="addr" [(ngModel)]="editqihuo['jiaohuoaddr']" class="form-control"
+                    placeholder="请输入交货地点" />
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid']">
+                <label class="col-sm-3 control-label">交货公差:</label>
+                <div class="col-sm-9">
+                  <input type="text" name="gongcha" [(ngModel)]="editqihuo['jiaohuogongcha']" class="form-control"
+                    placeholder="请输入交货公差" />
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid']">
+                <label class="col-sm-3 control-label">交货期限:</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="editqihuo['jiaohuoqixian']" placeholder="请输入交货期限">
+                  </p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid']">
+                <label class="col-sm-3 control-label">合同生效日期:</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="editqihuo['shengxiaodate']" placeholder="请输入交货期限">
+                  </p-calendar>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <!-- <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button> -->
+            <button type="button" (click)="modifymain()" class="btn btn-primary btn-large">修改</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--费用添加弹出窗口-->
+  <div class="modal" bsModal #feeadddialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="feeadddialogclose()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title pull-left">价格/费用添加</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="row">
+                <div class="col-md-3 col-sm-3  text-center">
+                  <label class="col-sm-12 control-label form-control-static">销售单价</label>
+                </div>
+                <div class="col-md-1 col-sm-1  text-center">
+                  <label class="col-sm-12 control-label">-</label>
+                </div>
+                <div class="col-md-2 col-sm-2  text-center">
+                  <label class="col-sm-12 control-label form-control-static">考核单价</label>
+                </div>
+                <div class="col-md-1 col-sm-1  text-center">
+                  <label class="col-sm-12 control-label">-</label>
+                </div>
+                <div class="col-md-2 col-sm-2  text-center">
+                  <label class="col-sm-12 control-label form-control-static">费用合计单价</label>
+                </div>
+                <div class="col-md-1 col-sm-1 text-center">
+                  <label class="col-sm-12 control-label">=</label>
+                </div>
+                <div class="col-md-2 col-sm-2 text-center">
+                  <label class="col-sm-12 control-label form-control-static">预估毛利</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3 col-sm-3 text-center">
+                  <input style="text-align:center" [(ngModel)]="qihuodetmodel['saleprice']" class="form-control"
+                    placeholder="请输入销售价格" required>
+                </div>
+                <div class="col-md-1 col-sm-1  text-center">
+                  -
+                </div>
+                <div class="col-md-2 col-sm-2 text-center">
+                  <input style="text-align:center" [(ngModel)]="qihuodetmodel['neibujiesuanprice']" class="form-control"
+                    placeholder="请输入内部结算价" required>
+                </div>
+                <div class="col-md-1 col-sm-1 text-center">
+                  -
+                </div>
+                <div class="col-md-2 col-sm-2 text-center">
+                  {{feeHeji}}
+                </div>
+                <div class="col-md-1 col-sm-1 text-center">
+                  =
+                </div>
+                <div class="col-md-2 col-sm-2 text-center">
+                  {{qihuodetmodel['saleprice'] - qihuodetmodel['neibujiesuanprice'] - feeHeji}}
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-12"></div>
+
+              <div class="row">
+                <div class="col-sm-3 text-center">
+                  <label class="col-sm-12 control-label form-control-static">费用类型</label>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <label class="col-sm-12 control-label form-control-static">单价</label>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <label class="col-sm-12 control-label form-control-static">备注</label>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <label class="col-sm-12 control-label form-control-static">
+                    <span *ngIf="!isshowInput" class="label label-info" (click)="showInput()">插入费用</span>
+                    <span *ngIf="isshowInput" class="label label-info" (click)="showInput()">取消插入</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row" *ngIf="isshowInput">
+                <div class="col-sm-3">
+                  <p-dropdown [options]="feetypes" [(ngModel)]="feemodel['feetype']" placeholder="选择费用类型"
+                    [style]="{'width': 'calc(100% - 30px)','margin': '0 15px'}">
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-3">
+                  <input style="width:calc(100% - 30px); margin: 0 15px" class="form-control"
+                    [(ngModel)]="feemodel['price']" placeholder="请输入费用单价" required>
+                </div>
+                <div class="col-sm-3">
+                  <input style="width:calc(100% - 30px); margin: 0 15px" class="form-control"
+                    [(ngModel)]="feemodel['beizhu']" placeholder="请输入备注" required>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <button type="button" (click)="insertline()" class="btn btn-primary btn-large">插入费用</button>
+                </div>
+              </div>
+
+              <div class="row fieldsetdnn" *ngFor="let item of lines;index as i;">
+                <div class="col-sm-3 text-center">
+                  <span>{{item.feetype|feetype}}</span>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <span>{{item.feeprice}}</span>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <span>{{item.beizhu}}</span>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <span style="padding-left: 80px" (click)="delorderfee(i,item.feeprice)">
+                    <a>删除</a>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+            <div class="form-inline text-center">
+              <button type="button" (click)="feeadddialogclose()" class="btn btn-primary btn-large">确定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  出库费类型的弹窗 -->
+  <div class="modal" bsModal #chukufeetype="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="ckfeetypehideDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">出库费类型</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default" style="overflow:'inherit'">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label">出库费类型</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="chukufeetypes" [(ngModel)]="chukufeetypess['value']" [style]="{'width':'100%'}"
+                    [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+            <div class="form-inline text-center">
+              <button type="button" (click)="modifychukufee()" class="btn btn-primary btn-large">确定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--销售价格，费用修改窗口-->
+  <div class="modal" bsModal #salepriceandfeemodifydialog="bs-modal" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="salepriceanfeemodifydialogclose()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title pull-left">价格/费用修改</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="row">
+                <div class="col-md-3 col-sm-3  text-center">
+                  <label class="col-sm-12 control-label form-control-static">销售单价</label>
+                </div>
+                <div class="col-md-1 col-sm-1  text-center">
+                  <label class="col-sm-12 control-label">-</label>
+                </div>
+                <div class="col-md-2 col-sm-2  text-center">
+                  <label class="col-sm-12 control-label form-control-static">考核单价</label>
+                </div>
+                <div class="col-md-1 col-sm-1  text-center">
+                  <label class="col-sm-12 control-label">-</label>
+                </div>
+                <div class="col-md-2 col-sm-2  text-center">
+                  <label class="col-sm-12 control-label form-control-static">费用合计单价</label>
+                </div>
+                <div class="col-md-1 col-sm-1 text-center">
+                  <label class="col-sm-12 control-label">=</label>
+                </div>
+                <div class="col-md-2 col-sm-2 text-center">
+                  <label class="col-sm-12 control-label form-control-static">预估毛利</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3 col-sm-3 text-center">
+                  <input style="text-align:center" [(ngModel)]="salepricemodel['saleprice']" class="form-control"
+                    placeholder="请输入销售价格" required>
+                </div>
+                <div class="col-md-1 col-sm-1  text-center">
+                  -
+                </div>
+                <div class="col-md-2 col-sm-2 text-center">
+                  <input style="text-align:center" [(ngModel)]="salepricemodel['neibujiesuanprice']"
+                    class="form-control" placeholder="请输入内部结算价" required>
+                </div>
+                <div class="col-md-1 col-sm-1 text-center">
+                  -
+                </div>
+                <div class="col-md-2 col-sm-2 text-center">
+                  {{diyfeeHeji}}
+                </div>
+                <div class="col-md-1 col-sm-1 text-center">
+                  =
+                </div>
+                <div class="col-md-2 col-sm-2 text-center">
+                  {{salepricemodel['saleprice'] - salepricemodel['neibujiesuanprice'] - diyfeeHeji}}
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-12"></div>
+
+              <div class="row">
+                <div class="col-sm-3 text-center">
+                  <label class="col-sm-12 control-label form-control-static">费用类型</label>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <label class="col-sm-12 control-label form-control-static">单价</label>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <label class="col-sm-12 control-label form-control-static">备注</label>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <label class="col-sm-12 control-label form-control-static">
+                    <span *ngIf="!isshowInput" class="label label-info" (click)="showInput()">插入费用</span>
+                    <span *ngIf="isshowInput" class="label label-info" (click)="showInput()">取消插入</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row" *ngIf="isshowInput">
+                <div class="col-sm-3">
+                  <p-dropdown [options]="feetypes" [(ngModel)]="feemodel['feetype']" placeholder="选择费用类型"
+                    [style]="{'width': 'calc(100% - 30px)','margin': '0 15px'}">
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-3">
+                  <input style="width:calc(100% - 30px); margin: 0 15px" class="form-control"
+                    [(ngModel)]="feemodel['price']" placeholder="请输入费用单价" required>
+                </div>
+                <div class="col-sm-3">
+                  <input style="width:calc(100% - 30px); margin: 0 15px" class="form-control"
+                    [(ngModel)]="feemodel['beizhu']" placeholder="请输入备注" required>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <button type="button" (click)="addyugufeetodb()" class="btn btn-primary btn-large">添加费用</button>
+                </div>
+              </div>
+
+              <div class="row fieldsetdnn" *ngFor="let item of lines">
+                <div class="col-sm-3 text-center">
+                  <span>{{item.feetype|feetype}}</span>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <span>{{item.feeprice}}</span>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <span>{{item.beizhu}}</span>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <span style="padding-left: 80px" (click)="delorderfeeindb(item.id,item.feeprice)">
+                    <a>删除</a>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+            <!-- <button type="button" (click)="addyugufeetodb()" class="btn btn-primary btn-large">添加费用</button> -->
+            <button type="button" (click)="modifysaleprice()" class="btn btn-primary btn-large">提交修改</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--上传合同-->
+  <div class="modal" bsModal #uploaderModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="false">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">上传队列</h4>
+        </div>
+        <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="upcontract($event)"></wisk-uploader>
+        <div class="form-inline">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--作废合同原因填写-->
+  <div class="modal" bsModal #zuofeiModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="zuofeiclose()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">作废原因</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">作废原因:</label>
+                <div class="col-sm-9">
+                  <input type="text" name="zuofeireason" [(ngModel)]="qihuomodel['zuofeireason']" class="form-control"
+                    placeholder="请输入作废原因" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <!-- <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button> -->
+            <button type="button" (click)="zuofeiorder()" class="btn btn-primary btn-large">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" bsModal #allocationModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closeallocationdialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">添加配款</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">账户余额：</span>
+                </label>
+                <div class="col-sm-9">
+                  {{curyue}}
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">实付货款：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="allocation['jine']" class="form-control" placeholder="请输入实付定金" required>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="addallocation()" class="btn btn-primary btn-large">添加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--释放实付定金-->
+  <div class="modal" bsModal #shifangallocationModel="bs-modal" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closeshifangallocationdialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">释放货款</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">实付货款：</span>
+                </label>
+                <div class="col-sm-9">
+                  {{qihuomodel['allocation']}}
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">释放货款：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="allocation['jine']" class="form-control" placeholder="请输入释放定金金额" required>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="shifangAllocation()" class="btn btn-primary btn-large">释放</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--添加地址弹窗-->
+  <div class="modal" bsModal #addrdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="addrdialogclose()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">添加地址</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <!-- <div class="form-group mb fieldsetdnn col-sm-12 ">
+                <label class="col-sm-3 control-label">地址：</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="provinces" [(ngModel)]="addr['provinceid']"
+                    [style]="{'width':'100%','font-size':'15px'}" (onChange)="getcity()" [placeholder]="'请选择省份'">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label"></label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="citys" [(ngModel)]="addr['cityid']"
+                    [style]="{'width':'100%','font-size':'15px'}" (onChange)="getcounty()" [placeholder]="'请选择市'">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label"></label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="countys" [(ngModel)]="addr['countyid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县/区'"></p-dropdown>
+                </div>
+              </div>  -->
+              <div class="form-group mb fieldsetdnn col-sm-12 ">
+                <label class="col-sm-3 control-label">详细地址：</label>
+                <div class="col-sm-9">
+                  <!-- <input type="text" placeholder="请输入详细地址" [(ngModel)]="addr['detail']" class="form-control" required /> -->
+                  <p-autoComplete placeholder="请输入详细地址" name="addr" [(ngModel)]="addr['detail']" [suggestions]="results"   
+                  (completeMethod)="searchplace($event)" [style]="{'width':'85%'}" [inputStyle]="{'width':'85%'}" field="name" 
+                  dataKey="id" [dropdown]="false">
+                 </p-autoComplete>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 ">
+                <label class="col-sm-3 control-label">联系人：</label>
+                <div class="col-sm-9">
+                  <input type="text" placeholder="请输入联系人" [(ngModel)]="addr['lianxiren']" class="form-control"
+                    required />
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 ">
+                <label class="col-sm-3 control-label">联系方式：</label>
+                <div class="col-sm-9">
+                  <input type="text" placeholder="请输入联系方式" [(ngModel)]="addr['phone']" class="form-control" required />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <button type="button" (click)="addAddr()" class="btn btn-primary btn-large">添加</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--提交审核确认是否欠款发货-->
+  <div class="modal" bsModal #submitvuser="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closesubmitvuserdialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">提交审核</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label"> <span style="float: right;">支付类型：</span></label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="paytypes" [style]="{'width':'calc(100%)'}" [placeholder]="'请选择支付类型'"
+                    (onChange)="changepaytype($event.value)"></p-dropdown>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="submitverify()" class="btn btn-primary btn-large">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" bsModal #zhibaoshuModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closezhibaoshudialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">查看质保书</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table table-striped" [mfData]="singleData" #mf="mfDataTable" [mfRowsOnPage]="100">
+            <tbody>
+              <tr *ngFor="let item of mf.data;let i = index;">
+                <td style="width:5%;">
+                  <label style="width:100%;">
+                    <div class="checkbox c-checkbox" style="text-align: center;" style="width:100%;">
+                      <input type="checkbox" [(ngModel)]="item.checked" (ngModelChange)="checkboxchange($event)"><span
+                        class="fa fa-check" style="margin-left: 15px;"></span>
+                    </div>
+                  </label>
+                </td>
+                <td class="row" style="width:95%;">
+                  <div class=" col-lg-4 col-md-4 col-sm-6 form-control-static">
+                    <label>序号：</label> {{i + 1}}
+                  </div>
+                  <div class=" col-lg-4 col-md-4 col-sm-6 form-control-static">
+                    <label>资源号：</label> {{item.grno}}
+                  </div>
+                  <div class=" col-lg-4 col-md-4 col-sm-6 form-control-static">
+                    <label>查看质保书：</label> <a href={{item.url}} target="_blank">查看</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-inline text-center" *ngIf="singleData.length">
+          <button type="button" class="btn btn-info btn-bloc" (click)="allcheck()">全选</button>
+          <button type="button" class="btn btn-info btn-bloc" (click)="alldownload()">一键下载</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--期货合同变更原因填写-->
+  <div class="modal" bsModal #qhchangetijiaoModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="qhchangetijiaoclose()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">合同变更提交备注</h4>
+        </div>
+        <div class="modal-body">
+          <p-messages *ngIf="!validQihuochangedet.length" [(value)]="msgs" [closable]="false"></p-messages>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">备注:</label>
+                <div class="col-sm-9">
+                  <input type="text" name="qhchangetijiaobeizhu" [(ngModel)]="qhchangetijiaobeizhu" class="form-control"
+                    placeholder="请输入备注" />
+                </div>
+              </div>
+              <p style="color:red;font-size: 10px;">*修改规格审批流程：业务员-资源外务</p>
+              <p style="color:red;font-size: 10px;">*修改买方公司审批流程：业务员-机构负责人</p>
+              <p style="color:red;font-size: 10px;">*修改订货量审批流程：业务员-资源外务-机构负责人</p>
+              <p style="color:red;font-size: 10px;">*修改销售单价审批流程：业务员-机构负责人-中心总监</p>
+              <p style="color:red;font-size: 10px;">*修改考核单价审批流程：业务员-资源外务-机构负责人-中心总监</p>
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <button type="button" (click)="qhchangetijiao()" class="btn btn-primary btn-large">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  修改是否免息的弹窗 -->
+  <div class="modal" bsModal #interestfreeandunitModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="interestfreehideDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">{{interestfreeAndUnitObj['interestfreeOrUnit']==='unit'?'新单位':'免息'}}的修改</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default" style="overflow:'inherit'">
+            <div class="panel-body">
+              <div *ngIf="interestfreeAndUnitObj['interestfreeOrUnit']==='unit'">
+                <div class="form-group mb fieldsetdnn row col-sm-12">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">新单位：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <p-dropdown [options]="units" placeholder="选择新单位" [(ngModel)]="interestfreeAndUnitObj['unitname']" [style]="{'width':'100%'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-sm-12" *ngIf="interestfreeAndUnitObj['unitname']">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">新单位数量：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="number" [(ngModel)]="interestfreeAndUnitObj['unitweight']" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-sm-12" *ngIf="interestfreeAndUnitObj['unitname']">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">新单位单价：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="number" [(ngModel)]="interestfreeAndUnitObj['unitprice']" class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="interestfreeAndUnitObj['interestfreeOrUnit']==='interestfree'">
+                <div class="form-group mb fieldsetdnn row col-sm-12">
+                  <label class="col-sm-3 control-label"><span style="float: right;">是否免息：</span></label>
+                  <div class="col-sm-9">
+                    <label class="radio-inline c-radio">
+                      <input type="radio" [value]="true" name="interestfree"
+                        [(ngModel)]="interestfreeAndUnitObj['isinterestfree']" />
+                      <span class="fa fa-circle"></span>是
+                    </label>
+                    <label class="radio-inline c-radio">
+                      <input type="radio" [value]="false" name="interestfree"
+                        [(ngModel)]="interestfreeAndUnitObj['isinterestfree']" />
+                      <span class="fa fa-circle"></span>否
+                    </label>
+                    <label class="radio-inline" [tooltip]="'部门负责人-中心负责人-总经理-财务经理'">
+                      <a style="font-size:12px;">免息审批流程&nbsp;<em class="fa fa-question"></em></a>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-sm-12" *ngIf="interestfreeAndUnitObj['isinterestfree']">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">免息天数：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="number" [(ngModel)]="interestfreeAndUnitObj['interestfreedays']" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-sm-12" *ngIf="interestfreeAndUnitObj['isinterestfree']">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">免息原因：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input [(ngModel)]="interestfreeAndUnitObj['interestfreereason']" class="form-control" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+            <div class="form-inline text-center">
+              <button type="button" (click)="modifyinterestfree()" class="btn btn-primary btn-large">保存</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--新建采购单对话框-->
+<div class="modal" bsModal #createCaigouModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-xs">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="close" type="button" aria-label="Close" (click)="closeCaigou()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title">新建采购单</h4>
+    </div>
+    <div class="modal-body">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">供应商</label>
+            <div class="col-sm-9">
+              <!--<wisk-customersearch [(customer)]="caigou['sellerid']" placeholder="请输入卖方单位"></wisk-customersearch>-->
+              <wisk-suppliersearch [(company)]="caigou['sellerid']"></wisk-suppliersearch>
+            </div>
+          </div>
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">采购单位</label>
+            <div class="col-sm-9">
+              <p-dropdown [options]="companyIsWiskind" [(ngModel)]="caigou['buyerid']"
+                [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">合同月份</label>
+            <div class="col-sm-9">
+              <wisk-yearmonthselect (select)="selectmonth($event)"></wisk-yearmonthselect>
+            </div>
+          </div>
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">交货地点</label>
+            <div class="col-sm-9">
+              <p-dropdown [options]="jiaohuoaddrs" placeholder='交货地点' [(ngModel)]="caigou['jiaohuoaddr']"
+                [filter]="true" [style]="{'width': '100%'}">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">备注</label>
+            <div class="col-sm-9">
+              <input type="text" name="beizhu" [(ngModel)]="caigou['beizhu']" class="form-control">
+            </div>
+          </div>
+          <!--</form>-->
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <!-- <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button> -->
+        <button type="button" (click)="createCaigou()" class="btn btn-primary btn-large">新建</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal" bsModal #addqualityModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideaddModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+          <label class="col-sm-3 control-label">是否需要在本订单中处理前期已提报尚未处理的质量异议</label>
+          <div class="col-sm-9">
+            <label class="radio-inline c-radio">
+              <input id="inlineradio1" type="radio" name="ischuliquality-radio" [value]="1" [(ngModel)]="qhqualityModel['ischuliquality']" />
+              <span class="fa fa-circle"></span>是
+            </label>
+            <label class="radio-inline c-radio">
+              <input id="inlineradio2" type="radio" name="ischuliquality-radio" [value]="0" [(ngModel)]="qhqualityModel['ischuliquality']" />
+              <span class="fa fa-circle"></span>否
+            </label>
+          </div>
+        </div>
+        <div *ngIf="qhqualityModel['ischuliquality'] === 1" class="form-group mb fieldsetdnn row">
+          <label class="col-sm-3 control-label required">资源处理类型</label>
+          <div class="col-sm-9">
+            <p-dropdown [options]="rstypes" placeholder="选择处理类型" [(ngModel)]="qhqualityModel['rstype']"  [style]="{'width': '100%'}">
+            </p-dropdown>
+          </div>
+        </div>
+        <div *ngIf="qhqualityModel['ischuliquality'] === 1" class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+          <label class="col-sm-3 control-label">资源处理说明</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="qhqualityModel['rsbeizhu']" class="form-control" />
+          </div>
+        </div>
+        <div *ngIf="qhqualityModel['ischuliquality'] === 1" class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+          <label class="col-sm-3 control-label">资源处理赔付金额</label>
+          <div class="col-sm-9">
+            <input type="number" [(ngModel)]="qhqualityModel['rsjine']" class="form-control" />
+          </div>
+        </div>
+        <div *ngIf="qhqualityModel['ischuliquality'] === 1" class="form-group mb fieldsetdnn row">
+          <label class="col-sm-3 control-label required">销售处理类型</label>
+          <div class="col-sm-9">
+            <p-dropdown [options]="saletypes" placeholder="选择处理类型" [(ngModel)]="qhqualityModel['saletype']"  [style]="{'width': '100%'}">
+            </p-dropdown>
+          </div>
+        </div>
+        <div *ngIf="qhqualityModel['ischuliquality'] === 1" class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+          <label class="col-sm-3 control-label">销售处理说明</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="qhqualityModel['salebeizhu']" class="form-control" />
+          </div>
+        </div>
+        <div *ngIf="qhqualityModel['ischuliquality'] === 1" class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+          <label class="col-sm-3 control-label">销售处理赔付金额</label>
+          <div class="col-sm-9">
+            <input type="number" [(ngModel)]="qhqualityModel['salejine']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button *ngIf="qhqualityModel['ischuliquality'] === 1" type="button" (click)="choice()" class="btn btn-primary btn-large">选择质量异议</button>
+          <button *ngIf="qhqualityModel['ischuliquality'] !== 1" type="button" (click)="addupdate()" class="btn btn-primary btn-large">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

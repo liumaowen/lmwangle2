@@ -1,0 +1,201 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 价格-库存 双击可修改货物的线上库存的应有数量
+  <div class="pull-right wide-show">
+    <button type="button" class="btn btn-info btn-bloc" (click)="shelvestotal()">上架</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="offShelveCategory()">下架</button>
+    <!-- <button type="button" (click)="agExport()"  class="btn btn-info btn-bloc">导出</button>  -->
+    <button type="button" class="btn btn-info btn-bloc" (click)="tongtiaocountdialog()">统调</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="shelvestotal()">上架</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="offShelveCategory()">下架</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="tongtiaocountdialog()">统调</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-all">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="cclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <!-- <h4 class="modal-title">查询</h4> -->
+        <h4 *ngIf="!flag['online']" class="modal-title">库存汇总明细 </h4>
+        <h4 *ngIf="flag['online']" class="modal-title">线上库存汇总明细 </h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 213)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+              class="ag-blue" [gridOptions]="kcmxgridOptions"></ag-grid-angular>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <button type="button" class="btn btn-info btn-bloc" (click)="checkAll()">全选</button>
+          <button type="button" class="btn btn-info btn-bloc" (click)="closehz()">关闭</button>
+          <button *ngIf="flag['online']" type="button" (click)="offshelves()" class="btn btn-info btn-sm margin-top-bottom-25">下架
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--上下架数量统调对话框-->
+<div class="modal" bsModal #tongtiaocount="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="tongtiaodialogcoles()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上下架统调</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">区域：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="areas" (onChange)="getcangkus($event.value)" [(ngModel)]="tongtiaocountmodel['areaid']" placeholder="选择区域"
+                  [filter]="true" [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">仓库：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="cangkus" placeholder="选择仓库" [(ngModel)]="tongtiaocountmodel['cangkuid']" [filter]="true" [style]="{'width': '100%'}"
+                  [disabled]="!iscangku">
+                </p-dropdown>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">机构：</span>
+              </label>
+              <div class="col-sm-8">
+                <wisk-orglist [(org)]="tongtiaocountmodel['orgid']"></wisk-orglist>
+              </div>
+            </div> -->
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">是否上架：</span>
+              </label>
+              <div class="col-sm-8">
+                <!-- <input type="text" [(ngModel)]="tongtiaocountmodel['count']" class="form-control" placeholder="请输入统调值" /> -->
+                <p-radioButton name="groupname" value="1" [(ngModel)]="tongtiaocountmodel['flag']" label="是"></p-radioButton>
+                <p-radioButton name="groupname" value="0" [(ngModel)]="tongtiaocountmodel['flag']" label="否"></p-radioButton>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">品名：</span>
+              </label>
+              <div class="col-sm-8">
+                <input (click)="mdmgndialog.show()" [(ngModel)]="tongtiaocountmodel['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div *ngIf="showGuige">
+              <div class="form-group mb fieldsetdnn row col-md-6" *ngFor="let item of attrs">
+                <label class="col-sm-4 control-label requiredlabel">
+                  <span style="float: right;" [ngClass]="{'requiredbefore':item.isrequired}">{{item.name}}：</span>
+                </label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="item.options" placeholder='请选择{{item.label}}'
+                    [(ngModel)]="tongtiaocountmodel[item.value]" [filter]="true" [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">品名：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="gns" (onChange)="selectedgn($event.value)" [(ngModel)]="tongtiaocountmodel['gnid']" placeholder="选择品名"
+                  [filter]="true" [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">产地：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="chandis" (onChange)="selectedchandi($event.value)" placeholder="选择产地" [(ngModel)]="tongtiaocountmodel['chandiid']"
+                  [filter]="true" [style]="{'width': '100%'}" [disabled]="!isChandi">
+                </p-dropdown>
+              </div>
+            </div>
+            <div *ngIf="showGuige">
+              <div class="form-group mb fieldsetdnn row col-md-6" *ngFor="let item of attrs">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">{{item.label}}：</span>
+                </label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="item.options" placeholder='请选择{{item.label}}' (onChange)="selectedguige($event,item.name)" [filter]="true"
+                    [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div> -->
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <!-- <button type="button" (click)="createselectNull()" class="btn btn-info btn-large">重选</button> -->
+          <button type="button" (click)="tongtiaocountcreate()" class="btn btn-primary btn-large">统调</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>

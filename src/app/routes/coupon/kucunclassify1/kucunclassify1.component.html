@@ -1,0 +1,54 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">代销合同差额管理</em>
+  <div class="pull-right">
+    <!-- <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">创建</button> -->
+  </div>
+</div>
+<div class="wis-panel wis-panel-default" *ngFor="let item of classifylist">
+  <div class="row">
+    <div class="col-xs-12 form-control-static">
+      <label style="margin-left:10px;">机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构：</label>{{item.name}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 form-control-static">
+      <label style="margin-left:10px;">限制差价：</label>{{item.value}}元
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 form-control-static">
+      <label style="margin-left:10px;">操&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;做：</label>
+      <a (click)="modify(item)">修改</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" bsModal #modifyModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改限制差价</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">限制价格</label>
+              <div class="col-sm-9">
+                <input type="number" name="minday" [(ngModel)]="classify['value']" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="mod()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>

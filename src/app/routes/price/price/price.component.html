@@ -1,0 +1,304 @@
+<div class="button-toolbar clearfix mb">
+  <div class="btn-group">
+    <h4>
+      <em class="fa fa-book"></em>价格表</h4>
+  </div>
+  <div class="pull-right ml-lg">
+    <button type="button" (click)="changePrice()" class="btn btn-info btn-bloc">调价</button>
+    <button type="button" (click)="tongtiaodialog()" class="btn btn-info btn-bloc">统调</button>
+    <button type="button" (click)="checkAll()" class="btn btn-info btn-bloc">全选</button>
+    <button type="button" (click)="finddialog()" class="btn btn-info btn-bloc">查询</button>
+    <!-- <button type="button" (click)="uncheckAll()" class="btn btn-info btn-bloc">取消选择</button> -->
+    <!-- <button type="button" (click)="addDialog()" class="btn btn-info btn-bloc">创建</button> -->
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px','min-height':200+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--价格统调对话框-->
+<div class="modal" bsModal #tongtiao="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="tongtiaodialogcoles()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">统调条件选择</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row row col-md-12">
+              <label class="col-sm-2 control-label">
+                <span style="float: right;">机构：</span>
+              </label>
+              <div class="col-sm-10">
+                <wisk-orglist [(org)]="tongtiaomodel['orgid']"></wisk-orglist>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">区域：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="areas" (onChange)="getcangkus($event.value)" [(ngModel)]="tongtiaomodel['areaid']" placeholder="选择区域"
+                  [filter]="true" [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">仓库：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="cangkus" placeholder="选择仓库" [(ngModel)]="tongtiaomodel['cangkuid']" [filter]="true" [style]="{'width': '100%'}"
+                  [disabled]="!iscangku">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">线上/线下：</span>
+              </label>
+              <div class="col-sm-8">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" name="online" value="1" [(ngModel)]="tongtiaomodel['isonline']" />
+                  <span class="fa fa-circle"></span>线上
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" name="online" value="0" [(ngModel)]="tongtiaomodel['isonline']" />
+                  <span class="fa fa-circle"></span>线下
+                </label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">调整类型：</span>
+              </label>
+              <div class="col-sm-8">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" name="tiaohuo" value="1" [(ngModel)]="tongtiaomodel['isdifftiao']" />
+                  <span class="fa fa-circle"></span>价差
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" name="tiaohuo" value="0" [(ngModel)]="tongtiaomodel['isdifftiao']" />
+                  <span class="fa fa-circle"></span>价格
+                </label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">统调值：</span>
+              </label>
+              <div class="col-sm-8">
+                <input type="text" [(ngModel)]="tongtiaomodel['lastprice']" class="form-control" placeholder="请输入统调值" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">品名：</span>
+              </label>
+              <div class="col-sm-8">
+                <input (click)="showmdmgndialog(1)" [(ngModel)]="tongtiaomodel['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div *ngIf="showGuige">
+              <div class="form-group mb fieldsetdnn row col-md-6" *ngFor="let item of attrs">
+                <label class="col-sm-4 control-label requiredlabel">
+                  <span style="float: right;" [ngClass]="{'requiredbefore':item.isrequired}">{{item.name}}：</span>
+                </label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="item.options" placeholder='请选择{{item.label}}'
+                    [(ngModel)]="tongtiaomodel[item.value]" [filter]="true" [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">品名：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="gns" (onChange)="selectedgn($event.value)" [(ngModel)]="tongtiaomodel['gnid']" placeholder="选择品名"
+                  [filter]="true" [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">产地：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="chandis" (onChange)="selectedchandi($event.value)" placeholder="选择产地" [(ngModel)]="tongtiaomodel['chandiid']"
+                  [filter]="true" [style]="{'width': '100%'}" [disabled]="!isChandi">
+                </p-dropdown>
+              </div>
+            </div>
+            <div *ngIf="showGuige">
+              <div class="form-group mb fieldsetdnn row col-md-6" *ngFor="let item of attrs">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">{{item.label}}：</span>
+                </label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="item.options" placeholder='请选择{{item.label}}' (onChange)="selectedguige($event,item.name)" [filter]="true"
+                    [style]="{'width': '100%'}">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div> -->
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <button type="button" (click)="createselectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="tongtiaocreate()" class="btn btn-primary btn-large">统调</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- 价格查询弹出框 -->
+<div class="modal" bsModal #pricedialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closepricedialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-4 control-label">仓库</label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="cangkus" placeholder="选择仓库" [(ngModel)]="search['cangkuid']" [filter]="true" [style]="{'width': '100%'}" style="padding:0;border:0;" class="form-control">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-4 control-label">品名</label>
+              <div class="col-sm-8">
+                <input (click)="showmdmgndialog(0)" [(ngModel)]="search['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6" *ngFor="let item of attrs">
+              <label class="col-sm-4 control-label">{{item.name}}</label>
+              <div class="col-sm-8">
+                <p-dropdown style="padding:0;border:0;" [options]="item.options" [(ngModel)]="search[item.value]" [style]="{'width':'100%'}" [disabled]="disabled" class="form-control" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+
+            <!-- <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">品名：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="gns" (onChange)="selectedgn($event.value)" [(ngModel)]="search['gnid']" placeholder="选择品名" [filter]="true"
+                  [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row row col-md-6">
+              <label class="col-sm-4 control-label">
+                <span style="float: right;">产地：</span>
+              </label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="chandis" (onChange)="selectedchandi($event.value)" placeholder="选择产地" [(ngModel)]="search['chandiid']"
+                  [filter]="true" [style]="{'width': '100%'}" [disabled]="!isChandi">
+                </p-dropdown>
+              </div>
+            </div>
+            <div *ngIf="showGuige">
+              <div class="form-group mb fieldsetdnn row row col-md-6">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">宽度：</span>
+                </label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="widths" placeholder="选择宽度" [(ngModel)]="search['widthid']" [filter]="true" [style]="{'width': '100%'}"
+                    [disabled]="!isChandi">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row row col-md-6">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">厚度：</span>
+                </label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="houdus" placeholder="选择厚度" [(ngModel)]="search['houduid']" [filter]="true" [style]="{'width': '100%'}"
+                    [disabled]="!isChandi">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row row col-md-6">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">颜色：</span>
+                </label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="colors" placeholder="选择颜色" [(ngModel)]="search['colorid']" [filter]="true" [style]="{'width': '100%'}"
+                    [disabled]="!isChandi">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row row col-md-6">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">材质：</span>
+                </label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="caizhis" placeholder="选择材质" [(ngModel)]="search['caizhiid']" [filter]="true" [style]="{'width': '100%'}"
+                    [disabled]="!isChandi">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row row col-md-6">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">锌层：</span>
+                </label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="ducengs" placeholder="选择锌层" [(ngModel)]="search['ducengid']" [filter]="true" [style]="{'width': '100%'}"
+                    [disabled]="!isChandi">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div> -->
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <button type="button" (click)="createselectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="findprice()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>

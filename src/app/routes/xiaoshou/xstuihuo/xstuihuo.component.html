@@ -1,0 +1,101 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 销售退货时序表
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="openDialog()">查询</button>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="singleData">
+  <table class="table table-striped" [mfData]="singleData" #mf="mfDataTable" [mfActivePage]="querys['pagenum']" [mfRowsOnPage]="querys['pagesize']">
+    <tbody>
+      <tr *ngFor="let item of mf.data">
+        <td class="row" style="width:100%;">
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>编号:</label>
+            <a [routerLink]="['/xstuihuo', item.id]">{{item.billno}}</a>
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>状态:</label> {{item.status | xstuihuostatus}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>买方单位:</label> {{item.buyer | customer}}
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>仓库:</label> {{item.cangku['name']}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>件数:</label> {{item.tcount}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总重量:</label> {{item.tweight}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>创建时间:</label> {{item.cdate}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>业务员:</label> {{item.cuser['realname']}}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>querys['pagesize']">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="10" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+            nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+          <!-- <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator> -->
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+
+
+<!-- 上传文件的弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">销售退货单编号</label>
+              <div class="col-sm-9">
+                <input class="form-control" [(ngModel)]="querys['billno']" placeholder="请输入订单编号" type="text">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">业务员</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <wisk-usersearch [(user)]="suser"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">退货单位</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <wisk-companysearch [(company)]="buyer"></wisk-companysearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">销售退货单状态</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="status" [(ngModel)]="querys['status']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="select()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,581 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 费用付款单
+  <div class="pull-right">
+    <button type="button" *ngIf="caiwuyunying" class="btn btn-info btn-bloc" (click)="getInvoiveUrl()">查看发票</button>
+    <button type="button" [disabled]="feefukuan['pcode'] !== 0 && feefukuan['pcode'] !== 7" (click)="showUploadInvoice()" class="btn btn-info btn-sm margin-top-bottom-25">上传发票</button>
+    <button type="button" [disabled]="feefukuan['pcode'] !== 7"(click)="submitfapiao()" class="btn btn-info btn-sm margin-top-bottom-25">发票审核</button>
+    <span>
+      <button type="button" (click)="importFee()" class="btn btn-info btn-sm margin-top-bottom-25"
+        [disabled]="!flag.cur">引入费用</button>
+    </span>
+    <span>
+      <button type="button" (click)="addvuserdialog()" class="btn btn-info btn-sm margin-top-bottom-25"
+        [disabled]="!flag.cur">提交审核人</button>
+    </span>
+    <span *ngIf="flag['verify']||flag['payuser']">
+      <!-- <button type="button" (click)="realcompany()"
+        class="btn btn-info btn-sm margin-top-bottom-25">{{flag['verify']?'复核信息':flag['payuser']?'付款银行':''}}</button> -->
+        <button *ngIf="flag['verify']" type="button" (click)="realcompany()"
+        class="btn btn-info btn-sm margin-top-bottom-25">复核信息</button>
+    </span>
+    <span *ngIf="flag['tiqianzhifu']">
+      <button type="button" (click)="realcompany()"
+        class="btn btn-info btn-sm margin-top-bottom-25">{{flag['tiqianzhifu']?'提前支付':''}}</button>
+    </span>
+    <!-- <span *ngIf="!feefukuan['isv']">
+      <button *ngIf="flag['payuser']" type="button" (click)="cancelpayuser()"
+        class="btn btn-info btn-sm margin-top-bottom-25">取消付款人
+      </button>
+    </span> -->
+    <span *ngIf="flag['cangchu']">
+      <button *ngIf="!isyunza" type="button" (click)="agreeAndDisagree(1,true)"
+        class="btn btn-info btn-sm margin-top-bottom-25">同意</button>
+      <button type="button" (click)="agreeAndDisagree(1,false)"
+        class="btn btn-info btn-sm margin-top-bottom-25">弃审</button>
+    </span>
+    <span *ngIf="flag['pcheck']">
+      <button type="button" (click)="agreeAndDisagree(4,true)"
+        class="btn btn-info btn-sm margin-top-bottom-25">付款复核</button>
+      <button type="button" (click)="agreeAndDisagree(4,false)"
+        class="btn btn-info btn-sm margin-top-bottom-25">弃审</button>
+    </span>
+    <span *ngIf="flag['verify']">
+      <button type="button" (click)="agreeAndDisagree(2,true)"
+        class="btn btn-info btn-sm margin-top-bottom-25">发票复核</button>
+      <button type="button" (click)="agreeAndDisagree(2,false)"
+        class="btn btn-info btn-sm margin-top-bottom-25">弃审</button>
+    </span>
+    <span *ngIf="flag['payuser']">
+      <button type="button" (click)="agreeAndDisagree(3,true)"
+        class="btn btn-info btn-sm margin-top-bottom-25">付款审核</button>
+      <button type="button" (click)="agreeAndDisagree(3,false)"
+        class="btn btn-info btn-sm margin-top-bottom-25">弃审</button>
+    </span>
+
+    <span *ngIf="flag['tiqianzhifu']">
+      <button type="button" (click)="agreeAndDisagree(6,true)"
+        class="btn btn-info btn-sm margin-top-bottom-25">付款复核</button>
+      <button type="button" (click)="agreeAndDisagree(6,false)"
+        class="btn btn-info btn-sm margin-top-bottom-25">弃审</button>
+    </span>
+    <span *ngIf="flag['paycheck']">
+      <button type="button" (click)="agreeAndDisagree(8,true)"
+        class="btn btn-info btn-sm margin-top-bottom-25">付款</button>
+      <button type="button" (click)="agreeAndDisagree(8,false)"
+        class="btn btn-info btn-sm margin-top-bottom-25">弃审</button>
+    </span>
+    <span>
+      <button style="background-color:red;border-color:red;color:#ffffff;" type="button" (click)="deleteFeefukuanDet()" class="btn btn-info btn-sm margin-top-bottom-25"
+        [disabled]="!flag.cur">批量删除明细</button>
+    </span>
+    <!--  <span *ngIf="!feefukuan['isv']">
+      <button type="button" (click)="submitFinance()" class="btn btn-info btn-sm margin-top-bottom-25">财务审核</button>
+    </span>
+    <span *ngIf="!feefukuan['isv']">
+      <button type="button" (click)="verifyDialog()" class="btn btn-info btn-sm margin-top-bottom-25">付款审核</button>
+    </span> -->
+    <button *ngIf="pcode>1" type="button" (click)="print()"
+      class="btn btn-info btn-sm margin-top-bottom-25">打印预览</button>
+    <!-- <span *NgOpera="242"> -->
+    <button *ngIf="pcode>1" type="button" (click)="reload()"
+      class="btn btn-info btn-sm margin-top-bottom-25">生成PDF</button>
+    <!-- </span> -->
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto" style="overflow:'auto'">
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">单据编号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{feefukuan['billno']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">费用单位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static" title="{{feefukuan['feecustomer']['name']}}">
+          {{feefukuan['feecustomer']['name']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">重量:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['tweight']}}吨
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">付款审核:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <label style="color: red;font-weight: bold;">{{feefukuan['isv'] | isTranslated}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan | agentuser}}
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">付款单位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static" title="{{feefukuan['paycustomer']['name']}}">
+          {{feefukuan['paycustomer']['name']}}
+        </div>
+      </div> -->
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <label style="font-weight: bold;margin:0;">{{feefukuan['vuserid']?feefukuan['vuser']['realname']:''}}</label>
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <!-- <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">版本号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['version']}}
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">单据复核人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['pcheckuname']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">付款人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['payuserid']?feefukuan['payuser']['realname']:''}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">付款时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['paydate']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">实付总额:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['tshifujine'] | number:"1.2-2"}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">费用金额:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['feejine'] | number:"1.2-2"}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">费用金额(大写):</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['bigjine']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">费用银行:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['feebank']['bank']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">费用账号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['feebank']['account']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">备注:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input (blur)="modifyshiji()" type="text" class="form-control" [(ngModel)]="feefukuan['beizhu']"
+            [disabled]="!flag.cur" />
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input (blur)="modifyshiji()" type="text" class="form-control" [(ngModel)]="feefukuan['fapiaohao']"
+            [disabled]="!flag.curfapiao" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">结算方式:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['jiesuantype']|fkjiesuantype}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">税率:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['taxrate']}}%
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">不含税金额:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['notaxjine']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">税额:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['taxjine']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">实际付款单位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static" title="{{feefukuan['actpcustomername']}}">
+          {{feefukuan['actpcustomername']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">付款银行:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['paybname']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">付款账号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['payaccount']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">付款时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['paydate']}}
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">实际收款单位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <!-- {{feefukuan['actrcustomername']}} -->
+          <!-- [disabled]="!flag.cur||feefukuan['feecustomer']['name']==='运营中心'" -->
+          <input (blur)="modifyshiji()" type="text" class="form-control" [(ngModel)]="feefukuan['actrcustomername']" />
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">收款银行:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <!-- {{feefukuan['actrbname']}} -->
+          <!-- [disabled]="!flag.cur||feefukuan['feecustomer']['name']==='运营中心'" -->
+          <input (blur)="modifyshiji()" type="text" class="form-control" [(ngModel)]="feefukuan['actrbname']" />
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">收款账号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <!-- {{feefukuan['actraccount']}} -->
+          <!-- [disabled]="!flag.cur||feefukuan['feecustomer']['name']==='运营中心'" -->
+          <input (blur)="modifyshiji()" type="text" class="form-control" [(ngModel)]="feefukuan['actraccount']" />
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{feefukuan['cdate']}}
+        </div>
+      </div>      
+    </div>
+  </div>
+
+</div>
+
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 540)+'px'}" #agGrid class="ag-blue wis-auto"
+  [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+
+<toaster-container></toaster-container>
+
+
+
+<!--  提交审核人的弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <!-- <form [formGroup]="priceForm" class="form-validate mb-lg" role="form" name="loginForm" novalidate=""> -->
+      <div class="modal-body">
+        <!-- <div *ngIf="!flag['vuser']" class="panel panel-default"> -->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">审核人</label>
+              <div class="col-sm-9">
+                <wisk-usernamesearch [(user)]="suser"></wisk-usernamesearch>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <!-- <div class="form-inline text-center">
+            <button *ngIf="!flag['vuser']" type="button" (click)="submitVuser()"
+              class="btn btn-primary btn-large">提交审核人</button>
+            <button *ngIf="flag['vuser']" type="button" (click)="submitFinance()"
+              class="btn btn-primary btn-large">通知财务</button>
+          </div> -->
+          <div class="form-inline text-center">
+            <button type="button" (click)="submitVuser()" class="btn btn-primary btn-large">提交审核人</button>
+          </div>
+        </div>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>
+</div>
+
+<!--  复核审核页面 -->
+<div class="modal" bsModal #feeVerify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidefeeVerify()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{flag['verify']?'复核信息':flag['payuser']?'付款银行':''}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default" style="overflow:'inherit'">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12" *ngIf="flag['verify'] || flag['tiqianzhifu']">
+              <label class="col-sm-3 control-label">结算方式</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="jiesuantypes" [(ngModel)]="params['jiesuantype']" [style]="{'width':'100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify']">
+              <label class="col-sm-3 control-label">税率</label>
+              <div class="col-sm-9">
+                <input type="number" style="display:inline-block;width:95%;" class="form-control"
+                  [(ngModel)]="params['taxrate']" (blur)="getnotaxjine()" />&nbsp;%
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify']">
+              <label class="col-sm-3 control-label">不含税金额</label>
+              <div class="col-sm-9">
+                <input type="number" class="form-control" [(ngModel)]="params['notaxjine']" (blur)="gettaxjine()" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify']">
+              <label class="col-sm-3 control-label">税额</label>
+              <div class="col-sm-9">
+                <input type="number" class="form-control" [(ngModel)]="params['taxjine']" />
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify']">
+              <label class="col-sm-3 control-label">实际付款单位</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="companyIsWiskind" [(ngModel)]="params['actpcustomerid']"
+                  [style]="{'width':'100%'}" (onChange)="getbank(params['actpcustomerid'])"></p-dropdown>
+              </div>
+            </div> 
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['payuser']">
+              <label class="col-sm-3 control-label">实际付款银行</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="bankaccounts" [(ngModel)]="params['paybankid']"
+                  (onChange)="getcardno(params['paybankid'])" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['payuser']">
+              <label class="col-sm-3 control-label">实际付款账号</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="" [(ngModel)]="params['payaccount']" class="form-control"
+                  disabled="true" />
+              </div>
+            </div> -->
+
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="reset()" class="btn btn-primary btn-large">重置</button>
+            <button type="button" (click)="modifyzhubiao()" class="btn btn-primary btn-large">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--上传发票 -->
+<div class="modal" bsModal #invoiceModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideInvoiceModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 发票链接地址 -->
+<div class="modal" bsModal #invoiceurlModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-xs">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="close" type="button" aria-label="Close" (click)="hideInvoiceurlModel()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title">查看发票</h4>
+    </div>
+    <div class="modal-body">
+      <table class="table table-striped" [mfData]="singleData" #mf="mfDataTable" [mfRowsOnPage]="100">
+        <tbody>
+          <tr *ngFor="let item of mf.data;let i = index;">
+            <td class="row" style="width:95%;">
+              <div class=" col-lg-4 col-md-4 col-sm-6 form-control-static">
+                <label>序号：</label> {{i + 1}}
+              </div>
+              <div class=" col-lg-4 col-md-4 col-sm-6 form-control-static">
+                <label>查看发票：</label> <a href={{item.url}} target="_blank">查看</a>
+              </div>
+              <div class=" col-lg-4 col-md-4 col-sm-6 form-control-static">
+                <label>操作：</label>
+                <a (click)="deleteInvoice(item['filename'])">删除</a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<!--  复核付款银行页面 -->
+<div class="modal" bsModal #fuhedanweiVerify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidefuhedanweiVerify()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">复核付款单位和银行信息</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default" style="overflow:'inherit'">
+          <div class="panel-body">
+            
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify'] || flag['tiqianzhifu']">
+              <label class="col-sm-3 control-label">实际付款单位</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="companyIsWiskind" [(ngModel)]="params['actpcustomerid']"
+                  [style]="{'width':'100%'}" (onChange)="getbank(params['actpcustomerid'])"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['payuser']">
+              <label class="col-sm-3 control-label">实际付款银行</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="bankaccounts" [(ngModel)]="params['paybankid']"
+                  (onChange)="getcardno(params['paybankid'])" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['payuser']">
+              <label class="col-sm-3 control-label">实际付款账号</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="" [(ngModel)]="params['payaccount']" class="form-control"
+                  disabled="true" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="reset()" class="btn btn-primary btn-large">重置</button>
+            <button type="button" (click)="modifydetbank()" class="btn btn-primary btn-large">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

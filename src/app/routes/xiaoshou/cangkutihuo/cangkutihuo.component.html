@@ -1,0 +1,134 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 仓库提货明细表
+  <div class="pull-right wide-show">
+    <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="openQueryDialog()">查询</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--创建弹窗-->
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default ">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">开始时间</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="end "></p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">结束时间</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="end" placeholder="结束时间" [minDate]="start" ></p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">实提开始时间</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="shitistart" placeholder="开始时间" [maxDate]="shitiend"></p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">实提结束时间</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="shitiend" placeholder="结束时间" [minDate]="shitistart" ></p-calendar>
+                </div>
+              </div>
+      
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">提货类型</label>
+                <div class="col-sm-9">
+                  <select [(ngModel)]="requestparams.tihuotype" width="'100%'" class="form-control">
+                    <option value="">全部</option>
+                    <option value="0">普通</option>
+                    <option value="1">转货</option>
+                  </select>
+                </div>
+              </div>       
+        
+              <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">线上/线下</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="flags" [(ngModel)]="requestparams['isonline']" [style]="{'width':'100%','padding':'1px 0'}" [filter]="true"
+                    filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div> -->
+              
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">提单编号</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" [(ngModel)]="requestparams['id']" />
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">司机姓名</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" [(ngModel)]="requestparams['sijiname']" />
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">身份证号</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" [(ngModel)]="requestparams['idcardno']" />
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">货车车号</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" [(ngModel)]="requestparams['carno']" />
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">状态</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="names" [(ngModel)]="requestparams['status']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+              
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

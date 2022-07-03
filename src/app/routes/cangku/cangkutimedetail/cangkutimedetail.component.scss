@@ -1,0 +1,28 @@
+@media ( min-width: 1200px) {
+  .fc-content {
+    font-size: 1.2em;
+    line-height: 1.5;
+  }
+}
+
+.fc-content {
+  text-align: center;
+}
+
+.ngdialog.loading .ngdialog-content {
+  width: 110px;
+}
+
+.ngdialog.shade .ngdialog-content {
+  display: none;
+}
+
+.ngdialog.loading .ngdialog-overlay,
+.ngdialog.shade .ngdialog-overlay {
+  background: rgba(0, 0, 0, 0);
+}
+
+.form-control+.form-control-feedback,
+.form-control+.parsley-errors-list+.form-control-feedback {
+  right: 15px;
+}

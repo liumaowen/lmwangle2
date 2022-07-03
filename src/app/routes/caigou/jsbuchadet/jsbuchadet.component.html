@@ -1,0 +1,214 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> {{title}}
+  <div class="pull-right">
+    <button *ngIf="buchaModel['type'] === 2 && flag['tijiao']" class="btn btn-info btn-bloc" type="button" (click)="zhiliangModel()">关联质量异议</button>
+    <button *ngIf="flag['tijiao']" class="btn btn-info btn-bloc" type="button" (click)="submitjs()">提交审核</button>
+    <button *ngIf="flag['shenhe']" class="btn btn-info btn-bloc" type="button" (click)="verifyjs()">审核</button>
+    <button *ngIf="flag['shenhe']" class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;"
+      type="button" (click)="back()">回退</button>
+    <button *ngIf="flag['qishen']" class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;"
+      type="button" (click)="refuse()">弃审</button>
+    <span *ngIf="isshow">
+      <button class="btn btn-info btn-bloc" type="button" (click)="importdet()">引入提货明细</button>
+    </span>
+    <span *ngIf="ischahang">
+      <button class="btn btn-info btn-bloc" type="button" (click)="openadddet()">插行</button>
+    </span>
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button" (click)="deletebucha()">删除补差单</button>
+  </div>
+</div>
+<form dnn-mainpanel method="get" action="/" class="panel panel-default wis-auto">
+  <div class="row ">
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">供货机构：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel['org'] | org}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">收货机构：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel['sorg']|org}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">单据类型：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel | jsbuchatype}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">金额：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel['jine'] | number:"1.2-2"}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row ">
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">合同编号：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel['billno']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">单据状态：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel['status'] | cgtuihuostatus}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel | agentuser}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核人：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel['vuser'].realname}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议单号：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel['zhiliangyiyibillno']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议说明</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel['rsbeizhu']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议类型</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{rstypename}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议金额</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{buchaModel['rsjine']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class=" col-lg-6 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-lg-2 col-md-4 col-xs-6 control-label form-control-static">备注：</div>
+        <div class="col-lg-10 col-md-8 col-xs-6 form-control-static" style="white-space: inherit;">{{buchaModel['beizhu']}}</div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 380)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+<!--添加普通明细对话框-->
+<div class="modal" bsModal #addModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">插行</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">金额</label>
+              <div class="col-sm-9">
+                <input type="number" name="jine" [(ngModel)]="det['jine']" class="form-control">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <input (click)="mdmgndialog.show()" [(ngModel)]="det['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <p-dropdown name="gn" [options]="gns" (onChange)="selectedgn($event.value)" placeholder="选择品名"
+                  [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div> -->
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" name="beizhu" [(ngModel)]="det['beizhu']" class="form-control">
+              </div>
+            </div>
+            <div class="form-inline text-center">
+              <button type="button" class="btn btn-primary btn-large" (click)="add()">添加</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!--添加弹窗-->
+  <div class="modal" bsModal #zhiliagnyiyi="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="hideModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">添加</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group mb fieldsetdnn row">
+            <label class="col-sm-3 control-label required">处理类型
+            </label>
+            <div class="col-sm-9">
+              <p-dropdown [options]="rstypes" placeholder="选择处理类型" [(ngModel)]="buchaModel['rstype']"
+                [style]="{'width': '100%'}">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="form-group mb fieldsetdnn row">
+            <label class="col-sm-3 control-label required">说明
+            </label>
+            <div class="col-sm-9">
+              <input type="text" name="rsbeizhu" [(ngModel)]="buchaModel['rsbeizhu']" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group mb fieldsetdnn row">
+            <label class="col-sm-3 control-label required">赔付金额
+            </label>
+            <div class="col-sm-9">
+              <input type="number" name="rsjine" [(ngModel)]="buchaModel['rsjine']" class="form-control" />
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <button type="button" (click)="choice()" class="btn btn-primary btn-large">选择质量异议</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+<toaster-container ></toaster-container>

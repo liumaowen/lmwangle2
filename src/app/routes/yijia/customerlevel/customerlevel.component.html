@@ -1,0 +1,97 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 用户分类管理表
+  <div class="pull-right wide-show">
+    <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
+    <button type="button" (click)="customerLevelUploader()" class="btn btn-info btn-bloc" >上传分类表</button>
+    <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/lamour/ImportCustomerLevel.xls">
+      <button type="button" class="btn btn-info btn-bloc">分类表模板下载</button>
+    </a>
+    <!-- <button type="button" (click)="sendinfo()" class = "btn btn-info btn-bloc">发送钉钉消息</button> -->
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="query()">查询</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default ">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label">公司名称</label>
+                <div class="col-sm-9">
+                  <wisk-companysearch [(company)]="companys"></wisk-companysearch>
+                  
+                </div>
+              </div>
+
+              <!-- <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label">业务负责人</label>
+                <div class="col-sm-9">
+                  <wisk-usersearch [(user)]="search['salemanid']"></wisk-usersearch>
+
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--添加显示上传弹窗-->
+<div class="modal" bsModal #parentModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+

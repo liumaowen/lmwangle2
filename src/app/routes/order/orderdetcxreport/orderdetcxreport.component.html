@@ -1,0 +1,189 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 创新订单明细表
+  <div class="pull-right">
+    <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
+    <button type="button" (click)="agExport()" class="btn btn-info btn-bloc">导出</button>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="coles()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">开始时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="end || maxDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">结束时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate" [minDate]="start"></p-calendar>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">买方</label>
+              <div class="col-sm-9">
+                <wisk-companysearch [(company)]="companys"></wisk-companysearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">卖方</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="sellersResult" [(ngModel)]="requestparams['sellerid']" [style]="{'width':'100%','font-size':'15px'}"
+                  [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">机构</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="orgs" [(ngModel)]="requestparams['orgid']" [style]="{'width':'100%','font-size':'15px'}" [filter]="true"
+                  filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">仓库</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="cangku" [(ngModel)]="requestparams['cangkuid']" [style]="{'width':'100%','font-size':'15px'}" [filter]="true"
+                  filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">业务员</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="cuser"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">订单编号</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="requestparams['id']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <input (click)="mdmgndialog.show()" style="height:33px;" [(ngModel)]="requestparams['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div *ngFor="let item of attrs">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">{{item.name}}</label>
+                <div class="col-sm-9">
+                  <p-dropdown style="padding:0;border:0;" [options]="item.options" [(ngModel)]="requestparams[item.value]" [style]="{'width':'100%'}" [disabled]="disabled" class="form-control" [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gns" [(ngModel)]="requestparams['gnid']" [style]="{'width':'100%'}" (onChange)="selectGnAction('gnid')"
+                  [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">产地</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="filterConditionObj['chandi']" [(ngModel)]="requestparams['chandi']" [style]="{'width':'100%'}" (onChange)="selectAction('chandi')"
+                  [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">颜色</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="filterConditionObj['color']" [(ngModel)]="requestparams['color']" [style]="{'width':'100%'}" (onChange)="selectAction('color')"
+                  [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">宽度</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="filterConditionObj['width']" [(ngModel)]="requestparams['width']" [style]="{'width':'100%'}" (onChange)="selectAction('width')"
+                  [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">厚度</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="filterConditionObj['houdu']" [(ngModel)]="requestparams['houdu']" [style]="{'width':'100%'}" (onChange)="selectAction('houdu')"
+                  [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">镀层</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="filterConditionObj['duceng']" [(ngModel)]="requestparams['duceng']" [style]="{'width':'100%'}" (onChange)="selectAction('duceng')"
+                  [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">材质</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="filterConditionObj['caizhi']" [(ngModel)]="requestparams['caizhi']" [style]="{'width':'100%'}" (onChange)="selectAction('caizhi')"
+                  [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">后处理</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="filterConditionObj['ppro']" [(ngModel)]="requestparams['ppro']" [style]="{'width':'100%'}" (onChange)="selectAction('ppro')"
+                  [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div> -->
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">状态</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="billtype" [(ngModel)]="requestparams['billtype']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">线上线下</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="isonline" [(ngModel)]="requestparams['isonline']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>

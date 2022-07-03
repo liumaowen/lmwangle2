@@ -1,0 +1,121 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 质量异议详情
+  <div class="pull-right">
+    <button type="button" (click)="makePDF()" class="btn btn-info btn-sm margin-top-bottom-25">生成PDF</button>
+    <button type="button" (click)="print()" class="btn btn-info btn-sm margin-top-bottom-25">打印预览</button>
+    <button type="button" (click)="openlog()" class="btn btn-info btn-sm margin-top-bottom-25">跟踪记录</button>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">客户单位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{quality['customer']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">产地:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{quality['chandi']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">采购时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{quality['cgdate']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6"></div>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn" style="font-weight:bold;">卷明细</div>
+  <div class="row fieldsetdnn" *ngFor="let item of list; let i = index;">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-3 col-xs-6 form-control-static">资源号:</div>
+        <div class="col-md-9 col-xs-6 form-control-static">{{item['grno']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-3 col-xs-6 form-control-static">钢卷号:</div>
+        <div class="col-md-9 col-xs-6 form-control-static">{{item['kunbaohao']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-3 col-xs-6 form-control-static">规格:</div>
+        <div class="col-md-9 col-xs-6 form-control-static">{{item['guige']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-3 col-xs-6 form-control-static">吨位:</div>
+        <div class="col-md-9 col-xs-6 form-control-static">{{item['weight']}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class="col-md-2 col-xs-4 control-label form-control-static">使用情况：</div>
+    <div class="col-md-10 col-xs-8 form-control-static show-hide" style="word-wrap: break-word;">{{quality['miaoshu']}}</div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-md-2 col-xs-4 control-label form-control-static">质量意见：</div>
+    <div class="col-md-10 col-xs-8 form-control-static show-hide" style="word-wrap: break-word;">
+      <input type="text" placeholder="请输入质量意见" [(ngModel)]="quality['deal']" (blur)="modifydeal()"
+              class="form-control" />
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-md-2 col-xs-4 control-label form-control-static">客户意见：</div>
+    <div class="col-md-10 col-xs-8 form-control-static show-hide" style="word-wrap: break-word;">{{quality['kehuyijian']}}</div>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn" style="font-weight:bold;">跟踪记录</div>
+  <div class="row fieldsetdnn" *ngFor="let item of loglist; let i = index;">
+    <div class=" form-control-static" style="word-wrap: break-word;">{{i + 1}}、{{item.cuser.realname}}--{{item.cdate}}：{{item.msg}}</div>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn" style="font-weight:bold;">附件记录</div>
+  <div class="row fieldsetdnn" *ngFor="let item of imgs; let i = index;">
+    <img src="{{item}}" alt="">
+  </div>
+</div>
+<!-- 添加跟踪记录 -->
+<div class="modal" bsModal #logdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closelogdialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">跟踪记录</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">意见：</span>
+              </label>
+              <div class="col-sm-9">
+                <input [(ngModel)]="log['msg']" class="form-control" placeholder="请输入意见" required>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center" style="padding-bottom:10px;">
+        <button type="button" (click)="pushlog()" class="btn btn-primary btn-large">发布</button>
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>

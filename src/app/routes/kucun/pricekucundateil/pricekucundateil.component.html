@@ -1,0 +1,92 @@
+<div class="button-toolbar clearfix mb">
+  <div class="btn-group">
+    <h4>
+      <em class="fa fa-book"></em>{{isupdown}}记录明细</h4>
+  </div>
+  <div class="pull-right ml-lg">
+    <span *ngIf="storage.getObject('cuser').id===pricelogmodel.vuserid">
+      <button *ngIf="!pricelogmodel['isv']" class="btn btn-info btn-bloc" type="button"
+        (click)="auditprice()">审核</button>
+    </span>
+    <span *ngIf="storage.getObject('cuser').id===pricelogmodel.vuserid">
+      <button *ngIf="!pricelogmodel['isv']" class="btn btn-info btn-bloc" type="button"
+        (click)="notagree()">拒审</button>
+    </span>
+    <button class="btn btn-info btn-bloc" type="button" (click)="back()">返回</button>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">上架编号：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{pricelogmodel['billno']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">是否审核：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{pricelogmodel['isv'] === true?'已审':pricelogmodel['isv'] === false?'拒审':'未审'}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">版本：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{pricelogmodel['version']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">机构：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{pricelogmodel['orgname']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+      <div class=" col-lg-3 col-md-6 ">
+          <div class="row">
+            <div class="col-md-4 col-xs-6 control-label form-control-static">创建人：</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              {{pricelogmodel | agentuser}}
+            </div>
+          </div>
+        </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">创建时间：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{pricelogmodel['cdate'] | date:'yyyy-MM-dd HH:mm'}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核人：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{pricelogmodel['vusername']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核时间：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{pricelogmodel['vdate']}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 300)+'px'}" #agGrid
+    style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+
+
+<toaster-container></toaster-container>

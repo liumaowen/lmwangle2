@@ -1,0 +1,103 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left"> 引入合同明细</h4>
+
+
+  <div class="pull-right">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="openclassicmodal()">查询</button>
+    <button *ngIf = "importtype === 1" type="button" class="btn btn-info btn-bloc" (click)="import()">引入</button>
+    <button *ngIf = "importtype === 2" type="button" class="btn btn-info btn-bloc" (click)="next()">下一步</button>
+  </div>
+</div>
+<div class="modal-body">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+    class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+<div class="modal-footer">
+</div>
+
+
+<toaster-container>
+</toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeclassicmodal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default ">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">合同号</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="search['orderbillno']" class="form-control" placeholder="请输入合同号">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="select()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--修改明细弹窗-->
+<div class="modal" bsModal #updateDetModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidebillgnModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改明细</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">开票品名</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gnlist" [(ngModel)]="params['invoicegn']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">含税单价</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="params['price']" class="form-control" placeholder="请输入含税单价" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">重量</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="params['weight']" class="form-control" placeholder="请输入重量" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">保证完成日期</label>
+              <div class="col-sm-9">
+                <p-calendar [(ngModel)]="finishdate" placeholder="保证完成日期"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="cancelDet()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

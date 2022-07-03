@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left"> </h4>
+  <div class="pull-right">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="openclassicmodal()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="import()">引入</button>
+  </div>
+</div>
+<div class="modal-body">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid
+    style="width: 100%;height:100%;margin:0;" class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+
+<!--查询弹窗-->

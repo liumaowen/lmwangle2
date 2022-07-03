@@ -1,0 +1,303 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 邯郸报销费用明细表
+  <div class="pull-right wide-show">
+    <button type="button" (click)="uploadfinancefee()" class="btn btn-info btn-bloc">上传财务费用</button>
+    <button type="button" (click)="openRefreshDialog()" class="btn btn-info btn-bloc">同步每刻报</button>
+    <button type="button" (click)="uploadbaoxiaofee()" class="btn btn-info btn-bloc">上传每刻报</button>
+    <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
+    <button type="button" class="btn btn-info btn-sm margin-top-bottom-25">
+      <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/finance_fee_baoxiao.xls" target="_blank"
+        style="color:#ffffff;">财务费用模板</a>
+    </button>
+    <button type="button" class="btn btn-info btn-sm margin-top-bottom-25">
+      <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/%E6%AF%8F%E5%88%BB%E6%8A%A5%E6%A8%A1%E6%9D%BF.xls" target="_blank"
+        style="color:#ffffff;">每刻报模板</a>
+    </button>
+    <!-- <button type="button" (click)="downExcel()" class="btn btn-info btn-bloc">每刻报模板</button> -->
+    <button type="button" (click)="agExport()" class="btn btn-info btn-bloc">导出</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="openRefreshDialog()">同步每刻报</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="uploadfinancefee()">上传财务费用</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="uploadbaoxiaofee()">上传每刻报</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="openQueryDialog()">查询</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item">
+            <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/finance_fee_baoxiao.xls" target="_blank"
+              style="color:#ffffff;">财务费用模板</a>
+            </a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item">
+            <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/%E6%AF%8F%E5%88%BB%E6%8A%A5%E6%A8%A1%E6%9D%BF.xls" target="_blank"
+              style="color:#ffffff;">每刻报模板</a>
+            </a>
+        </li>
+        <!-- <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="downExcel()">模板下载</a>
+        </li> -->
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="agExport()">导出</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!-- 获取指定日期内的数据 -->
+<div class="modal" bsModal #refreshmaycurModel="bs-modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hiderefreshmaycurModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">同步</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">同步日期</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <p-calendar [(ngModel)]="startrefresh" placeholder="同步时间" [maxDate]="maxDate"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNullRefresh()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="queryrefresh()" class="btn btn-primary btn-large">同步</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">开始时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="end || maxDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">结束时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate" [minDate]="start"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">公司</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="customers" [(ngModel)]="requestparams['customername']"
+                  [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">部门1</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="orgs" [(ngModel)]="requestparams['orgname1']"
+                  [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">经办人</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="cuser"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">单号</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="requestparams['billno']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">一级科目</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="requestparams['subject1']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">二级科目</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="requestparams['subject2']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">三级科目</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="requestparams['subject3']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">四级科目</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="requestparams['subject4']" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改 -->
+<div class="modal" bsModal #editModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideeditModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">发票属性</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" [value]="true" name="isinvoice"
+                    [(ngModel)]="editparams['isinvoice']" />
+                  <span class="fa fa-circle"></span>是
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" [value]="false" name="isinvoice"
+                    [(ngModel)]="editparams['isinvoice']" />
+                  <span class="fa fa-circle"></span>否
+                </label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">二级科目</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="editparams['subject2']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">三级科目</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="editparams['subject3']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">四级科目</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="editparams['subject4']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">是否需要生成涉税凭证</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" [value]="true" name="isneedtaxpz"
+                    [(ngModel)]="editparams['isneedtaxpz']" />
+                  <span class="fa fa-circle"></span>是
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" [value]="false" name="isneedtaxpz"
+                    [(ngModel)]="editparams['isneedtaxpz']" />
+                  <span class="fa fa-circle"></span>否
+                </label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">核销借款公司税号</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="editparams['hxloantaxno']" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="save()" class="btn btn-primary btn-large">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 上传每刻报 -->
+<div class="modal" bsModal #parentModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 上传财务费用 -->
+<div class="modal" bsModal #financeFeetModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidefinancefeeDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadFinanceFeeParam" [accept]="financefeeaccept"
+        (select)="financefeeuploads($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>

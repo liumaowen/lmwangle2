@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left"> 修改{{flag?'车船号':'到货仓库'}}</h4>
+  <div class="pull-right">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+<div class="modal-body">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row fieldsetdnn" *ngIf="!flag">
+        <label class="col-sm-3 control-label">仓库</label>
+        <div class="col-sm-9" style="padding-left: 0;">
+          <p-dropdown [options]="ckitems" [(ngModel)]="params['cangkuid']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
+        </div>
+      </div>
+      <div class="row fieldsetdnn" *ngIf="flag">
+        <label class="col-sm-3 control-label">车船号</label>
+        <div class="col-sm-9" style="padding-left: 0;">
+          <input type="text" name="carshipnum" [(ngModel)]="params['carshipnum']" class="form-control">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-inline text-center">
+    <button type="button" (click)="confirm()" class="btn btn-primary btn-large">确定</button>
+  </div>
+</div>
+<div class="modal-footer">
+</div>

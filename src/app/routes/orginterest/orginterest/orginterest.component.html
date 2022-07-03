@@ -1,0 +1,96 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 机构资金占用利息汇总表
+  <div class="pull-right">
+    <button type="button" (click)="showclassicModal()" class="btn btn-info btn-bloc">查询</button>
+  </div>
+</div>
+
+
+<div class="viewpanel">
+  <p-tabView [style]="{'padding-top': '3px'}">
+    <p-tabPanel header="资金占用利息汇总表"
+      [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
+        style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+        [gridOptions]="gridOptions">
+      </ag-grid-angular>
+    </p-tabPanel>
+    <p-tabPanel header="预付利息汇总表"
+      [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
+        style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+        [gridOptions]="yufuGridOptions">
+      </ag-grid-angular>
+    </p-tabPanel>
+    <p-tabPanel header="库存利息汇总表"
+      [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
+        style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+        [gridOptions]="kucunGridOptions">
+      </ag-grid-angular>
+    </p-tabPanel>
+    <p-tabPanel header="品名利息汇总表"
+      [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
+        style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+        [gridOptions]="gnGridOptions">
+      </ag-grid-angular>
+    </p-tabPanel>
+    <p-tabPanel header="资源中心库存利息汇总表"
+    [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
+      style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+      [gridOptions]="ziyuanKucunOptions">
+    </ag-grid-angular>
+  </p-tabPanel>
+  </p-tabView>
+</div>
+
+<toaster-container></toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default ">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">开始时间</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="end"></p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">结束时间</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate"></p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">机构</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="orgs" [(ngModel)]="requestparams['orgid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

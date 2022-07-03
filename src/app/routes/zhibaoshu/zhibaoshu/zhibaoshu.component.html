@@ -1,0 +1,102 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 质保书自动化
+  <div class="pull-right">
+    <button type="button" (click)="AddDialog()" class="btn btn-info btn-sm margin-top-bottom-25">创建质保书任务</button>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="zhiBaoTasks">
+  <table class="table table-striped" [mfData]="zhiBaoTasks" #mf="mfDataTable" [mfActivePage]="querys.pageNum"
+    [mfRowsOnPage]="querys.pageSize">
+    <tbody>
+      <tr *ngFor="let item of mf.data">
+        <td class="row" style="width:100%;">
+          <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+            <label>编号:</label>
+            {{item.id}}
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-6 form-control-static">
+            <label>资源号:</label>
+            {{item.grno}}
+          </div>
+          <div class=" col-lg-3 col-md-4 col-sm-6 form-control-static">
+            <label>钢厂名称:</label> {{item.factoryname}}
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-6 form-control-static">
+            <label>状态:</label> {{item.status | zhibaoshustatus}}
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-6 form-control-static">
+            <label>创建时间:</label> {{item.cdate|date:'y-MM-dd HH:mm:ss'}}
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-6 form-control-static">
+            <label>更新时间:</label> {{item.udate | date:'y-MM-dd HH:mm:ss'}}
+          </div>
+          <div *ngIf="item.status ===3" class="col-lg-3 col-md-4 col-sm-6 form-control-static">
+            <label>操作:</label>
+            <a (click)="retry(item.id)">重试</a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="total>querys.pageSize">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="total" [maxSize]="8" [(ngModel)]="currentPage" [rotate]="true"
+            previousText="上一页" nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false"
+            (pageChanged)="pageChanged($event)"></pagination>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+
+<!--点击添加质保书跳出添加质保书弹窗-->
+<div class="modal" bsModal #staticModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeAddDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加质保书</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">格式</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="zhiBaoFormats" [(ngModel)]="addzhibao.formatid" [style]="{'width':'100%'}">
+                </p-dropdown>
+                <!-- <input class="form-control" [(ngModel)]="addzhibao['grno']" placeholder="请输入资源号"> -->
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">access_token</label>
+              <div class="col-sm-9">
+                <input class="form-control" [style]="{'width':'100%'}" type="text" [(ngModel)]="addzhibao.access_token"
+                  placeholder="请输入access_token" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">资源号</label>
+              <div class="col-sm-9">
+                <textarea class="form-control" style="resize:none;height:225px;" [(ngModel)]="addzhibao.grnos"
+                  placeholder="请输入资源号"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="addselectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="addlist()" class="btn btn-primary btn-large">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<toaster-container></toaster-container>

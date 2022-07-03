@@ -1,0 +1,159 @@
+<div>
+  <div class="button-toolbar clearfix mb">
+    <div class="btn-group">
+      <h4>
+        <em class="fa"></em>
+      </h4>
+    </div>
+
+    <div class="pull-right">
+      <span *NgOpera="425">
+        <button type="button" (click)="enableUser()" class="btn btn-info btn-sm margin-top-bottom-25">启用
+        </button>
+      </span>     
+      <button type="button" (click)="modifyPasswordDialog()" class="btn btn-info btn-sm margin-top-bottom-25">修改密码
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-body" style="padding-top:0;">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">编号</label>
+          <div class="col-lg-8">
+            {{model['id']}} {{model['version']}}
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">身份证号</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['name']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">姓名</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['realname']" placeholder="请输入真实姓名" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">手机号码</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['phone']" placeholder="请输入手机号" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">钉钉ID</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['dingid']" placeholder="请输入钉钉ID" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">注册时间</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['cdate']" class="form-control" disabled="disabled" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6" *ngIf="model['wiskind']">
+          <label class="col-lg-4 control-label">所属机构</label>
+          <div class="col-lg-8">
+            <!-- <wisk-orglist [(org)]="model['orgid']"></wisk-orglist> -->
+            <p-dropdown [options]="orgs" [(ngModel)]="model['orgid']" [style]="{'width':'100%','height':'35px'}" (onChange)="change()"></p-dropdown>
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6" *ngIf="model['wiskind']">
+          <label class="col-lg-4 control-label">所属部门</label>
+          <div class="col-lg-8">
+            <p-dropdown [options]="groups" [(ngModel)]="model['deptid']" [style]="{'width':'100%','height':'35px'}"></p-dropdown>
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">机构负责人</label>
+          <div class="col-lg-8">
+            {{model['isdirector'] | flag}}
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">所属公司</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['customer']['name']" class="form-control" disabled="disabled" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">管理员</label>
+          <div class="col-lg-8">
+            {{model['admin'] | flag}}
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">内部用户</label>
+          <div class="col-lg-8">
+            {{model['wiskind'] | flag}}
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6">
+          <label class="col-lg-4 control-label">还在使用</label>
+          <div class="col-lg-8">
+            {{model['useing'] | flag}}
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6" *ngIf="model['wiskind']">
+          <label class="col-lg-4 control-label">身份核实</label>
+          <div class="col-lg-8">
+            {{model['isv'] | flag}}
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-6" *ngIf="!model['wiskind']">
+          <label class="col-lg-4 control-label">用户等级</label>
+          <div class="col-lg-8">
+            <p-dropdown [options]="blacklist" [(ngModel)]="model['grade']" [style]="{'width':'100%','height':'35px'}"></p-dropdown>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="modifyModel()" class="btn btn-info btn-large">保存</button>
+        </div>
+        <!-- </form> -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改密码</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-4 control-label">新密码</label>
+              <div class="col-sm-8">
+                <input type="password" placeholder="请输入新密码" [(ngModel)]="password['newPassword']" class="form-control" required/>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-4 control-label">密码确认</label>
+              <div class="col-sm-8">
+                <input type="password" placeholder="请再次输入密码" [(ngModel)]="password['newPasswordAgain']" class="form-control" required/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重填</button>
+          <button type="button" (click)="modifyPassword()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<toaster-container></toaster-container>

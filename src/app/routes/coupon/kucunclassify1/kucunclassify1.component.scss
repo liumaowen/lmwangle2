@@ -1,0 +1,15 @@
+.wis-panel {
+  margin-bottom: 21px;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05)
+}
+
+.wis-panel-default {
+  border-color: #cfdbe2;
+}
+
+.wis-panel.wis-panel-default {
+  border-top-width: 3px;
+}

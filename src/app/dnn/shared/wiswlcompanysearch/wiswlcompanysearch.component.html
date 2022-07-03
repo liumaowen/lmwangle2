@@ -1,0 +1,3 @@
+<p-autoComplete [style]="{width:'100%'}" [(ngModel)]="company" inputStyleClass="form-control" [suggestions]="results" [delay]="1000"
+  [minLength]='1' (completeMethod)="search($event)" field="name" placeholder="输入物流公司公司名称" (onSelect)="checkcompany($event)">
+</p-autoComplete>

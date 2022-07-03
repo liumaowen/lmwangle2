@@ -1,0 +1,69 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 公告查看
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="modifyModel()" [disabled]="model['disabled']">保存</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="del()" [disabled]="model['disabled']">删除</button>
+  </div>
+</div>
+
+<div class="modal-body" style="padding-top:0;">
+  <div class="panel panel-default">
+    <div class="panel-body">
+
+      <div class="form-group mb fieldsetdnn col-sm-12">
+        <label class="col-lg-3 control-label">编号</label>
+        <div class="col-lg-9">
+          <input type="text" [(ngModel)]="model['id']" class="form-control" disabled="disabled" />
+        </div>
+      </div>
+
+      <div class="form-group mb fieldsetdnn col-sm-12">
+        <label class="col-lg-3 control-label">标题</label>
+        <div class="col-lg-9">
+          <input type="text" [(ngModel)]="model['title']" class="form-control" [disabled]="model['disabled']" />
+        </div>
+      </div>
+
+      <div class="form-group mb fieldsetdnn col-sm-12">
+        <label class="col-lg-3 control-label">链接地址</label>
+        <div class="col-lg-8">
+          <input type="text" [(ngModel)]="model['url']" class="form-control"  [disabled]="model['disabled']" />
+        </div>
+      </div>
+      <div class="form-group mb fieldsetdnn col-sm-12">
+        <label class="col-lg-3 control-label">有效时间段</label>
+        <div class="col-lg-4  wiskind-calendar">
+          <p-calendar [(ngModel)]="start" placeholder="开始时间" [minDate]="maxDate" [showTime]="true"  [disabled]="model['disabled']"></p-calendar>
+        </div>
+        <div class="col-lg-1">
+          至
+        </div>
+        <div class="col-lg-4  wiskind-calendar">
+          <p-calendar [(ngModel)]="end" placeholder="结束时间" [minDate]="start || maxDate" [showTime]="true"  [disabled]="model['disabled']"></p-calendar>
+        </div>
+      </div>
+      <div class="form-group mb fieldsetdnn col-sm-12">
+        <label class="col-lg-3 control-label">公告内容</label>
+        <div class="col-lg-9">
+          <textarea type="text" [(ngModel)]="model['content']" class="form-control"  [disabled]="model['disabled']"></textarea>
+        </div>
+      </div>
+      <div class="form-group mb fieldsetdnn col-sm-12">
+        <label class="col-lg-3 control-label">推送公告</label>
+        <div class="col-lg-8">
+          <p-inputSwitch onLabel="是" offLabel="否" [(ngModel)]="model['isopen']" styleClass="inputswitchmain"  [disabled]="model['disabled']"></p-inputSwitch>
+        </div>
+      </div>
+      <div class="form-group mb fieldsetdnn col-sm-12">
+        <label class="col-lg-3 control-label">制单人</label>
+        <div class="col-lg-8">
+          {{model.cusername}}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<toaster-container></toaster-container>

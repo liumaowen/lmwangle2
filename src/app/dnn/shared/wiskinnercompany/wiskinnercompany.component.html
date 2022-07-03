@@ -1,0 +1,5 @@
+<!--<p-dropdown [options]="innercompanys" [(ngModel)]="selectedCompany" [filter]="true" filterBy="label,value.name">
+</p-dropdown>-->
+<select [(ngModel)]="selectedCompany" style="width: 100%; display: block; height: 35px;border-radius: 3px;border-color: rgba(0, 0, 0, 0.15);font-size: 13px;" (ngModelChange)="selectedCompany=$event" (onChange)="companychange($event)" [disabled]="isdisabled">
+  <option *ngFor="let item of innercompanys" [value]='item.id'>{{item.name}}</option>
+</select>

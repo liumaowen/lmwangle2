@@ -1,0 +1,35 @@
+.padding-top-bottom-15 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.ui-widget{
+  width: 100%;
+}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button{
+  width: 100%;
+}
+.panel.panel-default{
+  border-top-width:1px;
+}
+.wid100{
+  width: 600px;
+}
+.content-heading{
+  margin-bottom: 0px;
+}
+.wis-auto{
+  width: calc(100% + 40px);
+  margin: 0 -20px;
+  overflow: auto;
+}
+.viewpanelhead {
+  margin-top: 20px;
+  background-color: #ffffff;
+  margin-bottom: 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  border-color: #cfdbe2;
+  border-top-width: 3px;
+}

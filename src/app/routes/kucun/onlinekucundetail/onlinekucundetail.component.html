@@ -1,0 +1,175 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 线上库存明细表{{msg}}
+  <div class="pull-right wide-show">
+    <button type="button" class="btn btn-info btn-bloc" (click)="openclassicmodal()">查询</button>
+    <!-- <button type="button" class="btn btn-info btn-bloc" (click)="sign()">标记</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="addToTuihuo()">新建采购退货单</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="addToFav()">加入收藏夹</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="openFav()">查看收藏夹</button>
+    <button *NgOpera="109" type="button" class="btn btn-info btn-bloc" (cli ck)="lock()">锁货</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="unlock()">解锁</button>
+    <button type="button" (click)="agExport()" class="btn btn-info btn-bloc">导出</button> -->
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="openclassicmodal()">查询</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="sign()">标记</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="addToTuihuo()">新建采购退货单</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="addToFav()">加入收藏夹</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="openFav()">查看收藏夹</a>
+        </li>
+        <li class="divider dropdown-divider" *NgOpera="109"></li>
+        <li role="menuitem" *NgOpera="109">
+          <a class="dropdown-item" (click)="lock()">锁货</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="unlock()">解锁</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="agExport()">导出</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeclassicmodal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default ">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">品名</label>
+                <div class="col-sm-9">
+                  <input (click)="mdmgndialog.show()" class="form-control" style="height:33px;" [(ngModel)]="search['gn']" placeholder="请选择品名" readonly>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6" *ngFor="let item of attrs">
+                <label class="col-sm-3 control-label">{{item.name}}</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="item.options" [(ngModel)]="search[item.value]" [style]="{'width':'100%'}" [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">机构</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="items" [(ngModel)]="search['orgid']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">仓库</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="ckitems" [(ngModel)]="search['cangkuid']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">捆包号</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="search['kunbaohao']" class="form-control" placeholder="请输入捆包号">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">资源号</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="search['grno']" class="form-control" placeholder="请输入资源号">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="select()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--采购退货-->
+<div class="modal" bsModal #tuihuoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="tuihuoclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">采购退货</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">退货原因：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="tuihuo['beizhu']" class="form-control" />
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">收货机构：</span>
+              </label>
+              <div class="col-sm-9">
+                <wisk-orglist [(org)]="tuihuo['sorgid']"></wisk-orglist>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirmtuihuo()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>

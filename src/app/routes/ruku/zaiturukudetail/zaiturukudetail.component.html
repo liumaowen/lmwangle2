@@ -1,0 +1,190 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 在途入库单详情
+  <div class="pull-right">
+    <!--
+    <button type="button" class="btn btn-info btn-bloc" (click)="delRuku(rukuModel['id'])">撤销入库</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="selectall()">全选</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="addFeeDialog()">创建费用</button>
+    -->
+    <button type="button" class="btn btn-info btn-bloc" (click)="shownoticewuliuyuan()">通知物流专员</button>
+  </div> 
+  
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 form-control-static">编号:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">{{rukuModel['billno']}}</div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 form-control-static">总件数:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">{{rukuModel['tcount']}}</div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">总重量:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        {{rukuModel['tweight']}}吨
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">总长度:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        {{rukuModel['tlength']}}米
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">制单人:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">{{rukuModel | agentuser}}</div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">入库时间:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">{{rukuModel['cdate']}}</div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">序号:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        {{rukuModel['id']}}
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">版本:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        {{rukuModel['version']}}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="viewpanel">
+  <p-tabView [style]="{'padding-top': '3px'}" [activeIndex]="tabviewindex" (onChange)="handleChange($event)">
+    <p-tabPanel header="在途明细"
+          [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '2px'}">
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 356)+'px'}" #agGrid 
+      style="width: calc(100% + 22px);height:100%;margin:0 -18px;margin-top:-5px;min-height: 120px;"
+            class="ag-blue" [gridOptions]="gridOptions">
+      </ag-grid-angular>
+    </p-tabPanel>
+
+    <p-tabPanel header="物流竞价明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 356)+'px'}" #agGrid
+        style="width: calc(100% + 22px);height:100%;margin:0 -18px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+        [gridOptions]="wuliuOffergridOptions">
+      </ag-grid-angular>
+    </p-tabPanel>
+  </p-tabView>
+</div>  
+
+
+<toaster-container></toaster-container>
+<!-- 采购费用添加 -->
+<div class="modal" bsModal #feedialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closefeedialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <!--<form name="create" class="form-horizontal">-->
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">费用类型</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="feetype" [(ngModel)]="caigoufee['type']" placeholder="请选择费用类型" [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">总重量</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="caigoufee['tweight']" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">单价</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="caigoufee['price']" class="form-control" (blur)="getjine()" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">金额</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="caigoufee['jine']" class="form-control" (blur)="getprice()" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">费用单位</label>
+              <div class="col-sm-9">
+                <wis-feecompanysearch [(company)]="companyOfProduce"></wis-feecompanysearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">付费单位:</label>
+              <div class="col-sm-9" style="padding-top:1px;padding-bottom:1px;">
+                <app-wiskinnercompany (wiskindcompany)="innercompany($event)"></app-wiskinnercompany>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">记账方向</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="radio1" type="radio" name="accountdirection" value="1" [(ngModel)]="caigoufee['accountdirection']" />
+                  <span class="fa fa-circle"></span>采购</label>
+                <label class="radio-inline c-radio">
+                  <input id="radio2" type="radio" name="accountdirection" value="2" [(ngModel)]="caigoufee['accountdirection']" />
+                  <span class="fa fa-circle"></span>销售</label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">应收/应付</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="in1" type="radio" name="i-radio1" value="1" [(ngModel)]="caigoufee['payorreceive']" />
+                  <span class="fa fa-circle"></span>应付</label>
+                <label class="radio-inline c-radio">
+                  <input id="in2" type="radio" name="i-radio1" value="2" [(ngModel)]="caigoufee['payorreceive']" />
+                  <span class="fa fa-circle"></span>应收</label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="caigoufee['miaoshu']" class="form-control" />
+              </div>
+            </div>
+
+            <!--</form>-->
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="createFee()" class="btn btn-primary btn-large">添加</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

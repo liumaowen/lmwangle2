@@ -1,0 +1,117 @@
+<div class="content-heading">
+    <em class="fa fa-list-alt"></em> MDM分类品名
+    <!-- <div class="pull-right">
+      <button type="button" class="btn btn-info btn-bloc" (click)="queryopen()">查询</button>
+      <button type="button" class="btn btn-info btn-bloc" (click)="addopen()">创建</button>
+    </div> -->
+  </div>
+  <div style="display: flex;">
+    <div class="panel panel-default" style="width:50%;" *ngIf="fenleiData">
+        <div class="form-group mb fieldsetdnn row row col-md-12" style="text-align: right;">
+            <button type="button" (click)="showquerymdmcategory()" class="btn btn-primary btn-large">查询</button>
+        </div>
+        <table class="table table-striped" [mfData]="fenleiData" #mf="mfDataTable" [mfActivePage]="fenleisearch['pagenum']"
+            [mfRowsOnPage]="fenleisearch['pagesize']">
+            <thead>
+            <tr>
+                <th>
+                    <mfDefaultSorter>分类编码</mfDefaultSorter>
+                </th>
+                <th>
+                    <mfDefaultSorter by="categorydesc">分类描述</mfDefaultSorter>
+                </th>
+                <th>
+                    <mfDefaultSorter by="categorystatus">分类状态</mfDefaultSorter>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data" [ngClass]="{'selecttr':categorydesc===item.categorydesc}">
+                <td><a (click)="changecategorycode(item)">{{item.categorycode}}</a></td>
+                <td>{{item.categorydesc}}</td>
+                <td>{{item.categorystatus==='1'?'有效':'无效'}}</td>
+            </tr>
+            </tbody>
+            <tfoot *ngIf="fenleitotalItems>fenleisearch['pagesize']">
+            <tr>
+                <td colspan="10">
+                <pagination class="pagination-md" [itemsPerPage]="fenleisearch['pagesize']" [totalItems]="fenleitotalItems" [maxSize]="8" [(ngModel)]="currentPage"
+                    [rotate]="true" previousText="上一页" nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true"
+                    [rotate]="false" (pageChanged)="pageChanged($event)">
+                </pagination>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="panel panel-default" style="width:50%;" *ngIf="gnData">
+        <div class="form-group mb fieldsetdnn row row col-md-12">
+            <div style="padding:6px 0px;font-size: 16px;font-weight: 600;">{{categorydesc}}</div>
+        </div>
+        <table class="table table-striped" [mfData]="gnData" #mf="mfDataTable" [mfActivePage]="gnsearch['pagenum']"
+            [mfRowsOnPage]="gnsearch['pagesize']">
+            <thead>
+            <tr>
+                <th>
+                    <mfDefaultSorter by="itemcode">品名编码</mfDefaultSorter>
+                </th>
+                <th>
+                    <mfDefaultSorter by="itemname">属性名称</mfDefaultSorter>
+                </th>
+                <th>
+                    <mfDefaultSorter by="itemstatus">品名状态</mfDefaultSorter>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data">
+                <td>{{item.itemcode}}</td>
+                <td>{{item.itemname}}</td>
+                <td>{{item.itemstatus==='1'?'有效':'无效'}}</td>
+            </tr>
+            </tbody>
+            <tfoot *ngIf="gntotalItems>gnsearch['pagesize']">
+            <tr>
+                <td colspan="10">
+                <pagination class="pagination-md" [itemsPerPage]="gnsearch['pagesize']" [totalItems]="gntotalItems" [maxSize]="8" [(ngModel)]="currentgnPage"
+                    [rotate]="true" previousText="上一页" nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true"
+                    [rotate]="false" (pageChanged)="gnpageChanged($event)">
+                </pagination>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+  </div>
+    <!-- 查询分类弹出框 -->
+  <div class="modal" bsModal #querymodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closequerymodify()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">查询</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">
+                  <span style="float: right;">分类描述：</span>
+                </label>
+                <div class="col-sm-9">
+                  <input class="form-control" [(ngModel)]="fenleisearch.categorydesc" placeholder="请输入分类关键字">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="queryfenlei()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <toaster-container></toaster-container>

@@ -1,0 +1,304 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 开票单
+  <div class="pull-right">
+    <!-- <button *ngIf="salebill['status'] | salebillmail" type="button" (click)="addexpress(salebill['status'])" class="btn btn-info btn-sm margin-top-bottom-25">添加快递信息</button> -->
+    <button *ngIf="flag['ismod']" type="button" (click)="modexpress(salebill['status'])" class="btn btn-info btn-sm margin-top-bottom-25">修改快递信息</button>
+    <span *NgOpera="478">
+      <button *ngIf="caiwu && salebill['status'] | salebillverify" type="button" (click)="verify(salebill['id'],salebill['version'])" class="btn btn-info btn-sm margin-top-bottom-25">审核</button>
+      <button type="button" (click)="openInvoiceNoDialog()" class="btn btn-info btn-sm margin-top-bottom-25">编辑发票号码</button>
+      <button *ngIf="caiwu && !(salebill['status'] | salebillverify)" type="button" (click)="disverify(salebill['id'])" class="btn btn-info btn-sm margin-top-bottom-25">弃审</button>
+    </span>
+    <!-- <button *ngIf="flag['modify'] && (salebill['status']|salebillverify)" type="button" (click)="modify(salebill['id'])" class="btn btn-info btn-sm margin-top-bottom-25">修改发票</button> -->
+    <span *NgOpera="478">
+      <button *ngIf="salebill['status'] | salebillverify" type="button" (click)="remove(salebill['id'])" class="btn btn-info btn-sm margin-top-bottom-25">删除发票</button>
+    </span>
+    <button type="button" (click)="reload()" class="btn btn-info btn-sm margin-top-bottom-25">生成出库单</button>
+    <button type="button" (click)="print()" class="btn btn-info btn-sm margin-top-bottom-25">打印出库单</button>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">发票抬头:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{salebill['buyer']['name']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">开票单位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['seller']['name']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">线上发票:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['isonline'] | orderisonline}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['cdate']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票单号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['billno']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票品名:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['billgn']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票类型:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['type'] | saletype}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['cuser']['realname']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-6 col-md-12 ">
+      <div class="row">
+        <div class="col-md-2 col-xs-6 control-label form-control-static">邮寄地址:</div>
+        <div class="col-md-10 col-xs-6 form-control-static">
+          {{salebill['maddress']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">收件人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['shoujianren']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">收件人电话:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['shoujiantel']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">快递公司:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['express']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">快递单号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['expressno']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票号码:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['invoiceno']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">开票日期:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{salebill['invoicedate'] | date:'yyyy-MM-dd'}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-12 col-md-12 ">
+      <div class="row">
+        <div class="col-md-2 col-xs-6 control-label form-control-static">备注:</div>
+        <div class="col-md-10 col-xs-6 form-control-static">
+          <input type="text" class="form-control" [(ngModel)]="salebill['beizhu']" [disabled]="true" style="color:red;"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 459)+'px'}" #agGrid class="ag-blue wis-auto" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+
+<toaster-container></toaster-container>
+
+
+<!--添加快递信息弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加快递信息</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">快递公司</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="expresses" [(ngModel)]="express['express']" [style]="{'width':'100%'}"></p-dropdown>
+                <!-- <wisk-companysearch [(company)]="companyOfName" [isonline]="querys['isonline']"></wisk-companysearch> -->
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">快递单号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="express['expressno']" class="form-control" placeholder="请输入快递单号" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="submit()" class="btn btn-primary btn-large">添加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--修改快递信息弹窗-->
+<div class="modal" bsModal #modifyModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidemodifyModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改快递信息</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">快递公司</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="expresses" [(ngModel)]="express['express']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">快递单号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="express['expressno']" class="form-control" placeholder="请输入快递单号" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="submitmod()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--修改发票品名弹窗-->
+<div class="modal" bsModal #billgnModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidebillgnModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改发票品名</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票品名</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gnlist" [(ngModel)]="params['billgn']" [style]="{'width':'100%'}"></p-dropdown>
+                <!-- <wisk-companysearch [(company)]="companyOfName" [isonline]="querys['isonline']"></wisk-companysearch> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="submitmodify()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--编辑发票号码弹窗-->
+<div class="modal" bsModal #invoiceModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideinvoiceModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">编辑发票号码</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票号码</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="invoice['no']" class="form-control" placeholder="请输入发票号码，逗号分隔" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">开票日期</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="请选择开票日期"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="resetInvoice()" class="btn btn-info btn-large">重置</button>
+          <button type="button" (click)="saveInvoiceNo()" class="btn btn-primary btn-large">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

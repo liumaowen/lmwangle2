@@ -1,0 +1,247 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 采购发票明细表
+  <div class="pull-right wide-show">
+    <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">查询</button>
+    <div class="btn-group" dropdown>
+      <button type="button" tooltip="下载模板请点击右边箭头" placement="bottom" class="btn btn-info btn-sm margin-top-bottom-25" (click)="showHexiaoUploader()">批量核销发票</button>
+      <button id="button-split" type="button" dropdownToggle class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
+              aria-controls="dropdown-split">
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-split" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-split">
+        <li role="menuitem"><a class="dropdown-item" href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/ImportHexiao.xls">下载模板</a>
+        </li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn-info btn-bloc" (click)="open()">新建采购发票单</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="agExport()">导出</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showDialog()">查询</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="open()">新建采购发票单</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="agExport()">导出</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 229)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+<!--查询相关-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">登记日期（始）</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始日期" [maxDate]="startmax" (onSelect)="selectstart()">
+                </p-calendar>
+              </div>
+              <label class="col-md-2 control-label">登记日期（终）</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束日期" [maxDate]="endmax" (onSelect)="selectstart()">
+                </p-calendar>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">发票日期（始）</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="istart" placeholder="开始日期" [maxDate]="istartmax" (onSelect)="selectstart()">
+                </p-calendar>
+              </div>
+              <label class="col-md-2 control-label">发票日期（终）</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="iend" placeholder="结束日期" [maxDate]="iendmax" (onSelect)="selectstart()">
+                </p-calendar>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">审核日期（始）</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="vstart" placeholder="开始日期" [maxDate]="vstartmax" (onSelect)="selectstart()">
+                </p-calendar>
+              </div>
+              <label class="col-md-2 control-label">审核日期（终）</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="vend" placeholder="结束日期" [maxDate]="vendmax" (onSelect)="selectstart()">
+                </p-calendar>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">发票号码</label>
+              <div class="col-md-4">
+                <input type="text" name="invoiceno" [(ngModel)]="search['invoiceno']" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">状态</label>
+              <div class="col-md-4">
+                <ng-select #defaultGroup [allowClear]="true" [items]="statuss" (selected)="selectestatus($event)"
+                  placeholder="请选择状态">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">收货机构</label>
+              <div class="col-md-4">
+                <wisk-orglist [(org)]="search['sorgid']"></wisk-orglist>
+              </div>
+              <label class="col-md-2 control-label">制单人</label>
+              <div class="col-md-4">
+                <wisk-usersearch [(user)]="search['cuserid']"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">单据编号</label>
+              <div class="col-md-4">
+                <input type="text" name="billno" [(ngModel)]="search['billno']" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">供应商</label>
+              <div class="col-md-4">
+                <wisk-suppliersearch [(company)]="search['supplierid']"></wisk-suppliersearch>
+              </div>
+            </div>
+            <div class = "row fieldsetdnn">
+              <label class="col-sm-2 control-label">采购公司</label>
+              <div class="col-sm-10">
+                <p-dropdown [options]="companyIsWiskind" [(ngModel)]="search['buyerid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+            <div class="form-inline text-center">
+              <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--新建-->
+<div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">新建采购发票单</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">供应商</label>
+              <div class="col-sm-9">
+                <wisk-suppliersearch [(company)]="create['supplierid']"></wisk-suppliersearch>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">品名</label>
+              <div class="col-sm-9">
+                <ng-select [allowClear]="true" [items]="gns" (selected)="selectegn($event)" placeholder="请选择品名">
+                </ng-select>
+              </div>
+            </div> -->
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票机构</label>
+              <div class="col-sm-9">
+                <wisk-orglist [(org)]="create['sorgid']"></wisk-orglist>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票号码</label>
+              <div class="col-sm-9">
+                <input type="text" name="invoiceno" [(ngModel)]="create['invoiceno']" class="form-control"
+                  placeholder="请输入发票号码">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票数</label>
+              <div class="col-sm-9">
+                <input type="number" name="count" [(ngModel)]="create['count']" class="form-control"
+                  placeholder="请输入发票数">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票日期</label>
+              <div class="col-sm-9">
+                <p-calendar [(ngModel)]="invoicedate" placeholder="发票日期" [maxDate]="invoicedatemax"
+                  (onSelect)="selectinvoicedate()"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">采购公司</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="companyIsWiskind" [(ngModel)]="create['buyerid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" name="invoiceno" [(ngModel)]="create['beizhu']" class="form-control"
+                  placeholder="请输入备注">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="createinvoice()" class="btn btn-primary btn-large">新建</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--上传发票号、金额信息批量核销发票弹窗-->
+<div class="modal" bsModal #uploaderModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideuploadDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>

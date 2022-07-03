@@ -1,0 +1,202 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 销售退货单
+  <div class="pull-right">
+    <button *ngIf="showflag['verify']" type="button" (click)="remove(xstuihuo['id'])" class="btn btn-info btn-sm margin-top-bottom-25">删除退货单</button>
+    <!-- <button *ngIf="showflag['shenhe']" type="button" (click)="verify(xstuihuo['id'])" class="btn btn-info btn-sm margin-top-bottom-25">审核</button> -->
+    <button type="button" (click)="addFeeDialog()" class="btn btn-info btn-sm margin-top-bottom-25">添加费用</button>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 form-control-static">退货单编号:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">{{xstuihuo['billno']}}</div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 form-control-static">退货单位:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">{{xstuihuo['buyer'] | customer}}</div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">总重量:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        {{xstuihuo['tweight']}}吨
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">总件数:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        {{xstuihuo['tcount']}}件
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">创建时间:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        {{xstuihuo['cdate']}}
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">退货单状态:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        {{xstuihuo['status'] | xstuihuostatus}}
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">总金额:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        {{xstuihuo['tjine'] | number:"1.2-2"}}
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-3 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">费用金额:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">{{xstuihuo['feetjine']}}</div>
+    </div>
+  </div>
+  <div class=" col-lg-12 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-1 col-xs-6 control-label form-control-static">备注:</div>
+      <div class="col-md-11 col-xs-6 form-control-static">
+        <input type="text" placeholder="请输入备注" [(ngModel)]="xstuihuo['beizhu']" (blur)="modify()"
+        class="form-control" [disabled]="!showflag['verify']" />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p-tabView [style]="{margin:'0 -20px','padding-top': '3px'}">
+  <p-tabPanel header="退货单明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 359)+'px'}" #agGrid style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;"
+      class="ag-blue" [gridOptions]="gridOptions">
+    </ag-grid-angular>
+  </p-tabPanel>
+  <p-tabPanel header="费用明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 359)+'px'}" #feeagGrid style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;"
+      class="ag-blue" [gridOptions]="feegridOptions">
+    </ag-grid-angular>
+  </p-tabPanel>
+</p-tabView>
+
+
+<toaster-container></toaster-container>
+
+
+
+<!--  添加费用的弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+        <h4 class="modal-title">添加费用</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <!--<form name="create" class="form-horizontal">-->
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">支付类型</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                <input id="inlineradio1" type="radio" name="isdianfu" value="false" [(ngModel)]="fee['isdianfu']" />
+                <span class="fa fa-circle"></span>普通</label>
+                <label class="radio-inline c-radio">
+                <input id="inlineradio2" type="radio" name="isdianfu" value="true" [(ngModel)]="fee['isdianfu']" />
+                <span class="fa fa-circle"></span>垫付</label>
+              </div>
+            </div> -->
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">费用类型</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="feetype" (onChange)="modifytweight()" [(ngModel)]="fee['type']" placeholder="请选择费用类型" [style]="{'width': '100%'}">
+                </p-dropdown>
+                <!-- <select chosen="" ng-change="modifytweight()" ng-model="fee.type" ng-options="a.code as a.name for a in feetype" width="'100%'"
+  class="chosen-select input-md">
+		              <option value="">请选择费用类型</option>
+		          </select> -->
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">总重量</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="fee['tweight']" class="form-control" [disabled]="expression" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">单价</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="fee['price']" class="form-control" (blur)="getjine()" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">金额</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="fee['jine']" class="form-control" (blur)="getprice()" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">费用单位</label>
+              <div class="col-sm-9">
+                <wis-feecompanysearch [(company)]="companyOfProduce"></wis-feecompanysearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">记账方向</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                <input id="radio1" type="radio" name="accountdirection" value="1" [(ngModel)]="fee['accountdirection']" />
+                <span class="fa fa-circle"></span>采购</label>
+                <label class="radio-inline c-radio">
+                <input id="radio2" type="radio" name="accountdirection" value="2" [(ngModel)]="fee['accountdirection']" />
+                <span class="fa fa-circle"></span>销售</label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">应收/应付</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                <input id="radio3" type="radio" name="payorreceive" value="1" [(ngModel)]="fee['payorreceive']" />
+                <span class="fa fa-circle"></span>应付</label>
+                <label class="radio-inline c-radio">
+                <input id="radio4" type="radio" name="payorreceive" value="2" [(ngModel)]="fee['payorreceive']" />
+                <span class="fa fa-circle"></span>应收</label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="fee['miaoshu']" class="form-control" />
+              </div>
+            </div>
+
+            <!--</form>-->
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="createFee()" class="btn btn-primary btn-large">添加</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

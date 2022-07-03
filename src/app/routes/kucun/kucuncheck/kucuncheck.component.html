@@ -1,0 +1,94 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 库存核对明细表
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">查询</button>
+    <div class="btn-group" dropdown>
+      <button type="button" tooltip="下载模板请点击右边箭头" placement="bottom" class="btn btn-info btn-sm margin-top-bottom-25" (click)="uploadkucun()">库存核对
+      </button>
+      <button id="button-split" type="button" dropdownToggle class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
+        aria-controls="dropdown-split">
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-split" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-split">
+        <li role="menuitem">
+          <a class="dropdown-item" href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/%E5%BA%93%E5%AD%98%E6%A0%B8%E5%AF%B9%E6%A8%A1%E6%9D%BF.xls">下载模板</a>
+        </li>
+      </ul>
+    </div>  
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 229)+'px'}" #agGrid  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+
+<!--查询相关-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">开始日期</label>
+            <div class="col-sm-9">
+              <p-calendar [(ngModel)]="start" placeholder="开始日期" [maxDate]="startmax" (onSelect)="selectstart()"></p-calendar>
+            </div>
+          </div>
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">结束日期</label>
+            <div class="col-sm-9">
+              <p-calendar [(ngModel)]="end" placeholder="结束日期" [maxDate]="endmax" (onSelect)="selectstart()"></p-calendar>
+            </div>
+          </div>
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">捆包号</label>
+            <div class="col-sm-9">
+              <input [(ngModel)]="search['kunbaohao']" class="form-control" placeholder="请输入捆包号">
+            </div>
+          </div>
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">仓库</label>
+            <div class="col-sm-9">
+              <p-dropdown [options]="ckitems" [(ngModel)]="search['cangkuid']" [style]="{'width':'100%'}"
+                [filter]="true" filterBy="label,value.name"></p-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<!--库存核对-->
+<div class="modal" bsModal #checkModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecheckModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam2" [accept]="accept" (select)="uploads2($event)"></wisk-uploader>
+
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container ></toaster-container>

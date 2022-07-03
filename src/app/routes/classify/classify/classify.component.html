@@ -1,0 +1,74 @@
+<div class="content-heading">
+  数据字典管理
+</div>
+
+<div class="col col-md-4">
+  <div class="pr">
+    <div class="clearfix mb">
+      <button (click)="openAddDialog(tree)" [disabled]="cancleAdd" class="btn btn-purple btn-sm mb-compose-button">添加节点</button>
+    </div>
+    <!-- START mailbox list-->
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="well wd-wide">
+          <form>
+            <input class="form-control" #filter (keyup)="filterNodes(filter.value, tree)" placeholder="filter nodes" />
+          </form>
+          <tree-root #tree [nodes]="nodes" [focused]="true" [options]="customTemplateStringOptions" (activate)="active($event.node)"
+            (deactivate)="deactivate($event.node)">
+            <ng-template #treeNodeTemplate let-node>
+              <span title="{{node.data.label}}">{{node.data.name}}</span>
+            </ng-template>
+            <ng-template #loadingTemplate>加载中...</ng-template>
+          </tree-root>
+
+        </div>
+      </div>
+    </div>
+    <!-- END mailbox list-->
+  </div>
+</div>
+<div class="col col-md-8">
+  <router-outlet></router-outlet>
+</div>
+
+<toaster-container></toaster-container>
+
+<!-- 添加节点 -->
+<div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hidecreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加节点</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">名称</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入节点名称" [(ngModel)]="newTreeNode.name" class="form-control" required/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">排序</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入排序序号" [(ngModel)]="newTreeNode.sort" class="form-control" required/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="addNode(tree)" class="btn btn-primary btn-large">添加</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

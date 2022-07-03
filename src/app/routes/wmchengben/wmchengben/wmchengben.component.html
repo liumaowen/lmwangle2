@@ -1,0 +1,17 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 外贸成本核算报表
+  <div class="pull-right">
+    <!-- <span *NgOpera="531">
+      <button type="button" (click)="showmaoli()" class="btn btn-info btn-bloc">毛利计算</button>
+      <button type="button" (click)="calcfpchengben()" class="btn btn-info btn-bloc">加工成本计算</button>
+    </span>
+    <button type="button" (click)="query()" class="btn btn-info btn-bloc">查询</button> -->
+    <!-- <button type="button" (click)="agExport()"  class="btn btn-info btn-bloc">导出</button> -->
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>

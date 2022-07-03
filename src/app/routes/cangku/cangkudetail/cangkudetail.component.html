@@ -1,0 +1,610 @@
+<div class="button-toolbar clearfix mb">
+  <div class="btn-group">
+    <h4>
+      <em class="fa fa-book"></em>
+      仓库明细
+    </h4>
+  </div>
+  <div class="pull-right ml-lg">
+    <button type="button" (click)="showaddmodal()" class="btn btn-info btn-bloc">添加仓储费</button>
+    <button type="button" (click)="modifyModel()" class="btn btn-info btn-sm margin-top-bottom-25">保存修改
+    </button>
+    <button *ngIf="model['isstop']" type="button" (click)="enable()" class="btn btn-info btn-sm margin-top-bottom-25">启用
+    </button>
+    <button *ngIf="!model['isstop']" type="button" (click)="disable()"
+      class="btn btn-info btn-sm margin-top-bottom-25">停用
+    </button>
+    <button type="button" (click)="addchukufeedialog()" class="btn btn-info btn-sm margin-top-bottom-25">出库费添加
+    </button>
+    <button type="button" (click)="addzhuanhuofeedialog()" class="btn btn-info btn-sm margin-top-bottom-25">转货费添加
+    </button>
+    <button type="button" (click)="addguanliandialog()" class="btn btn-info btn-sm margin-top-bottom-25">关联公司添加
+    </button>
+    <button type="button" (click)="addrmodifydialog()" class="btn btn-info btn-sm margin-top-bottom-25">仓库地址修改
+    </button>
+    <button *NgOpera="552" type="button" (click)="modifyUser()" class="btn btn-info btn-sm margin-top-bottom-25">负责人修改
+    </button>
+    <button type="button" (click)="openCangkuTime()" class="btn btn-info btn-sm margin-top-bottom-25">提单时间安排
+    </button>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <!-- <legend></legend>   -->
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">仓库名称:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input type="text" [(ngModel)]="model['name']" class="form-control" required />
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">提货时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input type="text" [(ngModel)]="model['tihuotime']" class="form-control" required />
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">仓库地址:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input type="text" [(ngModel)]="model['address']" class="form-control" required disabled />
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">联系方式:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input type="text" [(ngModel)]="model['contactway']" class="form-control" required />
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">所在区域:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <p-dropdown [options]="areas" [(ngModel)]="model['areaid']" [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">所在省份:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <p-dropdown [options]="provinces" [(ngModel)]="model['proviceid']" [style]="{'width':'100%'}" (onChange)="getcity1()"></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">所在城市:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <p-dropdown [options]="citys" [(ngModel)]="model['cityid']" [style]="{'width':'100%'}" (onChange)="getcounty1()"></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">所在区县:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <p-dropdown [options]="countys" [(ngModel)]="model['countryid']" [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">传真号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input type="text" [(ngModel)]="model['fax']" class="form-control" required />
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">负责人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input type="text" [(ngModel)]="model['user']['realname']" class="form-control" required />
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">是否协议库:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <p-dropdown [options]="isxieyi" [(ngModel)]="model['isxieyi']" [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">是否签订协议:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <p-dropdown [options]="isxieyi" [(ngModel)]="model['issignxieyi']" [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">是否允许转货:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <p-dropdown [options]="iszhuanhuo" [(ngModel)]="model['zhuanhuo']" [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">是否允许加工:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <p-dropdown [options]="iszhuanhuo" [(ngModel)]="model['isproduce']" [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">仓库性质:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <p-dropdown [options]="cangkutype" [(ngModel)]="model['type']" [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">特殊提醒:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input type="text" [(ngModel)]="model['warn']" class="form-control" required />
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="viewpanel">
+    <p-tabView [style]="{'padding-top': '3px'}">
+      <p-tabPanel header="出库费"
+        [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 508)+'px'}" #agGrid
+          style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+          [gridOptions]="gridOptions">
+        </ag-grid-angular>
+      </p-tabPanel>
+      <p-tabPanel header="转货费" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 508)+'px'}" #agGridq
+          style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+          [gridOptions]="gridOptions1">
+        </ag-grid-angular>
+      </p-tabPanel>
+      <p-tabPanel header="关联公司" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 508)+'px'}" #agGridq
+          style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+          [gridOptions]="gridOptions2">
+        </ag-grid-angular>
+      </p-tabPanel>
+      <p-tabPanel header="仓储费" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 508)+'px'}" #agGridq
+          style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+          [gridOptions]="gridOptions3">
+        </ag-grid-angular>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+<toaster-container></toaster-container>
+
+<!-- 仓库地址修改 -->
+<div class="modal" bsModal #addrmodifyModal="bs-modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hideaddrmodifydialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">地址选择</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <div class="col-sm-12">
+                <p-autoComplete placeholder="请输入详细地址" name="addr" [(ngModel)]="model['detail']" [suggestions]="results"   
+                (completeMethod)="searchplace($event)" [style]="{'width':'85%'}" [inputStyle]="{'width':'85%'}" field="name" 
+                dataKey="id" [dropdown]="false"  
+                (onSelect)="selectedaddress(model['detail']['name'])">
+               </p-autoComplete>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <div class="col-sm-12">
+                <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                  <p-dropdown [options]="provinces1" [(ngModel)]="model['startprovinceid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省份'" (onChange)="getcity()">
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                  <p-dropdown [options]="citys1" [(ngModel)]="model['startcityid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty()">
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                  <p-dropdown [options]="countys1" [(ngModel)]="model['startcountyid']"
+                    [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="modifyaddr()" class="btn btn-primary btn-large">选择</button>
+        <!-- <button type="button" (click)="hidefuzerencreateModal()" class="btn btn-primary btn-large">取消</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加负责人-->
+<div class="modal" bsModal #fuzerencreateModal="bs-modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hidefuzerencreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">人员选择</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <div class="col-sm-12">
+                <wisk-usersearch [(user)]="suser"></wisk-usersearch>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="addfuzerencreate()" class="btn btn-primary btn-large">选择</button>
+        <button type="button" (click)="hidefuzerencreateModal()" class="btn btn-primary btn-large">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加关联公司-->
+<div class="modal" bsModal #guanliancreateModal="bs-modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hideguanliancreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">公司选择</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <div class="col-sm-12">
+                <wis-feecompanysearch [(company)]="companyOfProduce"></wis-feecompanysearch>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="addguanliancreate()" class="btn btn-primary btn-large">选择</button>
+        <!-- <button type="button" (click)="hidefuzerencreateModal()" class="btn btn-primary btn-large">取消</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--出库费创建-->
+<div class="modal" bsModal #chukufeecreateModal="bs-modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hidechukufeecreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">出库费创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label"><span style="float: right;">品名</span></label>
+              <div class="col-sm-9">
+                <input (click)="showselectgn(0)" [(ngModel)]="chukufee['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label"><span style="float: right;">产地</span></label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="chandioptions" [disabled]="!chukufee['gn']" [(ngModel)]="chukufee['chandiname']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">品名</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown (onChange)="getChandiByGn(chukufee['gnid'])" [(ngModel)]="chukufee['gnid']" [options]="gns"
+                  placeholder="请选择品名" [style]="{'width': '100%'}"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">产地</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [(ngModel)]="chukufee['chandiid']" [options]="chandis" placeholder="请选择产地"
+                  [style]="{'width': '100%'}"></p-dropdown>
+              </div>
+            </div> -->
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">现结费用</span>
+              </label>
+              <div class="col-sm-9">
+                <input [(ngModel)]="chukufee['nowfee']" class="form-control" placeholder="请输入现结费用"
+                  (blur)="chukufeeguanlian()" required>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">月结费用</span>
+              </label>
+              <div class="col-sm-9">
+                <input [(ngModel)]="chukufee['monthfee']" class="form-control" placeholder="请输入月结费用" required>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">现结代运费用</span>
+              </label>
+              <div class="col-sm-9">
+                <input [disabled]="isinput" [(ngModel)]="chukufee['nowdaiyunfee']" class="form-control"
+                  placeholder="请输入月结费用" required>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="selectNull()" class="btn btn-primary btn-large">重填</button>
+        <button type="button" (click)="addchukufee()" class="btn btn-primary btn-large">创建</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--转货权费用添加-->
+<div class="modal" bsModal #zhuanhuofeecreateModal="bs-modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hidezhuanhuofeecreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">转货权费用创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label"><span style="float: right;">品名</span></label>
+              <div class="col-sm-9">
+                <input (click)="showselectgn(1)" [(ngModel)]="zhuanhuofee['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label"><span style="float: right;">产地</span></label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="chandioptions" [disabled]="!zhuanhuofee['gn']" [(ngModel)]="zhuanhuofee['chandiname']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">品名</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown (onChange)="getChandiByGn(zhuanhuofee['gnid'])" [(ngModel)]="zhuanhuofee['gnid']"
+                  [options]="gns" placeholder="请选择品名" [style]="{'width': '100%'}"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">产地</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [(ngModel)]="zhuanhuofee['chandiid']" [options]="chandis" placeholder="请选择产地"
+                  [style]="{'width': '100%'}"></p-dropdown>
+              </div>
+            </div> -->
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">现结费用</span>
+              </label>
+              <div class="col-sm-9">
+                <input [(ngModel)]="zhuanhuofee['nowfee']" class="form-control" placeholder="请输入现结费用" required>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">月结费用</span>
+              </label>
+              <div class="col-sm-9">
+                <input [(ngModel)]="zhuanhuofee['monthfee']" class="form-control" placeholder="请输入月结费用" required>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+        <button type="button" (click)="addzhuanhuofee()" class="btn btn-primary btn-large">创建</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--创建或者修改弹窗-->
+<div class="modal" bsModal #addModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideaddModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加仓储费核算标准</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default ">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12">
+                <label class="col-sm-3 col-xs-12 control-label">结算方式：</label>
+                <div class="col-sm-3 col-xs-12">
+                  <label class="radio-inline c-radio">
+                    <input type="radio" [value]="0" [name]="0" [(ngModel)]="settletype" />
+                    <span class="fa fa-circle"></span>现结
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input type="radio" [value]="1" [name]="1" [(ngModel)]="settletype" />
+                    <span class="fa fa-circle"></span>月结
+                  </label>
+                </div>
+              </div>
+              <div class="row col-sm-12  col-xs-12">
+                <div class="col-sm-6 col-xs-12 text-center">
+                  <label class="col-sm-12 control-label form-control-static required">时间范围</label>
+                </div>
+                <div class="col-sm-2 col-xs-12 text-center">
+                  <label class="col-sm-12 control-label form-control-static required">核算单价</label>
+                </div>
+                <div class="col-sm-2 col-xs-12 text-center">
+                  <label class="col-sm-12 control-label form-control-static required">核算单位</label>
+                </div>
+              </div>
+              <div class="row mb col-sm-12 col-xs-12" *ngFor="let storagefee of storagefeelist;let i = index">
+                <div class="col-sm-6 col-xs-12" style="display: flex;align-items: center;">
+                  <div class="col-sm-4 col-xs-5">
+                    <p-dropdown [options]="mintimes" [(ngModel)]="storagefee['mintime']" [disabled]="storagefee['id']"
+                      [style]="{'width':'100%'}" placeholder="最小值">
+                    </p-dropdown>
+                  </div>
+                  <div class="col-sm-4 text-center col-xs-2" style="display: flex;justify-content: space-between;">
+                    <span>≤</span>
+                    <span>X</span>
+                    <span>≤</span>
+                  </div>
+                  <div class="col-sm-4 col-xs-5">
+                    <p-dropdown [options]="maxtimes" [(ngModel)]="storagefee['maxtime']" [disabled]="storagefee['id']"
+                      [style]="{'width':'100%'}" placeholder="最大值">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-sm-2 col-xs-2">
+                  <input placeholder="核算单价" [(ngModel)]="storagefee['price']" [disabled]="storagefee['id']"
+                    class="form-control" />
+                </div>
+                <div class="col-sm-2 col-xs-2">
+                  <p-dropdown [options]="units" [(ngModel)]="storagefee['unit']" [disabled]="storagefee['id']"
+                    [style]="{'width':'100%'}" placeholder="核算单位">
+                  </p-dropdown>
+                </div>
+                <div class="col-sm-1 col-xs-12 text-center">
+                  <label class="col-sm-12 col-xs-12 control-label form-control-static">
+                    <i class="fa fa-trash-o fa-lg"
+                      (click)="storagefee['id']?del(storagefee['id'],i):deletestoragefee(i)"></i>
+                  </label>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12" style="border-bottom: 1px dashed #eee;">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12" style="border-bottom: 1px dashed #eee;"></div>
+              <div class="row mb col-sm-12 col-xs-12" style="display: flex;justify-content: flex-end;">
+                <div class="col-sm-2 text-center">
+                  <label class="col-sm-12 control-label form-control-static" style="color: #23b7e5;"
+                    (click)="addstoragefee()">
+                    <a style="text-decoration: none;">+添加区间</a>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="add()" class="btn btn-primary btn-large">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>

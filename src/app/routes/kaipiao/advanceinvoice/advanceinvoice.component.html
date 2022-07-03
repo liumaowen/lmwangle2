@@ -1,0 +1,248 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 销售提前开票明细表
+  <div class="pull-right wide-show">
+    <button type="button" (click)="showaddmodal()" class="btn btn-info btn-bloc">创建</button>
+    <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
+    <button type="button" (click)="agExport()" class="btn btn-info btn-bloc">导出</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showaddmodal()">创建</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="openQueryDialog()">查询</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="agExport()">导出</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">制单开始时间：</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="end || maxDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">制单结束时间：</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate" [minDate]="start"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">审核开始时间：</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="vstart" placeholder="审核开始时间" [maxDate]="vend || maxDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">审核结束时间：</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="vend" placeholder="审核结束时间" [maxDate]="maxDate" [minDate]="vstart"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">客户名称：</label>
+              <div class="col-sm-9">
+                <wisk-companysearch [(company)]="customer"></wisk-companysearch>
+                <!-- <wis-wiswlcompanysearch [(company)]="wlcustomer"></wis-wiswlcompanysearch> -->
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">开票公司：</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="sellersResult" [(ngModel)]="requestparams['sellerid']" [style]="{'width':'100%','font-size':'15px'}"
+                  [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">机构：</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="orgs" [(ngModel)]="requestparams['orgid']" [style]="{'width':'100%','font-size':'15px'}" [filter]="true"
+                  filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">业务员：</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="saleman"></wisk-usersearch>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 创建弹窗 -->
+<div class="modal" bsModal #kaipiaoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidekaipiaoModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">买方公司</label>
+              <div class="col-sm-9">
+                <wisk-findbysale [(company)]="companys" (select)="showaddr($event)"></wisk-findbysale>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">开票（卖方）公司</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="sellers" [(ngModel)]="params['sellerid']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div> -->
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票类型</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="types" [(ngModel)]="params['type']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">提前开票原因</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="params['reason']" class="form-control" placeholder="请输入提前开票原因" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">保证完成日期</label>
+              <div class="col-sm-9">
+                <p-calendar [(ngModel)]="finishdate" placeholder="保证完成日期" [minDate]="minDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">邮寄地址</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="addrs" [(ngModel)]="params['maddressid']" [style]="{'width':'calc(100% - 46px)'}"></p-dropdown>
+                <span class="input-group-btn" style="display:-webkit-inline-box">
+                  <button type="button" class="btn btn-default" (click)="addAddrDialog()">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div style="color:red;font-size:14px;padding-left:20px;padding-right:20px;">**山东公司推荐快递为EMS、上海公司推荐快递为中通，成都、佛山公司推荐快递为顺丰，相应公司的其他快递视为客户指定（到付），请慎重选择</div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">快递公司</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="expresses" [(ngModel)]="params['express']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="params['beizhu']" class="form-control" placeholder="请输入备注说明" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="submitkaipiao()" class="btn btn-primary btn-large">开票</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加地址弹窗-->
+<div class="modal" bsModal #addrModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideaddrModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加地址</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <label class="col-sm-3 control-label">地址：</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="provinces" [(ngModel)]="addr['provinceid']" [style]="{'width':'100%','font-size':'15px'}" (onChange)="getcity()"
+                  [placeholder]="'请选择省份'"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label"></label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="citys" [(ngModel)]="addr['cityid']" [style]="{'width':'100%','font-size':'15px'}" (onChange)="getcounty()"
+                  [placeholder]="'请选择市'"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label"></label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="countys" [(ngModel)]="addr['countyid']" [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县/区'"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <label class="col-sm-3 control-label">详细地址：</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入详细地址" [(ngModel)]="addr['detail']" class="form-control" required/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <label class="col-sm-3 control-label">联系人：</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入联系人" [(ngModel)]="addr['lianxiren']" class="form-control" required/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 ">
+              <label class="col-sm-3 control-label">联系方式：</label>
+              <div class="col-sm-9">
+                <input type="number" minlength="11" maxlength="11" placeholder="请输入联系方式" [(ngModel)]="addr['phone']" class="form-control"
+                  required/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="addAddr()" class="btn btn-primary btn-large">添加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

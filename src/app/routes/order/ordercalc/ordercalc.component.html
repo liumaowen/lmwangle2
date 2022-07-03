@@ -1,0 +1,157 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 订单运费管理{{msg['msg']}}
+  <div class="pull-right wide-show">
+    <button type="button" (click)="impyunfee()" class="btn btn-info btn-bloc">导出</button>
+    <button *NgOpera="141" type="button" (click)="addyunfee()" class="btn btn-info btn-bloc">添加运费</button>
+    <button type="button" (click)="saveandsubmit()" class="btn btn-info btn-bloc">提交订单</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="impyunfee()">导出</a>
+        </li>
+        <li *NgOpera="141" class="divider dropdown-divider"></li>
+        <li *NgOpera="141" role="menuitem">
+          <a class="dropdown-item" (click)="addyunfee()">添加运费</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="saveandsubmit()">提交订单</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--添加运费弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="coles()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加运费</h4>
+      </div>
+      <form id=formId #refForm="ngForm" (ngSubmit)="submitYunfee()">
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">对外运费单价</label>
+                <div class="col-sm-9">
+                  <input type="text" name="peryunprice" [(ngModel)]="yunfeeModel['peryunprice']" class="form-control" (blur)="calctprice()"
+                    placeholder="请输入对外运费单价" required/>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">实际运费单价</label>
+                <div class="col-sm-9">
+                  <input type="text" name="shijiyunprice" [(ngModel)]="yunfeeModel['shijiyunprice']" class="form-control" placeholder="请输入实际运费单价"
+                    required/>
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">运费总价</label>
+                <div class="col-sm-9">
+                  <input type="text" name="tprice" [(ngModel)]="yunfeeModel['tprice']" class="form-control" (blur)="calcperprice()" placeholder="请输入运费总价"
+                    required/>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">运输类型</label>
+                <div class="col-sm-9">
+                  <p-dropdown [options]="transportType" name="transporttype" [(ngModel)]="yunfeeModel['transporttype']" [style]="{'width':'100%','font-size':'15px'}"
+                    [filter]="true" filterBy="label,value.name"></p-dropdown>
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">运费单位</label>
+                <div class="col-sm-9">
+                  <wis-feecompanysearch name="companyOfYun" [(company)]="companyOfYun"></wis-feecompanysearch>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">对外出库费单价</label>
+                <div class="col-sm-9">
+                  <input type="text" name="perchukuprice" [(ngModel)]="yunfeeModel['perchukuprice']" class="form-control" placeholder="请输入对外出库费单价"
+                    disabled/>
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">实际出库费单价</label>
+                <div class="col-sm-9">
+                  <input type="text" name="shijichukuprice" [(ngModel)]="yunfeeModel['shijichukuprice']" class="form-control" placeholder="请输入实际出库费单价"
+                    required/>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">出库费结算单位</label>
+                <div class="col-sm-9">
+                  <wis-feecompanysearch name="companyOfChuku" [(company)]="companyOfChuku"></wis-feecompanysearch>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="submit" [disabled]="!refForm.form.valid" class="btn btn-primary btn-large">添加</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- 修改 -->
+<div class="modal" bsModal #editModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideeditModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <div class="col-sm-4" style="padding-left:15px;">
+                <p-dropdown [options]="provinces" [(ngModel)]="areamiddle['provinceid']" 
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省份'" (onChange)="getcity()">
+                </p-dropdown>
+              </div>
+              <div class="col-sm-4" style="padding-left:15px;">
+                <p-dropdown [options]="citys" [(ngModel)]="areamiddle['cityid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty()">
+                </p-dropdown>
+              </div>
+              <div class="col-sm-4" style="padding-left:15px;">
+                <p-dropdown [options]="countys" [(ngModel)]="areamiddle['countyid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="save()" class="btn btn-primary btn-large">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

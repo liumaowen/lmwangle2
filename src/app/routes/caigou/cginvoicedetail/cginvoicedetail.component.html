@@ -1,0 +1,312 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">采购发票详情</em>
+  <div class="pull-right">
+    <button *ngIf="flag['tijiao']" type="button" class="btn btn-info btn-bloc" (click)="opendet()">引入明细</button>
+    <button *ngIf="flag['tijiao']" class="btn btn-info btn-bloc" type="button" (click)="submitcg()">提交审核</button>
+    <button *ngIf="flag['shenhe'] && caiwu"class="btn btn-info btn-bloc" type="button" (click)="verify()">审核</button>
+    <button *ngIf="flag['shenhe'] && caiwu" class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;"
+      type="button" (click)="back()">回退</button>
+    <button *ngIf="flag['qishen'] && caiwu" class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;"
+      type="button" (click)="refuse()">弃审</button>
+    <button *ngIf="flag['tijiao']" class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;"
+      type="button" (click)="deleteinvoice()">删除发票</button>
+    <button *ngIf="flag['tijiao']" class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;"
+      type="button" (click)="deleteinvoiceDet()">批量删除明细</button>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row ">
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">供应商：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['supplier'] | customer}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">开户行：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['bank']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">账号：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['banknum']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">税号：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['tax']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row ">
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">单据编号：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['billno']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票号码：</div>
+        <div class="col-md-8 col-xs-6 form-control-static" (click)="openinvoiceno()">{{cginvoice['invoiceno']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">登记时间：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['cdate']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票日期：</div>
+        <div class="col-md-8 col-xs-6 form-control-static" (click)="openinvoicedate()">{{cginvoice['invoicedate']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票金额：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['tjine']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票数：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['count']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">生成凭证：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['ispingzheng']?'是':'否'}}</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">采购公司：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['buyer'] | customer}}</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static" tooltip="上传的含税金额减去采购发票详情中发票金额差异">金额差异：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{cginvoice['tjinedif']}}</div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-12 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">备注：</div>
+        <div class="col-md-8 col-xs-6 form-control-static" (click)="openbeizhu()">{{cginvoice['beizhu']}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 388)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<div class="modal" bsModal #weightModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="weightclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改开票量</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">开票量：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modifyweight['kaipiaoweight']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirmweight()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #jineModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="jineclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改开票金额</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">开票金额：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modifyjine['kaipiaojine']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirmjine()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>
+<!--添加加工费弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="coles()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改金额</h4>
+      </div>
+      <form id=formId (ngSubmit)="update()">
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-4 control-label">含税金额</label>
+                <div class="col-sm-8">
+                  <input type="text" name="jine" [(ngModel)]="det['jine']" class="form-control" (blur)="caljine()"
+                    placeholder="请输入含税金额"/>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-4 control-label">不含税金额</label>
+                <div class="col-sm-8">
+                  <input type="text" name="bjine" [(ngModel)]="det['bjine']" class="form-control" (blur)="caltax()" placeholder="请输入不含税金额"/>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-4 control-label">税额</label>
+                <div class="col-sm-8">
+                  <input type="text" name="tax" [(ngModel)]="det['tax']" class="form-control" placeholder="请输入税额"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <button type="button" (click)="resetdet()" class="btn btn-info btn-large">重选</button>
+            <button type="submit" class="btn btn-primary btn-large">修改</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- 修改备注 -->
+<div class="modal" bsModal #beizhuModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="beizhuclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改备注</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">备注：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="beizhu['text']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="modifybeizhu()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改备注 -->
+<div class="modal" bsModal #invoicenoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="invoicenoclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改发票号码</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">发票号码：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="invoice['text']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="modifyinvoiceno()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改发票日期 -->
+<div class="modal" bsModal #invoiceDateModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="invoicedateclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改发票号码</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票日期</label>
+              <div class="col-sm-9">
+                <p-calendar [(ngModel)]="invoicedate" placeholder="发票日期" [maxDate]="invoicedatemax"
+                  (onSelect)="selectinvoicedate()"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="modifyinvoicedate()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>

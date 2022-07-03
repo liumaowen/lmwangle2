@@ -1,0 +1,69 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left"> 填写加工信息</h4>
+  <div class="pull-right">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <!-- <button type="button" class="btn btn-info btn-bloc" (click)="checkAll()">全选</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="add()">引入</button> -->
+  </div>
+</div>
+<div class="modal-body">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row fieldsetdnn">
+        <label class="col-sm-3 control-label">加工类型</label>
+        <div class="col-sm-9" style="padding-left: 0;">
+          <ng-select [allowClear]="true" [items]="types" (selected)="selectetype($event)" placeholder="请选择加工类型">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row fieldsetdnn">
+        <label class="col-sm-3 control-label">单包重量不超过(吨)</label>
+        <div class="col-sm-9" style="padding-left: 0;">
+          <input type="number" name="singleweight" [(ngModel)]="taskjson['singleweight']" class="form-control" placeholder="请输入单包重量"/>
+        </div>
+      </div>
+      <div class="row fieldsetdnn" *ngIf="!iszong">
+        <label class="col-sm-3 control-label">横切规格</label>
+        <div class="col-sm-9" style="padding-left: 0;">
+          <input type="text" name="guige" [(ngModel)]="taskjson['hqguige']" class="form-control">
+        </div>
+      </div>
+      <div class="row fieldsetdnn">
+        <label class="col-sm-3 control-label">打包要求</label>
+        <div class="col-sm-9" style="padding-left: 0;">
+          <textarea name="yaoqiu" cols="30" rows="3" [(ngModel)]="taskjson['yaoqiu']" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="row fieldsetdnn" *ngIf="iszong">
+        <label class="col-sm-3 control-label">纵剪宽度</label>
+        <div class="col-sm-2" style="padding-left: 0;">
+          <input type="number" name="slittingguige" [(ngModel)]="slitjson['slittingguige']" class="form-control">
+        </div>
+        <label class="col-sm-3 control-label">纵剪数量</label>
+        <div class="col-sm-2" style="padding-left: 0;">
+          <input type="number" name="slittingcount" [(ngModel)]="slitjson['slittingcount']" class="form-control">
+        </div>
+        <button type="button" (click)="addslit()" class="btn btn-primary btn-small">添加</button>
+      </div>
+      <div class="" *ngIf="iszong">
+        <div *ngFor="let item of slitlist;let i = index">
+          <div class="col-sm-5" style="padding-left:30px;">
+            {{item['slittingguige']}}
+          </div>
+          <div class="col-sm-5" style="padding-left:40px;">
+            {{item['slittingcount']}}
+          </div>
+          <a (click)="delitem(i)">删除</a>
+        </div>
+        <div *ngIf="slitlist.length<1" style="text-align: center;padding: 10px;">没有纵剪明细！</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-inline text-center">
+    <button type="button" (click)="importBm()" class="btn btn-primary btn-large">确定</button>
+  </div>
+</div>
+<div class="modal-footer">
+</div>

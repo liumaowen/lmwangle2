@@ -1,0 +1,162 @@
+<div class="button-toolbar clearfix mb">
+  <div class="btn-group">
+    <h4>
+      <em class="fa fa-book"></em>内部采购发票明细&nbsp;&nbsp;&nbsp;</h4>
+  </div>
+  <div class="pull-right ml-lg">
+    <button type="button" (click)="removebill()" class="btn btn-info btn-sm margin-top-bottom-25"
+    style="background-color:red;border-color:red;color:#ffffff;">删除主表</button>
+    <button type="button" (click)="detailBatchDel()" class="btn btn-info btn-sm margin-top-bottom-25"
+    style="background-color:red;border-color:red;color:#ffffff;">删除明细</button>
+    <button  type="button" (click)="showDetmodify()" class="btn btn-info btn-bloc">修改</button>
+    <button *ngIf="!neicaigoufapiao['vuserid']" type="button" (click)="submitVuser()" class="btn btn-info btn-bloc">提交审核</button>
+    <button *ngIf="neicaigoufapiao['vuserid']" type="button" (click)="verifybill()" class="btn btn-info btn-bloc">审核</button>
+    <button *ngIf="neicaigoufapiao['vuserid']" type="button" (click)="cancelVerify()" class="btn btn-info btn-bloc">弃审</button>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">开票单位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{neicaigoufapiao['kaipiaocustomer']?.name}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">收票单位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{neicaigoufapiao['receivepiaocustomer']?.name}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">单号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{neicaigoufapiao['billno']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{neicaigoufapiao | agentuser}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">创建时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{neicaigoufapiao['cdate']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{neicaigoufapiao['vuser'] ? neicaigoufapiao['vuser']['realname'] : null}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">是否审核:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{neicaigoufapiao['isv']|flag}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{neicaigoufapiao['vdate']}}
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">备注:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input class="form-control" type="text" [(ngModel)]="neicaigoufapiao['beizhu']" >
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{neicaigoufapiao['invoiceno'] ? neicaigoufapiao['invoiceno'] : null}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">发票号日期:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{neicaigoufapiao['invoicedate']}}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div>
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 380)+'px','min-height':200+'px'}" #agGrid
+    style="width: calc(100% + 40px);height:100%;margin:0 -20px;padding: 0 20px;" class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+
+  <toaster-container></toaster-container>
+</div>
+
+<!--  修改页面 -->
+<div class="modal" bsModal #detmodifyModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDetmodify()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改信息</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default" style="overflow:'inherit'">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12" >
+              <label class="col-sm-3 control-label">开票品名</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gnlists" [(ngModel)]="detparams['billgn']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+
+          
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" >
+              <label class="col-sm-3 control-label">发票号</label>
+              <div class="col-sm-9">
+                <input type="number" class="form-control" [(ngModel)]="detparams['fapiaohao']" />
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="resetparams()" class="btn btn-primary btn-large">重置</button>
+            <button type="button" (click)="modifydetail()" class="btn btn-primary btn-large">修改</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

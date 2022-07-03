@@ -1,0 +1,6 @@
+<ul class="starul">
+  <li *ngFor="let star of stars;let i = index;" class="starli" (click)="onClick(i)">
+    <img [width]="width" src="assets/img/{{star?'icon-star_c.png':'icon-star_n.png'}}">
+  </li>
+  <li class="starli" [ngStyle]="{'font-size':readonly ? '14px' : '16px' }">{{starsRating}}分</li>
+</ul>

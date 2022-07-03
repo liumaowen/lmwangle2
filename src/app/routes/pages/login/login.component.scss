@@ -1,0 +1,24 @@
+.flex-weight{
+    flex: 1;
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex:1;
+    -o-box-flex:1;
+}
+.row-flex {
+	display:-webkit-box;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+	-webkit-box-orient:horizontal;
+    -webkit-box-direction:normal;
+    -moz-box-orient:horizontal;
+    -moz-box-direction:normal;
+    flex-direction:row;
+    flex-flow:row;
+    -webkit-flex-direction:row;
+	box-sizing:border-box;
+}

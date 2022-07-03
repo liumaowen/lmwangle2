@@ -1,0 +1,74 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 我的订单
+</div>
+
+<div class="panel panel-default" *ngIf="singleData">
+  <table class="table table-striped" [mfData]="singleData" #mf="mfDataTable" [mfActivePage]="search['pagenum']" [mfRowsOnPage]="search['pagesize']">
+    <tbody>
+      <tr *ngFor="let item of mf.data">
+        <td class="row" style="width:100%;">
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>编号:</label>
+            <a *ngIf="!item['isproduct']" [routerLink]="['/businessorder', item.id]">{{item.billno}}</a>
+            <a *ngIf="item['isproduct']" [routerLink]="['/proorder', item.id]">{{item.billno}}</a>
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>状态:</label> {{item.status | orderstatus:item['isonline']}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>类型:</label> {{item | product}}
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>支付类型:</label> {{item | paytype}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>运输类型:</label> {{item['type'] | orderyunshutype}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>日期:</label> {{item['cdate']}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总运费:</label> {{item.yuntprice | price}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总出库费:</label> {{item.chukujine | price}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总价格:</label> {{item.tjine | price}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总重量:</label> {{item.tweight}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总长度:</label> {{item.tlength}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总件数:</label> {{item.tcount}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>客户单位:</label> {{item.buyer | customer}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>供应单位:</label> {{item.seller | customer}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>制单人:</label> {{item | agentuser}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <!-- <label style="color: red;font-weight: bold;" countdown [model]="item"></label> -->
+            <label style="color: red;font-weight: bold;" countdown [model]="item"></label>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>search['pagesize']">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="8" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+            nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+          <!-- <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator> -->
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

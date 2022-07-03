@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">引用费用 </h4>
+  {{msgshow['msg']}}
+  <div class="pull-right">
+    <a target="_blank" href="#/feefukuandetreporter">
+      <button type="button"  class="btn btn-info btn-bloc">转到费用付款详情表</button>
+    </a>
+    <button type="button" (click)="checkAll()" class="btn btn-info btn-bloc">全选</button>
+    <button *ngIf="flag['next']" type="button" (click)="next()" class="btn btn-info btn-bloc">下一步</button>
+    <button *ngIf="flag['import']" type="button" (click)="importFee()" class="btn btn-info btn-bloc">引入</button>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+<div class="modal-body">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+    class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+<div class="modal-footer">
+  <div class="form-inline text-center">
+
+  </div>
+</div>
+
+<toaster-container></toaster-container>

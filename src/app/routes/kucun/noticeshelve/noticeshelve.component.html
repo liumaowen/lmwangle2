@@ -1,0 +1,47 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 上架下架时序表
+</div>
+
+<div class="panel panel-default" *ngIf="singleData">
+  <table class="table table-striped" [mfData]="singleData" #mf="mfDataTable" [mfActivePage]="search['pageNum']" [mfRowsOnPage]="search['pageSize']">
+    <tbody>
+      <tr *ngFor="let item of mf.data">
+        <td class="row" style="width:100%;">
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>编号:</label>
+            <a [routerLink]="['/pricekucundateil', item.id]">{{item.billno}}</a>
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>机构:</label> {{item.org.name}}
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>制单人:</label> {{item | agentuser}}
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>制单日期:</label> {{item.cdate}}
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>审核人:</label> {{item.vuser?item.vuser['realname']:''}}
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>审核日期:</label> {{item.vdate}}
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>是否审核：</label> {{item['isv'] === true?'已审':item['isv'] === false?'拒审':'未审'}}
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>{{item['isupdown']?'上架':'下架'}}</label> 
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>search['pageSize']">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="8" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+            nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

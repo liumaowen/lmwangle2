@@ -1,0 +1,38 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">仓库明细表</em>
+  <div class="pull-right">
+    <button class="btn btn-info btn-bloc" type="button" (click)="openquery()">查询</button>
+    <button type="button" (click)="agExport()"  class="btn btn-info btn-bloc">导出</button>
+  </div>
+</div>
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">仓库名称</label>
+              <div class="col-sm-9">
+                <input type="text" name="name" [(ngModel)]="search['name']" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button" class="btn btn-primary btn-large" (click)="query()">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+<div class="content-heading">
+    <em class="fa fa-book"></em> 提货单
+    <div class="pull-right">
+      <button type="button" (click)="selectall()" class="btn btn-info btn-sm margin-top-bottom-25">全选</button>
+        <button *ngIf="showflag.shiti" type="button" (click)="finishtihuo()" class="btn btn-info btn-sm margin-top-bottom-25">实提
+        </button>
+      <button *ngIf="showflag.print" type="button" (click)="print()" class="btn btn-info btn-sm margin-top-bottom-25">打印预览
+      </button>
+
+    </div>
+  </div>
+  
+  <div class="panel panel-default wis-auto">
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 form-control-static">提单编号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{tihuo['billno']}}</div>
+      </div>
+    </div>
+    
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">总重量:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['tweight']}}吨
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">总件数:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['tcount']}}件
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">司机:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['siji']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">身份证:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['sijiid']}}
+        </div>
+      </div>
+    </div>
+  
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">手机号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['sijitel']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">车号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['chehao']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提货单类型:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['tihuotype'] | tihuotype}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">创建时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['cdate']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提货类别:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['isonline'] | tihuoleibie}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">是否打印:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['isprint'] |flag}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提单状态:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{tihuo['status'] |tihuostatus}}
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </div>
+  
+  
+  <p-tabView [style]="{margin:'0 -20px','padding-top': '3px'}">
+    <p-tabPanel header="钢卷明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 500)+'px'}" #agGrid style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;"
+        class="ag-blue" [gridOptions]="gridOptions">
+      </ag-grid-angular>
+    </p-tabPanel>
+  </p-tabView>
+
+  
+  
+  <toaster-container></toaster-container>

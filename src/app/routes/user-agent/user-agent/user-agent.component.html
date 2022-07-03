@@ -1,0 +1,27 @@
+<div class="content-heading">
+    用户代理
+    <!--<small>Native ng2 elements to extend the form functions</small>-->
+</div>
+<div class="col-lg-5 col-md-8">
+    <div class="panel panel-info ">
+        <div class="panel-heading">
+            <h4 class="panel-title">用户代理</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group has-feedback">
+                <div>
+                    <label class="mt">业务员：</label>
+                    <p-autoComplete [(ngModel)]="val" [suggestions]="results" [delay]="1000" [minLength]='1' (onSelect)="select($event)" (completeMethod)="search($event)" field="name" placeholder="请输入业务员名称"></p-autoComplete>
+                </div>
+            </div>
+            <button type="button" (click)="agentuser()" class="btn btn-block btn-info mt-lg" [disabled]="!selectUse">{{selectUser}}</button>
+            <div *ngIf="commonAgentNames">
+                <h5>常用代理人</h5>
+                <div class="pull-left margin-top-bottom-25">
+                    <button class="mb-sm btn btn-info bg-info-light" style="margin-left: 5px;margin-right: 5px;" *ngFor="let item of commonAgentNames" (click)="everyAgentuser(item)" type="button">{{item.realname}}</button>
+                </div>
+                <button type="button" (click)="clearAgentuser()" class="btn btn-block btn-danger mt-lg">清除常用代理人</button>
+            </div>
+        </div>
+    </div>
+</div>

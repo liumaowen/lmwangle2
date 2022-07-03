@@ -1,0 +1,196 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 仓库列表
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="queryDialog()">查询</button>
+    <span *NgOpera="552">
+      <button type="button" class="btn btn-info btn-bloc" (click)="createDialog()">创建仓库</button>
+    </span>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="tableData">
+  <table class="table table-striped" [mfData]="tableData" #mf="mfDataTable" [mfRowsOnPage]="10">
+    <tbody>
+      <tr *ngFor="let model of mf.data">
+        <td class="row" style="width:100%;">
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>名称:</label>
+            <a target="_blank" [routerLink]="['/cangku', model.id]">
+              {{model.name}}
+            </a>
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>所在区域:</label>
+            {{model.areaname}}
+          </div>
+          <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>地址:</label>
+            {{model.address}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>联系方式:</label>
+            {{model.contactway}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>传真号:</label>
+            {{model.fax}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>提货时间:</label>
+            {{model.tihuotime}}
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+            <label>负责人:</label>
+            {{model.temp}}
+          </div>
+
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>querys['pagesize']">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="7" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+            nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+          <!-- <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator> -->
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<!--  查询仓库的弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">仓库名称：</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="querys['name']" class="form-control" placeholder="请输入仓库名称" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 創建的彈窗 -->
+<div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">仓库名称</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="model['name']" placeholder="请输入仓库名称" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">仓库地址</label>
+              <div class="col-sm-9">
+                <!-- <input type="text" [(ngModel)]="model['address']" placeholder="请输入仓库地址" class="form-control"
+                  (blur)="selectedaddress(model['address'])" /> -->
+                <p-autoComplete placeholder="请输入详细地址" name="addr" [(ngModel)]="model['address']" [suggestions]="results"   
+                (completeMethod)="searchplace($event)" [style]="{'width':'85%'}" [inputStyle]="{'width':'85%'}" field="name" 
+                dataKey="id" [dropdown]="false" 
+                (onSelect)="selectedaddress(model['address']['name'])" >
+               </p-autoComplete>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12">
+              <label class="col-sm-3 control-label">选择地址</label>
+              <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                <p-dropdown [options]="provinces" [(ngModel)]="model['startprovinceid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省份'" (onChange)="getcity1()">
+                </p-dropdown>
+              </div>
+              <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                <p-dropdown [options]="citys" [(ngModel)]="model['startcityid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty1()">
+                </p-dropdown>
+              </div>
+              <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                <p-dropdown [options]="countys" [(ngModel)]="model['startcountyid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
+                </p-dropdown>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">提货时间</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="model['tihuotime']" placeholder="请输入提货时间" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">联系电话</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="model['contactway']" placeholder="请输入联系电话" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">传真号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="model['fax']" placeholder="请输入传真号" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">所在区域</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="areas" [(ngModel)]="model['areaid']" [style]="{'width':'100%'}"></p-dropdown>
+                <!-- <input type="text" [(ngModel)]="model['tihuotime']" placeholder="请输入提货时间" class="form-control"> -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="addCangku()" class="btn btn-primary btn-large">创建</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<toaster-container></toaster-container>

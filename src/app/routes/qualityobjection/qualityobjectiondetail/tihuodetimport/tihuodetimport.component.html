@@ -1,0 +1,81 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left"> 引入已实提钢卷明细</h4>
+  <div class="pull-right">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="import()">引入</button>
+  </div>
+</div>
+<div class="modal-body">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+    class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+
+
+<toaster-container>
+</toaster-container>
+
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default ">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">开始时间</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="start" placeholder="开始日期" [maxDate]="startmax"></p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">结束时间</label>
+                <div class="col-sm-9 wiskind-calendar">
+                  <p-calendar [(ngModel)]="end" placeholder="结束日期" [maxDate]="endmax"></p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">提单编号</label>
+                <div class="col-sm-9">
+                  <input type="text" name="billno" placeholder="请输入提单号" class="form-control" ng-model="requestparams['billno']" />
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">买方单位</label>
+                <div class="col-sm-9">
+                  <wisk-findbysale [(company)]="buyer"></wisk-findbysale>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">捆包号</label>
+                <div class="col-sm-9">
+                  <input type="text" name="kunbaohao" placeholder="请输入捆包号" class="form-control" [(ngModel)]="requestparams['kunbaohao']" />
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">供应商</label>
+                <div class="col-sm-9">
+                  <wisk-suppliersearch [(company)]="requestparams['supplierid']"></wisk-suppliersearch>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

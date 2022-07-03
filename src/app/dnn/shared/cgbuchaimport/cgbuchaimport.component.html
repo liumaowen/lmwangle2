@@ -1,0 +1,82 @@
+<div class="modal-header">
+  <em class="fa fa-list-alt"></em> 未补贴返利明细
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="openquery()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" style="margin-right: 20px;" (click)="import()">引入</button>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+<div class="modal-body">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+    class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+<!--查询对话框-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">开始月份</label>
+              <div class="col-md-4 wiskind-calendar">
+                <wisk-yearmonthselect (select)="selectstartmonth($event)"></wisk-yearmonthselect>
+              </div>
+              <label class="col-md-2 control-label">结束月份</label>
+              <div class="col-md-4 wiskind-calendar">
+                <wisk-yearmonthselect (select)="selectendmonth($event)"></wisk-yearmonthselect>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">品名</label>
+              <div class="col-md-10">
+                <input (click)="mdmgndialog.show()" [(ngModel)]="search['gn']" class="form-control" placeholder="请选择品名" readonly>
+              </div>
+            </div>
+            <div class="row fieldsetdnn" >
+              <label class="col-md-2 control-label">产地</label>
+              <div class="col-md-10">
+                <p-dropdown [options]="chandioptions" [disabled]="!search['gn']" [(ngModel)]="search['chandi']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <!-- <div class="row fieldsetdnn" >
+              <label class="col-md-2 control-label">产地</label>
+              <div class="col-md-10">
+                <ng-select  [allowClear]="true" [items]="gangchangs" (selected)="selectegangchang($event)" placeholder="请选择产地">
+                </ng-select>
+              </div>
+            </div> -->
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" class="btn btn-primary btn-large" (click)="query()">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>

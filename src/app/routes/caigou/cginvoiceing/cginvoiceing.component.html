@@ -1,0 +1,111 @@
+<!-- <div class="content-heading">
+  <em class="fa fa-list-alt"></em> 待开票列表  选中{{tweight}}吨，{{tjine}}元
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="open()">新建采购发票单</button>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 229)+'px'}" #agGrid  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular> -->
+
+<div class="modal-header">
+  <h4 class="modal-title pull-left"> 待开票列表  选中{{tweight}}吨，{{tjine}}元</h4>
+
+  <div class="pull-right">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="showDialog()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="import()">引入</button>
+  </div>
+</div>
+<div class="modal-body">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+    class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+
+<!--查询相关-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">资源号</label>
+              <div class="col-sm-9">
+                <input type="text" name="count" [(ngModel)]="search['grno']" class="form-control" placeholder="请输入资源号">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="querydata()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--新建-->
+<!-- <div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">新建采购发票单</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票号码</label>
+              <div class="col-sm-9">
+                <input type="text" name="invoiceno" [(ngModel)]="create['invoiceno']" class="form-control" placeholder="请输入发票号码">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票数</label>
+              <div class="col-sm-9">
+                <input type="number" name="count" [(ngModel)]="create['count']" class="form-control" placeholder="请输入发票数">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">发票日期</label>
+              <div class="col-sm-9">
+                <p-calendar [(ngModel)]="invoicedate" placeholder="发票日期"  [maxDate]="invoicedatemax"  (onSelect)="selectinvoicedate()"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" name="invoiceno" [(ngModel)]="create['beizhu']" class="form-control" placeholder="请输入备注">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="createinvoice()" class="btn btn-primary btn-large">新建</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+<toaster-container ></toaster-container>

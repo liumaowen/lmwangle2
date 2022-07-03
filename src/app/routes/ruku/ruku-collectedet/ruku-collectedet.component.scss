@@ -1,0 +1,56 @@
+.ui-widget {
+  width: 100%;
+}
+
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button {
+  width: 100%;
+}
+
+/*.panel.panel-default {
+  border-top-width: 1px;
+}*/
+
+.wid100 {
+  width: 600px;
+}
+
+.content-heading {
+  margin-bottom: 0px;
+}
+
+.wis-auto {
+  width: calc(100% + 40px);
+  margin: 0 -20px;
+  overflow: auto;
+}
+.fieldsetdnn{
+  padding-bottom: 5px;
+  border-bottom: 1px dashed #eee;
+  padding-top: 5px;
+}
+.form-group.mb{
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+.form-control-static {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.form-horizontal .control-label {
+  text-align: right;
+  margin-bottom: 0;
+  padding-top: 7px;
+}
+
+.fieldsetdnn .control-label {
+  text-align: right;
+  margin-bottom: 0;
+  padding-top: 7px;
+}
+.form-bottom {
+  margin-top: 20px;
+}

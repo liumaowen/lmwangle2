@@ -1,0 +1,231 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 临调发货
+  <div class="pull-right wide-show">
+    <button type="button" (click)="queryDialog()" class="btn btn-info btn-bloc">查询期货</button>
+    <button type="button" (click)="queryfproduct()" class="btn btn-info btn-bloc">查询成品</button>
+    <button type="button" (click)="finishld()" class="btn btn-info btn-bloc">完成临调</button>
+    <button type="button" (click)="showDialog()" class="btn btn-info btn-bloc">创建临调提单</button>
+    <button type="button" (click)="showLdMatchcar()" class="btn btn-info btn-bloc">临调约车</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="queryDialog()">查询期货</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="queryfproduct()">查询成品</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="finishld()">完成临调</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showDialog()">创建临调提单</a>
+        </li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showDialog()">临调约车</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--创建弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <form [formGroup]="ldtihuoForm" class="form-validate mb-lg" role="ldtihuoForm" name="ldtihuoForm" novalidate=""
+      (submit)="create()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">创建</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <!-- 2018.01.12 转货权开发 cpf DEL start
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">提货类型</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input (click)="putong()" id="inlineradio1" type="radio" formControlName="tihuotype" name="tihuotype" value="0" [(ngModel)]="search['tihuotype']" />
+                    <span class="fa fa-circle"></span>普通</label>
+                  <label class="radio-inline c-radio">
+                    <input (click)="zhuanhuo()" id="inlineradio2" type="radio" formControlName="tihuotype" name="tihuotype" value="1" [(ngModel)]="search['tihuotype']" />
+                    <span class="fa fa-circle"></span>转货</label>
+                </div>
+              </div>
+               -->
+
+              <div *ngIf="isputong">
+                <div class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label">车牌号</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="chehao" [(ngModel)]="search['chehao']" class="form-control"
+                      placeholder="请输入车牌号" />
+                    <span
+                      *ngIf="ldtihuoForm.controls['chehao'].hasError('required') && (ldtihuoForm.controls['chehao'].dirty || ldtihuoForm.controls['chehao'].touched)"
+                      class="text-danger">请填写车牌号</span>
+                    <span
+                      *ngIf="ldtihuoForm.controls['chehao'].hasError('pattern') && (ldtihuoForm.controls['chehao'].dirty || ldtihuoForm.controls['chehao'].touched)"
+                      class="text-danger">请填写正确格式的车牌号</span>
+                  </div>
+                </div>
+
+                <div class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label">司机</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="siji" [(ngModel)]="search['siji']" class="form-control"
+                      placeholder="请输入司机姓名" />
+                    <span
+                      *ngIf="ldtihuoForm.controls['siji'].hasError('required') && (ldtihuoForm.controls['siji'].dirty || ldtihuoForm.controls['siji'].touched)"
+                      class="text-danger">请填写司机姓名</span>
+                  </div>
+                </div>
+
+                <div class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label">司机身份证</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="sijiid" [(ngModel)]="search['sijiid']" class="form-control"
+                      placeholder="请输入司机身份证" />
+                    <span
+                      *ngIf="ldtihuoForm.controls['sijiid'].hasError('required') && (ldtihuoForm.controls['sijiid'].dirty || ldtihuoForm.controls['sijiid'].touched)"
+                      class="text-danger">请填写司机身份证</span>
+                  </div>
+                </div>
+
+                <div class="form-group mb fieldsetdnn row">
+                  <label class="col-sm-3 control-label">司机电话</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="sijitel" [(ngModel)]="search['sijitel']" class="form-control"
+                      placeholder="请输入司机电话" />
+                    <span
+                      *ngIf="ldtihuoForm.controls['sijitel'].hasError('required') && (ldtihuoForm.controls['sijitel'].dirty || ldtihuoForm.controls['sijiid'].touched)"
+                      class="text-danger">请填写司机电话</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">加工临调</label>
+                <div class="col-sm-9">
+                  <p-radioButton formControlName="fpld" name="groupname" value="true" [(ngModel)]="search['fpld']"
+                    label="是"></p-radioButton>
+                  <p-radioButton formControlName="fpld" name="groupname" value="false" [(ngModel)]="search['fpld']"
+                    label="否"></p-radioButton>
+                </div>
+              </div>
+              <div *ngIf="isqihuo" class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">是否最后一次期货提货</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio1" type="radio" formControlName="islasttihuo" value="0"
+                      (click)="showdingjintype(0)" [(ngModel)]="search['islasttihuo']" />
+                    <span class="fa fa-circle"></span>否
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio2" type="radio" formControlName="islasttihuo" value="1"
+                      (click)="showdingjintype(1)" [(ngModel)]="search['islasttihuo']" />
+                    <span class="fa fa-circle"></span>是
+                  </label>
+                </div>
+              </div>
+              <div *ngIf="isshowdingjintype" class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">定金释放模式</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio1" type="radio" formControlName="dingjintype" value="0"
+                      [(ngModel)]="search['dingjinshifangtype']" />
+                    <span class="fa fa-circle"></span>不释放
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio1" type="radio" formControlName="dingjintype" value="1"
+                      [(ngModel)]="search['dingjinshifangtype']" />
+                    <span class="fa fa-circle"></span>比例释放
+                  </label>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">备注</label>
+                <div class="col-sm-9">
+                  <input formControlName='beizhu' [(ngModel)]="search['beizhu']" class="form-control"
+                    placeholder="请输入备注">
+                  <span
+                    *ngIf="ldtihuoForm.controls['beizhu'].hasError('required') && (ldtihuoForm.controls['beizhu'].dirty || ldtihuoForm.controls['beizhu'].touched)"
+                    class="text-danger">请填写备注</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+            <div class="form-inline text-center">
+              <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+              <button type="submit" class="btn btn-primary btn-large">创建</button>
+              <!-- [disabled]="!ldtihuoForm['valid']" -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--查询期货-->
+<div class="modal" bsModal #queryqihuoDialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closeqihuoquery()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">单据编号</label>
+              <div class="col-md-4">
+                <input type="text" name="billno" [(ngModel)]="query['billno']" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">机构</label>
+              <div class="col-md-4">
+                <wisk-orglist [(org)]="query['orgid']"></wisk-orglist>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">买方单位</label>
+              <div class="col-md-4">
+                <wisk-findbysale [(company)]="buyer"></wisk-findbysale>
+              </div>
+              <label class="col-md-2 control-label">卖方单位</label>
+              <div class="col-md-4">
+                <app-wiskinnercompany (wiskindcompany)="innercompany($event)"></app-wiskinnercompany>
+              </div>
+            </div>
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" class="btn btn-primary btn-large" (click)="queryqihuo()">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

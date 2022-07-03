@@ -1,0 +1,93 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 合同执行情况表
+  <div class="pull-right">
+    <button type="button" (click)="finishdialog()" class="btn btn-info btn-bloc">确认完成</button>
+    <button type="button" (click)="openquery()" class="btn btn-info btn-bloc">查询</button>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!-- 查询对话框 -->
+<div class="modal" bsModal #setfinishdesc="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">情况说明</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">情况说明</label>
+              <div class="col-sm-9">
+                <textarea class="form-control" style="resize:none;height:225px;" [(ngModel)]="qihuodesc" placeholder="当合同执行比例超出±10%，业务员点击完成订单按钮时填写情况说明"
+                  required></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="finish()" class="btn btn-primary btn-large">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 查询对话框 -->
+<div class="modal" bsModal #searchdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closequery()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">开始日期</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始日期" [maxDate]="end || maxDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">结束日期</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束日期" [maxDate]="maxDate" [minDate]="start"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">客户单位</label>
+              <div class="col-sm-9">
+                <wisk-companysearch [(company)]="search['buyerid']"></wisk-companysearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">业务员</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="search['salemanid']"></wisk-usersearch>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="select()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 临调提货单详情
+  <div class="pull-right">
+    <button type="button" (click)="modifytihuoren()" class="btn btn-info btn-sm margin-top-bottom-25">修改提货人
+    </button>
+    <button type="button" (click)="selectall()" class="btn btn-info btn-sm margin-top-bottom-25">全选
+    </button>
+    <button type="button" (click)="paytihuoDialog()" class="btn btn-info btn-sm margin-top-bottom-25">付款
+    </button>
+    <button type="button" (click)="arrearspay()" class="btn btn-info btn-sm margin-top-bottom-25">欠款支付
+    </button>
+    <button type="button" (click)="returngoods()" class="btn btn-info btn-sm margin-top-bottom-25">退回
+    </button>
+    <button type="button" (click)="finishtihuo()" class="btn btn-info btn-sm margin-top-bottom-25">实提
+    </button>
+    <button type="button" (click)="cancelShiti()" class="btn btn-info btn-sm margin-top-bottom-25">撤销实提
+    </button>
+    <button type="button" (click)="chexiaotihuo()" class="btn btn-info btn-sm margin-top-bottom-25">撤销提单
+    </button>
+    <button type="button" (click)="addFeeDialog()" class="btn btn-info btn-sm margin-top-bottom-25">添加费用
+    </button>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="row ">
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提单编号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['billno']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">买方单位:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['buyer']?lindiao['buyer']['name']:''}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">总重量:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['tweight']}}吨</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">总件数:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['tcount']}}件</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">司机:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['siji']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">身份证:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['sijiid']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">手机号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['sijitel']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">车号:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['chehao']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提货单类型:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['tihuotype'] }}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">创建时间:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['cdate'] }}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提货类别:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['isonline'] }}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">是否打印:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['isprint'] }}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提单状态:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['status'] }}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">货款金额:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['tjine']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">支付方式:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{lindiao}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">费用金额:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['feetjine']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">欠款审核人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{lindiao['arrearspeople']?lindiao['arrearspeople']['realname']:''}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人:</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{lindiao | agentuser}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 fieldsetdnn">
+      <div class="row">
+        <div class="col-lg-2 col-md-4 col-xs-6 control-label form-control-static">备注:</div>
+        <div class="col-lg-10 col-md-8 col-xs-6 form-control-static" style="white-space: inherit;">{{lindiao['beizhu']}}</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<p-tabView [style]="{margin:'0 -20px','padding-top': '3px'}">
+  <p-tabPanel header="临调明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',
+  'border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 500)+'px'}" #agGrid style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;"
+      class="ag-blue" [gridOptions]="gridOptions">
+    </ag-grid-angular>
+  </p-tabPanel>
+  <p-tabPanel header="费用明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 500)+'px'}" #feeagGrid style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;"
+      class="ag-blue" [gridOptions]="feegridOptions">
+    </ag-grid-angular>
+  </p-tabPanel>
+</p-tabView>
+
+
+<toaster-container></toaster-container>

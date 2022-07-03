@@ -1,0 +1,91 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left"> 提货明细</h4>
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="openquery()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" style="margin-right: 20px;" (click)="import()">引入</button>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+<div class="modal-body">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+    class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+<div class="modal-footer">
+  <div class="form-inline text-center">
+  </div>
+</div>
+
+<!--查询对话框-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label">捆包号</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="search['kunbaohao']" class="form-control" placeholder="请输捆包号">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label">资源号</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="search['grno']" class="form-control" placeholder="请输资源号">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button" class="btn btn-primary btn-large" (click)="query()">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #priceModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closeprice()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">补差金额</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="row">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label">补差金额</label>
+                <div class="col-sm-9">
+                  <input type="number" [(ngModel)]="saledet['jine']" class="form-control" placeholder="请输入补差金额">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label">备注</label>
+                <div class="col-sm-9">
+                  <input type="text" [(ngModel)]="saledet['beizhu']" class="form-control" placeholder="请输入备注">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button" class="btn btn-primary btn-large" (click)="yinru()">引入</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

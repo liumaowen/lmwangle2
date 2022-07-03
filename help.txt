@@ -1,0 +1,74 @@
+﻿//--------------angle编译----------------------------------------------------------------------
+安装 nodejs 自带 npm ；GIT ； 再安装
+
+npm install cnpm -g --registry=https://registry.npm.taobao.org
+cnpm install bower -g 安装bower  npm uninstall bower -g 卸载bower
+master文件夹下执行cnpm install和bower install,执行gulp进行编译
+cnpm install gulp -g
+
+npm install 出错问题解决
+git init
+git config  url."https://".insteadOf git://
+
+执行bower install的时候找不到jquery-classyloader，然后bower_components也不会创建
+"jquery-classyloader": "https://git.oschina.net/iliuyong/lib/raw/master/jquery-classyloader.zip",
+
+//--------------简单配置HTTP服务器http-server------------------------------------------------
+
+安装 npm install http-server -g
+使用 http-server -p 70
+
+//--------------软连接 创建快捷方式b指向a-----------------------------------------------------------------------
+mklink /j 快捷方式路径b 真实路径a
+
+//--------------------------------------------------------------------------------------
+编写js的时候一定要开启gulp否则，修改的代码不会生成到浏览器中
+我们自己写得到代码gulp自动合并到app.js
+用firebug看脚本console的时候注意，打印出来的 对象，也是动态的，所在对象变化而变化，而打印出来的字符串是不变的；
+
+//-------------angle 项目压缩js和css后数据统计------------------------------------------------------------------
+
+gulp build
+vendor 8.80M 5.34M
+app    4.93M 2.29M
+app.js 2.33M 584 K
+webapp 150M  144M
+
+如何显示angle官方例子菜单: 本地存储中变量navdemo，值可任意，并删除sessionStorage中的nav变量
+
+
+//---------------angle2 项目初始化------------------------------------------------------------------------------------
+
+### 安装项目需要的插件
+
+```
+npm install
+```
+
+代理后台服务接口
+
+修改 loca.conf.json  里面的 "target": "http://192.168.1.54:8080/", 值为自己本地服务的地址
+
+页面美化
+
+把base.js文件夹下面的所有文件复制移动到node_modules文件夹下面并覆盖该文件
+
+### 运行项目
+
+```
+npm start
+```
+
+访问地址 http://localhost:4200/
+
+
+//项目中常用的配置常量文件 在angle2\src\environments目录下面
+
+environment.prod.ts			里面配置的是gm上的api接口，版本号等
+
+environment.test.ts			里面配置的是test上的api接口，版本号等
+
+environment.abc.ts			里面配置的是abc上的api接口，版本号等
+
+environment.ts				里面配置的是本地的api接口，版本号等
+

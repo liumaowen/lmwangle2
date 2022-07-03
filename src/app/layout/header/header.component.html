@@ -1,0 +1,294 @@
+<!-- START Top Navbar-->
+<nav class="navbar topnavbar" role="navigation">
+  <!-- START navbar header-->
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#/">
+      <div class="brand-logo">
+        <img class="img-responsive" src="assets/img/logo.png" alt="App Logo" />
+      </div>
+      <div class="brand-logo-collapsed">
+        <img class="img-responsive" src="assets/img/logo-single.png" alt="App Logo" />
+      </div>
+    </a>
+  </div>
+  <!-- END navbar header-->
+  <!-- START Nav wrapper-->
+  <div class="nav-wrapper">
+    <!-- START Left navbar-->
+    <ul class="nav navbar-nav">
+      <li>
+        <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
+        <a class="hidden-xs" trigger-resize="" (click)="toggleCollapsedSideabar()" *ngIf="!isCollapsedText()">
+          <em class="fa fa-navicon"></em>
+        </a>
+        <!-- Button to show/hide the sidebar on mobile. Visible on mobile only.-->
+        <a class="visible-xs sidebar-toggle"
+          (click)="settings.layout.asideToggled =! settings.layout.asideToggled; $event.stopPropagation()">
+          <em class="fa fa-navicon"></em>
+        </a>
+      </li>
+      <!-- 用户代理开始 -->
+      <li *ngIf="isshowagent">
+        <!-- *ngIf="!isshowagent" 权限管理控制 -->
+        <a [routerLink]="'/userAgent'" title="用户代理">
+          <em class="icon-people"></em>
+        </a>
+      </li>
+      <!-- 用户代理结束 -->
+
+      <!-- 审批开始 -->
+      <li *ngIf="isnotuseragent">
+        <!-- *ngIf="!isshowagent" 权限管理控制 -->
+        <a [routerLink]="'/home'" title="流程审批">
+          <!-- <em class="fa fa-sitemap"></em> -->
+          <img class="imgbpm" src="assets/img/bpm.png" />
+          <img class="imgbpm1" src="assets/img/bpm_1.png" />
+        </a>
+      </li>
+      <!-- 审批结束 -->
+ <!-- 审批开始 -->
+
+  <li>
+    <span *NgOpera="640">
+    <!-- *ngIf="!isshowagent" 权限管理控制 -->
+    <a [routerLink]="'/home'" title="流程审批">
+      <!-- <em class="fa fa-sitemap"></em> -->
+      <img class="imgbpm" src="assets/img/bpm.png" />
+      <img class="imgbpm1" src="assets/img/bpm_1.png" />
+    </a>
+  </span>
+  </li>
+
+ 
+<!-- 审批结束 -->
+      <!-- 打开钢贸网站开始 -->
+      <li>
+        <a href="https://web.wiskind.cn/" target="_blank" title="查看官网">
+          <em class="icon-globe"></em>
+        </a>
+      </li>
+      <!-- 打开钢贸网站结束 -->
+
+      <li>
+        <a href="/favorite" target="_blank" title="查看收藏夹">
+          <em class="icon-book-open"></em>
+        </a>
+      </li>
+
+      <!-- START 注销开始-->
+      <li>
+        <a (click)="logout()" title="注销">
+          <em class="icon-logout"></em>
+        </a>
+      </li>
+      <!-- END 注销结束-->
+
+      <!-- START 清除缓存开始-->
+      <li>
+        <a (click)="clearDate()" title="清除缓存">
+          <em class="icon-refresh"></em>
+        </a>
+      </li>
+      <!-- END 清除缓存结束-->
+      <!-- START BPM表格下载-->
+      <li>
+        <a (click)="bpmDown()" title="BPM表格下载">
+          <em class="icon-cloud-download"></em>
+        </a>
+      </li>
+      <!-- END BPM表格下载结束-->
+      <!-- START 跳转SCC-->
+      <li>
+        <a (click)="goSCC()" title="跳转SCC">
+          <img class="imgbpm imgscc" src="assets/img/scc.png" />
+          <img class="imgbpm1 imgscc" src="assets/img/scc1.png" />
+        </a>
+      </li>
+      <!-- START 跳转ERP说明书-->
+      <li>
+        <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/%E6%B6%82%E9%95%80ERP%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6%202.0.pdf" target="_blank" title="涂镀ERP说明书">
+          <em class="icon-docs"></em>
+        </a>
+      </li>
+      <li class="dropdown isshowuserinfo1">
+        <img [src]="cusers['userimg']" alt="Avatar" class="img-thumbnail img-circle" />
+      </li>
+      <li class="dropdown isshowuserinfo1">
+        <a href="#/userinfo" title="用户信息">
+          {{cusers["realname"]}}
+          <span color="red" *ngIf="cusers['realname'] !== cusers['arealname']"> ( {{cusers['arealname']}}
+            <font class="badge">代</font> ) </span>
+        </a>
+      </li>
+      <!-- END 跳转SCC-->
+
+      <!-- START User avatar toggle-->
+      <!--<li>-->
+      <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
+      <!--<a (click)="toggleUserBlock($event)">
+                    <em class="icon-user"></em>
+                </a>
+            </li>-->
+      <!-- END User avatar toggle-->
+      <!-- START lock screen-->
+      <!--<li>
+                <a  title="Lock screen" [routerLink]="'/lock'">
+                    <em class="icon-lock"></em>
+                </a>
+            </li>-->
+      <!-- END lock screen-->
+    </ul>
+    <!--全屏-->
+    <!--<ul class="nav navbar-nav navbar-right">
+
+        </ul>-->
+    <!--用户信息及图像-->
+    <ul class="nav navbar-nav navbar-right navbar-nav-img isshowuserinfo">
+      <li>
+        <img [src]="cusers['userimg']" alt="Avatar" class="img-thumbnail img-circle" />
+      </li>
+      <li class="dropdown">
+        <a href="#/userinfo" title="用户信息">
+          {{cusers["realname"]}}
+          <span color="red" *ngIf="cusers['realname'] !== cusers['arealname']"> ( {{cusers['arealname']}}
+            <font class="badge">代</font> ) </span>
+        </a>
+      </li>
+      <li class="visible-lg">
+        <a #fsbutton (click)="toggleFullScreen($event)">
+          <em class="fa fa-expand"></em>
+        </a>
+      </li>
+    </ul>
+
+    <!-- END Left navbar-->
+    <!-- START Right Navbar-->
+    <!--<ul class="nav navbar-nav navbar-right">
+            <li>
+                <a (click)="openNavSearch($event)">
+                    <em class="icon-magnifier"></em>
+                </a>
+            </li>
+            <li class="visible-lg">
+                <a #fsbutton (click)="toggleFullScreen($event)">
+                    <em class="fa fa-expand"></em>
+                </a>
+            </li>
+            <li class="dropdown dropdown-list" dropdown>
+                <a dropdownToggle>
+                    <em class="icon-bell"></em>
+                    <div class="label label-danger">11</div>
+                </a>
+                <ul *dropdownMenu class="dropdown-menu animated flipInX">
+                    <li>
+                        <div class="list-group">
+                            <a class="list-group-item">
+                                <div class="media-box">
+                                    <div class="pull-left">
+                                        <em class="fa fa-twitter fa-2x text-info"></em>
+                                    </div>
+                                    <div class="media-box-body clearfix">
+                                        <p class="m0">New followers</p>
+                                        <p class="m0 text-muted">
+                                            <small>1 new follower</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="list-group-item">
+                                <div class="media-box">
+                                    <div class="pull-left">
+                                        <em class="fa fa-envelope fa-2x text-warning"></em>
+                                    </div>
+                                    <div class="media-box-body clearfix">
+                                        <p class="m0">New e-mails</p>
+                                        <p class="m0 text-muted">
+                                            <small>You have 10 new emails</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="list-group-item">
+                                <div class="media-box">
+                                    <div class="pull-left">
+                                        <em class="fa fa-tasks fa-2x text-success"></em>
+                                    </div>
+                                    <div class="media-box-body clearfix">
+                                        <p class="m0">Pending Tasks</p>
+                                        <p class="m0 text-muted">
+                                            <small>11 pending task</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="list-group-item">
+                                <small translate="topbar.notification.MORE">More notifications</small>
+                                <span class="label label-danger pull-right">14</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a (click)="toggleOffsidebar()">
+                    <em class="icon-notebook"></em>
+                </a>
+            </li>
+        </ul>-->
+    <!-- END Right Navbar-->
+  </div>
+  <!-- END Nav wrapper-->
+
+  <app-navsearch [visible]="getNavSearchVisible()" (onclose)="setNavSearchVisible(false)"></app-navsearch>
+
+</nav>
+<!--BPM下载对话框-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true" (onHidden)="onHidden()">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn mb">
+              <label class="col-md-2 control-label">开始时间</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始日期" (onSelect)="selectstart($event)">
+                </p-calendar>
+              </div>
+              <label class="col-md-2 control-label">结束时间</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束日期" (onSelect)="selectend($event)">
+                </p-calendar>
+              </div>
+            </div>
+            <div class="row fieldsetdnn" *NgOpera="15">
+              <label class="col-md-2 control-label">权限</label>
+              <div class="col-md-10">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" name="i-radio4" [value]="true" [(ngModel)]="body['self']" />
+                  <span class="fa fa-circle"></span>个人
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" name="i-radio4" [value]="false" [(ngModel)]="body['self']" />
+                  <span class="fa fa-circle"></span>所有
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-bottom text-center" style="margin-bottom:15px;">
+            <button http-method="post" [http-data]="body" class="mr-sm btn btn-primary btn-large" down-file
+              http-url="store/api/bpmtongji/bpmduration">下载</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Top Navbar-->

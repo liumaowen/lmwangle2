@@ -1,0 +1,90 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left"> 修改提货人信息</h4>
+  <div class="pull-right">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+<div class="modal-body">
+  <form [formGroup]="tihuoForm" class="form-validate mb-lg" role="form" name="loginForm" novalidate=""
+    (submit)="submittihuo()">
+    <div class="modal-body">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="form-group mb fieldsetdnn col-sm-12">
+            <label class="col-sm-3 control-label">车号</label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="chehao" [(ngModel)]="params['chehao']" class="form-control"
+                placeholder="请输入车号" />
+              <span
+                *ngIf="tihuoForm.controls['chehao'].hasError('required') && (tihuoForm.controls['chehao'].dirty || tihuoForm.controls['chehao'].touched)"
+                class="text-danger">请填写车号</span>
+              <span
+                *ngIf="tihuoForm.controls['chehao'].hasError('pattern') && (tihuoForm.controls['chehao'].dirty || tihuoForm.controls['chehao'].touched)"
+                class="text-danger">车号填写不规范</span>
+            </div>
+          </div>
+          <div class="form-group mb fieldsetdnn col-sm-12">
+            <label class="col-sm-3 control-label">提货司机</label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="siji" [(ngModel)]="params['siji']" class="form-control"
+                ng-blur="calctprice()" placeholder="请输入司机姓名" />
+              <span
+                *ngIf="tihuoForm.controls['siji'].hasError('required') && (tihuoForm.controls['siji'].dirty || tihuoForm.controls['siji'].touched)"
+                class="text-danger">请填写姓名</span>
+              <span
+                *ngIf="tihuoForm.controls['siji'].hasError('pattern') && (tihuoForm.controls['siji'].dirty || tihuoForm.controls['siji'].touched)"
+                class="text-danger">姓名填写不规范</span>
+            </div>
+          </div>
+          <div class="form-group mb fieldsetdnn col-sm-12">
+            <label class="col-sm-3 control-label">手机号</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <input type="text" formControlName="sijitel" [(ngModel)]="params['sijitel']" class="form-control"
+                  ng-blur="calcperprice()" placeholder="请输入司机手机号" />
+                <span
+                  *ngIf="tihuoForm.controls['sijitel'].hasError('required') && (tihuoForm.controls['sijitel'].dirty || tihuoForm.controls['sijitel'].touched)"
+                  class="text-danger">请填写司机手机号</span>
+                <span
+                  *ngIf="tihuoForm.controls['sijitel'].hasError('pattern') && (tihuoForm.controls['sijitel'].dirty || tihuoForm.controls['sijitel'].touched)"
+                  class="text-danger">司机手机号填写不规范</span>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group mb fieldsetdnn col-sm-12">
+            <label class="col-sm-3 control-label">身份证号</label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="sijiid" [(ngModel)]="params['sijiid']" class="form-control"
+                ng-blur="calcperprice()" placeholder="请输入司机身份证号" maxlength="18" minlength="15" />
+              <span
+                *ngIf="tihuoForm.controls['sijiid'].hasError('required') && (tihuoForm.controls['sijiid'].dirty || tihuoForm.controls['sijiid'].touched)"
+                class="text-danger">请填写身份证号</span>
+              <span
+                *ngIf="tihuoForm.controls['sijiid'].hasError('pattern') && (tihuoForm.controls['sijiid'].dirty || tihuoForm.controls['sijiid'].touched)"
+                class="text-danger">身份证号填写不规范</span>
+            </div>
+          </div>
+          <div class="form-group mb fieldsetdnn col-sm-12">
+            <label class="col-sm-3 control-label">备注</label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="beizhu" [(ngModel)]="params['beizhu']" class="form-control" ng-blur=""
+                placeholder="请输入备注" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <div class="form-inline text-center">
+        <div class="form-inline text-center">
+          <button type="submit" class="btn btn-primary btn-large" [disabled]="">提交</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<toaster-container></toaster-container>

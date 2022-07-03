@@ -1,0 +1,10 @@
+<div dropdown style="position: relative" [autoClose]="true" [isOpen]="isopen" (onShown)="onShown()">
+
+    <button dropdownToggle type="button" class="btn btn-default btn-block dropdown-toggle wiskind-calendar" style="text-align:left">
+        &#160;{{month | date:'yyyy'}}&#160;
+    </button>
+
+    <div *dropdownMenu class="dropdown-menu" role="menu"(click)="$event.preventDefault();$event.stopPropagation();">
+        <datepicker [(ngModel)]="month" [ngModelOptions]="{standalone: true}" [datepickerMode]="'year'" [yearRange]="4" [yearColLimit]="4" [minMode]="'year'" (selectionDone)="selectionDone($event)"></datepicker>
+    </div>
+</div>

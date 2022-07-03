@@ -1,0 +1,86 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">质量异议明细表</h4>
+  <div class="pull-right">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="openquery()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="confirm()">确定</button>
+  </div>
+</div>
+<div class="modal-body">
+  <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+    class="ag-blue" [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+<div class="modal-footer">
+  <!--<div class="form-inline text-center">
+    <button type="button" class="btn btn-info btn-bloc" (click)="openclassicmodal()">查询</button>
+    &lt;!&ndash; <button type="button" class="btn btn-info btn-bloc" (click)="checkAll()">全选</button> &ndash;&gt;
+    <button type="button" class="btn btn-info btn-bloc" (click)="import()">引入</button>
+  </div>-->
+</div>
+<!--查询对话框-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">开始时间</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始日期" [maxDate]="startmax">
+                </p-calendar>
+              </div>
+              <label class="col-md-2 control-label">结束时间</label>
+              <div class="col-md-4 wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束日期" [maxDate]="endmax">
+                </p-calendar>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">单据编号</label>
+              <div class="col-md-4">
+                <input type="text" name="billno" [(ngModel)]="search['billno']" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">制单人</label>
+              <div class="col-md-4">
+                <wisk-usersearch [(user)]="search['cuserid']"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-md-2 control-label">捆包号</label>
+              <div class="col-md-4">
+                <input type="text" name="kunbaohao" [(ngModel)]="search['kunbaohao']" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">异议类型</label>
+              <div class="col-md-4">
+                <p-dropdown [options]="types" [(ngModel)]="search['typeid']" [style]="{'width':'calc(100%)'}"
+                  [placeholder]="'请选择异议类型'"></p-dropdown>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-2 control-label">供应商</label>
+              <div class="col-sm-10">
+                <wisk-suppliersearch [(company)]="search['supplierid']"></wisk-suppliersearch>
+              </div>
+            </div>
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" class="btn btn-primary btn-large" (click)="query()">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>
