@@ -11,6 +11,7 @@ import { ProduceapiService } from './../produceapi.service';
 import { StorageService } from './../../../dnn/service/storage.service';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { XiaoshouapiService } from 'app/routes/xiaoshou/xiaoshouapi.service';
 const sweetalert = require('sweetalert');
 @Component({
   selector: 'app-producedetail',
@@ -18,7 +19,8 @@ const sweetalert = require('sweetalert');
   styleUrls: ['./producedetail.component.scss']
 })
 export class ProducedetailComponent implements OnInit {
-
+  @ViewChild('producefeeModal') private producefeeModal: ModalDirective;
+  detids;
   // 内部销售单的展示
   produce: any = { isv: false };
   producefee = {};
@@ -36,13 +38,12 @@ export class ProducedetailComponent implements OnInit {
 
   // 获取当前登录用户的信息
   current = this.storage.getObject('cuser');
-  producefeetype = [{ label: '请选择', value: '' }, { label: '吊装费', value: 1 },
-  { label: '短倒费', value: 2 }, { label: '出库费', value: 3 }, { label: '纵剪费', value: 5 },
-  { label: '开平费', value: 4 }, { label: '汽运费', value: 6 }, { label: '垫付费', value: 7 }];
+  producefeetype = [{ label: '请选择', value: '' }, { label: '纵剪费', value: 5 },
+  { label: '开平费', value: 4 }];
 
   constructor(public settings: SettingsService, private storage: StorageService, private produceApi: ProduceapiService,
     private route: ActivatedRoute, private toast: ToasterService, private router: Router, private bsModalService: BsModalService,
-    private classifyApi: ClassifyApiService) {
+    private tihuoApi: XiaoshouapiService) {
 
     this.gridOptions = {
       enableFilter: true, // 过滤器
@@ -202,6 +203,7 @@ export class ProducedetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '明细id', field: 'id', width: 90 }
     ];
     this.feegridOptions = {
+      rowSelection: 'multiple',
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
@@ -212,6 +214,14 @@ export class ProducedetailComponent implements OnInit {
       enableSorting: true,
       excelStyles: this.settings.excelStyles,
       getContextMenuItems: this.settings.getContextMenuItems,
+      onRowSelected: (params) => {
+        if (params.data.group && params.node['selected']) {
+          let childs = params.node.childrenAfterGroup;
+          childs.forEach(data => {
+            data.selectThisNode(true);
+          })
+        }
+      },
       getNodeChildDetails: (params) => {
         if (params.group) {
           return { group: true, children: params.participants, field: 'group', key: params.group };
@@ -224,24 +234,70 @@ export class ProducedetailComponent implements OnInit {
     this.feegridOptions.groupSuppressAutoColumn = true;
     // 设置费用明细的表格数据
     this.feegridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '批次号', field: 'group', cellRenderer: 'group', width: 120 },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '费用类型', field: 'feetype', width: 120,
+        cellStyle: { 'text-align': 'center' }, headerName: '批次号', field: 'group', minWidth: 100, cellRenderer: 'group',
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '费用类型', field: 'type', width: 120,
         cellRenderer: (params) => {
-          if (params.data.feetype === 1) {
-            return '吊装费';
-          } else if (params.data.feetype === 2) {
-            return '短倒费';
-          } else if (params.data.feetype === 3) {
-            return '出库费';
-          } else if (params.data.feetype === 4) {
-            return '开平费';
-          } else if (params.data.feetype === 5) {
-            return '纵剪费';
-          } else if (params.data.feetype === 6) {
+          if (params.data.type === 1) {
             return '汽运费';
-          } else if (params.data.feetype === 7) {
-            return '垫付费';
+          } else if (params.data.type === 2) {
+            return '铁运费';
+          } else if (params.data.type === 3) {
+            return '船运费';
+          } else if (params.data.type === 4) {
+            return '出库费';
+          } else if (params.data.type === 5) {
+            return '开平费';
+          } else if (params.data.type === 6) {
+            return '纵剪费';
+          } else if (params.data.type === 7) {
+            return '销售运杂费';
+          } else if (params.data.type === 8) {
+            return '包装费';
+          } else if (params.data.type === 9) {
+            return '仓储费';
+          } else if (params.data.type === 10) {
+            return '保险费';
+          } else if (params.data.type === 11) {
+            return '押车费';
+          } else {
+            return '';
+          }
+        }
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '实际费用单位', field: 'actualfeename', width: 150 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '费用单位', field: 'feename', width: 100 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '费用支付', field: 'isdianfu', width: 80,
+        cellRenderer: (params) => {
+          if (params.data.isdianfu) {
+            return '垫付';
+          } else {
+            return '普通';
+          }
+        }
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '记账方向', field: 'accountdirection', width: 80,
+        cellRenderer: (params) => {
+          if (params.data.accountdirection === 1) {
+            return '采购';
+          } else if (params.data.accountdirection === 2) {
+            return '销售';
+          } else {
+            return '';
+          }
+        }
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '应收应付', field: 'payorreceive', width: 80,
+        cellRenderer: (params) => {
+          if (params.data.payorreceive === 1) {
+            return '应付';
+          } else if (params.data.payorreceive === 2) {
+            return '应收';
           } else {
             return '';
           }
@@ -260,16 +316,27 @@ export class ProducedetailComponent implements OnInit {
         valueFormatter: this.settings.valueFormatter2
       },
       {
+        cellStyle: { 'text-align': 'right' }, headerName: '内部单价', field: 'innerprice', width: 80,
+        valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '内部金额', field: 'innerjine', width: 80,
+        valueFormatter: this.settings.valueFormatter2
+      },
+      { cellStyle: { 'text-align': 'right' }, headerName: '库存id', field: 'kucunid', width: 80 },
+      { cellStyle: { 'text-align': 'right' }, headerName: '捆包号', field: 'kunbaohao', width: 80 },
+      {
         cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'caozuo', width: 80,
         cellRenderer: (params) => {
-          if (params.data.group && !this.produce['isv']) {
+          if (params.data.group) {
             return '<a target="_blank">删除</a>';
           } else {
             return '';
           }
         },
         onCellClicked: (params) => {
-          if (params.data.group && !this.produce['isv']) {
+          if (params.data.group) {
+
             sweetalert({
               title: '你确定删除此条费用明细吗？',
               type: 'warning',
@@ -279,7 +346,8 @@ export class ProducedetailComponent implements OnInit {
               cancelButtonText: '取消',
               closeOnConfirm: false
             }, () => {
-              this.produceApi.removeProducefee(this.produce['id'], params.data.feetype).then((response) => {
+              this.produceApi.removeProducefee(params.data.group).then((response) => {
+                // Notify.alert('删除成功！！！', { status: 'success' });
                 this.toast.pop('success', '删除成功！！！');
                 this.listFeeDetail();
               });
@@ -288,7 +356,7 @@ export class ProducedetailComponent implements OnInit {
           }
         }
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 120 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'miaoshu', width: 120 }
     ];
     this.getProduce();
     this.getDetail();
@@ -320,7 +388,7 @@ export class ProducedetailComponent implements OnInit {
   }
   /**运费明细 */
   listFeeDetail() {
-    this.produceApi.listFeeDetail(this.route.params['value']['id']).then((response) => {
+    this.tihuoApi.listFeeDetail({ tihuoid: this.route.params['value']['id'] }).then((response) => {
       this.feegridOptions.api.setRowData(response);
     });
   }
@@ -624,21 +692,20 @@ export class ProducedetailComponent implements OnInit {
   hideDialog() {
     this.uploaderModel.hide();
   }
-  //加工单中费用添加仅限于邯郸维实的添加
-  @ViewChild('producefeeModal') private producefeeModal: ModalDirective;
-  detids;
+  // 加工单中费用添加仅限于邯郸维实的添加
+
   showproducefeedialog() {
     this.detids = new Array();
-    let fproducts = this.gridOptions.api.getModel()['rowsToDisplay']; // 获取选中的提货单明细。
+    const fproducts = this.gridOptions.api.getModel()['rowsToDisplay']; // 获取选中的提货单明细。
     let weight = '0';
     for (let i = 0; i < fproducts.length; i++) {
-      if (fproducts[i].selected && fproducts[i].data.cangku) {
-        this.toast.pop('warning', '请选择成品进行添加费用！');
+      if (!fproducts[i].data.group && fproducts[i].selected) {
+        this.toast.pop('warning', '请选择基料明细进行添加费用！');
         return;
       }
-      if (!fproducts[i].data.group && fproducts[i].selected) {
+      if (fproducts[i].selected && fproducts[i].data.cangku) {
         weight = weight['add'](fproducts[i].data.weight);
-        this.detids.push(fproducts[i].data.fpid);
+        this.detids.push(fproducts[i].data.id);
       }
     }
     if (this.detids.length === 0) {
@@ -647,6 +714,10 @@ export class ProducedetailComponent implements OnInit {
     }
     this.producefee['weight'] = weight;
     this.producefeeModal.show();
+  }
+  // 卖方公司
+  innercompany(event) {
+    this.producefee['sellerid'] = event;
   }
   hideproducefeedialog() {
     this.producefeeModal.hide();

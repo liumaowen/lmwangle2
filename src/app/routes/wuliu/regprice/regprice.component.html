@@ -1,0 +1,268 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 常规路线询价{{msg['msg']}}
+  <div class="pull-right wide-show">
+    <button type="button" (click)="inquireprice()" class="btn btn-info btn-bloc">查询</button>
+    <button type="button" (click)="addrouteprice()" class="btn btn-info btn-bloc">增加</button>
+    <button type="button" (click)="modifyprice()" class="btn btn-info btn-bloc">修改</button>
+    <button type="button" (click)="submitprice()" class="btn btn-info btn-bloc">议价</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="inquireprice()">查询</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="addrouteprice()">增加</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="modifyprice()">修改</a>
+        </li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="submitprice()">议价</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+
+<!-- 增加弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="coles()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">增加</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row" >
+              <label class="col-sm-3 control-label">起始地址</label>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <div class="col-sm-4" style="padding-left:15px;">
+                <p-dropdown [options]="provinces" [(ngModel)]=" routeinquiry['sprovinceid']" 
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省份'" (onChange)="getcity()">
+                </p-dropdown>
+              </div>
+              <div class="col-sm-4" style="padding-left:15px;">
+                <p-dropdown [options]="citys" [(ngModel)]=" routeinquiry['scityid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty()">
+                </p-dropdown>
+              </div>
+              <div class="col-sm-4" style="padding-left:15px;">
+                <p-dropdown [options]="countys" [(ngModel)]=" routeinquiry['scountyid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row" >
+              <label class="col-sm-3 control-label">目的地址</label>
+            </div>
+            <div class="form-group mb fieldsetdnn row" >
+              <div class="col-sm-4" style="padding-left:15px;">
+                <p-dropdown [options]="provinces2" [(ngModel)]=" routeinquiry['eprovinceid']" 
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省份'" (onChange)="getcity2()">
+                </p-dropdown>
+              </div>
+              <div class="col-sm-4" style="padding-left:15px;">
+                <p-dropdown [options]="citys2" [(ngModel)]=" routeinquiry['ecityid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty2()">
+                </p-dropdown>
+              </div>
+              <div class="col-sm-4" style="padding-left:15px;">
+                <p-dropdown [options]="countys2" [(ngModel)]=" routeinquiry['ecountyid']"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">吨位</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]=" routeinquiry['tweight']" class="form-control"  />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">单价</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]=" routeinquiry['price']" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">物流公司</label>
+              <div class="col-sm-9">
+                <wis-wiswlcompanysearch [(company)]="wuliucompany"></wis-wiswlcompanysearch>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]=" routeinquiry['beizhu']" class="form-control" />
+              </div>
+            </div> -->
+            <div class="modal-footer">
+              <div class="form-inline text-center">
+                <div class="form-inline text-center">
+                  <button type="button" (click)="createrouteprice()" class="btn btn-primary btn-large">添加</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- 查询弹窗--> 
+<div class="modal" bsModal #queryModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeinquire()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+                <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12">
+                  <label class="col-sm-3 col-xs-12 control-label">起始地：</label>
+                  <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                    <p-dropdown [options]="provinces3" [(ngModel)]="search['startprovinceid']" [filter]="true" filterBy="label,value.name"
+                      [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省'" (onChange)="getcity3(search)">
+                    </p-dropdown>
+                  </div>
+                  <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                    <p-dropdown [options]="citys3" [(ngModel)]="search['startcityid']" [filter]="true" filterBy="label,value.name"
+                      [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty3(search)">
+                    </p-dropdown>
+                  </div>
+                  <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                    <p-dropdown [options]="countys3" [(ngModel)]="search['startcountyid']" [filter]="true" filterBy="label,value.name"
+                      [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12">
+                  <label class="col-sm-3 col-xs-12 control-label">目的地：</label>
+                  <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                    <p-dropdown [options]="provinces4" [(ngModel)]="search['endprovinceid']" [filter]="true" filterBy="label,value.name"
+                      [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省'" (onChange)="getcity4(search)">
+                    </p-dropdown>
+                  </div>
+                  <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                    <p-dropdown [options]="citys4" [(ngModel)]="search['endcityid']" [filter]="true" filterBy="label,value.name"
+                      [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty4(search)">
+                    </p-dropdown>
+                  </div>
+                  <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                    <p-dropdown [options]="countys4" [(ngModel)]="search['endcountyid']" [filter]="true" filterBy="label,value.name"
+                      [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
+                    </p-dropdown>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="querylist()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--修改弹窗-->
+<div class="modal" bsModal #priceModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="priceclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">价格：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modify['price']" placeholder="修改价格" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="submit()" class="btn btn-primary btn-large">提交</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--议价弹窗-->
+<div class="modal" bsModal #yijiaModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="yijiaclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">议价</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">价格：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modify['bargaining']" placeholder="议价价格" class="form-control" />
+              </div>
+              <label class="col-sm-3 col-xs-12 control-label"></label>
+            </div>
+            <div class="row fieldsetdnn">
+                  <label class="col-sm-3 control-label">
+                     <span style="float: right;">备注：</span>
+                  </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]=" modify['beizhu']" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="yijiasubmit()" class="btn btn-primary btn-large">提交</button>
+      </div>
+    </div>
+  </div>
+</div>

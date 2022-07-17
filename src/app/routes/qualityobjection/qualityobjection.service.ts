@@ -111,4 +111,20 @@ export class QualityobjectionService {
       return data.json() as any;
     });
   }
+  submitwuliu(search): Promise<any> {
+    return this.http.put('store/api/quality/wuliuchuli', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  submitcangku(search): Promise<any> {
+    return this.http.put('store/api/quality/cangkuchuli', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  cancel(search): Promise<any> {
+    return this.http.put('store/api/quality/cancel', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+
 }

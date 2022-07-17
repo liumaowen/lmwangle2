@@ -65,7 +65,7 @@ export class GoodscodeComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '修边', field: 'xiubian', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '包装方式', field: 'packagetype', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '基板', field: 'matbasilarplate', minWidth: 80 },
-      // { cellStyle: { 'text-align': 'center' }, headerName: '表面处理', field: 'matsurfacetreatment', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '背漆涂层种类', field: 'matbackcoatingtype', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '表面结构', field: 'matsurfacestructure', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '板型', field: 'matplatecut', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '板宽', field: 'matplateswidth', minWidth: 80 },

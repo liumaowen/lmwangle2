@@ -62,7 +62,7 @@ export class CustomerlevelComponent implements OnInit {
     this.gridOptions.columnDefs = [
       //{ cellStyle: { 'text-align': 'center' }, headerName: '选择', minWidth: 56, checkboxSelection: true,colId: 'check' },
       { cellStyle: { 'text-align': 'center' }, headerName: '客户名称', field: 'name', minWidth: 130 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '客户类型', field: 'usernature', minWidth: 80,
+      { cellStyle: { 'text-align': 'center' }, headerName: '客户分类', field: 'usernature', minWidth: 80,
         cellRenderer: (params) => {
           if (params.data.usernature == 2) {
             return '终端用户';
@@ -82,9 +82,9 @@ export class CustomerlevelComponent implements OnInit {
         return params.data.isdel ? '是' : '否';
       }
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '议价次数', field: 'negonum', minWidth: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '议价未购买次数', field: 'negonotnum', minWidth: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '使用优惠券次数', field: 'coupon_num', minWidth: 80 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '议价次数', field: 'negonum', minWidth: 80 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '议价未购买次数', field: 'negonotnum', minWidth: 80 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '使用优惠券次数', field: 'coupon_num', minWidth: 80 },
     
     ];
 

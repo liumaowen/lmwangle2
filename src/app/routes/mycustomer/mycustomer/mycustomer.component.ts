@@ -106,6 +106,10 @@ export class MycustomerComponent implements OnInit {
       // Notify.alert('请填写行业类别', { status: 'warning' });
       return;
     }
+    if (!this.model['taxno']) {
+      this.toast.pop('warning', '请输入纳税人识别号');
+      return;
+    }
     if (confirm('确定要添加')) {
       this.customerApi.createCustomer(this.model).then((data) => {
         this.hidecreateModal();

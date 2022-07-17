@@ -52,6 +52,8 @@ export class TaskdetComponent implements OnInit {
       enableColResize: true,
       enableSorting: true,
       excelStyles: this.settings.excelStyles,
+      singleClickEdit: true, // 单击编辑
+      stopEditingWhenGridLosesFocus: true, // 焦点离开停止编辑
       getContextMenuItems: (params) => {
         const result = [
           'copy',
@@ -85,6 +87,19 @@ export class TaskdetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '锌层', field: 'duceng', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '材质', field: 'caizhi', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '重量', field: 'weight', minWidth: 80 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '加工费', field: 'fee', minWidth: 80,
+        editable: (params) => !this.tasklist['isv'],
+        cellRenderer: (params) => {
+          if (params.data.fee) {
+            if (!this.tasklist['isv']) {
+              return `<a>${params.data.fee}</a>`;
+            } else {
+              return params.data.fee + '';
+            }
+          }
+        }, onCellValueChanged: (params) => this.jiagongvaluechanged(params, "fee"),
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '加工类型', field: 'type', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否引用', field: 'isuse', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '捆包号', field: 'kunbaohao', minWidth: 80 },
@@ -93,10 +108,11 @@ export class TaskdetComponent implements OnInit {
       // { cellStyle: { 'text-align': 'center' }, headerName: '理算重量', field: 'lweight', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '横切规格', field: 'guige', minWidth: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '横切数量', field: 'hengqieaccount', minWidth: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '打包吨位', field: 'packton', minWidth: 120 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '打包要求', field: 'yaoqiu', minWidth: 120,
         tooltipField: 'yaoqiu',
-        onCellDoubleClicked: (params) => {
+        onCellClicked: (params) => {
           if (!this.tasklist['isv']) {
             this.modifylist(params.data);
           }
@@ -388,4 +404,24 @@ export class TaskdetComponent implements OnInit {
       });
     }
   }
+  // 修改行加工费
+  jiagongvaluechanged(params, filed) {
+    if (params.newValue === params.oldValue) return false;
+    const obj = JSON.parse(JSON.stringify(params.data));
+    this.produceApi.modifylistyaoqiu(obj).then(data => {
+      this.getdetail();
+      this.hideyaoqiumodal();
+    }, err => {
+      params.node.data[filed] = params.oldValue;
+      params.node.setData(params.node.data);
+    });
+  }
+  // 主表修改
+  modifybeizhu(params) {
+    this.produceApi.updatetasklist(this.tasklist['id'], params).then(() => {
+      this.getdetail();
+    });
+  }
+
+
 }

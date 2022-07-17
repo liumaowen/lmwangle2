@@ -53,6 +53,10 @@ export class QihuodetailComponent implements OnInit {
   @ViewChild('addqualityModal') private addqualityModal: ModalDirective;
   @ViewChild('createmdmqihuodialog') private createmdmqihuodialog: ModalDirective;
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
+  // 控制页面操作按钮是否显示
+  flag: { edit: boolean, editbaocun: boolean, disabled: boolean, verify: boolean, confirm: boolean, querendaohuo: boolean, shenhe: boolean, pdf: boolean, deldet: boolean } =
+    { edit: false, editbaocun: false, disabled: false, verify: false, confirm: false, querendaohuo: false, shenhe: false, pdf: false, deldet: false };
+  // 控制编辑的
   mdmgnsearch = { pagenum: 1, pagesize: 10, itemname: '', categoryname: '' };
   goodscode: any = {};
   gnData: any = [];
@@ -72,7 +76,7 @@ export class QihuodetailComponent implements OnInit {
   isimport = { flag: true };
   rstypes = [{ value: '1', label: '补重' }, { value: '2', label: '退款' }, { value: '3', label: '订货折让' }];
   saletypes = [{ value: '1', label: '补差' }, { value: '2', label: '退货' }, { value: '3', label: '订货折让' }];
-  qihuomodel = { addrbak: {}, buyer: {}, seller: {}, org: {}, arrearspeople: {}, cuser: {}, vuser: {} };
+  qihuomodel = { addrbak: {}, buyer: {}, seller: {}, org: {}, arrearspeople: {}, cuser: {}, vuser: {} ,cperson: {}};
   qihuodet = {};
   wlcustomer = {};
   transporttype;
@@ -159,7 +163,7 @@ export class QihuodetailComponent implements OnInit {
     private userapi: UserapiService, private modalService: BsModalService, private modalService1: BsModalService,
     private matchcarApi: MatchcarService, private storage: StorageService, private businessOrderApi: BusinessorderapiService,
     private feeApi: FeeapiService, private businessorderApi: BusinessorderapiService, private customerApi: CustomerapiService,
-    public mdmService: MdmService, private orderApi: OrderapiService) {
+    public mdmService: MdmService, private orderApi: OrderapiService, private classifyApi: ClassifyApiService) {
     //aggird实例对象
     this.gridOptions = {
       rowSelection: 'multiple',
@@ -1294,9 +1298,13 @@ export class QihuodetailComponent implements OnInit {
   //获取主表的数据
   getqihuomodel() {
     this.qihuoapi.findqihuo(this.qihuoid).then(data => {
+      console.log(111111111111);
+      console.log(data);
+      console.log(this.suser);
 
       // console.log(data);
-      this.qihuomodel = data;
+      this.qihuomodel = data.qihuo;
+      this.qihuomodel['cpersonname'] = data.wuliuname;
       // this.qihuomodel['guigetype'] = this.qihuomodel['guigetype'] === 0 ? '常规' : '特殊';
       // this.qihuomodel['kehutype'] = this.qihuomodel['kehutype'] === 0 ? '直接用户' : '贸易商';
       this.isbaojia = this.qihuomodel['isnoticecaigou'];
@@ -1890,6 +1898,10 @@ export class QihuodetailComponent implements OnInit {
   //此处需要有个弹出框，可供选择确认是否欠款发货
   @ViewChild('submitvuser') private submitvuser: ModalDirective;
   submitvuserdialog() {
+    if(!this.qihuomodel['cpersonname'] ){
+      this.toast.pop('error', '请先选择物流专员!');
+      return;
+   }
     if (this.qihuomodel['ischuliquality'] === null && (this.qihuomodel['ordertype'] == 0 || this.qihuomodel['ordertype'] == 1)) {
       this.toast.pop('warning', '请选择是否处理质量异议');
       return;
@@ -1939,11 +1951,13 @@ export class QihuodetailComponent implements OnInit {
     //     }
     //   }
     // }
-    let search = { dingjin: null, beizhu: null, qihuoid: null, paytype: null };
+    let search = { dingjin: null, beizhu: null, qihuoid: null, paytype: null,wuliuid: null };
     search.qihuoid = this.qihuoid;
     search.beizhu = this.qihuomodel['beizhu'];
     search.dingjin = this.qihuomodel['dingjin'];
     search.paytype = this.qihuomodel['paytype'];
+    search.wuliuid = this.qihuomodel['wuliuid'];
+    console.log(search.wuliuid);
     if (confirm('你确定提交审核吗？')) {
       this.qihuoapi.submitverify(this.qihuoid, search).then(data => {
         this.toast.pop('success', '提交审核成功');
@@ -2051,6 +2065,29 @@ export class QihuodetailComponent implements OnInit {
     this.mdmService.getMdmAttributeDic({ itemcode: data['goodscode']['gncode'] }).then(data1 => {
       this.showGuige = true;
       this.attrs = data1;
+      this.attrs.forEach(element => {
+        if (element['iscas']) {
+            const options = element['options'];
+            for (let index = 0; index < options.length; index++) {
+                const ele = options[index];
+                if (data['goodscode'][element['value']] === ele['value']) {
+                    this.mdmService.getmdmclassifychild(ele['id']).then(children => {
+                        for (let i = 0; i < children.length; i++) {
+                          const child = children[i];
+                          for (let j = 0; j < this.attrs.length; j++) {
+                            const attr = this.attrs[j];
+                            if (child['mdmvalue'] === attr['mdmvalue']) {
+                              attr['options'] = child['options'];
+                              break;
+                            }
+                          }
+                        }
+                    });
+                    break;
+                }
+            }
+        }
+      });
       this.goodscode = data['goodscode'];
       if (this.qihuomodel['qihuostatus'] === 8) {
         for (const key in this.goodscode) {
@@ -2391,6 +2428,41 @@ export class QihuodetailComponent implements OnInit {
       })
     })
   }
+  //选择物流专员
+  suser;
+  isuser;
+  wuliuidselect(user) {
+    this.isuser = user;
+    this.showwuliuid();
+  }
+  @ViewChild('wuliuid') private wuliuid: ModalDirective;
+
+  showwuliuid() {
+    this.wuliuid.show();
+  }
+  hidewuliuid() {
+    this.wuliuid.hide();
+    this.suser = null;
+  }
+  hidewuliuidqd() {
+    if (this.isuser === 'cperson') {
+
+      if (this.suser) {
+        if (typeof (this.suser) === 'object') {
+          this.qihuomodel['cpersonname'] = this.suser['name'];
+          this.qihuomodel['wuliuid'] = this.suser['code'];
+        } else if (typeof (this.suser) === 'string') {
+          this.qihuomodel['wuliuid'] = '';
+          this.toast.pop('warning', '输入的人员名称有误，请重新选择');
+        }
+      } else {
+        this.qihuomodel['wuliuid'] = '';
+      }
+    }
+    this.modify(this.qihuomodel);
+    this.hidewuliuid();
+  }
+
 
   // 控制显示添加框
   showInput() {

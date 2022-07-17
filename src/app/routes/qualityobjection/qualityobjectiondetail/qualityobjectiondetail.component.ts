@@ -8,6 +8,7 @@ import { ToasterService } from 'angular2-toaster/angular2-toaster';
 import { QualityobjectionService } from '../qualityobjection.service';
 import { TihuodetimportComponent } from './tihuodetimport/tihuodetimport.component';
 import { ClassifyApiService } from 'app/dnn/service/classifyapi.service';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 const sweetalert = require('sweetalert');
 @Component({
@@ -25,6 +26,9 @@ export class QualityobjectiondetailComponent implements OnInit {
   @ViewChild('picdialog') private picdialog: ModalDirective;
   @ViewChild('fujianModal') private fujianModal: ModalDirective;
   @ViewChild('salefeedbackModal') private salefeedbackModal: ModalDirective;
+  @ViewChild('wuliuchuliModel') private wuliuchuliModel: ModalDirective;
+  @ViewChild('cangkuchuliModel') private cangkuchuliModel: ModalDirective;
+  @ViewChild('cancelModel') private cancelModel: ModalDirective;
   gridOptions: GridOptions;
   gangchangrecord = { beizhu: '', isurl: false, url: '', id: '', type: 1 };
   qualityobjection: any = { seller: '' };
@@ -46,6 +50,7 @@ export class QualityobjectiondetailComponent implements OnInit {
   salefeedbackobj = {logid: '', beizhu: '', qualityid: null}; // 销售业务反馈
   saletypes = [{ value: '1', label: '补差' }, { value: '2', label: '退货' }, { value: '3', label: '订货折让' }];
   isshowrsjine = true;
+  chulitypes = [{ value: '1', label: '提报钢厂处理' }, { value: '2', label: '不提报钢厂资源中心处理' }, { value: '3', label: '物流处理' }, { value: '4', label: '仓库处理' }];
   // isshowgcjine = true;
   fujians: any = [];
   uploadflag = 1; // 1:异议跟踪弹窗 2:主表附件
@@ -53,8 +58,14 @@ export class QualityobjectiondetailComponent implements OnInit {
   salebillno = ''; // 销售赔付单号
   rsbillno = ''; // 资源中心赔付单号
   oldquality = {};
+  wuliuchuli = {};
+  cangkuchuli = {};
+  // 获取当前登录用户的信息
+  current = this.storage.getObject('cuser');
+  updatewaiwu:boolean = false;
   constructor(
     private qualityobjectionApi: QualityobjectionService,
+    private storage: StorageService,
     private actroute: ActivatedRoute,
     public settings: SettingsService,
     private toast: ToasterService,
@@ -144,6 +155,11 @@ export class QualityobjectiondetailComponent implements OnInit {
   getdetail() {
     this.qualityobjectionApi.getdetail(this.actroute.params['value']['id']).then(data => {
       this.qualityobjection = data.quality;
+      this.wuliuchuli['qualityid'] = this.qualityobjection.id;
+      this.cangkuchuli['qualityid'] = this.qualityobjection.id;      
+      if (this.qualityobjection['vuserid'] === this.current.id) {
+        this.updatewaiwu = true;
+      }
       this.salebillno = this.qualityobjection.salebillno;
       this.rsbillno = this.qualityobjection.rsbillno;
       this.qualityobjection['oldsupplierid'] = data.quality['supplierid'];
@@ -285,7 +301,27 @@ export class QualityobjectiondetailComponent implements OnInit {
     this.gangchangrecordModal.hide();
   }
   confirmrecord() {
-    if (!this.gangchangrecord['beizhu']) {
+    if(!this.gangchangrecord['chulitype']){
+      this.toast.pop('error', '请选择处理类型');
+        return;
+    }
+    if(this.gangchangrecord['chulitype'] === '3'){
+      if(!this.gangchangrecord['wuliuuser']){
+        this.toast.pop('error', '物流员不能为空');
+        return;
+      }else{
+        this.gangchangrecord['wuliuuserid'] = this.gangchangrecord['wuliuuser']['code'];
+      }
+    }
+    if(this.gangchangrecord['chulitype'] === '4'){
+      if(!this.gangchangrecord['cangkuuser']){
+        this.toast.pop('error', '仓库负责人不能为空为空！');
+        return;
+      }else{
+        this.gangchangrecord['cangkuuserid'] = this.gangchangrecord['cangkuuser']['code'];
+      }
+    }
+    if (!this.gangchangrecord['beizhu'] && this.gangchangrecord['chulitype'] === '1') {
       this.toast.pop('error', '备注不能为空！');
       return;
     }
@@ -515,4 +551,57 @@ export class QualityobjectiondetailComponent implements OnInit {
       this.getdetail();
     });
   }
+  wuliuchulishow(){
+    this.wuliuchuliModel.show();
+  }
+  cangkuchulishow(){
+    this.cangkuchuliModel.show();
+  }
+  closewuliu(){
+    this.wuliuchuliModel.hide();
+  }
+  closecangku(){
+    this.cangkuchuliModel.hide();
+  }
+  cancelShow(){
+    this.cancelModel.show();
+  }
+  closecancel(){
+    this.cancelModel.hide();
+  }
+  //物流处理
+  submitwuliu(){
+    if(!this.wuliuchuli['wlbeizhu']){
+      this.toast.pop('error', '请填写处理说明！');
+      return;
+    }
+    this.qualityobjectionApi.submitwuliu(this.wuliuchuli).then(data => {
+      this.getdetail();
+      this.closewuliu();
+    });
+  }
+  //仓库处理
+  submitcangku(){
+    if(!this.cangkuchuli['ckbeizhu']){
+      this.toast.pop('error', '请填写处理说明！');
+      return;
+    }
+    this.qualityobjectionApi.submitcangku(this.cangkuchuli).then(data => {
+      this.getdetail();
+      this.closecangku();
+    });
+  }
+  cancel(){
+    if(!this.qualityobjection['cancelbeizhu']){
+      this.toast.pop('error', '请填写原因！');
+      return;
+    }
+    console.log(this.qualityobjection['cancelbeizhu']);
+    
+    this.qualityobjectionApi.cancel(this.qualityobjection).then(data => {
+      this.getdetail();
+      this.closecancel();
+    });
+  }
+
 }

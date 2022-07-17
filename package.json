@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "install": "napa",
-    "start": "node --max_old_space_size=819200  node_modules\\@angular\\cli\\bin\\ng serve --proxy-config loca.conf.json",
+    "start": "ng serve --host 0.0.0.0 --disableHostCheck=true --proxy-config loca.conf.json",
     "build": "ng build",
     "buildtest": "ng build --aot --prod --environment=test --base-href /gmerp/ ",
     "buildgm": "ng build --aot --prod  --environment=prod --base-href /gmerp/",

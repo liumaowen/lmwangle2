@@ -6,8 +6,8 @@ export class BaojiaService {
 
   constructor(private http: Http) { }
 
-  queryBaojia(): Promise<any> {
-    return this.http.get('store/api/baojia').toPromise().then(data => {
+  queryBaojia(search): Promise<any> {
+    return this.http.get('store/api/baojia',{search:search}).toPromise().then(data => {
       return data.json() as any[];
     })
   }

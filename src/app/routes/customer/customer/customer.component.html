@@ -140,6 +140,13 @@
                 <wisk-usersearch [(user)]="userName"></wisk-usersearch>
               </div>
             </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">纳税人识别号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="querys['taxno']" placeholder="请输入纳税人识别号" class="form-control">
+              </div>
+            </div>
+
 
             <div class="form-group mb fieldsetdnn col-sm-12">
               <label class="col-sm-3 control-label">使用状态</label>
@@ -222,6 +229,13 @@
               <div class="col-sm-9">
                 <p-dropdown [options]="categorys" [(ngModel)]="model['categoryid']" [style]="{'width':'100%'}">
                 </p-dropdown>
+              </div>
+            </div>
+            
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">纳税人识别号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="model['taxno']" placeholder="请输入纳税人识别号" class="form-control">
               </div>
             </div>
 

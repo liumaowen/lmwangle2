@@ -206,7 +206,20 @@ export class MatchcardetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '运单号', field: 'transportno', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '运费单价', field: 'feeprice', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '运费金额', field: 'feejine', width: 90 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '库存ID', field: 'kucunid', minWidth: 75,
+        cellRenderer: (params) => {
+          if (params.data) {
+            if (null != params.data.kucunid) {
+              return '<a target="_blank" href="#/chain/' + params.data.kucunid + '">' + params.data.kucunid + '</a>';
+            }
+          } else {
+            return '';
+          }
+        }
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否确认', field: 'isagree', width: 90 },
+      
       {
         cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'amount', width: 100,
         cellRenderer: (params) => {
@@ -228,6 +241,7 @@ export class MatchcardetailComponent implements OnInit {
           }
         }
       }
+      
     ];
   }
 

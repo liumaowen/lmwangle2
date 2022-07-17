@@ -13,6 +13,7 @@ import { KucundetimportComponent } from 'app/dnn/shared/kucundetimport/kucundeti
 import { NoticewuliuyuanComponent } from 'app/dnn/shared/noticewuliuyuan/noticewuliuyuan.component';
 import { FeeapiService } from 'app/routes/fee/feeapi.service';
 import { BusinessorderapiService } from 'app/routes/businessorder/businessorderapi.service';
+import { MdmService } from 'app/routes/mdm/mdm.service';
 
 @Component({
   selector: 'app-ldorder',
@@ -65,6 +66,7 @@ export class LdorderComponent implements OnInit {
   @ViewChild('mainmodifydialog') private mainmodifydialog: ModalDirective;
   // 弹出添加地址的对话框
   @ViewChild('addrdialog') private addrdialog: ModalDirective;
+  @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
   // 引入通知采购弹窗模型
   bsModalRef: BsModalRef;
   noticewuliuparams: any = {}; // 通知物流专员报价弹窗的参数
@@ -72,7 +74,7 @@ export class LdorderComponent implements OnInit {
     private datepipe: DatePipe, private toast: ToasterService, private route: ActivatedRoute, private router: Router,
     private moneyapi: MoneyService, private userapi: UserapiService, private modalService: BsModalService,
     private feeApi: FeeapiService, private businessorderApi: BusinessorderapiService,
-    private modalService1: BsModalService) {
+    private modalService1: BsModalService,public mdmService: MdmService,) {
     // aggird实例对象
     this.gridOptions = {
       groupDefaultExpanded: -1,
@@ -480,8 +482,8 @@ export class LdorderComponent implements OnInit {
   //生成期货
   qihuodetmodel = {
     id: null,
-    gnid: null,
-    chandiid: null,
+    gn: null,
+    chandi: null,
     dinghuoliang: null,
     saleprice: null,
     classifys: null,
@@ -605,8 +607,8 @@ export class LdorderComponent implements OnInit {
     this.gcs = [];
     this.qihuodetmodel = {
       id: null,
-      gnid: null,
-      chandiid: null,
+      gn: null,
+      chandi: null,
       dinghuoliang: null,
       saleprice: null,
       classifys: null,
@@ -1207,5 +1209,58 @@ export class LdorderComponent implements OnInit {
       });
     }
   }
-
+  /**选择属性 */
+  selectattr(item, value) {
+    if (item['iscas']) {
+      const options = item['options'];
+      for (let index = 0; index < options.length; index++) {
+        const element = options[index];
+        if (value === element['value']) {
+          this.mdmService.getmdmclassifychild(element['id']).then(children => {
+            for (let i = 0; i < children.length; i++) {
+              const child = children[i];
+              for (let j = 0; j < this.attrs.length; j++) {
+                const attr = this.attrs[j];
+                if (child['mdmvalue'] === attr['mdmvalue']) {
+                  attr['options'] = child['options'];
+                  this.qihuodetmodel[attr.value] = null;
+                  break;
+                }
+              }
+            }
+          });
+          break;
+        }
+      }
+    }
+  }
+  selectgn(params) {
+    this.mdmgndialog.hide();
+    const item = params['item'];
+    const attrs = params['attrs'];
+    this.qihuodetmodel = {
+        id: null,
+        gn: null,
+        chandi: null,
+        dinghuoliang: null,
+        saleprice: null,
+        classifys: null,
+        cangkuid: null,
+        chukufeeprice: null,
+        yunfeeprice: null,
+        yunzafeeprice: null,
+        jiagongfeeprice: null
+    };
+    this.qihuodetmodel['gn'] = item.itemname;
+    this.qihuodetmodel['gncode'] = item.itemcode;
+    this.qihuodetmodel['categorydesc'] = item.categorydesc;
+    this.showGuige = true;
+    this.attrs = attrs;
+    for (let i = 0; i < this.attrs.length; i++) {
+      const element = this.attrs[i];
+      if (element['defaultval'] && element['options'].length) {
+        this.qihuodetmodel[element['value']] = element['defaultval'];
+      }
+    }
+  }
 }

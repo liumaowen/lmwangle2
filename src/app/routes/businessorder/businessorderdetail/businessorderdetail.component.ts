@@ -203,7 +203,19 @@ export class BusinessorderdetailComponent implements OnInit {
       {
         cellStyle: { 'text-align': 'center' }, headerName: 'ID', field: 'id', width: 90,
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', width: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', width: 120,
+        cellRenderer: (params) => {
+            if (params && params.data) {
+                if (params.data.cangkuid) {
+                    return '<a target="_blank" href="#/cangku/' + params.data.cangkuid + '">' + params.data.cangkuname + '</a>';
+                } else {
+                    return params.data.cangkuname;
+                }
+            } else {
+                return '';
+            }
+        } 
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'guige', width: 300 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '出库费类型', field: 'chukufeetype', width: 110,

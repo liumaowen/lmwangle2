@@ -13,7 +13,7 @@ import { BargainComponent } from './bargain/bargain.component';
 
 const routes: Routes = [
   { path: 'customerlevel', component: CustomerlevelComponent, data: { 'title': '客户分类管理表' } },
-  { path: 'bargain', component: BargainComponent, data: { 'title': '议价申请表' } }
+  { path: 'bargain', component: BargainComponent, data: { 'title': '线上价格分类表' } }
 
 ];
  

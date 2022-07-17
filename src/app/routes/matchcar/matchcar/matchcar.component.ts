@@ -83,7 +83,21 @@ export class MatchcarComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '材质', field: 'caizhi', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '后处理', field: 'ppro', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '包装方式', field: 'packagetype', minWidth: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', minWidth: 100 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '提单创建时间', field: 'tihuodate', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '匹配车号时间', field: 'matchcardate', minWidth: 100 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '库存ID', field: 'kucunid', minWidth: 75,
+        cellRenderer: (params) => {
+          if (params.data) {
+            if (null != params.data.kucunid) {
+              return '<a target="_blank" href="#/chain/' + params.data.kucunid + '">' + params.data.kucunid + '</a>';
+            }
+          } else {
+            return '';
+          }
+        }
+      }
     ];
   }
   ngOnInit() {

@@ -116,6 +116,13 @@ export class CustomerComponent implements OnInit {
       // Notify.alert('请填写行业类别', { status: 'warning' });
       return;
     }
+    if (!this.model['taxno']) {
+      this.toast.pop('warning', '请输入纳税人识别号');
+      return;
+    }
+    if(this.model['taxno'].length<18){	
+      this.toast.pop('warning','输入的纳税人识别号必须大于18位');
+      return;}
     if (confirm('确定要添加')) {
       this.customerApi.createCustomer(this.model).then((data) => {
         this.hidecreateModal();

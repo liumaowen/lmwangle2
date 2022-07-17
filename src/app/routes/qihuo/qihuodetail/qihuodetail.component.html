@@ -498,6 +498,22 @@
           </div>
         </div>
       </div>
+      <div class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 control-label form-control-static">物流专员:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+            <input disabled type="text" name="busername" style="width:calc(100% - 45px);display:inline;"
+              class="form-control" [(ngModel)]="qihuomodel['cpersonname']" />
+            <span class="input-group-btn" style="display:inline;">
+              <button [disabled]="flag.disabled" type="button" class="btn btn-default"
+                (click)="wuliuidselect('cperson')">
+                <i class="fa fa-caret-down"></i>
+              </button>
+            </span>
+            <!-- <wisk-usersearch [(user)]="model['vuser']" [disabled]="flag.disabled"></wisk-usersearch> -->
+          </div>
+        </div>
+      </div>
       <div *ngIf = "qihuomodel['ischuliquality']" class=" col-lg-3 col-md-6 ">
         <div class="row">
           <div class="col-md-4 col-xs-6 control-label form-control-static">质量异议单号:</div>
@@ -2323,6 +2339,38 @@ aria-hidden="true">
         <div class="form-inline text-center">
           <button *ngIf="qhqualityModel['ischuliquality'] === 1" type="button" (click)="choice()" class="btn btn-primary btn-large">选择质量异议</button>
           <button *ngIf="qhqualityModel['ischuliquality'] !== 1" type="button" (click)="addupdate()" class="btn btn-primary btn-large">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  添加物流员的弹窗 -->
+<div class="modal" bsModal #wuliuid="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidewuliuid()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">人员选择</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <wisk-usersearch [(user)]="suser"></wisk-usersearch>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="hidewuliuidqd()" class="btn btn-info btn-large">选择</button>
+            <button type="button" (click)="hidewuliuid()" class="btn btn-primary btn-large">取消</button>
+          </div>
         </div>
       </div>
     </div>

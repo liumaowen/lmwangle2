@@ -30,6 +30,8 @@ export class CangkudetailComponent implements OnInit {
   @ViewChild('addModal') private addModal: ModalDirective;
 
   @ViewChild('addrmodifyModal') private addrmodifyModal: ModalDirective;
+  // 上传弹窗实例
+  @ViewChild('uploaderModel') private uploaderModel: ModalDirective;
 
   gridOptions: GridOptions;
 
@@ -38,6 +40,7 @@ export class CangkudetailComponent implements OnInit {
   gridOptions2: GridOptions;
 
   gridOptions3: GridOptions;
+  gridOptions4: GridOptions;
 
   results: any;
   model = { user: {} };
@@ -70,7 +73,10 @@ export class CangkudetailComponent implements OnInit {
   units = [{ label: '请选择。。。', value: null }, { label: '元/吨/天', value: 1 }, { label: '元/吨/月', value: 2 }];
   storagefee = {};
   settletype: any;
-
+  // 入库单上传信息及格式
+  uploadParam: any = { module: 'ruku', count: 1, sizemax: 1, extensions: ['xls'] };
+  // 设置上传的格式
+  accept = '.xls, application/xls';
   constructor(public settings: SettingsService,
     private route: ActivatedRoute,
     private toast: ToasterService,
@@ -206,6 +212,39 @@ export class CangkudetailComponent implements OnInit {
         }
       }
     ];
+    this.gridOptions4 = {
+      enableFilter: true, // 过滤器
+    //   rowSelection: 'multiple', // 多选单选控制
+      enableRangeSelection: true,
+    //   rowDeselection: true, // 取消全选
+      suppressRowClickSelection: false,
+      enableColResize: true, // 列宽可以自由控制
+      overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
+      overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
+      enableSorting: true,// 排序
+      getContextMenuItems: this.settings.getContextMenuItems,
+    };
+
+    this.gridOptions4.columnDefs = [
+      { cellStyle: { 'text-align': 'center' }, headerName: '加工方式', field: 'typename', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '加工单重量(t)', field: 'weight', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '原卷宽度(mm)', field: 'originwidth', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '原卷厚度(mm)', field: 'originhoudu', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '纵剪条数', field: 'zongjiancount', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '横切前卷宽', field: 'hengqiewidth', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '横切长度(mm)', field: 'hengqielength', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '包装方式', field: 'packagetype', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '打包吨位(t)', field: 'ton', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '加工费单价(元/吨)', field: 'price', width: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 120 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '操作', field: '', width: 90,
+        cellRenderer: (params) => `<a>删除</a>`,
+        onCellClicked: (params) => {
+          this.delprocessfee(params.data.id);
+        }
+      }
+    ];
   }
 
   ngOnInit() {
@@ -244,10 +283,18 @@ export class CangkudetailComponent implements OnInit {
       this.gridOptions2.api.setRowData(response);
     });
     this.setgridOptions3(this.route.params['value']['id']);
-
+    this.getprocessfee(this.route.params['value']['id']);
 
   }
-
+  /**
+   * 获取加工费
+   * @param cangkuid 
+   */
+  getprocessfee(cangkuid) {
+    this.cangkuApi.getProcessfeeList(cangkuid).then((response) => {
+        this.gridOptions4.api.setRowData(response);
+    });
+  }
   setgridOptions3(cangkuid) {
     this.cangkuApi.getStorageFeeList(cangkuid).then((response) => {
       this.gridOptions3.api.setRowData(response);
@@ -811,6 +858,41 @@ export class CangkudetailComponent implements OnInit {
       }
     }
   }
-
-
+    /**打开加工费上传弹窗 */
+    showprocessfee() {
+        this.uploaderModel.show();
+    }
+    // 关闭上传弹窗
+    hideDialog() {
+        this.uploaderModel.hide();
+    }
+    // 上传成功执行的回调方法
+    uploads($event) {
+        const addData = [$event.url];
+        if ($event.length !== 0) {
+            this.cangkuApi.uploadprocessfee({cangkuid:this.route.params['value']['id'],url:addData}).then(data => {
+                this.toast.pop('success', '上传成功！');
+                this.ngOnInit();
+            });
+        }
+        this.hideDialog();
+    }
+    /**删除加工费 */
+    delprocessfee(id) {
+        sweetalert({
+          title: '你确定要删除吗',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#23b7e5',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          closeOnConfirm: false
+        }, () => {
+          this.cangkuApi.delprocessfee(id).then(data => {
+            this.toast.pop('success', '删除成功！');
+            this.getprocessfee(this.route.params['value']['id']);
+            sweetalert.close();
+          });
+        });
+      }
 }

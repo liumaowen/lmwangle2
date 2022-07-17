@@ -72,79 +72,92 @@
         <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['cangkuname']}}</div>
       </div>
     </div>
-    <div class=" col-lg-3 col-md-6 ">
+    <!-- <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 form-control-static">加工费:</div>
         <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['fee']}}</div>
       </div>
+    </div> -->
+    <div class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 form-control-static">是否保留原标签:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['isretain'] ? '是' : '否'}}</div>
+        </div>
     </div>
   </div>
   <div class="row fieldsetdnn">
-    <div class=" col-lg-3 col-md-6 ">
-      <div class="row">
-        <div class="col-md-4 col-xs-6 form-control-static">是否保留原标签:</div>
-        <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['isretain'] ? '是' : '否'}}</div>
-      </div>
-    </div>
-    <div class=" col-lg-3 col-md-6 ">
+
+    <!-- <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 form-control-static">打包带材料:</div>
         <div class="col-md-8 col-xs-6 form-control-static">{{cailiao ? cailiao : '见备注'}}</div>
       </div>
-    </div>
+    </div> -->
     <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 form-control-static">木托数量:</div>
         <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['mutuo']}}</div>
       </div>
     </div>
-    <div class=" col-lg-3 col-md-6 ">
+    <!-- <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 form-control-static">钢带数量:</div>
         <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['gangdai'] ? tasklist['gangdai'] : '见备注'}}</div>
       </div>
+    </div> -->
+    <div class=" col-lg-3 col-md-6 ">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 form-control-static">是否修边:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['isxiubian'] ? '是' : '否'}}</div>
+        </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+        <div class="row">
+            <div class="col-md-4 col-xs-6 form-control-static">包装方式:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['packagetype']}}</div>
+        </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+        <div class="row">
+            <div class="col-md-4 col-xs-6 form-control-static">卷内径:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['neijing']}}</div>
+        </div>
     </div>
   </div>
   <div class="row fieldsetdnn">
-    <div class=" col-lg-3 col-md-6 ">
-      <div class="row">
-        <div class="col-md-4 col-xs-6 form-control-static">是否修边:</div>
-        <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['isxiubian'] ? '是' : '否'}}</div>
-      </div>
-    </div>
-    <div class=" col-lg-3 col-md-6 ">
-      <div class="row">
-        <div class="col-md-4 col-xs-6 form-control-static">包装方式:</div>
-        <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['packagetype']}}</div>
-      </div>
-    </div>
-    <div class=" col-lg-3 col-md-6 ">
-      <div class="row">
-        <div class="col-md-4 col-xs-6 form-control-static">卷内径:</div>
-        <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['neijing']}}</div>
-      </div>
-    </div>
     <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 form-control-static">是否审核:</div>
         <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['isv'] | isTranslated}}</div>
       </div>
     </div>
+    <div class=" col-lg-3 col-md-6 ">
+        <div class="row">
+            <div class="col-md-4 col-xs-6 form-control-static">审核日期:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['vdate']}}</div>
+        </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 ">
+        <div class="row">
+            <div class="col-md-4 col-xs-6 form-control-static">加工模式:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['producemode'] | producemode}}</div>
+        </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 " *ngIf="tasklist['fee']">
+        <div class="row">
+            <div class="col-md-4 col-xs-6 form-control-static">加工费:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['fee']}}</div>
+        </div>
+    </div>
+    <div class=" col-lg-3 col-md-6 " >
+      <div class="row">
+          <div class="col-md-4 col-xs-6 form-control-static">备注:</div>
+          <div class="col-md-8 col-xs-6 form-control-static">
+            <input type="text" placeholder="请输入备注" [(ngModel)]="tasklist['beizhu']" (blur)="modifybeizhu(tasklist)"
+              class="form-control" [disabled]="tasklist['isv']" />
+          </div>
+      </div>
   </div>
-  <div class="row fieldsetdnn">
-    <div class=" col-lg-3 col-md-6 ">
-      <div class="row">
-        <div class="col-md-4 col-xs-6 form-control-static">审核日期:</div>
-        <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['vdate']}}</div>
-      </div>
-    </div>
-    <div class=" col-lg-3 col-md-6 ">
-      <div class="row">
-        <div class="col-md-4 col-xs-6 form-control-static">加工模式:</div>
-        <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['producemode'] | producemode}}</div>
-      </div>
-    </div>
-
   </div>
 </div>
 <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 342)+'px'}" #agGrid class="ag-blue wis-auto"

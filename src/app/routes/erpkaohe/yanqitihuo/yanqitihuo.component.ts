@@ -70,8 +70,9 @@ export class YanqitihuoComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '所属机构', field: 'orgname', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '客户性质', field: 'kehutype', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'guige', width: 120 },
-      // { cellStyle: { 'text-align': 'center' }, headerName: '颜色', field: 'color', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '颜色', field: 'color', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '捆包号', field: 'kunbaohao', width: 90 },
       {
         cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'weight', width: 90, aggFunc: 'sum',

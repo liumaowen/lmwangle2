@@ -18,6 +18,8 @@
     </button>
     <button type="button" (click)="addzhuanhuofeedialog()" class="btn btn-info btn-sm margin-top-bottom-25">转货费添加
     </button>
+    <button type="button" (click)="showprocessfee()" class="btn btn-info btn-sm margin-top-bottom-25">加工费添加
+    </button>
     <button type="button" (click)="addguanliandialog()" class="btn btn-info btn-sm margin-top-bottom-25">关联公司添加
     </button>
     <button type="button" (click)="addrmodifydialog()" class="btn btn-info btn-sm margin-top-bottom-25">仓库地址修改
@@ -203,6 +205,12 @@
         <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 508)+'px'}" #agGridq
           style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
           [gridOptions]="gridOptions3">
+        </ag-grid-angular>
+      </p-tabPanel>
+      <p-tabPanel header="加工费" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 508)+'px'}" #agGridj
+          style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+          [gridOptions]="gridOptions4">
         </ag-grid-angular>
       </p-tabPanel>
     </p-tabView>
@@ -605,6 +613,27 @@ aria-hidden="true">
         <h4 class="modal-title">物料分类码表报表</h4>
       </div>
       <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+<!--添加加工费提交显示上传加工费弹窗-->
+<div class="modal" bsModal #uploaderModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/processfee.xls" style="float: right;margin-right:15px;">
+            <button type="button" class="btn btn-info btn-bloc">加工费模板下载</button>
+        </a>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+
+      <div class="form-inline">
+      </div>
     </div>
   </div>
 </div>

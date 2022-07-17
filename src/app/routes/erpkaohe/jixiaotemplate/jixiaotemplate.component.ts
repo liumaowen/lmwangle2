@@ -170,6 +170,21 @@ export class JixiaotemplateComponent implements OnInit {
             cellClass: 'text-center', headerName: '发票逾期 ', field: 'fapiaoyuqi',
             minWidth: 80, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
             aggFunc: 'sum'
+          },
+          {
+            cellClass: 'text-center', headerName: '销量激励', field: 'salejili',
+            minWidth: 80, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+            aggFunc: 'sum'
+          },
+          {
+            cellClass: 'text-center', headerName: '项目销量目标完成激励', field: 'salejilifinish',
+            minWidth: 120, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+            aggFunc: 'sum'
+          },
+          {
+            cellClass: 'text-center', headerName: '材料终端客户激励', field: 'cailiaojili',
+            minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+            aggFunc: 'sum'
           }
         ]
       },

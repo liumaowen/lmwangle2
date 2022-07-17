@@ -133,10 +133,10 @@ export class TasklistComponent implements OnInit {
       this.toast.pop('warning', '请选择卷内径');
       return;
     }
-    if (!this.tasklist['fee']) {
-      this.toast.pop('warning', '请填写加工费');
-      return;
-    }
+    // if (!this.tasklist['fee']) {
+    //   this.toast.pop('warning', '请填写加工费');
+    //   return;
+    // }
     if (!this.tasklist['phone']) {
       this.toast.pop('warning', '请填写联系电话');
       return;

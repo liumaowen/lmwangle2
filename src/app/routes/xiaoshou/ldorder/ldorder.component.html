@@ -259,12 +259,33 @@
                   <span style="float: right;">品名：</span>
                 </label>
                 <div class="col-sm-9">
-                  <p-dropdown [options]="gns" (onChange)="selectedgn($event.value)" [(ngModel)]="qihuodetmodel['gnid']"
+                  <!-- <p-dropdown [options]="gns" (onChange)="selectedgn($event.value)" [(ngModel)]="qihuodetmodel['gnid']"
                     placeholder="选择品名" [filter]="true" [style]="{'width': '100%'}">
-                  </p-dropdown>
+                  </p-dropdown> -->
+                  <input (click)="mdmgndialog.show()" [(ngModel)]="qihuodetmodel['gn']" class="form-control" placeholder="请选择品名" readonly>
                 </div>
               </div>
-              <div class="form-group mb fieldsetdnn row">
+              <div class="form-group mb fieldsetdnn row row">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">分类描述：</span>
+                </label>
+                <div class="col-sm-8">
+                  <input [(ngModel)]="qihuodetmodel['categorydesc']" class="form-control" placeholder="请选择品名" disabled>
+                </div>
+              </div>
+              <div *ngIf="showGuige">
+                <div class="form-group mb fieldsetdnn row" *ngFor="let item of attrs">
+                  <label class="col-sm-4 control-label requiredlabel">
+                    <span style="float: right;" [ngClass]="{'requiredbefore':item.isrequired}">{{item.name}}：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown [options]="item.options" placeholder='请选择{{item.label}}'
+                      [(ngModel)]="qihuodetmodel[item.value]" (onChange)="selectattr(item,$event.value)" [filter]="true" [style]="{'width': '100%'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="form-group mb fieldsetdnn row">
                 <label class="col-sm-3 control-label">
                   <span style="float: right;">产地：</span>
                 </label>
@@ -287,7 +308,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div *ngIf="two">
               <div class="form-group mb fieldsetdnn row">
                 <label class="col-sm-3 control-label">
@@ -816,6 +837,21 @@
           <button type="button" (click)="addAddr()" class="btn btn-primary btn-large">添加</button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
     </div>
   </div>
 </div>

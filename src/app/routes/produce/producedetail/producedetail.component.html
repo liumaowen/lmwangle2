@@ -7,7 +7,7 @@
       class="btn btn-sm margin-top-bottom-25" style="background-color:red;border-color:red;color:#ffffff;">批量删除明细</button>
     <button type="button" class="btn btn-info btn-bloc" (click)="produceUploader()">上传验收单</button>
     <!-- 加工单位为邯郸市维实供应链服务有限公司，可点击 -->
-    <button *ngIf="!showbutton['imp']&&produce['jgdwid'] === 3786" type="button" (click)="showproducefeedialog()"
+    <button *ngIf="!produce['isv']" type="button" (click)="showproducefeedialog()"
       class="btn btn-info btn-sm margin-top-bottom-25">费用添加</button>
     <button *ngIf="showbutton['imp']" type="button" (click)="basematerialImp()"
       class="btn btn-info btn-sm margin-top-bottom-25">基料引入</button>
@@ -281,7 +281,7 @@
         <button type="button" class="close" aria-label="Close" (click)="hideproducefeedialog()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title">邯郸加工费用添加</h4>
+        <h4 class="modal-title">加工费用添加</h4>
       </div>
       <div class="modal-body">
         <div class="panel panel-default">
@@ -311,6 +311,12 @@
               <label class="col-sm-3 control-label">金额</label>
               <div class="col-sm-9">
                 <input type="number" [(ngModel)]="producefee['jine']" class="form-control" (blur)="getprice()" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">付款公司：</label>
+              <div class="col-sm-9">
+                <app-wiskinnercompany (wiskindcompany)="innercompany($event)"></app-wiskinnercompany>
               </div>
             </div>
             <div class="form-group mb fieldsetdnn col-sm-12">

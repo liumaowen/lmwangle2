@@ -15,7 +15,7 @@ const sweetalert = require('sweetalert');
 })
 export class BargainComponent implements OnInit {
   // 开始时间
-  start = new Date(); // 设定页面开始时间默认值
+  start = new Date('2022-07-01'); // 设定页面开始时间默认值
   end: any = null;
   maxDate = new Date();
   gns: any = [];
@@ -33,8 +33,11 @@ export class BargainComponent implements OnInit {
   queryparams: any = {isdel: false, start: this.datepipe.transform(this.start, 'y-MM-dd'),
    end: this.datepipe.transform(this.end, 'y-MM-dd')}; // 查询
   cuser: any;
+  chandioptions: any = [];
   @ViewChild('classicModal') private classicModal: ModalDirective;
   @ViewChild('createModal') private createModal: ModalDirective;
+  // 品名选择弹窗
+  @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
 
   gridOptions: GridOptions;
   constructor(
@@ -74,11 +77,11 @@ export class BargainComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '有效结束日期', field: 'end', minWidth: 86 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 86 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 86 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '厚度', field: 'houdu', minWidth: 86 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '宽度', field: 'width', minWidth: 86 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '颜色', field: 'color', minWidth: 86 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '锌层', field: 'duceng', minWidth: 86 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '材质', field: 'caizhi', minWidth: 86 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '厚度', field: 'houdu', minWidth: 86 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '宽度', field: 'width', minWidth: 86 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '颜色', field: 'color', minWidth: 86 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '锌层', field: 'duceng', minWidth: 86 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '材质', field: 'caizhi', minWidth: 86 },
       { cellStyle: { 'text-align': 'center' }, headerName: '状态', field: 'status', minWidth: 86 },
     ];
 
@@ -119,6 +122,7 @@ export class BargainComponent implements OnInit {
 
   openQueryDialog() {
     this.selectNull();
+    this.start = new Date('2022-07-01')
     this.classicModal.show();
     this.getGnAndChandi();
   }
@@ -163,7 +167,7 @@ export class BargainComponent implements OnInit {
         label: element.name
       });
     });
-    this.requestparams['gnid'] = value.id;
+    this.requestparams['gn'] = value.name;
   }
   selectedchandi(value) {
     this.attrs = [];
@@ -219,19 +223,19 @@ export class BargainComponent implements OnInit {
       this.toast.pop('warning', '议价金额（C类）不允许为空！');
       return;
     }
-    if (this.requestparams['pricea'] < 0 || this.requestparams['priceb'] < 0 || this.requestparams['pricec'] < 0) {
-      this.toast.pop('warning', '议价金额不允许小于零！');
+    if ((!(this.requestparams['pricea'] < this.requestparams['priceb'] &&  this.requestparams['priceb'] < this.requestparams['pricec']))) {
+      this.toast.pop('warning', '请遵循优惠原则C≥B≥A！');
       return;
     }
-    if (!(this.requestparams['pricea'] >= this.requestparams['priceb'] &&  this.requestparams['priceb'] >= this.requestparams['pricec'])) {
-      this.toast.pop('warning', '请遵循优惠原则A≥B≥C！');
+    if(this.requestparams['pricea'] - this.requestparams['pricec'] > 100 || this.requestparams['pricec'] - this.requestparams['pricea'] >100){
+      this.toast.pop('warning', 'A类C类差价不得超过100');
       return;
     }
-    if (!this.requestparams['gnid']) {
+    if (!this.requestparams['gn']) {
       this.toast.pop('warning', '品名不允许为空！');
       return;
     }
-    if (!this.requestparams['chandiid']) {
+    if (!this.requestparams['chandi']) {
       this.toast.pop('warning', '产地不允许为空！');
       return;
     }
@@ -300,5 +304,22 @@ export class BargainComponent implements OnInit {
       });
       sweetalert.close();
     });
+  }
+  selectgn(params) {
+    this.mdmgndialog.hide();
+    const item = params['item'];
+    const attrs = params['attrs'];
+    this.chandioptions = [];
+    for (let index = 0; index < attrs.length; index++) {
+      const element = attrs[index];
+      if (element['value'] === 'chandi') {
+        this.chandioptions = element['options'];
+        break;
+      }
+    }
+    this.requestparams['gn'] = item.itemname;
+    if (this.chandioptions.length) {
+      this.requestparams['chandi'] = this.chandioptions[this.chandioptions.length-1]['value'];
+    }
   }
 }

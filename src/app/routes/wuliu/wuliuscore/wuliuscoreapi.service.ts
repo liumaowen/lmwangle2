@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class WuliuscoreapiService {
+  update(areamiddle: {}) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private http: Http) { }
 
@@ -30,4 +33,40 @@ export class WuliuscoreapiService {
   updateSupplierType(modify): Promise<any> {
     return this.http.put('store/api/customer/updatesuppliertype', modify).toPromise().then();
   }
+
+  /**常规询价表 */
+
+  createRoute(search){
+    return this.http.post('store/api/wliu/createroute', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+
+
+  
+  getRoute(search){
+    return this.http.get('store/api/wliu/getroute',{search:search}).toPromise().then(data => {
+      return data.json() as any[];
+    })
+  }
+
+//修改价格
+  modfiyPrice(modify) {
+    return this.http.put('store/api/wliu/modfiyprice',modify).toPromise().then(data => {
+    return data.json() as any[];
+  });
+
 }
+//议价
+yijiaPrice(modify) {
+  return this.http.put('store/api/wliu/yijiaprice',modify).toPromise().then(data => {
+  return data.json() as any[];
+});
+
+}
+
+
+
+}
+
+  

@@ -273,7 +273,9 @@ export class WuliubaojiadetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '供应商', field: 'supplier_name4', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '报价', field: 'supplier4_price', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '供应商', field: 'supplier_name5', minWidth: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '报价', field: 'supplier5_price', minWidth: 80 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '报价', field: 'supplier5_price', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '报价审批时间', field: 'vdate', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '单卷重', field: 'oneweight', minWidth: 80 }
     ];
     this.yfgridOptions = {
       groupDefaultExpanded: -1,

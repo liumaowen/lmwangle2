@@ -45,8 +45,8 @@ export class ProduceapiService {
     })
   }
   /**删除费用明细 */
-  removeProducefee(produceid, feetype) {
-    return this.http.delete(`store/api/producefee/delete?produceid=${produceid}&feetype=${feetype}`).toPromise();
+  removeProducefee(feecollectid) {
+    return this.http.get(`store/api/producefee/removeproducefee?feecollectid=${feecollectid}`).toPromise();
   }
   /**添加费用明细 */
   createproducefee(search) {
@@ -94,6 +94,10 @@ export class ProduceapiService {
   }
   modifytask(search) {
     return this.http.put('store/api/produce/modifytask', search).toPromise();
+  }
+  // 更新
+  updatetasklist(id, model): Promise<any> {
+    return this.http.put('store/api/tasklist/modifytask/' + id, model).toPromise();
   }
   modifylistyaoqiu(search) {
     return this.http.put('store/api/produce/modifylist', search).toPromise();
@@ -257,6 +261,16 @@ export class ProduceapiService {
   }
   removeDet(search) {
     return this.http.post('store/api/produce/deletedets', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  /**
+   * 匹配加工费
+   * @param search 
+   * @returns 
+   */
+  pipeiprocessfee(search) {
+    return this.http.post('store/api/processfee/pipeiprocessfee', search).toPromise().then(data => {
       return data.json() as any[];
     });
   }

@@ -15,6 +15,7 @@ export class CustomerdetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private customerApi: CustomerapiService) {
     console.log(this.route.params['value']['id']);
+    console.log(11111111111111111111)
     this.customerApi.getCustomer(this.route.params['value']['id']).then((data) => {
       this.customer = data;
       console.log(data);

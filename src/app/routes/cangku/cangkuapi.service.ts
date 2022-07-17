@@ -37,5 +37,24 @@ export class CangkuApiService {
       return data.json() as any[];
     });
   }
+  // 获取加工费
+  getProcessfeeList(cangkuid){
+    return this.http.get(`store/api/processfee/` + cangkuid).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  // 上传加工费
+  uploadprocessfee(jsonobject){
+    return this.http.post(`store/api/processfee/uploadprocessfee`,jsonobject).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  
+  // 删除加工费
+  delprocessfee(id) {
+    return this.http.delete('store/api/processfee/' + id).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 
 }

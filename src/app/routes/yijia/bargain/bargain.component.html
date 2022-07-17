@@ -1,5 +1,5 @@
 <div class="content-heading">
-  <em class="fa fa-list-alt"></em> 议价申请表
+  <em class="fa fa-list-alt"></em> 线上价格分类表
   <div class="pull-right wide-show">
     <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
     <button type="button" (click)="showcreate()" class="btn btn-info btn-bloc">创建</button>
@@ -42,27 +42,18 @@
                   <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate" [minDate]="start"></p-calendar>
                 </div>
               </div>
-              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
-                <label class="col-sm-3 control-label">
-                  <span style="float: right;">品名：</span>
-                </label>
+              <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">品名</label>
                 <div class="col-sm-9">
-                  <p-dropdown [options]="gns" (onChange)="selectedgn($event.value)"
-                    [(ngModel)]="queryparams['gnid1']" placeholder="选择品名" [filter]="true"
-                    [style]="{'width': '100%'}">
-                  </p-dropdown>
+                  <input (click)="mdmgndialog.show()" [(ngModel)]="queryparams['gn']" class="form-control" placeholder="请选择品名" readonly>
                 </div>
               </div>
               <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
-                <label class="col-sm-3 control-label">
-                  <span style="float: right;">产地：</span>
-                </label>
+                <label class="col-sm-3 control-label">产地</label>
                 <div class="col-sm-9">
-                  <p-dropdown [options]="chandis" placeholder="选择产地"
-                    [(ngModel)]="queryparams['chandiid']" [filter]="true" [style]="{'width': '100%'}">
-                  </p-dropdown>
+                  <p-dropdown [options]="chandioptions" [disabled]="!queryparams['gn']" [(ngModel)]="queryparams['chandi']" [style]="{'width':'100%'}"></p-dropdown>
                 </div>
-              </div>
+              </div> -->
               <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
                 <label class="col-sm-3 control-label">创建人</label>
                 <div class="col-sm-9">
@@ -124,37 +115,15 @@
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row row col-md-6">
-              <label class="col-sm-3 control-label">
-                <span style="float: right;">品名：</span>
-              </label>
+              <label class="col-sm-3 control-label">品名</label>
               <div class="col-sm-9">
-                <p-dropdown [options]="gns" (onChange)="selectedgn($event.value)"
-                  [(ngModel)]="requestparams['gnid1']" placeholder="选择品名" [filter]="true"
-                  [style]="{'width': '100%'}">
-                </p-dropdown>
+                <input (click)="mdmgndialog.show()" [(ngModel)]="requestparams['gn']" class="form-control" placeholder="请选择品名" readonly>
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row row col-md-6">
-              <label class="col-sm-3 control-label">
-                <span style="float: right;">产地：</span>
-              </label>
+              <label class="col-sm-3 control-label">产地</label>
               <div class="col-sm-9">
-                <p-dropdown [options]="chandis" (onChange)="selectedchandi($event.value)" placeholder="选择产地"
-                  [(ngModel)]="requestparams['chandiid']" [filter]="true" [style]="{'width': '100%'}"
-                  [disabled]="!isChandi">
-                </p-dropdown>
-              </div>
-            </div>
-            <div *ngIf="showGuige">
-              <div class="form-group mb fieldsetdnn row col-md-6" *ngFor="let item of attrs">
-                <label class="col-sm-3 control-label">
-                  <span style="float: right;">{{item.label}}：</span>
-                </label>
-                <div class="col-sm-9">
-                  <p-dropdown [options]="item.options" placeholder='请选择{{item.label}}'
-                    (onChange)="selectedguige($event,item.name)" [filter]="true" [style]="{'width': '100%'}">
-                  </p-dropdown>
-                </div>
+                <p-dropdown [options]="chandioptions" [disabled]="!requestparams['gn']" [(ngModel)]="requestparams['chandi']" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row row col-md-6">
@@ -187,4 +156,18 @@
     </div>
   </div>
 </div>
-
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>

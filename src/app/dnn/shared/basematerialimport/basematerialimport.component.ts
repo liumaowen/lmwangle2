@@ -22,7 +22,7 @@ export class BasematerialimportComponent implements OnInit {
   iszong = true;
   slitlist = [];
   slitjson = {};
-
+  pipeiparams: any = {};
   constructor(public settings: SettingsService, public bsModalRef: BsModalRef, private produceApi: ProduceapiService,
     private toast: ToasterService) {
 
@@ -121,16 +121,20 @@ export class BasematerialimportComponent implements OnInit {
       this.toast.pop('warning', '请选择加工类型！');
       return;
     }
+    if (!this.taskjson['packton']) {
+      this.toast.pop('warning', '请输入打包吨位！');
+      return;
+    }
     if (this.taskjson['type'] === '1') {
       if (this.slitlist.length === 0) {
         this.toast.pop('warning', '请填写纵剪要求！');
         return;
       }
     } else {
-      if (!this.taskjson['guige']) {
-        this.toast.pop('warning', '请填写横切要求！');
-        return;
-      }
+        if (!this.taskjson['guige']) {
+            this.toast.pop('warning', '请填写横切要求！');
+            return;
+        }
     }
     this.taskjson['slitjson'] = this.slitlist;
     if (this.parentthis.qihuodetid) {
@@ -154,6 +158,8 @@ export class BasematerialimportComponent implements OnInit {
     const ids = new Array();
     const bm = this.bmgridOptions.api.getModel()['rowsToDisplay'];
     // console.log(bm);
+    const widtharr = new Set(),houduarr = new Set();
+    let tweight = 0;
     for (let i = 0; i < bm.length; i++) {
       if (bm[i].selected) {
         ids.push(bm[i].data.id);
@@ -163,8 +169,12 @@ export class BasematerialimportComponent implements OnInit {
           this.toast.pop('warning', '请选择指定仓库的基料！');
           return;
         }
+        tweight = tweight['add'](bm[i].data['weight']);
+        widtharr.add(bm[i].data['width']);
+        houduarr.add(bm[i].data['houdu']);
       }
     }
+
     // console.log(ids);
     if (ids.length <= 0) {
       this.toast.pop('warning', '请选择要引入的基料！');
@@ -178,6 +188,7 @@ export class BasematerialimportComponent implements OnInit {
     } else {
       this.taskjson['proorderdetids'] = ids;
     }
+    this.pipeiparams = {originwidth:Array.from(widtharr).join(','),originhoudu:Array.from(houduarr).join(','),packagetype:this.parentthis['tasklist']['packagetype'],cangkuid:this.parentthis['tasklist']['cangkuid'],weight:tweight};
     this.taskjson['pid'] = this.parentthis['tasklist']['id'];
     this.types = [{ id: '1', text: '纵剪' }, { id: '2', text: '横切' }, { id: '3', text: '纵剪+横切' }];
     this.createModal.show();
@@ -186,9 +197,9 @@ export class BasematerialimportComponent implements OnInit {
     // console.log(e);
     this.taskjson['type'] = e.id;
     if (e.id === '1') {
-      this.iszong = true;
-    } else {
-      this.iszong = false;
+        this.iszong = true;
+      } else {
+        this.iszong = false;
     }
   }
   closeq() {
@@ -219,5 +230,67 @@ export class BasematerialimportComponent implements OnInit {
     console.log('del', index);
     this.slitlist.splice(index, 1);
   }
-
+  pipeifee() {
+    const typeint = this.taskjson['type'];
+    if (!typeint) {
+        this.toast.pop('warning', '请选择加工类型！');
+        return; 
+    }
+    let type = '';
+    let zongjiancount:any = 0;
+    let hengqielength = "";
+    let hengqiewidth = "";
+    if (typeint === '1') {
+        type = '纵剪';
+        if (!this.slitlist.length) {
+            this.toast.pop('warning', '请填写纵剪要求！');
+            return;
+        }
+        this.slitlist.forEach(ele => {
+            zongjiancount = zongjiancount['add'](ele['slittingcount']);
+        });
+    } else if (typeint === '2') {
+        type = '横切';
+        if (!this.taskjson['guige']) {
+            this.toast.pop('warning', '请填写横切要求！');
+            return;
+        }
+        hengqielength = this.taskjson['guige'];
+    } else {
+        type = '纵剪+横切';
+        if (!this.slitlist.length) {
+            this.toast.pop('warning', '请填写纵剪要求！');
+            return;
+        }
+        const widthlist = [];
+        this.slitlist.forEach(ele => {
+            zongjiancount = zongjiancount['add'](ele['slittingcount']);
+            widthlist.push(ele['slittingguige']);
+        });
+        hengqiewidth = widthlist.join(',');
+        if (!this.taskjson['guige']) {
+            this.toast.pop('warning', '请填写横切要求！');
+            return;
+        }
+        hengqielength = this.taskjson['guige'];
+    }
+    const packton = this.taskjson['packton'];
+    if (!packton) {
+        this.toast.pop('warning', '请填写打包吨位！');
+        return; 
+    }
+    this.pipeiparams['type'] = type;
+    this.pipeiparams['zongjiancount'] = zongjiancount;
+    this.pipeiparams['hengqielength'] = hengqielength;
+    this.pipeiparams['packton'] = packton;
+    this.pipeiparams['hengqiewidth'] = hengqiewidth;
+    this.pipeiparams['type'] = type;
+    this.produceApi.pipeiprocessfee(this.pipeiparams).then((data) => {
+        if (data['fee'] && !isNaN(data['fee'])) {
+            this.taskjson['fee'] = data['fee'];
+        } else {
+            this.toast.pop('warning', '没有匹配到加工费！');
+        }
+    });
+  }
 }

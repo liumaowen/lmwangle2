@@ -11,11 +11,13 @@ import { SharedModule } from 'app/shared/shared.module';
 import { WiskSharedsModule } from 'app/dnn/shared/wiskshared.module';
 import { TransportfenxiComponent } from '../transportfenxi/transportfenxi.component';
 import { WuliusupplierComponent } from '../wuliusupplier/wuliusupplier.component';
+import { RegpriceComponent } from '../regprice/regprice.component';
 
 const routes: Routes = [
   { path: 'wuliuscore', component: WuliuscoreComponent, data: { 'title': '物流评价表' } },
   { path: 'transportfenxi', component: TransportfenxiComponent, data: { 'title': '物流运输分析表' } },
-  { path: 'wuliusupplier', component: WuliusupplierComponent, data: { 'title': '物流供应商名录' } }
+  { path: 'wuliusupplier', component: WuliusupplierComponent, data: { 'title': '物流供应商名录' } },
+  { path: 'regprice', component:  RegpriceComponent, data: { 'title': '常规路线询价表' } }
 ];
 
 
@@ -32,7 +34,7 @@ const routes: Routes = [
     MultiSelectModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [WuliuscoreComponent, TransportfenxiComponent, WuliusupplierComponent],
+  declarations: [WuliuscoreComponent, TransportfenxiComponent, WuliusupplierComponent,RegpriceComponent],
   providers: [
     WuliuscoreapiService
   ]
