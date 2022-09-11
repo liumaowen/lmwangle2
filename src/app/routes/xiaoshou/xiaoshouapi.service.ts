@@ -79,9 +79,25 @@ export class XiaoshouapiService {
     });
   }
 
+   // 删除某组费用明细
   removeTihuofee(search) {
     return this.http.get('store/api/tihuo/removetihuofee', { search: search }).toPromise();
   }
+/*     // 删除某个费用明细
+    removethfee(search) {
+      return this.http.post('store/api/tihuo/removethfee',  { search: search } ).toPromise();
+    } */
+ /*    // 批量删除费用明细
+    deltihuofee(search) {
+      return this.http.post('store/api/allot/removeallotfees', search ).toPromise();
+    } */
+
+  
+    // 加工货物批量删除
+    removetihuofees(search): Promise<any> {
+      return this.http.post('store/api/tihuo/removetihuofees',  search).toPromise();
+    }
+  
 
   arrears(search) {
     return this.http.get('store/api/tihuo/arrearsapply', { search: search }).toPromise();

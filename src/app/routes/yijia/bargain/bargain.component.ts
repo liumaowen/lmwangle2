@@ -6,6 +6,7 @@ import { SettingsService } from '../../../core/settings/settings.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ClassifyApiService } from 'app/dnn/service/classifyapi.service';
+import { KucunService } from 'app/routes/kucun/kucun.service';
 const sweetalert = require('sweetalert');
 
 @Component({
@@ -24,10 +25,11 @@ export class BargainComponent implements OnInit {
   isChandi = false;
   attrs: any[];
   guigelength: number; // 声明一个数量计算器
-  showGuige = false;
   gcs: any[] = [];
+  // 品名
+  pmitems;
   requestparams = {
-    gnid1: '', gnid: '', chandiid: '', colorid: '', widthid: '', houduid: '', ducengid: '', caizhiid: '',
+    gn: '', chandi: '',color:'',
     start: this.datepipe.transform(this.start, 'y-MM-dd'), end: this.datepipe.transform(this.end, 'y-MM-dd')
   };
   queryparams: any = {isdel: false, start: this.datepipe.transform(this.start, 'y-MM-dd'),
@@ -45,6 +47,7 @@ export class BargainComponent implements OnInit {
     private toast: ToasterService,
     private yijiaApi: YijiaapiService,
     private classifyapi: ClassifyApiService,
+    private kucunapi: KucunService,
     private datepipe: DatePipe) {
 
     this.gridOptions = {
@@ -70,9 +73,9 @@ export class BargainComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '创建人', field: 'cusername', minWidth: 80},
       { cellStyle: { 'text-align': 'center' }, headerName: '审核人', field: 'vusername', minWidth: 86 },
       { cellStyle: { 'text-align': 'center' }, headerName: '审核日期', field: 'vdate', minWidth: 86 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '议价金额（A类）', field: 'pricea', minWidth: 110 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '议价金额（B类）', field: 'priceb', minWidth: 110 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '议价金额（C类）', field: 'pricec', minWidth: 110 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '价格幅度（A类）', field: 'pricea', minWidth: 110 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '价格幅度（B类）', field: 'priceb', minWidth: 110 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '价格幅度（C类）', field: 'pricec', minWidth: 110 },
       { cellStyle: { 'text-align': 'center' }, headerName: '有效开始日期', field: 'start', minWidth: 86 },
       { cellStyle: { 'text-align': 'center' }, headerName: '有效结束日期', field: 'end', minWidth: 86 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 86 },
@@ -133,6 +136,17 @@ export class BargainComponent implements OnInit {
   showcreate() {
     this.show();
     this.getGnAndChandi();
+    if (!this.pmitems) {
+      this.pmitems = [{ value: '', label: '全部' }];
+      this.classifyapi.getGnAndChandi().then((data) => {
+        data.forEach(element => {
+          this.pmitems.push({
+            label: element['name'],
+            value: element['name']
+          });
+        });
+      });
+    }
   }
   /**获取品名 */
   getGnAndChandi() {
@@ -159,7 +173,6 @@ export class BargainComponent implements OnInit {
   selectedgn(value) {
     this.isChandi = true;
     this.attrs = [];
-    this.showGuige = false;
     this.chandis = [];
     value.attrs.forEach(element => {
       this.chandis.push({
@@ -181,7 +194,6 @@ export class BargainComponent implements OnInit {
       });
       this.guigelength = this.attrs['length'];
     });
-    this.showGuige = true;
   }
   selectedguige(event, labelid) {
     for (let i = 0; i < this.gcs.length; i++) {
@@ -196,12 +208,11 @@ export class BargainComponent implements OnInit {
     this.chandis = [];
     this.isChandi = false;
     this.attrs = [];
-    this.showGuige = false;
     this.gcs = [];
     this.start = new Date();
     this.end = null;
     this.requestparams = {
-      gnid1: '',gnid: '', chandiid: '', colorid: '', widthid: '', houduid: '', ducengid: '', caizhiid: '',
+      gn: '', chandi: '',color:'',
       start: this.datepipe.transform(this.start, 'y-MM-dd'),end: this.datepipe.transform(this.end, 'y-MM-dd')
     };
   }
@@ -321,5 +332,58 @@ export class BargainComponent implements OnInit {
     if (this.chandioptions.length) {
       this.requestparams['chandi'] = this.chandioptions[this.chandioptions.length-1]['value'];
     }
+  }
+
+    // 品名选中改变
+  data = new Array<any>();
+  selectGnAction(key) {
+    if (!this.requestparams[key]) return;
+    else {
+      const gnid = this.requestparams['gnid'];
+    }
+    this.kucunapi.getConditions({ gn: this.requestparams['gn'] }).then(data => {
+      this.data = data;
+      this.filter();
+    });
+    this.disabled = false;
+  }
+  // 赛选过滤方法
+  fieldArr = [
+    'chandi', // 产地
+    'color', // 颜色
+    // 'width', // 宽度
+    // 'houdu', // 厚度
+    // 'duceng', // 镀层
+    // 'caizhi', // 材质
+    // 'ppro'// 后处理
+  ];
+  // 定义过滤之后的集合
+  filterConditionObj = {}; // {chandi:[],width:[]}
+  filter() {
+    console.log(this.data);
+    
+    for (let index = 0; index < this.fieldArr.length; index++) {
+      const fieldElement = this.fieldArr[index];
+      // 除自己以外其他字段
+      const otherFieldArr = this.fieldArr.filter(element => element !== fieldElement);
+      const queryOptions = [{ value: '', label: '全部' }];
+      otherFieldArr.forEach(otherFieldElement => {
+        this.data.forEach(dataElement => {
+          if (otherFieldArr.every(otherField => {
+            return this.requestparams[otherField] === '' || dataElement[otherField] === this.requestparams[otherField];
+          })) {
+            const fieldValue = dataElement[fieldElement];
+            if (fieldValue != null && JSON.stringify(queryOptions).indexOf(JSON.stringify(fieldValue)) === -1) {
+              queryOptions.push({ value: fieldValue, label: fieldValue });
+            }
+          }
+        });
+        this.filterConditionObj[fieldElement] = queryOptions.sort();
+      });
+    }
+  }
+    // 子类型选择
+  selectAction(key, value) {
+    this.filter();
   }
 }

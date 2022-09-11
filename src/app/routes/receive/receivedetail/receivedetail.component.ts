@@ -38,6 +38,7 @@ export class ReceivedetailComponent implements OnInit {
   bank = {};
   gpsalemanname = '';
   gporgname = '';
+  iscaiwubu = true;//是否是财务人员
   shoukuantypes = [{ value: '', label: '全部' },
   { value: 1, label: '电汇' },
   { value: 2, label: '银行承兑汇票' },
@@ -56,6 +57,7 @@ export class ReceivedetailComponent implements OnInit {
   actualdatetime;
   receivebanks = [];
   isverify = false; // 审核
+  iswuliubu: boolean;
   constructor(private numberpipe: DecimalPipe,private route: ActivatedRoute, private receiveApi: ReceiveapiService, private customerApi: CustomerapiService,
     private toast: ToasterService, private datepipe: DatePipe, private router: Router, private userApi: UserapiService) {
     this.get();
@@ -66,6 +68,12 @@ export class ReceivedetailComponent implements OnInit {
 
   // 获取收款登记单
   get() {
+    const myrole = JSON.parse(localStorage.getItem('myrole'));
+    if (myrole.some(item => item === 5 || item === 38 || item === 49)) { // 财务人员和往来管理和测试人员人员
+      this.iscaiwubu = true;
+    }else{
+      this.iscaiwubu = false;
+    }
     this.receiveApi.get(this.route.params['value']['id']).then((data) => {
       this.model = data;
       this.model['jine'] = this.numberpipe.transform(this.model['jine'], '1.2-2');

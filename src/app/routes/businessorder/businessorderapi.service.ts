@@ -50,7 +50,19 @@ export class BusinessorderapiService {
   removeOneDet(id) {
     return this.http.get('store/api/businessorder/remove/' + id).toPromise();
   }
-
+  
+    /**批量删除销售合同明细 */
+  delbusinessorderDet(search) {
+    return this.http.post('store/api/businessorder/removelist', search).toPromise().then(data => {
+    return data.json() as any[];
+      });
+    }
+        /**批量删除销售合同明细 */
+        delremoveorder(search) {
+    return this.http.post('store/api/businessorder/removeorder', search).toPromise().then(data => {
+    return data.json() as any[];
+      });
+    }
   submitVuser(id, search) {
     return this.http.get('store/api/businessorder/submitvuser/' + id, { search: search }).toPromise();
   }

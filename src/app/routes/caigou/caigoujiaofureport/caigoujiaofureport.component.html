@@ -2,6 +2,7 @@
   <em class="fa fa-list-alt">采购交付明细表</em>
   <div class="pull-right">
     <button class="btn btn-info btn-bloc" type="button" (click)="openquerydialog()">查询</button>
+    <button type="button" (click)="showAdddate()" class="btn btn-info btn-bloc">最终确认交付日期</button>
   </div>
 </div>
 <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
@@ -37,7 +38,7 @@
             <div class="row fieldsetdnn">
               <label class="col-md-2 control-label">业务员</label>
               <div class="col-md-4">
-                <wisk-usersearch [(user)]="search['salemanid']"></wisk-usersearch>
+                <wisk-usernamesearch [(user)]="search['salemanid']"></wisk-usernamesearch>
               </div>
               <label class="col-md-2 control-label">资源号</label>
               <div class="col-md-4">
@@ -83,6 +84,37 @@ aria-hidden="true">
         <h4 class="modal-title">物料分类码表报表</h4>
       </div>
       <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #adddatedialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeAdddate()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">最终确认交付日期</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">最终确认交付日期</label>
+              <div class="col-sm-9">
+                <div class="col-md-4 wiskind-calendar">
+                  <p-calendar [(ngModel)]="finaldate" placeholder="开始日期" [maxDate]="startmax" (onSelect)="selectfinaldate()">
+                  </p-calendar>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="adddate()" class="btn btn-primary btn-large">确定</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

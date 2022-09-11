@@ -95,6 +95,9 @@ export class ProduceapiService {
   modifytask(search) {
     return this.http.put('store/api/produce/modifytask', search).toPromise();
   }
+  modifyok(search) {
+    return this.http.put('store/api/produce/modifyok',search).toPromise();
+  }
   // 更新
   updatetasklist(id, model): Promise<any> {
     return this.http.put('store/api/tasklist/modifytask/' + id, model).toPromise();
@@ -205,6 +208,7 @@ export class ProduceapiService {
   }
 
   cancelWeishiCheck(id) {
+
     return this.http.get('store/api/produce/weishicancelcheck/' + id).toPromise();
   }
 
@@ -274,4 +278,18 @@ export class ProduceapiService {
       return data.json() as any[];
     });
   }
+
+//加工任务单明细表
+ tasklistdet (search){
+    return this.http.get('store/api/produce/tasklistdet', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    })
+  }
+
+  reloadweishi (produceid){
+    return this.http.get('store/api/productzhijian/reloadweishi/'+ produceid).toPromise().then(data => {
+      return data.json() as any[];
+    })
+  }
+
 }

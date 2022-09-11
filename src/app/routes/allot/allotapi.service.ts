@@ -40,13 +40,25 @@ export class AllotapiService {
       return data.json() as any[];
     });
   }
-
+    // 批量删除货物调拨明细 //
+    deleteallotdet(search) {
+      return this.http.post('store/api/allot/deleteallotdet', search).toPromise().then(data => {
+        return data.json() as any[];
+      });
+    }
+ // 批量删除货物调拨明细 //
+ deleteallotdetfee(search) {
+  return this.http.post('store/api/allot/deleteallotdetfee', search).toPromise().then(data => {
+    return data.json() as any[];
+  });
+}
   // 删除所有调拨明细
   delDet(search): Promise<any> {
     return this.http.post('store/api/allot/deldet',search).toPromise().then(data => {
       return data.json() as any[];
     });
   }
+
 
   // 获取单个调拨单明细信息
   getdet(id): Promise<any> {
@@ -65,10 +77,18 @@ export class AllotapiService {
   change(search: object): Promise<any> {
     return this.http.post('store/api/allot/change', search).toPromise();
   }
+//删除线上明细
+delallot(search): Promise<any> {
+  return this.http.post('store/api/allot/delallot/' ,search ).toPromise();
+}
 
-  // 删除某个费用明细
+  // 删除某组费用明细
   removeAllotfee(search: object) {
     return this.http.get('store/api/allot/removeallotfee', { search: search }).toPromise();
+  }
+  // 批量删除费用明细
+  removeallotfees(search): Promise<any> {
+    return this.http.post('store/api/allot/removeallotfees', search ).toPromise();
   }
 
   // 删除所有费用明细

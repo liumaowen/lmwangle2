@@ -5,7 +5,6 @@ import { GridOptions } from 'ag-grid';
 import { ToasterService } from 'angular2-toaster';
 import { SettingsService } from 'app/core/settings/settings.service';
 import { ClassifyApiService } from 'app/dnn/service/classifyapi.service';
-import { QihuoService } from 'app/routes/qihuo/qihuo.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { CaigouService } from '../caigou.service';
 
@@ -29,6 +28,7 @@ export class CaigoujiaofureportComponent implements OnInit {
   @ViewChild('querydialog') private querydialog: ModalDirective;
   // 品名选择弹窗
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
+  @ViewChild('adddatedialog') private adddatedialog: ModalDirective;
 
   gridOptions: GridOptions;
 
@@ -37,6 +37,8 @@ export class CaigoujiaofureportComponent implements OnInit {
   cs: any[];
 
   chandis: any[];
+  params = {};
+  finaldate: Date;
 
   search: object = {
     start: '', end: '', month: '', gnid: '', chandiid: '', grno: '', orgid: '', salemanid: ''
@@ -64,6 +66,7 @@ export class CaigoujiaofureportComponent implements OnInit {
     // 设置aggird表格列
     this.gridOptions.columnDefs = [
       { field: 'group', rowGroup: true, headerName: '合计', hide: true, valueGetter: (params) => '合计' },
+      { cellStyle: { "text-align": "left" }, headerName: '选择', width: 30, checkboxSelection: true, suppressMenu: true },
       { cellStyle: { 'text-align': 'center' }, headerName: '钢厂下单月份', field: 'caigoumonth', minWidth: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 90 },
@@ -91,6 +94,7 @@ export class CaigoujiaofureportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '钢厂负责人', field: 'ziyuanwaiwu', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '机构负责人交付日期', field: 'orgjiaohuodate', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '钢厂负责人交付日期', field: 'ziyuanwaiwujiaohuodate', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '最终确认交付日期', field: 'finaljiaohuodate', minWidth: 80 },
     ];
   }
 
@@ -164,6 +168,7 @@ export class CaigoujiaofureportComponent implements OnInit {
   }
   selectstart() { }
   selectend() { }
+  selectfinaldate(){}
 
   selectgn(params) {
     this.mdmgndialog.hide();
@@ -182,5 +187,35 @@ export class CaigoujiaofureportComponent implements OnInit {
       this.search['chandi'] = this.chandioptions[0]['value'];
     }
   }
-
+  showAdddate(){
+    let caigoudetids = new Array();
+    let selected = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (var i = 0; i < selected.length; i++) {
+      if (selected[i].selected && selected[i].data && selected[i].data['caigoudetid']) {
+        caigoudetids.push(selected[i].data['caigoudetid']);
+      }
+    }
+    if (caigoudetids.length === 0) {
+      this.toast.pop('warning', '请选择明细！！！');
+      return;
+    }
+    this.params['caigoudetids'] = caigoudetids;
+    this.adddatedialog.show();
+  }
+  closeAdddate(){
+    this.adddatedialog.hide();
+  }
+  adddate(){
+    this.params['finaldate'] = this.datepipe.transform(this.finaldate, 'y-MM-dd');
+    if(this.params['finaldate'] === null || this.params['finaldate'] === undefined){
+      this.toast.pop('warning', '请填写日期！！！');
+      return;
+    }
+    this.caigouApi.batchUpdate(this.params).then((data) => {
+      if(data){
+        this.query();
+        this.closeAdddate();
+      }
+    });
+  }
 }

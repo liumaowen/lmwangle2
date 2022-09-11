@@ -1,0 +1,117 @@
+<div class="pr">
+
+  <div class="panel panel-default">
+    <div class="row" style="margin-left:15px;">
+      <div class="btn-group">
+        <h4>
+          <em class="fa">编辑节点</em>
+        </h4>
+      </div>
+
+      <div class="panel-body">
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">id</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['id']" class="form-control" disabled="disabled" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">name</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['name']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">sortorder</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['sortorder']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">value</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['value']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">stringa</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['stringa']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">stringb</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['stringb']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">stringc</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['stringc']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">stringd</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['stringd']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">stringe</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['stringe']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">stringf</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['stringf']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">stringg</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['stringg']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">停用</label>
+          <div class="col-lg-8">
+            <label class="radio-inline c-radio">
+              <input id="inlineradio1" type="radio" ng-true-value="true" ng-false-value="false" name="isdel"
+                [value]="true" [(ngModel)]="model['isdel']" />
+              <span class="fa fa-circle"></span>是</label>
+            <label class="radio-inline c-radio">
+              <input id="inlineradio2" type="radio" ng-true-value="true" ng-false-value="false" name="isdel"
+                [value]="false" [(ngModel)]="model['isdel']" />
+              <span class="fa fa-circle"></span>否</label>
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">parentid</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['parentid']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">kid</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['kid']" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group mb fieldsetdnn col-sm-12">
+          <label class="col-lg-2 control-label">version</label>
+          <div class="col-lg-8">
+            <input type="text" [(ngModel)]="model['version']" class="form-control" disabled="disabled" />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-2">
+          <button (click)="updateModel()" type="button" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

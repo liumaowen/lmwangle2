@@ -38,6 +38,11 @@ export class ProorderapiService {
     return this.http.get('store/api/proorder/removefpro/' + id).toPromise();
   }
 
+    // 加工货物批量删除
+    removepro(search): Promise<any> {
+      return this.http.post('store/api/proorder/removepro/',  search).toPromise();
+    }
+
   importFav(id, search) {
     return this.http.get('store/api/proorder/impfav/' + id, { search: search }).toPromise();
   }

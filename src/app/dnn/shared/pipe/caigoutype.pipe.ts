@@ -12,6 +12,8 @@ export class CaigoutypePipe implements PipeTransform {
       return '库存销售';
     }else if (value.type === 3) {
       return '市场调货';
+    }else if (value.type === 4) {
+      return '维实外采';
     }else {
       return '';
     }

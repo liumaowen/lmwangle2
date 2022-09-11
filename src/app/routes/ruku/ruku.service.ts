@@ -55,6 +55,8 @@ export class RukuService {
   delzaituRukudet(id): Promise<any> {
     return this.http.delete('store/api/zaitukucun/deletedet/' + id).toPromise();
   }
+
+
   createweishi(search): Promise<any> {
     return this.http.post('store/api/nmruku', search).toPromise().then(data => {
       return data.json() as any[];
@@ -76,6 +78,13 @@ export class RukuService {
   // 删除某个库存的入库单信息
   delRukudet(id): Promise<any> {
     return this.http.delete('store/api/ruku/det/' + id).toPromise();
+  }
+
+  //批量删除入库明细
+  deleterukudet(search) {
+    return this.http.post('store/api/ruku/deleterukudet', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
   }
 
   // 获取分类信息
@@ -127,6 +136,20 @@ export class RukuService {
   delcaigoufee(feecollectid): Promise<any> {
     return this.http.delete('store/api/ruku/delfee/' + feecollectid).toPromise();
   }
+  /* 批量删除费用明细 */
+  removetihuofees(search) {
+    return this.http.post('store/api/tihuo/removetihuofees', search ).toPromise().then(data => {
+    return data.json() as any[];
+  });
+}
+  
+  // 采购费用  批量删除
+  deletefee(search): Promise<any> {
+    return this.http.post('store/api/ruku/deletefee' , search).toPromise().then(data => {
+      return data.json() as any[];
+  });
+}
+
   // 文档删除
   deletefile(search): Promise<any> {
     return this.http.post('store/api/file/delete', search).toPromise().then(data => {
@@ -161,4 +184,26 @@ export class RukuService {
     return this.http.put('store/api/productzhijian/modifydetail', model).toPromise();
   }
 
+  uploadWeishiProductzhijian(moduleparam): Promise<any> {
+    return this.http.post('store/api/productzhijian/weishizhibao', moduleparam).toPromise().then(data => {
+      return data.json();
+    });
+  }
+  queryWeishiZhibao(search): Promise<any> {
+    return this.http.get('store/api/productzhijian/weishizhibao', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  modifyweishidetail(model) {
+    return this.http.put('store/api/productzhijian/modifyweishidetail', model).toPromise();
+  }
+
+  removeWeishiDets(model) {
+    return this.http.put('store/api/productzhijian/removeweishidets', model).toPromise();
+  }
+  printWeishiZhibaoshu(kunbaohao): Promise<any> {
+    return this.http.get('store/api/productzhijian/weishiprint/' + kunbaohao).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

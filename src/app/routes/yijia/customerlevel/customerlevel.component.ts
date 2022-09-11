@@ -61,6 +61,10 @@ export class CustomerlevelComponent implements OnInit {
 
     this.gridOptions.columnDefs = [
       //{ cellStyle: { 'text-align': 'center' }, headerName: '选择', minWidth: 56, checkboxSelection: true,colId: 'check' },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '选择', field: 'group', cellRenderer: 'group', minWidth: 90,
+        checkboxSelection: true, headerCheckboxSelection: true
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '客户名称', field: 'name', minWidth: 130 },
       { cellStyle: { 'text-align': 'center' }, headerName: '客户分类', field: 'usernature', minWidth: 80,
         cellRenderer: (params) => {
@@ -74,7 +78,7 @@ export class CustomerlevelComponent implements OnInit {
         }
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '用户等级', field: 'namelevel', minWidth: 86 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '销售排名', field: 'salesrank', minWidth: 86 },
+     // { cellStyle: { 'text-align': 'center' }, headerName: '销售排名', field: 'salesrank', minWidth: 86 },
       { cellStyle: { 'text-align': 'center' }, headerName: '业务负责人', field: 'realname', minWidth: 86 },
       { cellStyle: { 'text-align': 'center' }, headerName: '所属机构', field: 'orgname', minWidth: 86 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否停用', field: 'isdel', minWidth: 80, 
@@ -92,7 +96,7 @@ export class CustomerlevelComponent implements OnInit {
 
   ngOnInit() {
     this.listDetail();
-    
+    this.getMyRole();
   }
 
   // 网格赋值
@@ -157,6 +161,36 @@ export class CustomerlevelComponent implements OnInit {
     //测试：发送钉钉消息
     sendinfo(){
       this.yijiaApi.postInfo();
+    }
+
+    customerlevelids: any = [];
+    deleteOne(){
+      this.customerlevelids = new Array();
+      const customerlevellist = this.gridOptions.api.getModel()['rowsToDisplay'];
+      for (let i = 0; i < customerlevellist.length; i++) {
+        if (customerlevellist[i].selected && customerlevellist[i].data && customerlevellist[i].data['gn'] !== '合计') {
+          this.customerlevelids.push(customerlevellist[i].data.id);
+        }
+      }
+      if (!this.customerlevelids.length) {
+        this.toast.pop('warning', '请选择明细之后再删除！');
+        return;
+      }
+      if (confirm('你确定要删除吗？')) {
+        this.yijiaApi.deleteOne(this.customerlevelids).then(data => {
+          this.toast.pop('success', '删除成功！');
+          this.query();
+        });
+      }
+    }
+    lanmao = false;
+    getMyRole() {
+      let myrole = JSON.parse(localStorage.getItem('myrole'));
+      for (let i = 0; i < myrole.length; i++) {
+        if (myrole[i] === 18 || myrole[i] === 47 || myrole[i] === 1) {
+          this.lanmao = true;
+        }
+      }
     }
 
 }

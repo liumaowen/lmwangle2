@@ -25,6 +25,7 @@ export const routes = [
             { path: 'customer', loadChildren: './customer/customer.module#CustomerModule' },
             { path: 'mycustomer', loadChildren: './mycustomer/mycustomer.module#MycustomerModule' },
             { path: 'classify', loadChildren: './classify/classify.module#ClassifyModule' },
+            { path: 'wuliuclassify', loadChildren: './wuliuclassify/wuliuclassify.module#WuliuclassifyModule' },
             { path: 'cangku', loadChildren: './cangku/cangku.module#CangkuModule' },
             { path: 'kaishi', loadChildren: './kaishi/kaishi.module#KaishiModule' },
             { path: 'user', loadChildren: './user/user.module#UserModule' },

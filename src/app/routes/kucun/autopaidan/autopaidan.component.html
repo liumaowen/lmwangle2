@@ -16,6 +16,9 @@
       </ul>
     </div>
     <button type="button" (click)="agExport()" class="btn btn-info btn-bloc">导出</button>
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button"
+      (click)="deleteautopaidanandet()">批量删除明细</button>
+
   </div>
   <div class="pull-right narrow-show">
     <div class="btn-group" dropdown placement="bottom right">
@@ -137,6 +140,7 @@
     </div>
   </div>
 </div>
+
 <!--添加库存明细对话框-->
 <div class="modal" bsModal #createdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
   aria-hidden="true">

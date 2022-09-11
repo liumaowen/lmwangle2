@@ -37,7 +37,7 @@
             <div class="row fieldsetdnn">
               <label class="col-sm-3 control-label">品名</label>
               <div class="col-sm-9">
-                <input (click)="mdmgndialog.show()" [(ngModel)]="search['gn']" class="form-control" placeholder="请选择品名" readonly>
+                <input (click)="showselectgn(0)" [(ngModel)]="search['gn']" class="form-control" placeholder="请选择品名" readonly>
               </div>
             </div>
             <div class="row fieldsetdnn" >
@@ -46,15 +46,6 @@
                 <p-dropdown [options]="chandioptions" [disabled]="!search['gn']" [(ngModel)]="search['chandi']" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
-            <!-- <div class="row fieldsetdnn">
-              <label class="col-sm-3 control-label">品名产地</label>
-              <div class="col-sm-9">
-                <ng-select [allowClear]="true" [items]="gnchandis" (selected)="selectegangchang($event)"
-                  placeholder="请选择产地">
-                </ng-select>
-              </div>
-            </div> -->
-
           </div>
           <div class="form-bottom text-center">
             <button type="button" class="btn btn-primary btn-large" (click)="query()">查询</button>
@@ -65,7 +56,7 @@
   </div>
 </div>
 <div class="modal" bsModal #priceAddModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
-  <div class="modal-dialog modal-md">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button class="close" type="button" aria-label="Close" (click)="closepricewindow()">
@@ -85,13 +76,13 @@
             </div>
             <div class="row">
               <div class="col-sm-3 text-center">
-                <label class="col-sm-12 control-label form-control-static">品名产地</label>
+                <label class="col-sm-12 control-label form-control-static">品名</label>
+              </div>
+              <div class="col-sm-3 text-center">
+                <label class="col-sm-12 control-label form-control-static">产地</label>
               </div>
               <div class="col-sm-3 text-center">
                 <label class="col-sm-12 control-label form-control-static">价格</label>
-              </div>
-              <div class="col-sm-3 text-center">
-                <label class="col-sm-12 control-label form-control-static">操作</label>                
               </div>
               <div class="col-sm-3 text-center">         
                 <label class="col-sm-12 control-label form-control-static">
@@ -101,29 +92,35 @@
               </div>
             </div>
 
-            <div class="row fieldsetdnn" *ngFor="let item of mygnchandis">
-              <div class="col-sm-4 text-center">
+            <div class="row fieldsetdnn" *ngFor="let item of mygnchandis; let i = index">
+              <div class="col-sm-3 text-center">
                 <span>
-                  {{item.gnchandi}}
+                  {{item.gn}}
                 </span>
               </div>
-              <div class="col-sm-4 text-center">
+              <div class="col-sm-3 text-center">
+                <span>
+                  {{item.chandi}}
+                </span>
+              </div>
+              <div class="col-sm-3 text-center">
                 <span>{{item.price}}</span>
               </div>
-              <div class="col-sm-4 text-center">
-                <span style="padding-left: 40px" (click)="deletegnchandi(item.chandiid)">
+              <div class="col-sm-3 text-center">
+                <span style="padding-left: 40px" (click)="deletegnchandi(i)">
                   <a>删除</a>
                 </span>
               </div>
             </div>
               
             <div class="row fieldsetdnn" *ngIf="isshowInput">
-              <div class="col-sm-5">
-                <ng-select [allowClear]="true" [items]="gnchandis" (selected)="selectegangchang($event)"
-                  placeholder="请选择产地">
-                </ng-select>
+              <div class="col-sm-3">
+                <input (click)="showselectgn(1)" [(ngModel)]="params['gn']" class="form-control" placeholder="请选择品名" readonly>
               </div>
-              <div class="col-sm-5">
+              <div class="col-sm-3">
+                <p-dropdown [options]="chandioptions1" [disabled]="!params['gn']" [(ngModel)]="params['chandi']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+              <div class="col-sm-3">
                 <input type="number" style="display:inline-block;width:95%;" class="form-control"
                 [(ngModel)]="params['price']"  />
               </div>

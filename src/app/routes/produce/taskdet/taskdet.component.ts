@@ -39,6 +39,7 @@ export class TaskdetComponent implements OnInit {
   gridOptions: GridOptions;
   weishihoudu: any;
   weishiwidth: any;
+  weishibeizhu:any;
   constructor(public settings: SettingsService, private produceApi: ProduceapiService, private route: ActivatedRoute,
     private toast: ToasterService, private router: Router, private bsModalService: BsModalService,
     private customerApi: CustomerapiService, private datepipe: DatePipe) {
@@ -76,7 +77,7 @@ export class TaskdetComponent implements OnInit {
         cellStyle: { 'text-align': 'center' }, headerName: '选择', field: 'group', cellRenderer: 'group',
         minWidth: 90, checkboxSelection: true, headerCheckboxSelection: true
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '成品汇总id', field: 'qihuodetid', minWidth: 100 },
+    //   { cellStyle: { 'text-align': 'center' }, headerName: '成品汇总id', field: 'qihuodetid', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '物料编码', field: 'gcid', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 80 },
@@ -108,7 +109,7 @@ export class TaskdetComponent implements OnInit {
       // { cellStyle: { 'text-align': 'center' }, headerName: '理算重量', field: 'lweight', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '横切规格', field: 'guige', minWidth: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '横切数量', field: 'hengqieaccount', minWidth: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '打包吨位', field: 'packton', minWidth: 120 },
+    //   { cellStyle: { 'text-align': 'center' }, headerName: '打包吨位', field: 'packton', minWidth: 120 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '打包要求', field: 'yaoqiu', minWidth: 120,
         tooltipField: 'yaoqiu',
@@ -118,6 +119,18 @@ export class TaskdetComponent implements OnInit {
           }
         }
       },
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 120, 
+      editable: (params) => !this.tasklist['isv'],
+      cellRenderer: (params) => {
+        if (params.data.beizhu) {
+          if (!this.tasklist['isv']) {
+            return `<a>${params.data.beizhu}</a>`;
+          } else {
+            return params.data.beizhu + '';
+          }
+        }
+      }, onCellValueChanged: (params) => this.beizhuchanged(params, "beizhu"),
+     },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '操作', minWidth: 100,
         cellRenderer: (params) => {
@@ -181,33 +194,33 @@ export class TaskdetComponent implements OnInit {
   }
   // 基料引入
   basematerialImp() {
-    if (this.tasklist['producemode'] === 3) {
-      this.qihuodetid = null;
-      let j = 0;
-      const tasklistdets = this.gridOptions.api.getModel()['rowsToDisplay'];
-      for (let i = 0; i < tasklistdets.length; i++) {
-        if (tasklistdets[i].selected) {
-          j++;
-        }
-        if (this.qihuodetid && tasklistdets[i].selected) {
-          this.toast.pop('warning', '请选择一条，引入基料！！！');
-          return;
-        }
-        if (tasklistdets[i].selected && !tasklistdets[i].data.qihuodetid) {
-          this.toast.pop('warning', '请选择成品汇总明细引入基料！');
-          return;
-        }
-        if (tasklistdets[i].selected && tasklistdets[i].data.qihuodetid) {
-          this.qihuodetid = tasklistdets[i].data.qihuodetid;
-          this.weishihoudu = tasklistdets[i].data.houdu;
-          this.weishiwidth = tasklistdets[i].data.width;
-        }
-      }
-      if (j === 0) {
-        this.toast.pop('warning', '请选择销售明细引入基料！');
-        return;
-      }
-    }
+    // if (this.tasklist['producemode'] === 3) {
+    //   this.qihuodetid = null;
+    //   let j = 0;
+    //   const tasklistdets = this.gridOptions.api.getModel()['rowsToDisplay'];
+    //   for (let i = 0; i < tasklistdets.length; i++) {
+    //     if (tasklistdets[i].selected) {
+    //       j++;
+    //     }
+    //     if (this.qihuodetid && tasklistdets[i].selected) {
+    //       this.toast.pop('warning', '请选择一条，引入基料！！！');
+    //       return;
+    //     }
+    //     if (tasklistdets[i].selected && !tasklistdets[i].data.qihuodetid) {
+    //       this.toast.pop('warning', '请选择成品汇总明细引入基料！');
+    //       return;
+    //     }
+    //     if (tasklistdets[i].selected && tasklistdets[i].data.qihuodetid) {
+    //       this.qihuodetid = tasklistdets[i].data.qihuodetid;
+    //       this.weishihoudu = tasklistdets[i].data.houdu;
+    //       this.weishiwidth = tasklistdets[i].data.width;
+    //     }
+    //   }
+    //   if (j === 0) {
+    //     this.toast.pop('warning', '请选择销售明细引入基料！');
+    //     return;
+    //   }
+    // }
     this.bsModalService.config.class = 'modal-all';
     this.basematerialImpbsModalRef = this.bsModalService.show(BasematerialimportComponent);
     this.basematerialImpbsModalRef.content.parentthis = this;
@@ -282,10 +295,10 @@ export class TaskdetComponent implements OnInit {
   }
   modify() {
     console.log(this.modifytask);
-    if (this.modifytask['gangdai'] !== null && this.modifytask['gangdai'] !== undefined && this.modifytask['gangdai'] <= 0) {
-      this.toast.pop('warning', '钢带数量不能为零或负数');
-      return;
-    }
+    // if (this.modifytask['gangdai'] !== null && this.modifytask['gangdai'] !== undefined && this.modifytask['gangdai'] <= 0) {
+    //   this.toast.pop('warning', '钢带数量不能为零或负数');
+    //   return;
+    // }
     this.produceApi.modifytask(this.modifytask).then(data => {
       this.getdetail();
       this.hidecreatemodal();
@@ -406,6 +419,18 @@ export class TaskdetComponent implements OnInit {
   }
   // 修改行加工费
   jiagongvaluechanged(params, filed) {
+    if (params.newValue === params.oldValue) return false;
+    const obj = JSON.parse(JSON.stringify(params.data));
+    this.produceApi.modifylistyaoqiu(obj).then(data => {
+      this.getdetail();
+      this.hideyaoqiumodal();
+    }, err => {
+      params.node.data[filed] = params.oldValue;
+      params.node.setData(params.node.data);
+    });
+  }
+   // 修改行备注
+   beizhuchanged(params, filed) {
     if (params.newValue === params.oldValue) return false;
     const obj = JSON.parse(JSON.stringify(params.data));
     this.produceApi.modifylistyaoqiu(obj).then(data => {

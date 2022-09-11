@@ -19,6 +19,7 @@ export class CaigoudetimportComponent implements OnInit {
   // 品名选择弹窗
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
   @ViewChild('classicModal') private classicModal: ModalDirective;
+  @ViewChild('jiesuantypeModal') private jiesuantypeModal: ModalDirective;
   parentthis;
   saledet: object = { caigouid: null, detids: [] };
   msg;
@@ -43,7 +44,9 @@ export class CaigoudetimportComponent implements OnInit {
   isChandi: boolean;
   // 规格
   attrs: any;
+  jstype: object = {};
   gridOptions: GridOptions;
+
 
   constructor(public bsModalRef: BsModalRef, public settings: SettingsService,
     private toast: ToasterService, private caigouApi: CaigouService,
@@ -126,6 +129,7 @@ export class CaigoudetimportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '宽度公差', field: 'widthgongcha', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '数量公差', field: 'weightgongcha', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '包装方式', field: 'packagetype', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '交货仓库', field: 'jhcangku', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '下单备注', field: 'beizhu', minWidth: 100 }
     ];
 
@@ -137,7 +141,37 @@ export class CaigoudetimportComponent implements OnInit {
       console.log(this.parentthis.cgbsModalRef);
     }, 2000);
   }
-
+ 
+  // import() {
+  //   this.saledet['detids'] = [];
+  //   this.gridOptions.api.getModel().forEachNode(element => {
+  //     if (element.isSelected()) {
+  //       this.saledet['detids'].push(element.data.id);
+  //     }
+  //   });
+  //   if (this.saledet['detids'].length === 0) {
+  //     this.toast.pop('error', '请选择相关明细！', '');
+  //     return;
+  //   }
+  //   if (this.parentthis.isrukuapply) {
+  //     this.saledet['id'] = this.parentthis.rukuapply.id;
+  //     this.caigouApi.importdetrukuapply(this.saledet).then(data => {
+  //       this.parentthis.getrukuapply();
+  //     });
+  //   } else if (this.parentthis['tasklist'] && this.parentthis['tasklist']['producemode'] === 3) {
+  //     // 引入销售的成品明细来匹配成品
+  //     this.saledet['tasklistid'] = this.parentthis['tasklist']['id'];
+  //     this.caigouApi.importfpdet(this.saledet).then(data => {
+  //       this.parentthis.getdetail();
+  //     });
+  //   } else {
+  //     this.saledet['caigouid'] = this.parentthis.caigou.id;
+  //     this.caigouApi.importdet(this.saledet).then(data => {
+  //       this.parentthis.getcaigou();
+  //     });
+  //   }
+  //   this.bsModalRef.hide();
+  // }
   import() {
     this.saledet['detids'] = [];
     this.gridOptions.api.getModel().forEachNode(element => {
@@ -154,19 +188,18 @@ export class CaigoudetimportComponent implements OnInit {
       this.caigouApi.importdetrukuapply(this.saledet).then(data => {
         this.parentthis.getrukuapply();
       });
+      this.bsModalRef.hide();
     } else if (this.parentthis['tasklist'] && this.parentthis['tasklist']['producemode'] === 3) {
       // 引入销售的成品明细来匹配成品
       this.saledet['tasklistid'] = this.parentthis['tasklist']['id'];
       this.caigouApi.importfpdet(this.saledet).then(data => {
         this.parentthis.getdetail();
       });
+      this.bsModalRef.hide();
     } else {
       this.saledet['caigouid'] = this.parentthis.caigou.id;
-      this.caigouApi.importdet(this.saledet).then(data => {
-        this.parentthis.getcaigou();
-      });
+      this.jstypeShow();
     }
-    this.bsModalRef.hide();
   }
   openquery() {
     this.selectNull();
@@ -190,6 +223,7 @@ export class CaigoudetimportComponent implements OnInit {
   selectend() { }
   selectNull() {
     this.search = { classifys: {}, orgid: '', billno: '', buyerid: '', start: '', end: '', cuserid: '', gn: '' };
+    this.jstype = {};
     this.start = new Date();
     this.end = new Date();
     this.chandis = [];
@@ -279,5 +313,19 @@ export class CaigoudetimportComponent implements OnInit {
         this.search['classifys'][element['value']] = element['defaultval'];
       }
     }
+  }
+  jstypeShow(){
+    this.jiesuantypeModal.show();
+  }
+  jiesuantypclose(){
+    this.jiesuantypeModal.hide();
+  }
+  confirmjstype(){
+    this.saledet['caigouid'] = this.parentthis.caigou.id;
+    this.saledet['jiesuantype'] = this.jstype['jiesuantype'];
+    this.caigouApi.importdet(this.saledet).then(data => {
+      this.parentthis.getcaigou();
+    });
+    this.bsModalRef.hide();
   }
 }

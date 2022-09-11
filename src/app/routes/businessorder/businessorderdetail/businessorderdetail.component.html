@@ -42,11 +42,14 @@
     <button *ngIf="businessorder['status'] | isprint" type="button" (click)="print()"
       class="btn btn-info btn-sm margin-top-bottom-25">打印预览</button>
     <!-- <span *NgOpera="242"> -->
-    <button *ngIf="businessorder['status'] | isprint" type="button" (click)="reload()"
+    <button *ngIf="businessorder['status'] | isprint" type="button" (click)="ordermodalchangeshow()"
       class="btn btn-info btn-sm margin-top-bottom-25">生成PDF</button>
     <!-- </span> -->
     <!-- <button *ngIf="flag['arrearspay']" type="button" (click)="arrearspay()" class="btn btn-info btn-sm margin-top-bottom-25">欠款支付</button> -->
     <button type="button" (click)="recalculate()" class="btn btn-info btn-sm margin-top-bottom-25">重新计算</button>
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button"
+    (click)="deleteorderdet()">货物明细批量删除</button> 
+  
   </div>
   <div class="pull-right narrow-show">
     <div class="btn-group" dropdown placement="bottom right">
@@ -75,7 +78,7 @@
         </li>
         <li class="divider dropdown-divider" *NgOpera="109"></li>
         <li *ngIf="businessorder['status'] | isprint" role="menuitem">
-          <a class="dropdown-item" (click)="reload()">生成PDF</a>
+          <a class="dropdown-item" (click)="ordermodalchangeshow()">生成PDF</a>
         </li>
         <li class="divider dropdown-divider"></li>
         <li *ngIf="flag['cancels']" role="menuitem">
@@ -1237,4 +1240,37 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!--  选择模板的弹窗 -->
+<div class="modal" bsModal #ordermodalchange="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideordermodalchange()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">模板选择</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="col-sm-9">
+              <p-dropdown [options]="ordermodal" placeholder="选择模板" [(ngModel)]="changeordermodal['ordermodal']"  [style]="{'width': '100%'}">
+              </p-dropdown>
+            </div>
+            <div class="form-inline text-center">
+              <button type="button" (click)="reload()" class="btn btn-primary btn-large">确定打印</button>
+            </div>
+       <!--      <div class="row fieldsetdnn">
+              &emsp;&emsp;&emsp;&emsp;&emsp;
+              <button  type="button" (click)="makepdf()" class="btn btn-info btn-large">默认模板</button>
+              &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+              <button  type="button"  (click)="makepdf()" class=" btn btn-info btn-large">老模板</button>              
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div> 
   </div>

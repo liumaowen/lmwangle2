@@ -18,14 +18,16 @@ export class DailypriceComponent implements OnInit {
   // 品名选择弹窗
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
   chandioptions: any = [];
+  chandioptions1: any = [];
   isshowInput = false;
   filterConditionObj = {};
   gridOptions: GridOptions;
   search: Object = { name: '' };
   gnchandis: any[];
-  params: any = { price: null, chandiid: null };
+  params: any = { price: null, chandi: '', gn: '' };
   mygnchandis = [];
   orgid: any;
+  flag = 0;
   constructor(private toast: ToasterService, public settings: SettingsService, private caigouApi: CaigouService,
     private datepipe: DatePipe,
     public examapiService: ExamapiService,
@@ -76,7 +78,6 @@ export class DailypriceComponent implements OnInit {
   ngOnInit() {
     this.caigouApi.getchandi().then(data => {
       this.gnchandis = data;
-      console.log(this.gnchandis);
     });
   }
   openquery() {
@@ -123,7 +124,7 @@ export class DailypriceComponent implements OnInit {
       this.toast.pop('warning', '请选择日期');
       return;
     }
-    if (!this.params.chandiid) {
+    if (!this.params.chandi) {
       this.toast.pop('warning', '请选择产地');
       return;
     }
@@ -141,15 +142,11 @@ export class DailypriceComponent implements OnInit {
       this.closepricewindow();
     });
   }
-  deletegnchandi(id) {
-    for (let index = 0; index < this.mygnchandis.length; index++) {
-      if (this.mygnchandis[index].chandiid === id) {
-        this.mygnchandis.splice(index, 1); // 删除重复的
-      }
-    }
+  deletegnchandi(i) {
+    this.mygnchandis.splice(i); // 删除重复的
   }
   addpricetodb() {
-    if (!this.params.chandiid) {
+    if (!this.params.chandi) {
       this.toast.pop('warning', '请选择产地');
       return;
     }
@@ -159,7 +156,7 @@ export class DailypriceComponent implements OnInit {
     }
     let istwochandi = false;
     this.mygnchandis.forEach(e => {
-      if (this.params.chandiid === e.chandiid) {
+      if (this.params.chandi === e.chandi && this.params.gn === e.gn) {
         istwochandi = true;
       }
     });
@@ -167,11 +164,15 @@ export class DailypriceComponent implements OnInit {
       this.toast.pop('warning', '不允许添加相同产地价格多次！！！');
       return;
     }
-    this.mygnchandis.push({ chandiid: this.params.chandiid, gnchandi: this.params.chandi, price: this.params.price });
+    this.mygnchandis.push({ chandi: this.params.chandi, gn: this.params.gn, price: this.params.price });
     this.isshowInput = !this.isshowInput;
   }
   showInput() {
     this.isshowInput = !this.isshowInput;
+    this.params.chandi = '';
+    this.params.gn = '';
+    this.params.price = null;
+    this.chandioptions1 = [];
   }
   agExport() {
     const params = {
@@ -186,21 +187,40 @@ export class DailypriceComponent implements OnInit {
     };
     this.gridOptions.api.exportDataAsExcel(params);
   }
+  showselectgn(flag) {
+    this.flag = flag;
+    this.mdmgndialog.show();
+  }
   selectgn(params) {
     this.mdmgndialog.hide();
     const item = params['item'];
     const attrs = params['attrs'];
-    this.chandioptions = [];
-    for (let index = 0; index < attrs.length; index++) {
-      const element = attrs[index];
-      if (element['value'] === 'chandi') {
-        this.chandioptions = element['options'];
-        break;
-      }
-    }
-    this.search['gn'] = item.itemname;
-    if (this.chandioptions.length) {
-      this.search['chandi'] = this.chandioptions[this.chandioptions - 1]['value'];
+    if (this.flag === 0) {
+        this.chandioptions = [];
+        for (let index = 0; index < attrs.length; index++) {
+          const element = attrs[index];
+          if (element['value'] === 'chandi') {
+            this.chandioptions = element['options'];
+            break;
+          }
+        }
+        this.search['gn'] = item.itemname;
+        if (this.chandioptions.length) {
+          this.search['chandi'] = this.chandioptions[this.chandioptions.length - 1]['value'];
+        }
+    } else if (this.flag === 1) {
+        this.chandioptions1 = [];
+        for (let index = 0; index < attrs.length; index++) {
+          const element = attrs[index];
+          if (element['value'] === 'chandi') {
+            this.chandioptions1 = element['options'];
+            break;
+          }
+        }
+        this.params['gn'] = item.itemname;
+        if (this.chandioptions1.length) {
+          this.params['chandi'] = this.chandioptions1[this.chandioptions1.length - 1]['value'];
+        } 
     }
   }
 

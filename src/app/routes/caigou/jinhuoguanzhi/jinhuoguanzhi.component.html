@@ -2,6 +2,32 @@
   <em class="fa fa-list-alt"></em> 进货管制表
   <div class="pull-right">
     <button type="button" (click)="showgcinfodialog()" class="btn btn-info btn-bloc">查询</button>
+    <button type="button" (click)="showAddYichan()" class="btn btn-info btn-bloc">已产量</button>
+    <div class="btn-group" dropdown>
+      <button type="button" tooltip="下载模板请点击右边箭头" placement="bottom" class="btn btn-info btn-sm margin-top-bottom-25" (click)="uploadyouhuiprice()">匹配优惠单价</button>
+      <button id="button-split" type="button" dropdownToggle class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
+              aria-controls="dropdown-split">
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-split" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-split">
+        <li role="menuitem"><a class="dropdown-item" href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/%E5%8C%B9%E9%85%8D%E4%BC%98%E6%83%A0%E5%8D%95%E4%BB%B7.xls">下载模板</a>
+        </li>
+      </ul>
+    </div>
+    <div class="btn-group" dropdown>
+      <button type="button" tooltip="下载模板请点击右边箭头" placement="bottom" class="btn btn-info btn-sm margin-top-bottom-25" (click)="uploadbeizhu()">匹配备注</button>
+      <button id="button-split" type="button" dropdownToggle class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
+              aria-controls="dropdown-split">
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-split" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-split">
+        <li role="menuitem"><a class="dropdown-item" href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/%E5%8C%B9%E9%85%8D%E5%A4%87%E6%B3%A8.xls">下载模板</a>
+        </li>
+      </ul>
+    </div>
+    <!-- <button type="button" (click)="showAddJiesuan()" class="btn btn-info btn-bloc">结算政策</button> -->
     <!-- <button type="button" (click)="showAddBuchaPriceDialog()" class="btn btn-info btn-bloc">补差单价</button> -->
   </div>
 </div>
@@ -30,6 +56,12 @@
               <label class="col-sm-3 control-label">钢厂下单月份:</label>
               <div class="col-sm-9">
                 <wisk-yearmonthselect (select)="selectmonth($event)"></wisk-yearmonthselect>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">钢厂下单月份:</label>
+              <div class="col-sm-9">
+                <wisk-yearmonthselect (select)="selectmonth2($event)"></wisk-yearmonthselect>
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row">
@@ -82,18 +114,30 @@
                 <wisk-usersearch [(user)]="saleman"></wisk-usersearch>
               </div>
             </div>
-            <div class="form-group mb fieldsetdnn row">
+            <!-- <div class="form-group mb fieldsetdnn row">
               <label class="col-sm-3 control-label">是否急单:</label>
               <div class="col-sm-9">
                 <p-dropdown [options]="isurgent" placeholder="选择是否急单" [(ngModel)]="search['isurgent']" [filter]="true"
                   [style]="{'width': '100%'}">
                 </p-dropdown>
               </div>
+            </div> -->
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">中心</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="orgtypes" [(ngModel)]="search['centerorgid']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
             </div>
-
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-2 control-label">供应商</label>
+              <div class="col-sm-10">
+                <wisk-suppliersearch [(company)]="seller"></wisk-suppliersearch>
+              </div>
+            </div>
           </div>
         </div>
         <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
           <button type="button" (click)="searchjinhuoguanzhi()" class="btn btn-primary btn-large">查询</button>
         </div>
       </div>
@@ -143,6 +187,94 @@ aria-hidden="true">
         <h4 class="modal-title">物料分类码表报表</h4>
       </div>
       <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #showAddYichanDialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeAddYichanDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">已产量</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">已产量</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="params['yichanweight']" class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="addyichan()" class="btn btn-primary btn-large">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #showAddJiesuanDialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeAddJiesuan()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">结算政策</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">结算政策</label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="params['jiesuantype']" class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="addyichan()" class="btn btn-primary btn-large">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #showuploadprice="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideuploadprice()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #showuploadbeizhu="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideuploadbeizhu()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads2($event)"></wisk-uploader>
+
+      <div class="form-inline">
+      </div>
     </div>
   </div>
 </div>

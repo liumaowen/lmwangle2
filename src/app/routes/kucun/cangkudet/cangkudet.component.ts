@@ -49,7 +49,8 @@ export class CangkudetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '是否协议库', field: 'xieyi', minWidth: 100 },
       //{ cellStyle: { 'text-align': 'center' }, headerName: '是否签订协议', field: 'signxieyi', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '负责人', field: 'user', minWidth: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '特殊提醒', field: 'warn', minWidth: 80 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '特殊提醒', field: 'warn', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '创建时间', field: 'cdate', minWidth: 80 },
     ];
   }
 

@@ -47,11 +47,13 @@ export class CaigoudetComponent implements OnInit {
   @ViewChild('orgModal') private orgModal: ModalDirective;
   @ViewChild('mdmclassicModal') mdmclassicModal: ModalDirective;
   @ViewChild('mdmgndialog') mdmgndialog: ModalDirective;
-  mdmgnsearch = {pagenum: 1, pagesize: 10, itemname: '', categoryname: ''};
+  @ViewChild('jiesuantypeModal') private jiesuantypeModal: ModalDirective;
+  @ViewChild('cangkuModal') private cangkuModal: ModalDirective;
+  mdmgnsearch = { pagenum: 1, pagesize: 10, itemname: '', categoryname: '' };
   goodscode: any = {};
   chandigongchas = [];
-  editTempParam = {detdata: null}; // 修改明细临时变量
-  editflag = {zhidan: false};
+  editTempParam = { detdata: null }; // 修改明细临时变量
+  editflag = { zhidan: false };
   @ViewChild('addFeeModal') private addFeeModal: ModalDirective;
   gridOptions: GridOptions;
   // 交货最小时间
@@ -61,7 +63,7 @@ export class CaigoudetComponent implements OnInit {
   det: object = {
     gn: '', chandi: '', guige: '', caigouid: '', caigouweight: '', price: '', beizhu: '',
     jiaohuodate: '', oneweight: '', yongtu: '', gongcha: '', houdugongcha: '', widthgongcha: '', jiesuanprice: '', zhuanhuo: '',
-    orgid: ''
+    orgid: '',jhcangkuid:''
   };
   isshowInput = false;
   feemodel: any = { feetype: null, price: null, feecustomer: {}, chengyun: null, id: null };
@@ -104,17 +106,19 @@ export class CaigoudetComponent implements OnInit {
   guigelength: number; // 声明一个数量计算器
   // 修改公差
   gongchas: any[];
-  gongchaModel: Object = { detid: '', type: '', name: '', id: '' };
+  gongchaModel: Object = { detid: '', type: '', name: '', id: ''};
   // 转货
   zhuanhuos;
   nextflag = false;
   // 盖章人
   gzuser;
   isgz: boolean;
+  jstype: object = {};
+  cangku: { label: string; value: string; }[];
   constructor(private caigouApi: CaigouService, private fb: FormBuilder, private actroute: ActivatedRoute, public settings: SettingsService,
     private classifyApi: ClassifyApiService, private toast: ToasterService, private bsModalService: BsModalService,
     private qihuoapi: QihuoService, private router: Router, private datepipe: DatePipe, private storage: StorageService,
-    private customerApi: CustomerapiService,public mdmService: MdmService,) {
+    private customerApi: CustomerapiService, public mdmService: MdmService,) {
     // 表单验证
     this.form = fb.group({
       'caigouweight': [null, Validators.compose([Validators.required,
@@ -127,6 +131,7 @@ export class CaigoudetComponent implements OnInit {
       'gongcha': [],
       'houdugongcha': [],
       'widthgongcha': [],
+      'jiesuantype-radio': [],
       'jiesuanprice': [null, Validators.compose([Validators.required,
       Validators.pattern('^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$')])],
       'zhuanhuo': [],
@@ -268,8 +273,10 @@ export class CaigoudetComponent implements OnInit {
           }
         }
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '预付费用单价', field: 'yuguprice', minWidth: 150,
-      enableRowGroup: true, valueFormatter: this.settings.valueFormatter2 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '预付费用单价', field: 'yuguprice', minWidth: 150,
+        enableRowGroup: true, valueFormatter: this.settings.valueFormatter2
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '费用明细', field: 'miaoshu', minWidth: 150 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '交货地址', field: 'innerjiaohuoaddr', minWidth: 80
@@ -626,6 +633,15 @@ export class CaigoudetComponent implements OnInit {
           }
         }
       },
+      { cellStyle: { 'text-align': 'center' }, headerName: '结算方式', field: 'jiesuantype', minWidth: 100 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '交货仓库', field: 'jhcangku', minWidth: 150,
+        onCellClicked: (data) => {
+          if (data['data']['orderdetid'] === null && data['data'].rukuweight === '0') {
+            this.openjhcangku(data['data']['id']);
+          }
+        }
+      }
     ];
   }
 
@@ -694,7 +710,7 @@ export class CaigoudetComponent implements OnInit {
     // this.nselect.active = [];
   }
   addmdmdet() {
-    if(this.caigou['tiaohuocgprocessid']!==null){
+    if (this.caigou['tiaohuocgprocessid'] !== null) {
       this.toast.pop('error', '已经提交审核，不允许重复插入！');
       return;
     }
@@ -724,12 +740,12 @@ export class CaigoudetComponent implements OnInit {
       this.caigouApi.modifymdmcaigoudet(this.det).then(data => {
         this.getcaigou();
         this.mdmclassicModal.hide();
-      }); 
+      });
     } else {
       this.caigouApi.adddet(this.det).then(data => {
         this.getcaigou();
         this.mdmclassicModal.hide();
-      }); 
+      });
     }
   }
   selectgn(params) {
@@ -890,7 +906,8 @@ export class CaigoudetComponent implements OnInit {
       widthgongcha: '',
       jiesuanprice: '0.00',
       zhuanhuo: '',
-      orgid: ''
+      orgid: '',
+      jhcangkuid:''
     };
     this.isChandi = false;
     this.showGuige = false;
@@ -922,7 +939,7 @@ export class CaigoudetComponent implements OnInit {
   selectstart() { }
   // 引入期货明细
   importdet() {
-    if(this.caigou['tiaohuocgprocessid']!==null){
+    if (this.caigou['tiaohuocgprocessid'] !== null) {
       this.toast.pop('error', '已经提交审核，不允许重复引入！');
       return;
     }
@@ -956,11 +973,11 @@ export class CaigoudetComponent implements OnInit {
   }
   // 添加采购单价
   confirmprice() {
-    if(this.caigou['tiaohuocgprocessid']!==null){
+    if (this.caigou['tiaohuocgprocessid'] !== null) {
       this.toast.pop('error', '已经提交审核，不允许重复添加！');
       return;
     }
-   
+
     if (!this.modifyprice['price'] || this.modifyprice['price'] === '0' || this.modifyprice['price'] < 0) {
       this.toast.pop('error', '采购单价不能为空或不能为零或不能为负！');
       return;
@@ -980,7 +997,7 @@ export class CaigoudetComponent implements OnInit {
     });
   }
   deletecaigou() {
-    if(this.caigou['tiaohuocgprocessid']!==null){
+    if (this.caigou['tiaohuocgprocessid'] !== null) {
       this.toast.pop('error', '已经提交审核，不允许删除！');
       return;
     }
@@ -1050,7 +1067,7 @@ export class CaigoudetComponent implements OnInit {
   }
   // 提交审核
   submitcg() {
-    if(this.caigou['tiaohuocgprocessid']!==null){
+    if (this.caigou['tiaohuocgprocessid'] !== null) {
       this.toast.pop('error', '已经提交审核，不允许重复提交！');
       return;
     }
@@ -1148,7 +1165,7 @@ export class CaigoudetComponent implements OnInit {
   }
   openaddr() {
     this.jiaohuoaddrs = [];
-    const chandigongchaparam = {gn: this.caigou['gn'], chandi: this.caigou['chandi']};
+    const chandigongchaparam = { gn: this.caigou['gn'], chandi: this.caigou['chandi'] };
     this.mdmService.getchandigongcha(chandigongchaparam).then(chandigongchas => {
       for (let index = 0; index < chandigongchas.length; index++) {
         const element = chandigongchas[index];
@@ -1213,12 +1230,16 @@ export class CaigoudetComponent implements OnInit {
     }); // qihuoapi
     this.gongchamodify.show();
   }
+  closecangku() {
+    this.cangkuModal.hide();
+  }
   modifygongcha() {
     if (this.gongchaModel['name'] === '') {
       this.closegongchamodify();
       this.closecount();
       this.closebeizhu();
       this.closejiesuan();
+      this.closecangku();
       return;
     }
     this.caigouApi.modifygongcha(this.gongchaModel).then(data => {
@@ -1226,6 +1247,7 @@ export class CaigoudetComponent implements OnInit {
       this.closecount();
       this.closebeizhu();
       this.closejiesuan();
+      this.closecangku();
       this.toast.pop('success', '修改成功');
       this.getcaigou();
     });
@@ -1237,6 +1259,23 @@ export class CaigoudetComponent implements OnInit {
     this.gongchaModel['type'] = 'date';
     this.jiaohuodate = new Date(date);
     this.dateModal.show();
+  }
+  openjhcangku(detid) {
+    this.gongchaModel = { detid: '', type: '', name: '', id: '' };
+    this.gongchaModel['detid'] = detid;
+    this.gongchaModel['id'] = this.actroute.params['value']['id'];
+    this.gongchaModel['type'] = 'jhcangku';
+    // 查找仓库
+    this.cangku = [{ label: '非必填选项', value: '' }];
+    this.classifyApi.cangkulist().then((response) => {
+        response.forEach(element => {
+          this.cangku.push({
+            label: element.name,
+            value: element.id
+        });
+      });
+    });
+    this.cangkuModal.show();
   }
   datemodify() {
     if (this.jiaohuodate) {
@@ -1284,12 +1323,12 @@ export class CaigoudetComponent implements OnInit {
       console.log(good);
       this.nextflag = true;
       this.det['gcid'] = good.id;
-      const chandigongchaparam = {gn: good['gn'], chandi: good['chandi']};
+      const chandigongchaparam = { gn: good['gn'], chandi: good['chandi'] };
       this.mdmService.getchandigongcha(chandigongchaparam).then(chandigongchas => {
         this.chandigongchas = [];
         for (let index = 0; index < chandigongchas.length; index++) {
           const element = chandigongchas[index];
-          if (element.value!=='jiaohuoaddr') {
+          if (element.value !== 'jiaohuoaddr') {
             this.chandigongchas.push(element);
           }
         }
@@ -1303,7 +1342,7 @@ export class CaigoudetComponent implements OnInit {
           this.det['detid'] = this.editTempParam.detdata['id'];
           this.det['caigouweight'] = this.editTempParam.detdata['caigouweight'];
           this.det['price'] = this.editTempParam.detdata['price'];
-          if (this.editTempParam.detdata['zhuanhuo']==='转货') {
+          if (this.editTempParam.detdata['zhuanhuo'] === '转货') {
             this.det['zhuanhuo'] = true;
           } else {
             this.det['zhuanhuo'] = false;
@@ -1311,6 +1350,7 @@ export class CaigoudetComponent implements OnInit {
           this.det['orgid'] = this.editTempParam.detdata['orgid'];
           this.det['jiesuanprice'] = this.editTempParam.detdata['jiesuanprice'];
           this.det['beizhu'] = this.editTempParam.detdata['beizhu'];
+          this.det['jhcangku'] = this.editTempParam.detdata['jhcangku'];
         }
       });
     });
@@ -1322,7 +1362,7 @@ export class CaigoudetComponent implements OnInit {
     this.selectNull();
     this.zhuanhuos = [{ value: '', label: '全部' }, { value: true, label: '转货' }, { value: false, label: '不转货' }];
     this.jiaohuodate = undefined;
-    this.goodscode = {gn: caigoudet['goodscode']['gn']};
+    this.goodscode = { gn: caigoudet['goodscode']['gn'] };
     this.mdmService.getMdmAttributeDic({ itemcode: caigoudet['goodscode']['gncode'] }).then(data1 => {
       this.showGuige = true;
       this.attrs = data1;
@@ -1405,7 +1445,7 @@ export class CaigoudetComponent implements OnInit {
   }
   // 合同上传弹窗
   contractUploader() {
-    if(this.caigou['tiaohuocgprocessid']!==null){
+    if (this.caigou['tiaohuocgprocessid'] !== null) {
       this.toast.pop('error', '已经提交审核，不允许重复上传！');
       return;
     }
@@ -1443,7 +1483,7 @@ export class CaigoudetComponent implements OnInit {
   caigoudetids: any = [];
   //批量删除明细
   deletecaigoudet() {
-    if(this.caigou['tiaohuocgprocessid']!==null){
+    if (this.caigou['tiaohuocgprocessid'] !== null) {
       this.toast.pop('error', '已经提交审核，不允许删除！');
       return;
     }
@@ -1514,7 +1554,7 @@ export class CaigoudetComponent implements OnInit {
   querymat() {
     if (this.det['matcode'] && this.det['matcode'].trim()) {
       this.qihuoapi.getmat(this.det['matcode']).then(mat => {
-        this.goodscode = {gn: mat['gn']};
+        this.goodscode = { gn: mat['gn'] };
         if (!mat['gncode']) {
           this.toast.pop('warning', '没有品名编码！');
           return;
@@ -1558,7 +1598,7 @@ export class CaigoudetComponent implements OnInit {
     }
   }
 
-  showAddFee(){
+  showAddFee() {
     this.lines = [];
     const ids = new Array();
     const dets = this.gridOptions.api.getModel()['rowsToDisplay'];
@@ -1579,10 +1619,10 @@ export class CaigoudetComponent implements OnInit {
     console.log(1111111);
     console.log(ids);
     console.log(ids[0]);
-    if(ids.length === 1){
+    if (ids.length === 1) {
       this.caigouApi.getYugufeeList(ids[0]).then(data => {
         this.lines = data;
-        for(let i = 0;i<this.lines.length;i++){
+        for (let i = 0; i < this.lines.length; i++) {
           this.lines[i]['feecustomer'] = data[i]['feecustomer']['name'];
           this.feemodel['id'] = data[i]['id'];
         }
@@ -1622,7 +1662,7 @@ export class CaigoudetComponent implements OnInit {
       this.category = '我司承运';
     } else if (category === 0) {
       this.category = '钢厂代运';
-    } else{
+    } else {
       this.category = '';
     }
   }
@@ -1643,8 +1683,8 @@ export class CaigoudetComponent implements OnInit {
       this.toast.pop('warning', '费用单位不能为空');
       return;
     }
-    if ((this.feemodel['feetype'] === '1' || this.feemodel['feetype'] === '2' || this.feemodel['feetype'] === '3') 
-        && (this.feemodel['chengyun'] === undefined || this.feemodel['chengyun'] === null)) {
+    if ((this.feemodel['feetype'] === '1' || this.feemodel['feetype'] === '2' || this.feemodel['feetype'] === '3')
+      && (this.feemodel['chengyun'] === undefined || this.feemodel['chengyun'] === null)) {
       this.toast.pop('warning', '请选择承运类型!');
       return;
     }
@@ -1673,8 +1713,35 @@ export class CaigoudetComponent implements OnInit {
     });
   }
   feeadddialogclose() { this.addFeeModal.hide(); }
-  addYuguFee(){
+  addYuguFee() {
     this.addFeeModal.hide();
+  }
+  jstypeShow(){
+    this.jiesuantypeModal.show();
+  }
+  jiesuantypclose(){
+    this.jiesuantypeModal.hide();
+  }
+  showmodifyJiesuanType() {
+    this.caigoudetids = new Array();
+    const caigoudetlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < caigoudetlist.length; i++) {
+      if (caigoudetlist[i].selected && caigoudetlist[i].data && caigoudetlist[i].data['gn'] !== '合计') {
+        this.caigoudetids.push(caigoudetlist[i].data.id);
+      }
+    }
+    if (!this.caigoudetids.length) {
+      this.toast.pop('warning', '请选择明细之后再修改！');
+      return;
+    }
+    this.jstype['detids'] = this.caigoudetids;
+    this.jstypeShow();
+  }
+  confirmjstype(){
+    this.caigouApi.modifyjiesuantype(this.jstype).then(data => {
+      this.getcaigou();
+    });
+    this.jiesuantypclose();
   }
 
 }

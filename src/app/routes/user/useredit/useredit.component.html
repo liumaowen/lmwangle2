@@ -8,7 +8,9 @@
 
     <div class="pull-right">
       <span *NgOpera="425">
-        <button type="button" (click)="enableUser()" class="btn btn-info btn-sm margin-top-bottom-25">启用
+        <button *ngIf="!model['useing']" type="button" (click)="enableUser()" class="btn btn-info btn-sm margin-top-bottom-25">启用
+        </button>
+        <button *ngIf="model['useing']" type="button" (click)="disableUser()" class="btn btn-info btn-sm margin-top-bottom-25">停用
         </button>
       </span>     
       <button type="button" (click)="modifyPasswordDialog()" class="btn btn-info btn-sm margin-top-bottom-25">修改密码

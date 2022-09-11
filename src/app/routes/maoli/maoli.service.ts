@@ -27,8 +27,10 @@ export class MaoliService {
     })
   }
 
-  calcfpchengben(): Promise<any> {
-    return this.http.get('store/api/produce/chengbencalc').toPromise();
+  calcfpchengben(search): Promise<any> {
+    return this.http.get('store/api/produce/chengbencalc', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
   }
 
   //特殊毛利展现

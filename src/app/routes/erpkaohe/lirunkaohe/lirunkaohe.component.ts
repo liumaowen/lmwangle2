@@ -43,130 +43,120 @@ export class LirunkaoheComponent implements OnInit {
         }
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '业务员', field: 'salemanname' },
-      { cellStyle: { 'text-align': 'center' }, headerName: '月份', field: 'yuefen' },
-      // {
-      //   cellStyle: { 'text-align': 'center' }, headerName: '利润绩效', field: 'lirunjixiao', enableRowGroup: true,
-      //   aggFunc: 'sum',
-      // },
       {
-        cellClass: 'text-center', headerClass: '', headerName: '线上', field: 'ollirun',
+        cellClass: 'text-center', headerClass: '', headerName: '当月参与考核利润', field: 'canyukaohelirun',
         minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
         aggFunc: 'sum',
       },
       {
-        cellClass: 'text-center', headerClass: '', headerName: '调拨费', field: 'allotfee',
+        cellClass: 'text-center', headerClass: '', headerName: 'ERP利润', field: 'erplirun',
         minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
         aggFunc: 'sum',
       },
       {
-        cellClass: 'text-center', headerName: '线下', headerClass: 'wis-ag-center',
+        cellClass: 'text-center', headerName: '非备货利润', headerClass: 'wis-ag-center',
         children: [
           {
-            cellClass: 'text-center', headerName: '非备货利润', headerClass: 'wis-ag-center',
+            cellClass: 'text-center', headerName: '正常价格', headerClass: 'wis-ag-center',
             children: [
               {
-                cellClass: 'text-center', headerName: '正常价格', headerClass: 'wis-ag-center',
-                children: [
-                  {
-                    cellClass: 'text-center ', headerName: '常规产品', field: 'changgui',
-                    minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                    aggFunc: 'sum',
-                  },
-                  {
-                    cellClass: 'text-center ', headerName: '维实', field: 'weishi',
-                    minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                    aggFunc: 'sum',
-                  },
-                  {
-                    cellClass: 'text-center ', headerName: '淀川盛馀', field: 'dcshengyu',
-                    minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                    aggFunc: 'sum',
-                  },
-                  {
-                    cellClass: 'text-center ', headerName: '创新产品', field: 'innovate',
-                    minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                    aggFunc: 'sum',
-                  },
-                //   {
-                //     cellClass: 'text-center ', headerName: '钢品吨毛利≥100', field: 'gpmtlirun',
-                //     minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                //     aggFunc: 'sum',
-                //   },
-                  {
-                    cellClass: 'text-center', headerName: '钢品常规吨毛利<100', field: 'gpchanggui',
-                    minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                    aggFunc: 'sum',
-                  },
-                  {
-                    cellClass: 'text-center', headerName: '钢品特殊吨毛利<100', field: 'gpteshu',
-                    minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                    aggFunc: 'sum',
-                  }
-                ]
-              },
-              {
-                cellClass: 'text-center ', headerName: '总经理特批', field: 'tepi',
+                cellClass: 'text-center ', headerName: '常规产品', field: 'changgui',
                 minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
                 aggFunc: 'sum',
               },
               {
-                cellClass: 'text-center ', headerName: '低于指导价', headerClass: 'wis-ag-center',field: 'ltlirun',
-                children: [
-                    {
-                        cellClass: 'text-center ', headerName: '总', field: 'ltzong',
-                        minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                        aggFunc: 'sum',
-                    },
-                    {
-                        cellClass: 'text-center ', headerName: '正', field: 'ltzheng',
-                        minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                        aggFunc: 'sum',
-                    },
-                    {
-                        cellClass: 'text-center ', headerName: '负', field: 'ltfu',
-                        minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                        aggFunc: 'sum',
-                    },
-                    {
-                        cellClass: 'text-center ', headerName: '负', headerClass: 'wis-ag-center',field: 'ltlirun',
-                        children: [
-                            {
-                                cellClass: 'text-center ', headerName: '常规产品', field: 'cgchanpin',
-                                minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                                aggFunc: 'sum',
-                            },
-                            {
-                                cellClass: 'text-center ', headerName: '维实/创新产品/淀川盛馀', field: 'weishichuangxin',
-                                minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-                                aggFunc: 'sum',
-                            }
-                        ]
-                    }
-                ]
+                cellClass: 'text-center ', headerName: '维实', field: 'weishi',
+                minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                aggFunc: 'sum',
+              },
+              {
+                cellClass: 'text-center ', headerName: '淀川盛馀', field: 'dcshengyu',
+                minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                aggFunc: 'sum',
+              },
+              {
+                cellClass: 'text-center ', headerName: '创新产品', field: 'innovate',
+                minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                aggFunc: 'sum',
+              },
+            //   {
+            //     cellClass: 'text-center ', headerName: '钢品吨毛利≥100', field: 'gpmtlirun',
+            //     minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+            //     aggFunc: 'sum',
+            //   },
+              {
+                cellClass: 'text-center', headerName: '钢品常规吨毛利<100', field: 'gpchanggui',
+                minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                aggFunc: 'sum',
+              },
+              {
+                cellClass: 'text-center', headerName: '钢品特殊吨毛利<100', field: 'gpteshu',
+                minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                aggFunc: 'sum',
               }
             ]
           },
           {
-            cellClass: 'text-center ', headerName: '线下现货销售价格低于同期线上定价', headerClass: 'wis-ag-center',field: 'ltlirun',
+            cellClass: 'text-center ', headerName: '总经理特批', field: 'tepi',
+            minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+            aggFunc: 'sum',
+          },
+          {
+            cellClass: 'text-center ', headerName: '低于指导价', headerClass: 'wis-ag-center',field: 'ltlirun',
             children: [
                 {
-                    cellClass: 'text-center ', headerName: '常规产品', field: 'changgui1',
+                    cellClass: 'text-center ', headerName: '总', field: 'ltzong',
                     minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
                     aggFunc: 'sum',
                 },
                 {
-                    cellClass: 'text-center ', headerName: '特殊产品', field: 'teshu',
+                    cellClass: 'text-center ', headerName: '正', field: 'ltzheng',
                     minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
                     aggFunc: 'sum',
+                },
+                {
+                    cellClass: 'text-center ', headerName: '负', field: 'ltfu',
+                    minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                    aggFunc: 'sum',
+                },
+                {
+                    cellClass: 'text-center ', headerName: '负', headerClass: 'wis-ag-center',field: 'ltlirun',
+                    children: [
+                        {
+                            cellClass: 'text-center ', headerName: '常规产品', field: 'cgchanpin',
+                            minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                            aggFunc: 'sum',
+                        },
+                        {
+                            cellClass: 'text-center ', headerName: '维实/创新产品/淀川盛馀', field: 'weishichuangxin',
+                            minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                            aggFunc: 'sum',
+                        }
+                    ]
                 }
             ]
-          },
-          {
-            cellClass: 'text-center ', headerName: '备货利润', field: 'bhlirun',
-            minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
-            aggFunc: 'sum',
           }
         ]
+      },
+      {
+        cellClass: 'text-center ', headerName: '线下现货销售价格低于同期线上定价', headerClass: 'wis-ag-center',field: 'ltlirun',
+        children: [
+            {
+                cellClass: 'text-center ', headerName: '常规产品', field: 'changgui1',
+                minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                aggFunc: 'sum',
+            },
+            {
+                cellClass: 'text-center ', headerName: '特殊产品', field: 'teshu',
+                minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+                aggFunc: 'sum',
+            }
+        ]
+      },
+      {
+        cellClass: 'text-center ', headerName: '备货利润', field: 'bhlirun',
+        minWidth: 80, valueFormatter: this.settings.valueFormatter, enableRowGroup: true,
+        aggFunc: 'sum',
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '线上', field: 'onlinelirun', enableRowGroup: true,

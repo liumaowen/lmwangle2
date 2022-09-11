@@ -12,6 +12,12 @@ export class CangkuApiService {
       return data.json() as any[];
     });
   }
+  // 批量删除仓储费
+  delstoragefees(search) {
+    return this.http.post('store/api/storagefee/deletes', search ).toPromise();
+  }
+
+
   // 获取时间范围
   getTimeSection() {
     return this.http.get(`store/api/storagefee/gettimesection`).toPromise().then(data => {
@@ -56,5 +62,17 @@ export class CangkuApiService {
       return data.json() as any[];
     });
   }
+    
+  // 批量删除加工费
 
+    delprocessfees(search) {
+      return this.http.post('store/api/processfee/delprocessfees', search ).toPromise();
+    }
+
+  // 删除出库费
+  delchukufee(id) {
+    return this.http.delete('store/api/chukufee/' + id).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

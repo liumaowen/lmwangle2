@@ -2,10 +2,12 @@
   <em class="fa fa-list-alt"></em> 用户分类管理表
   <div class="pull-right wide-show">
     <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
-    <button type="button" (click)="customerLevelUploader()" class="btn btn-info btn-bloc" >上传分类表</button>
+    <button type="button" *ngIf="lanmao" (click)="customerLevelUploader()" class="btn btn-info btn-bloc" >上传分类表</button>
     <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/lamour/ImportCustomerLevel.xls">
-      <button type="button" class="btn btn-info btn-bloc">分类表模板下载</button>
+      <button *ngIf="lanmao" type="button" class="btn btn-info btn-bloc">分类表模板下载</button>
     </a>
+    <button *ngIf="lanmao" type="button" (click)="deleteOne()" class="btn btn-info btn-bloc"
+    style="background-color:red;border-color:red;color:#ffffff;">删除</button>
     <!-- <button type="button" (click)="sendinfo()" class = "btn btn-info btn-bloc">发送钉钉消息</button> -->
   </div>
   <div class="pull-right narrow-show">

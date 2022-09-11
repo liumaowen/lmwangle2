@@ -9,6 +9,7 @@ import { XiaoshouapiService } from 'app/routes/xiaoshou/xiaoshouapi.service';
 import { DatePipe, HashLocationStrategy } from '@angular/common';
 import { ColDef, GridOptions } from 'ag-grid/main';
 
+const sweetalert = require('sweetalert');
 @Component({
   selector: 'app-regprice',
   templateUrl: './regprice.component.html',
@@ -41,11 +42,13 @@ export class RegpriceComponent implements OnInit {
   countys4: any[] = [];
   provinces4 = [];
   wuliucompany = {};
+  wuliucompany2={};
   price: any;
   twight:any;
   beizhu:any;
   routeinquiry = { accountdirection: 2 };
-  modify: Object = { price: null, detid: '' };
+  modify: Object = { price: null, detid: '', wuliucompany:null,wuliucompany2:null};
+  issaleman = false;
 
   constructor(
     public settings: SettingsService, 
@@ -57,23 +60,25 @@ export class RegpriceComponent implements OnInit {
     private datePipe: DatePipe) {
 
     this.gridOptions = {
-      rowData: null,
       enableFilter: true,
       rowDeselection: true,
       suppressRowClickSelection: false,
       enableColResize: true,
       enableSorting: true,
+      rowSelection: 'multiple',
       overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
       overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
       getContextMenuItems: this.settings.getContextMenuItems,
-      onCellClicked: (params) => {
-        params.node.setSelected(true, true);
-      },
     }
+    this.gridOptions.groupSuppressAutoColumn = true;
+    this.gridOptions.onGridReady = this.settings.onGridReady;
 
 
     this.gridOptions.columnDefs = [
-      { cellStyle: { "text-align": "left" }, headerName: '选择', minWidth: 100, checkboxSelection: true, suppressMenu: true },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '选择', field: 'group', cellRenderer: 'group', minWidth: 90,
+        checkboxSelection: true, headerCheckboxSelection: true
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '更新时间',  field: 'udate', width: 90  },
       { cellStyle: { 'text-align': 'center' }, headerName: '起始省', field: 'sprovincename', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '起始市', field: 'scityname', width: 90 },
@@ -81,6 +86,8 @@ export class RegpriceComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '目的省', field: 'eprovincename', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '目的市', field: 'ecityname', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '目的区/县', field: 'ecountyname', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '路线', field: 'route', width: 90 
+    },
       { cellStyle: { 'text-align': 'center' }, headerName: '吨位', field: 'tweight', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '单价/总价', field: 'price', width: 260 },
       { cellStyle: { 'text-align': 'center' }, headerName: '金额', field: 'jine', width: 100 },
@@ -88,13 +95,15 @@ export class RegpriceComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '物流专员', field: 'wuliuyuan', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '议价人', field: 'yijiaren', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '议价价格', field: 'bargaining', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 100 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'addbeizhu', width: 100 }
 
     ];
 
     this.getMyRole();
   }
   ngOnInit() {
+    this.querylist();
   }
   listDetail() {
   }
@@ -137,10 +146,6 @@ getMyRole() {
       this.toast.pop('warning', '请添加单价！');
       return '';
     }
-    // if (!this. routeinquiry['wuliucompanyname']) {
-    //   this.toast.pop('warning', '请添加物流公司！');
-    //   return '';
-    // }
     if((!this. routeinquiry['sprovinceid'] || !this. routeinquiry['scityid'] || !this. routeinquiry['scountyid'] || 
           !this. routeinquiry['eprovinceid'] || !this. routeinquiry['ecityid'] || !this. routeinquiry['ecountyid'] )){
             this.toast.pop('warning', '省市县必填!');
@@ -151,8 +156,9 @@ getMyRole() {
       this.coles();
       this.toast.pop('success', '增加数据成功');
       this.listDetail();
+      this.querylist();
     });
-      this.showDialog();
+      
   }
 
   addrouteprice(){
@@ -194,9 +200,85 @@ getMyRole() {
     this.queryModal.show();
   }
  
+    
+    //关闭弹窗
+    priceclose() {   
+      this.priceModal.hide();
+    }
+    //修改对话框
+    modifyprice() {
+      let ids = new Array();
+      let maycurloanlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+      for (let i = 0; i < maycurloanlist.length; i++) {
+        if (maycurloanlist[i].selected && maycurloanlist[i].data) {
+          ids.push(maycurloanlist[i].data.id);
+        }
+      }
+      if (ids.length < 1) {
+        this.toast.pop('warning', '请要选择修改的路线！！');
+        return;
+      }
+      this.modify['ids'] = ids;
+      this.priceModal.show();
+    }
+  submit() {
+    this.modify['wuliucompanyid'] = this.wuliucompany2['code'];
+    this.wuliuscoreapiService.modfiyPrice(this.modify).then(data => {
+      this.toast.pop('success', '修改成功！');
+      this.priceclose();
+      this.querylist(); 
+    });
+  }
+
+ //关闭弹窗
+ yijiaclose(){
+  this.yijiaModal.hide();
+  }
+submitprice(){
+  let ids = new Array();
+      let maycurloanlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+      for (let i = 0; i < maycurloanlist.length; i++) {
+        if (maycurloanlist[i].selected && maycurloanlist[i].data) {
+          ids.push(maycurloanlist[i].data.id);
+        }
+      }
+      if (ids.length < 1) {
+        this.toast.pop('warning', '请要选择议价的路线！！');
+        return;
+      }
+      this.modify['ids'] = ids;
+      this.yijiaModal.show();
+  }
+yijiasubmit() {
+  this.wuliuscoreapiService.yijiaPrice(this.modify).then(data => {
+    this.toast.pop('success', '修改成功！');
+    this.yijiaclose();
+  });
+  }
 
 
+  routeids: any = [];
+   //批量删除明细
+   deleteroute() {
 
+    this.routeids = new Array();
+    const routelist = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < routelist.length; i++) {
+      if (routelist[i].selected && routelist[i].data && routelist[i].data['gn'] !== '合计') {
+        this.routeids.push(routelist[i].data.id);
+      }
+    }
+    if (!this.routeids.length) {
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+      this.wuliuscoreapiService.deleteselected(this.routeids).then(data => {
+        this.toast.pop('success', '删除成功！');
+        this.querylist();
+      });
+    }
+  }
   getpcc(pid, pccname: any[]) {
     return new Promise((resolve: (data) => void) => {
       this.classifyApi.getChildrenTree({ pid: pid }).then((data) => {
@@ -370,61 +452,5 @@ getMyRole() {
     });
   }
 
-    //修改对话框
-    modifyprice() {
-      let ids = new Array();
-      let maycurloanlist = this.gridOptions.api.getModel()['rowsToDisplay'];
-      for (let i = 0; i < maycurloanlist.length; i++) {
-        if (maycurloanlist[i].selected && maycurloanlist[i].data) {
-          ids.push(maycurloanlist[i].data.id);
-        }
-      }
-      if (ids.length < 1) {
-        this.toast.pop('warning', '请要选择修改的路线！！');
-        return;
-      }
-      this.modify['ids'] = ids;
-      this.priceModal.show();
-    }
-  //关闭弹窗
-    priceclose() {   
-      this.priceModal.hide();
-    }
-
-  submit() {
-    this.wuliuscoreapiService.modfiyPrice(this.modify).then(data => {
-      this.toast.pop('success', '修改成功！');
-      this.priceclose();
-    });
-  }
-
-
- //关闭弹窗
- yijiaclose(){
-  this.yijiaModal.hide();
-}
-  
-submitprice(){
-  let ids = new Array();
-      let maycurloanlist = this.gridOptions.api.getModel()['rowsToDisplay'];
-      for (let i = 0; i < maycurloanlist.length; i++) {
-        if (maycurloanlist[i].selected && maycurloanlist[i].data) {
-          ids.push(maycurloanlist[i].data.id);
-        }
-      }
-      if (ids.length < 1) {
-        this.toast.pop('warning', '请要选择议价的路线！！');
-        return;
-      }
-      this.modify['ids'] = ids;
-      this.yijiaModal.show();
-}
-
-yijiasubmit() {
-  this.wuliuscoreapiService.yijiaPrice(this.modify).then(data => {
-    this.toast.pop('success', '修改成功！');
-    this.yijiaclose();
-  });
-}
 
 }

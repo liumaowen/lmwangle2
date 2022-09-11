@@ -50,7 +50,7 @@ export class WuliuscoreapiService {
     })
   }
 
-//修改价格
+//修改价格公司
   modfiyPrice(modify) {
     return this.http.put('store/api/wliu/modfiyprice',modify).toPromise().then(data => {
     return data.json() as any[];
@@ -62,9 +62,13 @@ yijiaPrice(modify) {
   return this.http.put('store/api/wliu/yijiaprice',modify).toPromise().then(data => {
   return data.json() as any[];
 });
-
 }
-
+//删除
+deleteselected(search) {
+  return this.http.post('store/api/wliu/deleteselected', search).toPromise().then(data => {
+    return data.json() as any[];
+  });
+}
 
 
 }

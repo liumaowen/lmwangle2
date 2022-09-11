@@ -101,6 +101,14 @@ export class UsereditComponent implements OnInit {
       });
     }
   }
+  disableUser() {
+    if (confirm('你确定要停用该用户吗？')) {
+      this.userApi.disableUser(this.model['id'], this.model).then(() => {
+        this.toast.pop('success', '停用成功');
+        this.router.navigateByUrl('user');
+      });
+    }
+  }
   // 修改密码弹出窗口
   modifyPasswordDialog() {
     this.showclassicModal();

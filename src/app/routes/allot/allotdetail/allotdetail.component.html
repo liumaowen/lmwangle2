@@ -35,6 +35,12 @@
     style="background-color:red;border-color:red;color:#ffffff;">一键删除明细</button>
     <button *ngIf="model.issubmit" type="button" class="btn btn-info btn-bloc" (click)="delALL()"
     style="background-color:red;border-color:red;color:#ffffff;">一键撤销</button>
+
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button"
+    (click)="deleteallotdet()">货物明细批量删除</button>
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button"
+    (click)="deleteallotdetfee()">费用明细批量删除</button>
+
     <a *ngIf="showlook" [href]="srchetong" type="button" class="btn btn-info btn-bloc">钉钉查看调拨单</a>
   </div>
   <div class="pull-right narrow-show">
@@ -317,8 +323,7 @@
 <!-- 标签 -->
 <p-tabView [style]="{margin:'0 -20px','padding-top': '3px'}" [activeIndex]="tabviewindex"
   (onChange)="handleChange($event)">
-  <p-tabPanel header="调拨明细"
-    [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+  <p-tabPanel header="调拨明细" [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
     <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
       style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
       [gridOptions]="gridOptions">

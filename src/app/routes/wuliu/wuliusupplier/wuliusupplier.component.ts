@@ -92,6 +92,7 @@ export class WuliusupplierComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '提货及时性', field: 'thjishixing', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '安全性', field: 'safegrade', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '赔偿能力', field: 'compensate', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '创建时间', field: 'cdate', minWidth: 90 },
     ];
   }
 

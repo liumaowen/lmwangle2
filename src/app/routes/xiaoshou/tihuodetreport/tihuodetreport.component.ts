@@ -301,7 +301,8 @@ export class TihuodetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '应付计数', field: 'yffeedetcount', minWidth: 50 },
       { cellStyle: { 'text-align': 'center' }, headerName: '加工方式', field: 'isproduce', minWidth: 50 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否维实产品', field: 'isweishiproduct', minWidth: 50 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '机构库龄', field: 'orgkuling', minWidth: 75 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '机构库龄', field: 'orgkuling', minWidth: 75 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '调货方式', field: 'thtype', minWidth: 75 }
     ];
   }
 

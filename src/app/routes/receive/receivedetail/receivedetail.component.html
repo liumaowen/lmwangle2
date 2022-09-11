@@ -27,11 +27,9 @@
     <button *ngIf="model['status'] == 1 && model['isrefund'] && !model['paycustomer']['isonline'] && !model['orgisv']"
       type="button" (click)="orgAuditThrough(model['id'])" class="btn btn-info btn-sm margin-top-bottom-25">机构审核
     </button>
-    <span *NgOpera="124">
-      <button *ngIf="model['status'] == 1" type="button" (click)="auditThrough(model['id'])"
+    <button *ngIf="model['status'] == 1 && iscaiwubu" type="button" (click)="auditThrough(model['id'])"
         class="btn btn-info btn-sm margin-top-bottom-25">财务审核
       </button>
-    </span>
     <button *ngIf="model['status'] == 1" type="button" (click)="refuse()"
       class="btn btn-info btn-sm margin-top-bottom-25">拒审
     </button>

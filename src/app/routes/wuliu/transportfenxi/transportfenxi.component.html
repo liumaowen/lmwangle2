@@ -31,6 +31,12 @@
                   <wisk-yearmonthselect (select)="selectmonth($event)"></wisk-yearmonthselect>
                 </div>
               </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+                <label class="col-md-3 control-label">日期</label>
+                <div class="col-md-9 wiskind-calendar">
+                  <wisk-yearmonthselect (select)="selectendmonth($event)"></wisk-yearmonthselect>
+                </div>
+              </div>
               <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12">
                 <label class="col-sm-3 col-xs-12 control-label">起始地：</label>
                 <div class="col-sm-9 col-xs-12">
@@ -97,6 +103,32 @@
                 <div class="col-sm-9">
                   <p-dropdown [options]="weightranges" [(ngModel)]="search['weightrange']"  [style]="{'width':'100%'}" placeholder="吨位区间">
                   </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label">是否关联路线：</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input id="isluxian1" type="radio" [value]="1" name="isluxian" [(ngModel)]="search['isluxian']" />
+                    <span class="fa fa-circle"></span>是
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="isluxian2" type="radio" [value]="0" name="isluxian" [(ngModel)]="search['isluxian']" />
+                    <span class="fa fa-circle"></span>否
+                  </label>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12">
+                <label class="col-sm-3 control-label">是否关联运费单位：</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input id="iscustomer1" type="radio" [value]="1" name="iscustomer" [(ngModel)]="search['iscustomer']" />
+                    <span class="fa fa-circle"></span>是
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="iscustomer2" type="radio" [value]="0" name="iscustomer" [(ngModel)]="search['iscustomer']" />
+                    <span class="fa fa-circle"></span>否
+                  </label>
                 </div>
               </div>
           </div>

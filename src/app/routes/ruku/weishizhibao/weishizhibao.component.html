@@ -1,0 +1,207 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">维实质保书</em>
+  <div class="pull-right">
+    <button class="btn btn-info btn-bloc" type="button" (click)="openquery()">查询</button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="excelUploader(1)">上传明细</button>
+    <button type="button" class="btn btn-info btn-sm margin-top-bottom-25">
+      <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/%E4%BA%A7%E5%93%81%E8%B4%A8%E6%A3%80%E5%8F%8D%E9%A6%88%E8%A1%A8%E6%80%BB%E8%A1%A8.xls" target="_blank"
+        style="color:#ffffff;">产品质检反馈表明细模板</a>
+    </button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="deleteDetail()">删除</button>
+  </div>
+</div>
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+<!--查询对话框-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">钢卷号</label>
+              <div class="col-sm-9">
+                <input type="text" name="kunbaohao" [(ngModel)]="search['kunbaohao']" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="form-bottom text-center">
+            <button type="button"  class="btn btn-info btn-large" (click)="selectnull()">重选</button>
+            <button type="button" class="btn btn-primary btn-large" (click)="query()">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--上传表格匹配资源号-->
+<div class="modal" bsModal #uploaderModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <div *ngIf = "uploadtype === 1">
+        <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploadProductzhijian($event)"></wisk-uploader>
+      </div>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改质检反馈表明细 -->
+<div class="modal" bsModal #detailmodify="bs-modal" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" aria-label="Close" (click)="closedetailmodify()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">修改明细</h4>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">钢卷号：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="kunbaohao" [(ngModel)]="productzhijian['kunbaohao']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">C：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="guige" [(ngModel)]="productzhijian['c']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">Si：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="length" [(ngModel)]="productzhijian['si']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">Mn：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="weight" [(ngModel)]="productzhijian['mn']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">P：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="guige" [(ngModel)]="productzhijian['p']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">S：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="length" [(ngModel)]="productzhijian['s']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">Ti：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="weight" [(ngModel)]="productzhijian['ti']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">屈服：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="yp" [(ngModel)]="productzhijian['yp']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">抗拉：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="ts" [(ngModel)]="productzhijian['ts']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">伸长率：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="el" [(ngModel)]="productzhijian['el']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">屈强比：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="el" [(ngModel)]="productzhijian['quqiangbi']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">两面：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="ducengboth" [(ngModel)]="productzhijian['ducengboth']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">上面：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="ducengtop" [(ngModel)]="productzhijian['ducengtop']" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row col-md-6">
+                  <label class="col-sm-3 control-label">
+                    <span style="float: right;">下面：</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="ducengbot" [(ngModel)]="productzhijian['ducengbot']" class="form-control">
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-inline text-center">
+           
+            <button type="button"  class="btn btn-primary btn-large" (click)="modifydetail()">修改</button>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<toaster-container></toaster-container>
+

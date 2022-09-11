@@ -77,8 +77,10 @@ export class ProorderdetailComponent implements OnInit {
   //质量异议
   qualityModel = {};
   //引入质量异议
+  changeordermodal={};
   zlbsModalRef: BsModalRef;
   isimport = { flag: true };
+  ordermodal=[{value:'1',label:'默认模板'},{value:'2',label:'老模板'}];
   saletypes = [{ value: '1', label: '补差' }, { value: '2', label: '退货' }, { value: '3', label: '订货折让' }];
   citys = [];
   countys = [];
@@ -91,9 +93,15 @@ export class ProorderdetailComponent implements OnInit {
      private router: Router,private modalService1: BsModalService,private businessorderApi: BusinessorderapiService,
      private datepipe: DatePipe,private qihuoapi: QihuoService,private feeApi: FeeapiService,
      private moneyapi: MoneyService, private userapi: UserapiService) {
-
     // 定义网格
     this.gridOptions = {
+      suppressAggFuncInHeader: true,
+      enableRangeSelection: true,
+      excelStyles: this.settings.excelStyles,
+      getContextMenuItems: this.settings.getContextMenuItems,
+      groupDefaultExpanded: -1,
+  
+
       rowData: null,
       // 行数据
       enableFilter: true,
@@ -109,8 +117,11 @@ export class ProorderdetailComponent implements OnInit {
       // 排序
       overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
       overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
+
+
       // 分组显示
       // debug: true,
+
       getNodeChildDetails: (rowItem) => {
         if (rowItem.group) {
           return {
@@ -125,7 +136,9 @@ export class ProorderdetailComponent implements OnInit {
         }
       }, // 这个是获取孩子列表的
     };
-
+    this.gridOptions.onGridReady = this.settings.onGridReady;
+    // this.gridOptions.groupUseEntireRow = true;
+    this.gridOptions.groupSuppressAutoColumn = true;
     this.gridOptions.columnDefs = [
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'group', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', width: 120 },
@@ -242,6 +255,19 @@ export class ProorderdetailComponent implements OnInit {
       enableSorting: true,
       overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
       overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
+      getNodeChildDetails: (params) => {
+        if (params.group) {
+          return {
+            group: true,
+            expanded: null != params.group,
+            children: params.participants,
+            field: 'group',
+            key: params.group
+          };
+        } else {
+          return null;
+        }
+      },
       getContextMenuItems: (params) => {
         let result = [
           'copy',
@@ -728,10 +754,21 @@ export class ProorderdetailComponent implements OnInit {
   }
 
   // 重新生成合同
+  @ViewChild('ordermodalchange') private ordermodalchange: ModalDirective;
+
   reload() {
-    this.orderApi.reload(this.route.params['value']['id']).then((response) => {
+    console.log(this.changeordermodal);
+    this.orderApi.reload(this.route.params['value']['id'],this.changeordermodal).then((response) => {
       this.toast.pop('warning', response['msg']);
+      this.hideordermodalchange() ;
     });
+  }
+  hideordermodalchange() {
+    this.ordermodalchange.hide();
+  }
+  ordermodalchangeshow() {
+    this.changeordermodal['ordermodal'] = 1;
+    this.ordermodalchange.show();
   }
 
   // 点击完成加工订单
@@ -1179,5 +1216,31 @@ export class ProorderdetailComponent implements OnInit {
       }
     });
   }
+
+   //批量删除明细
+   proorderdetids: any = [];
+   deleteproorderdetfee() {
+     this.proorderdetids = new Array();
+     const proorderdetidslist = this.gridOptions1.api.getModel()['rowsToDisplay'];
+     console.log(proorderdetidslist)
+     for (let i = 0; i < proorderdetidslist.length; i++) {
+       if (proorderdetidslist[i].selected && proorderdetidslist[i].data && proorderdetidslist[i].data['id'] ) {
+         this.proorderdetids.push(proorderdetidslist[i].data.id);
+       }
+     }
+     if (!this.proorderdetids.length) {
+       this.toast.pop('warning', '请选择明细之后再删除！');
+       return;
+     }
+      if (confirm('你确定要删除吗？')) {
+       this.proOrderApi.removepro(this.proorderdetids).then(data => {
+       this.toast.pop('success', '删除成功！');
+       this.listDetail();
+       this.getFpdetail();
+       });
+     }
+     }
+   
+
 
 }

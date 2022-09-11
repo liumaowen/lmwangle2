@@ -140,7 +140,8 @@ export class TihuodetailComponent implements OnInit {
         if (params.group) {
           return {
             group: true,
-            expanded: null != params.group,
+            //大壮说的2022-08-31
+            //expanded: null != params.group,
             children: params.participants,
             field: 'group',
             key: params.group
@@ -165,8 +166,8 @@ export class TihuodetailComponent implements OnInit {
       getContextMenuItems: this.settings.getContextMenuItems
     };
     this.feegridOptions = {
-      rowSelection: 'multiple',
       groupDefaultExpanded: -1,
+      rowSelection: 'multiple',
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
       rowDeselection: true,
@@ -186,11 +187,17 @@ export class TihuodetailComponent implements OnInit {
       },
       getNodeChildDetails: (params) => {
         if (params.group) {
-          return { group: true, children: params.participants, field: 'group', key: params.group };
+          return {
+            group: true,
+            //expanded: null != params.group,
+            children: params.participants,
+            field: 'group',
+            key: params.group
+          };
         } else {
           return null;
         }
-      }
+      },
     };
     this.feegridOptionsforsaleman = {
       rowSelection: 'multiple',
@@ -214,7 +221,10 @@ export class TihuodetailComponent implements OnInit {
       },
       getNodeChildDetails: (params) => {
         if (params.group) {
-          return { group: true, children: params.participants, field: 'group', key: params.group };
+          return { group: true,
+            //大壮说的合起来2022-08-31
+            //expanded: null != params.group, 
+            children: params.participants, field: 'group', key: params.group };
         } else {
           return null;
         }
@@ -509,10 +519,12 @@ export class TihuodetailComponent implements OnInit {
         }
       },
     ];
+  
     // 设置费用明细的表格数据
     this.feegridOptions.columnDefs = [
       {
         cellStyle: { 'text-align': 'center' }, headerName: '批次号', field: 'group', minWidth: 100, cellRenderer: 'group',
+        headerCheckboxSelection: true, checkboxSelection: true
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '费用类型', field: 'type', width: 120,
@@ -613,7 +625,6 @@ export class TihuodetailComponent implements OnInit {
         },
         onCellClicked: (params) => {
           if (params.data.group) {
-
             sweetalert({
               title: '你确定删除此条费用明细吗？',
               type: 'warning',
@@ -1408,6 +1419,7 @@ export class TihuodetailComponent implements OnInit {
   }
 
   // 重新生成提货单
+
   reload() {
     this.tihuoApi.reload(this.route.params['value']['id']).then((response) => {
       this.toast.pop('success', response['msg']);
@@ -2216,6 +2228,7 @@ export class TihuodetailComponent implements OnInit {
       }
     }
   }
+ 
   selecteddes2(destination) {
     if (destination) {
       const addressObj = this.addressparseService.parsingAddress(destination);
@@ -2245,6 +2258,38 @@ export class TihuodetailComponent implements OnInit {
       }
     }
   }
+  
 
 
+  //批量删除明细
+  tihuodetids: any = [];
+  deltihuodetfee() {
+    this.tihuodetids = new Array();
+    let tihuodetidslist= [];
+    if (this.isshowsjfydw) {
+      tihuodetidslist = this.feegridOptions.api.getModel()['rowsToDisplay'];
+    } else {
+      tihuodetidslist = this.feegridOptionsforsaleman.api.getModel()['rowsToDisplay'];
+    }
+    for (let i = 0; i < tihuodetidslist.length; i++) {
+      if (tihuodetidslist[i].selected && tihuodetidslist[i].data && tihuodetidslist[i].data['id'] ) {
+        this.tihuodetids.push(tihuodetidslist[i].data.id);
+      }
+    }
+    if (!this.tihuodetids.length) {
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+      this.tihuoApi.removetihuofees(this.tihuodetids).then(data => {
+      this.toast.pop('success', '删除成功！');
+      this.listFeeDetail();
+      this.listDetail();
+      });
+    }
+  }
+  
 }
+
+
+

@@ -12,6 +12,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CustomerapiService } from './../../customer/customerapi.service';
 import { CaigouService } from '../../caigou/caigou.service';
 import { Router } from '@angular/router';
+import { RukuService } from 'app/routes/ruku/ruku.service';
 const sweetalert = require('sweetalert');
 
 @Component({
@@ -105,7 +106,7 @@ export class KucundetailComponent implements OnInit {
   constructor(public settings: SettingsService, private toast: ToasterService, private userapi: UserapiService,
     private kucunapi: KucunService, private storage: StorageService, private modalService: BsModalService,
     private customerApi: CustomerapiService, private numberpipe: DecimalPipe, private caigouApi: CaigouService,
-    private router: Router, private classifyapi: ClassifyApiService) {
+    private router: Router, private classifyapi: ClassifyApiService,private rukuapi: RukuService) {
 
     this.gridOptions = {
       groupDefaultExpanded: -1,
@@ -281,7 +282,7 @@ export class KucundetailComponent implements OnInit {
           }
         }, onCellClicked: (params) => {
           if (params.data && undefined != params.data.zhibaouploaded && '查看' === params.data.zhibaouploaded) {
-            this.getZhibaoUrl(params.data.kunbaohao);
+            this.getZhibaoUrl(params.data);
           }
         }
       },
@@ -356,7 +357,7 @@ export class KucundetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '起息日期', field: 'lixistartdate', minWidth: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '内部交期', field: 'innerqixian', minWidth: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '超期库龄', field: 'days', minWidth: 70 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '原产地', field: 'originchandi', minWidth: 70 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '原产地', field: 'originchandi', minWidth: 70, colId: 'originchandi' },
       { cellStyle: { 'text-align': 'center' }, headerName: '钢卷类型', field: 'ftype', minWidth: 80, colId: 'ftype' },
       { cellStyle: { 'text-align': 'center' }, headerName: '销售公司', field: 'buyername2', minWidth: 80, colId: 'buyername2' }
     ];
@@ -378,7 +379,7 @@ export class KucundetailComponent implements OnInit {
   datasum() {
     let list = [];
     list = this.gridOptions.api.getSelectedNodes();
-    if (list.length === this.msglength) { return; }
+    if (list.length > this.msglength) { return; }
     let tlength = 0;
     let tweight = 0;
     let counts = 0;
@@ -938,14 +939,24 @@ export class KucundetailComponent implements OnInit {
     });
   }
   // 查看质保书的路径
-  getZhibaoUrl(kunbaohao) {
-    this.kucunapi.getZhibaoUrl(kunbaohao).then(data => {
-      if (data['url'] != null) {
-        window.open(data['url']);
-      } else {
-        this.toast.pop('warning', '未查询到对应的质保书！！！');
-      }
-    })
+  getZhibaoUrl(data) {
+    if(data.wsid !== null){
+      this.rukuapi.printWeishiZhibaoshu(data.kunbaohao).then((response) => {
+        if (!response['flag']) {
+          this.toast.pop('warning', response['msg']);
+        } else {
+          window.open(response['msg']);
+        }
+      });
+    }else{
+      this.kucunapi.getZhibaoUrl(data.kunbaohao).then(data => {
+        if (data['url'] != null) {
+          window.open(data['url']);
+        } else {
+          this.toast.pop('warning', '未查询到对应的质保书！！！');
+        }
+      })
+    }
   }
 
 
@@ -975,7 +986,7 @@ export class KucundetailComponent implements OnInit {
   getMyRole() {
     let myrole = JSON.parse(localStorage.getItem('myrole'));
     for (let i = 0; i < myrole.length; i++) {
-      if (myrole[i] === 6 || myrole[i] === 21) {
+      if (myrole[i] === 6 || myrole[i] === 21|| myrole[i] === 33 || myrole[i] === 34) {
         this.neiwuWaiwu = true;
       }
     }
@@ -1010,6 +1021,13 @@ export class KucundetailComponent implements OnInit {
       // 如果登陆的用户是非财务人员，设置为不可见
       if (!myrole.some(item => item === 5)) {
         if (colde.colId === 'buyername2' || colde.colId === 'sellername' || colde.colId === 'ftype') {
+          colde.hide = true;
+          colde.suppressToolPanel = true;
+        }
+      }
+      // 如果登陆的用户是非资源中心（材料），设置为不可见
+      if (!myrole.some(item => item === 45)) {
+        if (colde.colId === 'originchandi') {
           colde.hide = true;
           colde.suppressToolPanel = true;
         }

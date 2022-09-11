@@ -337,6 +337,13 @@ export class KucunService {
       return data.json() as any[];
     });
   }
+    /**批量删除明细 */
+  delautopaidan(search) {
+    return this.http.post('store/api/autopaidan/delautopaidan', search).toPromise().then(data => {
+    return data.json() as any[];
+    });
+  }
+
   /**上传自动排单 */
   uploadautopaidan(search) {
     return this.http.post('store/api/autopaidan/batchupload', search).toPromise().then(data => {

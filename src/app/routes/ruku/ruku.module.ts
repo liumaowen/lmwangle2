@@ -17,6 +17,7 @@ import { NetmaterialrukuComponent } from './netmaterialruku/netmaterialruku.comp
 import { ZaiturukuComponent } from './zaituruku/zaituruku.component';
 import { ZaiturukudetailComponent } from './zaiturukudetail/zaiturukudetail.component';
 import { ProductzhijianComponent } from './productzhijian/productzhijian.component';
+import { WeishizhibaoComponent } from './weishizhibao/weishizhibao.component';
 
 const routes: Routes = [
   { path: 'ruku', component: RukuComponent, data: { 'title': '入库管理' } },
@@ -26,7 +27,8 @@ const routes: Routes = [
   { path: 'rukuCollectedet', component: RukuCollectedetComponent, data: { 'title': '入库汇总明细表' } },
   { path: 'zaituruku', component: ZaiturukuComponent, data: { 'title': '在途入库管理' } },
   { path: 'zaituruku/:id', component: ZaiturukudetailComponent, data: { 'title': '在途入库明细' } },
-  { path: 'productzhijian', component: ProductzhijianComponent, data: { 'title': '产品质检反馈表' } }
+  { path: 'productzhijian', component: ProductzhijianComponent, data: { 'title': '产品质检反馈表' } },
+  { path: 'weishizhibao', component: WeishizhibaoComponent, data: { 'title': '维实质保书' } },
 ];
 
 @NgModule({
@@ -44,7 +46,7 @@ const routes: Routes = [
     TabViewModule
   ],
   declarations: [RukuComponent, RukudetailComponent, RukudetreportComponent, RukuCollectedetComponent,
-    RukucollectedetimportComponent, NetmaterialrukuComponent, ZaiturukuComponent, ZaiturukudetailComponent, ProductzhijianComponent],
+    RukucollectedetimportComponent, NetmaterialrukuComponent, ZaiturukuComponent, ZaiturukudetailComponent, ProductzhijianComponent,WeishizhibaoComponent],
   exports: [
     RouterModule
   ],

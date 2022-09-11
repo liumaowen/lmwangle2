@@ -42,6 +42,7 @@ export class BasematerialimportComponent implements OnInit {
       { headerName: 'id', field: 'id', width: 50, checkboxSelection: true },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '锁', field: 'lock', width: 40 },
       { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'guige', width: 180 },
       { cellStyle: { 'text-align': 'center' }, headerName: '宽度', field: 'width', width: 80 },
@@ -121,10 +122,10 @@ export class BasematerialimportComponent implements OnInit {
       this.toast.pop('warning', '请选择加工类型！');
       return;
     }
-    if (!this.taskjson['packton']) {
-      this.toast.pop('warning', '请输入打包吨位！');
-      return;
-    }
+    // if (!this.taskjson['packton']) {
+    //   this.toast.pop('warning', '请输入打包吨位！');
+    //   return;
+    // }
     if (this.taskjson['type'] === '1') {
       if (this.slitlist.length === 0) {
         this.toast.pop('warning', '请填写纵剪要求！');
@@ -140,9 +141,9 @@ export class BasematerialimportComponent implements OnInit {
     if (this.parentthis.qihuodetid) {
       this.taskjson['qihuodetid'] = this.parentthis.qihuodetid;
     }
-    if (this.parentthis['tasklist']['producemode'] === 3) {
-      this.taskjson['guige'] = this.parentthis['weishihoudu'] + '*' + this.parentthis['weishiwidth'] + '*' + this.taskjson['guige'];
-    }
+    // if (this.parentthis['tasklist']['producemode'] === 3) {
+    //   this.taskjson['guige'] = this.parentthis['weishihoudu'] + '*' + this.parentthis['weishiwidth'] + '*' + this.taskjson['guige'];
+    // }
     this.produceApi.impBm(this.taskjson).then((data) => {
       // $scope.$emit('impBm', data);//向父页面传递所引入的数据
       console.log(data);
@@ -276,8 +277,8 @@ export class BasematerialimportComponent implements OnInit {
     }
     const packton = this.taskjson['packton'];
     if (!packton) {
-        this.toast.pop('warning', '请填写打包吨位！');
-        return; 
+        // this.toast.pop('warning', '请填写打包吨位！');
+        // return; 
     }
     this.pipeiparams['type'] = type;
     this.pipeiparams['zongjiancount'] = zongjiancount;

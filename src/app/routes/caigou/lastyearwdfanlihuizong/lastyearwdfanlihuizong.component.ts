@@ -59,7 +59,7 @@ export class LastyearwdfanlihuizongComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 90 },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '不含税', field: 'notaxjine', minWidth: 120, aggFunc: 'sum',
+        cellStyle: { 'text-align': 'right' }, headerName: '剩余不含税未返金额', field: 'notaxjine', minWidth: 120, aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['notaxjine']) {
             return Number(params.data['notaxjine']);
@@ -70,7 +70,7 @@ export class LastyearwdfanlihuizongComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '分摊系数', field: 'rate', minWidth: 150 },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '主管业务成本', field: 'zhuyingchengben', minWidth: 120, aggFunc: 'sum',
+        cellStyle: { 'text-align': 'right' }, headerName: '未冲减主管业务成本', field: 'zhuyingchengben', minWidth: 120, aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['zhuyingchengben']) {
             return Number(params.data['zhuyingchengben']);
@@ -80,7 +80,7 @@ export class LastyearwdfanlihuizongComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '库存商品', field: 'kucunproduct', minWidth: 120, aggFunc: 'sum',
+        cellStyle: { 'text-align': 'right' }, headerName: '未冲减库存商品', field: 'kucunproduct', minWidth: 120, aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['kucunproduct']) {
             return Number(params.data['kucunproduct']);
@@ -90,7 +90,7 @@ export class LastyearwdfanlihuizongComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '含税返利金额', field: 'taxfanlijine', minWidth: 120, aggFunc: 'sum',
+        cellStyle: { 'text-align': 'right' }, headerName: '剩余含税未返金额', field: 'taxfanlijine', minWidth: 120, aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['taxfanlijine']) {
             return Number(params.data['taxfanlijine']);
@@ -99,6 +99,27 @@ export class LastyearwdfanlihuizongComponent implements OnInit {
           }
         }, valueFormatter: this.settings.valueFormatter2
       },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '本月收回返利', field: 'benmonthshoufanli', minWidth: 120, aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['benmonthshoufanli']) {
+            return Number(params.data['benmonthshoufanli']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '累计收回返利', field: 'leijishoufanli', minWidth: 120, aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['leijishoufanli']) {
+            return Number(params.data['leijishoufanli']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '返利回收进度', field: 'fanlijindu', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 150 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '状态', field: 'status', minWidth: 90,

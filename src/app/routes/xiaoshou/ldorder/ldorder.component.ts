@@ -21,9 +21,11 @@ import { MdmService } from 'app/routes/mdm/mdm.service';
   styleUrls: ['./ldorder.component.scss']
 })
 export class LdorderComponent implements OnInit {
+  changeordermodal={};
   oldyufurate: any = '';
   //父页面传过来的qihuoid的值
   ldorderid: number;
+  ordermodal=[{value:'1',label:'默认模板'},{value:'2',label:'老模板'}];
   ldordermodel = { addrbak: {}, buyer: {}, seller: {}, org: {}, arrearspeople: {}, cuser: {}, vuser: {} };
   qihuoflag: any = { dingjin: true, isv: false, fisv: false, fp: false, issubmit: true, detail: true };
   one: boolean = true;
@@ -51,7 +53,7 @@ export class LdorderComponent implements OnInit {
   dets = null; // 引入库存时明细id
   tabviewindex = 0; // 物流竞价明细选项卡的索引
   selectQihuodetWuliubaojia: any = [];
-
+  goodscode: any = {};
   editorder: any = {};
   addr = {};
   provinces = [];
@@ -90,6 +92,19 @@ export class LdorderComponent implements OnInit {
       getContextMenuItems: this.settings.getContextMenuItems,
       // groupSelectsChildren: true, // 分组可全选
       // rowSelection: 'multiple',
+      getNodeChildDetails: (params) => {
+        if (params.group) {
+          return {
+            group: true,
+            expanded: null != params.group,
+            children: params.participants,
+            field: 'group',
+            key: params.group
+          };
+        } else {
+          return null;
+        }
+      },
       // getNodeChildDetails: (params) => {
       //   if (params.group) {
       //     return { group: true, children: params.participants, field: 'group', key: params.group };
@@ -598,6 +613,23 @@ export class LdorderComponent implements OnInit {
       this.isqihuo = true;
     }
   }
+  nextdialog1() {
+    for (let index = 0; index < this.attrs.length; index++) {
+      const attrjson = this.attrs[index];
+      if (attrjson.isrequired) {
+        if (!this.goodscode[attrjson.value]) {
+          this.toast.pop('warning', '请选择' + attrjson.name + '！');
+          return;
+        }
+      }
+    }
+    this.mdmService.createMaterial(this.goodscode).then(good => {
+      this.one = false;
+      this.two = true;
+      this.lines = [];
+      this.qihuodetmodel['gcid'] = good.id;
+    });
+  }
   // 重选
   createselectNull() {
     this.chandis = [];
@@ -692,10 +724,20 @@ export class LdorderComponent implements OnInit {
     })
   }
   //生成pdf
+  @ViewChild('ordermodalchange') private ordermodalchange: ModalDirective;
   makepdf() {
-    this.qihuoapi.makepdf(this.ldorderid).then(data => {
+    console.log(this.changeordermodal);
+    this.qihuoapi.makepdf(this.ldorderid,this.changeordermodal).then(data => {
       this.toast.pop('success', data.msg);
+      this.hideordermodalchange() ;
     });
+  }
+  hideordermodalchange() {
+    this.ordermodalchange.hide();
+  }
+  ordermodalchangeshow() {
+    this.changeordermodal['ordermodal'] = 1;
+    this.ordermodalchange.show();
   }
   //销售价格和预估费用修改
   @ViewChild('feeadddialog') private feeadddialog: ModalDirective;
@@ -1223,7 +1265,7 @@ export class LdorderComponent implements OnInit {
                 const attr = this.attrs[j];
                 if (child['mdmvalue'] === attr['mdmvalue']) {
                   attr['options'] = child['options'];
-                  this.qihuodetmodel[attr.value] = null;
+                  this.goodscode[attr.value] = null;
                   break;
                 }
               }
@@ -1238,29 +1280,59 @@ export class LdorderComponent implements OnInit {
     this.mdmgndialog.hide();
     const item = params['item'];
     const attrs = params['attrs'];
-    this.qihuodetmodel = {
-        id: null,
-        gn: null,
-        chandi: null,
-        dinghuoliang: null,
-        saleprice: null,
-        classifys: null,
-        cangkuid: null,
-        chukufeeprice: null,
-        yunfeeprice: null,
-        yunzafeeprice: null,
-        jiagongfeeprice: null
-    };
-    this.qihuodetmodel['gn'] = item.itemname;
-    this.qihuodetmodel['gncode'] = item.itemcode;
-    this.qihuodetmodel['categorydesc'] = item.categorydesc;
+    this.goodscode = {};
+    this.goodscode['gn'] = item.itemname;
+    this.goodscode['gncode'] = item.itemcode;
+    this.goodscode['categorydesc'] = item.categorydesc;
     this.showGuige = true;
     this.attrs = attrs;
     for (let i = 0; i < this.attrs.length; i++) {
       const element = this.attrs[i];
       if (element['defaultval'] && element['options'].length) {
-        this.qihuodetmodel[element['value']] = element['defaultval'];
+        this.goodscode[element['value']] = element['defaultval'];
       }
     }
   }
+  querymat() {
+    if (this.qihuodetmodel['matcode'] && this.qihuodetmodel['matcode'].trim()) {
+      this.qihuoapi.getmat(this.qihuodetmodel['matcode']).then(mat => {
+        this.goodscode = { gn: mat['gn'] };
+        this.mdmService.getMdmAttributeDic({ itemcode: mat['gncode'] }).then(data1 => {
+          this.showGuige = true;
+          this.attrs = data1;
+          for (const key in mat) {
+            if (Object.prototype.hasOwnProperty.call(mat, key)) {
+              const element = mat[key];
+              this.goodscode[key] = element;
+            }
+          }
+        });
+      });
+    }
+  }
+
+  
+  //批量删除明细
+  ldorderids: any = [];
+  delldorder() {
+    this.ldorderids = new Array();
+    const ldorderidslist = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < ldorderidslist.length; i++) {
+      if (ldorderidslist[i].selected && ldorderidslist[i].data && ldorderidslist[i].data['id'] ) {
+        this.ldorderids.push(ldorderidslist[i].data.id);
+      }
+    }
+    if (!this.ldorderids.length) {
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+      this.qihuoapi.delldorder(this.ldorderids).then(data => {
+      this.toast.pop('success', '删除成功！');
+      this.getqihuomodel();
+      this.findqihuodet();
+      });
+    }
+  }
+
 }

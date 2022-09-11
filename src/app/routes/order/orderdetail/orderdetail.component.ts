@@ -19,12 +19,15 @@ import { EditComponent } from '../edit/edit.component';
 })
 export class OrderdetailComponent implements OnInit {
   // form: FormGroup;
+  changeordermodal={};
   weight = null; // 单包重量
   guige = null; // 加工规格
   order = {};
   jiagongyaoqiu: any = {};
   flag = {};
   detlist = []; // 明细
+  ordermodal=[{value:'1',label:'默认模板'},{value:'2',label:'老模板'}];
+
   packtypes = [{ value: '裸包装', label: '裸包装' }, { value: '简包装', label: '简包装' },
    { value: '油纸包装', label: '油纸包装' }, { value: '精包装', label: '精包装' }];
   neijings = [{ value: '508', label: '508' }, { value: '610', label: '610' }];
@@ -58,20 +61,33 @@ export class OrderdetailComponent implements OnInit {
       overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
       getContextMenuItems: this.settings.getContextMenuItems,
       // 分组显示
-      getNodeChildDetails: (rowItem) => {
-        if (rowItem.group) {
+      getNodeChildDetails: (params) => {
+        if (params.group) {
           return {
             group: true,
-            // expanded: rowItem.group === '彩涂' || rowItem.group === '镀锌' || rowItem.group === '镀铝锌',
-            children: rowItem.participants,
+            expanded: null != params.group,
+            children: params.participants,
             field: 'group',
-            key: rowItem.group,
-            expanded: true
+            key: params.group
           };
         } else {
           return null;
         }
-      }, // 这个是获取孩子列表的
+      },
+      // getNodeChildDetails: (rowItem) => {
+      //   if (rowItem.group) {
+      //     return {
+      //       group: true,
+      //       // expanded: rowItem.group === '彩涂' || rowItem.group === '镀锌' || rowItem.group === '镀铝锌',
+      //       children: rowItem.participants,
+      //       field: 'group',
+      //       key: rowItem.group,
+      //       expanded: true
+      //     };
+      //   } else {
+      //     return null;
+      //   }
+      // }, // 这个是获取孩子列表的
     };
 
     this.gridOptions.columnDefs = [
@@ -157,7 +173,21 @@ export class OrderdetailComponent implements OnInit {
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'pbeizhu', width: 100
-      }
+      },
+      // {
+      //   cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'amount', minWidth: 60, cellRenderer: params => {
+      //     return '<a target="_blank">删除</a>';
+      //   }, onCellClicked: params => {
+      //     if (confirm('你确定要删除吗?')) {
+      //       this.orderApi.delorder(params.data.id).then(data => {
+      //         this.toast.pop('success', '删除成功！');
+      //         this.getDetail();
+
+        
+      //       })
+      //     }
+      //   }
+      // },
     ];
 
     this.getDetail();
@@ -209,15 +239,24 @@ export class OrderdetailComponent implements OnInit {
     });
   }
 
-  // 重新生成合同
+ 
+    // 重新生成合同
+    @ViewChild('ordermodalchange') private ordermodalchange: ModalDirective;
 
-  reload() {
-    this.orderApi.reload(this.route.params['value']['id']).then((response) => {
-      // Notify.alert(response.msg, { status: 'warning' });
-      this.toast.pop('warning', response['msg']);
-    });
-  }
-
+    reload() {
+      console.log(this.changeordermodal);
+      this.orderApi.reload(this.route.params['value']['id'],this.changeordermodal).then((response) => {
+        this.toast.pop('warning', response['msg']);
+        this.hideordermodalchange() ;
+      });
+    }
+    hideordermodalchange() {
+      this.ordermodalchange.hide();
+    }
+    ordermodalchangeshow() {
+      this.changeordermodal['ordermodal'] = 1;
+      this.ordermodalchange.show();
+    }
   // 业务员主动完成订单
   finish(id, version) {
     if (confirm('你确定要撤销合同吗?')) {
@@ -292,4 +331,27 @@ export class OrderdetailComponent implements OnInit {
   // selectepacktype(value) {
   //   this.jiagongyaoqiu['packtype'] = value.text;
   // }
+ 
+  //批量删除调拨明细
+   orderdetids: any = [];
+  deleteorderdet() {
+    this.orderdetids = new Array();
+    console.log(this.orderdetids);
+    const orderdetlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < orderdetlist.length; i++) {
+      if (orderdetlist[i].selected && orderdetlist[i].data && orderdetlist[i].data['id']) {
+        this.orderdetids.push(orderdetlist[i].data.id);
+      }
+    }
+    if (!this.orderdetids.length) { 
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+      this.orderApi.deleteorder(this.orderdetids).then(data => {
+        this.toast.pop('success', '删除成功！');
+        this.getDetail();
+      });
+    }
+  } 
 }

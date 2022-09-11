@@ -11,6 +11,10 @@
     <button *ngIf="flag['save']" type="button" (click)="importFav()" class="btn btn-info btn-bloc">引入收藏夹数据</button>
     <button *ngIf="flag['save']" type="button" (click)="importKucun()" class="btn btn-info btn-bloc">引入库存数据</button>
     <button *ngIf="flag['submitV']" type="button" (click)="submitVuser()" class="btn btn-info btn-bloc">提交审核</button>
+
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button"
+    (click)="delinnersale()">货物明细批量删除</button>
+
     <!-- <button *ngIf="flag['isback']" type="button" (click)="back(innersale['id'])"
       class="btn btn-info btn-bloc">回退</button>
     <button *ngIf="flag['verify']" type="button" (click)="verify(innersale['id'],innersale['version'])"

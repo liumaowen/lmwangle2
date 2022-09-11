@@ -66,6 +66,8 @@ export class BusinessorderdetailComponent implements OnInit {
   qualityModel = {};
   //引入质量异议
   zlbsModalRef: BsModalRef;
+  changeordermodal={};
+  ordermodal=[{value:'1',label:'默认模板'},{value:'2',label:'老模板'}];
   saletypes = [{ value: '1', label: '补差' }, { value: '2', label: '退货' }, { value: '3', label: '订货折让' }];
   msg = {
     name: '获取验证码', flag: false,
@@ -176,22 +178,35 @@ export class BusinessorderdetailComponent implements OnInit {
         ];
         return result;
       },
-      getNodeChildDetails: (rowItem) => {
-        if (rowItem.group) {
+      getNodeChildDetails: (params) => {
+        if (params.group) {
           return {
             group: true,
-            expanded: rowItem.group === '彩涂' || rowItem.group === '镀锌' || rowItem.group === '镀铝锌'
-              || rowItem.group === '冷轧' || rowItem.group === '冷硬' || rowItem.group === '至彩'
-              || rowItem.group === '洁彩' || rowItem.group === '辉彩'
-              || rowItem.group === '恒牧' || rowItem.group === '锌铝镁',
-            children: rowItem.participants,
+            expanded: null != params.group,
+            children: params.participants,
             field: 'group',
-            key: rowItem.group
+            key: params.group
           };
         } else {
           return null;
         }
       },
+      // getNodeChildDetails: (rowItem) => {
+      //   if (rowItem.group) {
+      //     return {
+      //       group: true,
+      //       expanded: rowItem.group === '彩涂' || rowItem.group === '镀锌' || rowItem.group === '镀铝锌'
+      //         || rowItem.group === '冷轧' || rowItem.group === '冷硬' || rowItem.group === '至彩'
+      //         || rowItem.group === '洁彩' || rowItem.group === '辉彩'
+      //         || rowItem.group === '恒牧' || rowItem.group === '锌铝镁',
+      //       children: rowItem.participants,
+      //       field: 'group',
+      //       key: rowItem.group
+      //     };
+      //   } else {
+      //     return null;
+      //   }
+      // },
       groupSelectsChildren: true // 分组可全选
     };
 
@@ -1305,12 +1320,25 @@ export class BusinessorderdetailComponent implements OnInit {
   }
 
   // 重新生成合同
+  @ViewChild('ordermodalchange') private ordermodalchange: ModalDirective;
+
   reload() {
-    this.orderApi.reload(this.route.params['value']['id']).then((response) => {
+    console.log(this.changeordermodal);
+    this.orderApi.reload(this.route.params['value']['id'],this.changeordermodal).then((response) => {
       // Notify.alert(response.msg, { status: 'warning' });
       this.toast.pop('warning', response['msg']);
+      this.hideordermodalchange() ;
+
     });
   }
+
+    hideordermodalchange() {
+      this.ordermodalchange.hide();
+    }
+    ordermodalchangeshow() {
+      this.changeordermodal['ordermodal'] = 1;
+      this.ordermodalchange.show();
+    }
 
   // 业务员主动完成订单
   finish(id, version) {
@@ -1953,4 +1981,31 @@ export class BusinessorderdetailComponent implements OnInit {
     });
   }
 
+ 
+ 
+ //批量删除明细
+ orderdetids: any = [];
+ deleteorderdet() {
+   this.orderdetids = new Array();
+   const orderdetlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+   for (let i = 0; i < orderdetlist.length; i++) {
+     if (orderdetlist[i].selected && orderdetlist[i].data && orderdetlist[i].data['id'] ) {
+       this.orderdetids.push(orderdetlist[i].data.id);
+     }
+   }
+   if (!this.orderdetids.length) {
+     this.toast.pop('warning', '请选择明细之后再删除！');
+     return;
+   }
+   if (confirm('你确定要删除吗？')) {
+     this.businessorderApi.delbusinessorderDet(this.orderdetids).then(data => {
+     this.toast.pop('success', '删除成功！');
+   
+      this.listDetail();
+      this.getDetail();     
+    });
+   }
+ }
+ 
+  
 }

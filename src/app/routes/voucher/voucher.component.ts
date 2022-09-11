@@ -19,6 +19,7 @@ export class VoucherComponent implements OnInit {
     { flag: 2, name: '承兑贴息-考核', url: 'rukucdkaohe' },
     { flag: 3, name: '采购发票-涉税', url: 'caigousheshui' },
     { flag: 4, name: '销售收款-考核', url: 'shoukuankaohe' },
+    { flag: 4, name: '邯郸销售收款-考核', url: 'hdshoukuankaohe' },
     { flag: 4, name: '销售付款-考核', url: 'xsfukuankaohe' },
     { flag: 5, name: '销售收款-涉税', url: 'shoukuansheshui' },
     { flag: 5, name: '销售退款-涉税', url: 'salerefundsheshui' },

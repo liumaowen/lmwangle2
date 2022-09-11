@@ -66,7 +66,7 @@ export class CaigouComponent implements OnInit {
   orgtypes: any = Cgorgtypes;
   constructor(public settings: SettingsService, private caigouApi: CaigouService, private router: Router,
     private classifyApi: ClassifyApiService, private datepipe: DatePipe, private toast: ToasterService, private qihuoapi: QihuoService,
-    private customerApi: CustomerapiService,public mdmService: MdmService) {
+    private customerApi: CustomerapiService, public mdmService: MdmService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
@@ -178,17 +178,22 @@ export class CaigouComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '是否急单', field: 'isurgent', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '审核人', field: 'vusername', minWidth: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '审核时间', field: 'vdate', minWidth: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', minWidth: 100 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '结算方式', field: 'jiesuantype', minWidth: 100 },
     ];
   }
   selectstart() { }
   selectend() { }
   // 新建采购单
   showcreate() {
-    this.caigou = { sellerid: '', jiaohuoaddr: '', beizhu: '', type: '', kind: '', caigoutype: '', month: '', gn: '', chandi: '', orgid: '' };
+    this.caigou = {
+      sellerid: '', jiaohuoaddr: '', beizhu: '',
+      type: '', kind: '', caigoutype: '', month: '',
+      gn: '', chandi: '', orgid: '', isweishi: false
+    };
     this.types = [{ id: '0', text: '自提' }, { id: '1', text: '代运' }];
     this.kinds = [{ id: '1', text: '期货' }, { id: '2', text: '现货' }];
-    this.caigoutypes = [{ id: '1', text: '工程单' }, { id: '2', text: '库存销售' }, { id: '3', text: '市场调货' }];
+    this.caigoutypes = [{ id: '1', text: '工程单' }, { id: '2', text: '库存销售' }, { id: '3', text: '市场调货' }, { id: '4', text: '维实外采' }];
     this.dantypes = [{ value: '0', label: '甲单' }, { value: '1', label: '乙单' }, { value: '2', label: '丙单' }];
     this.caigouApi.getchandi().then(data => {
       this.gangchangs = data;
@@ -500,7 +505,7 @@ export class CaigouComponent implements OnInit {
         this.caigou['chandi'] = this.chandioptions[this.chandioptions.length - 1]['value'];
       }
       this.jiaohuoaddrs = [];
-      const chandigongchaparam = {gn: this.caigou['gn'], chandi: this.caigou['chandi']};
+      const chandigongchaparam = { gn: this.caigou['gn'], chandi: this.caigou['chandi'] };
       this.mdmService.getchandigongcha(chandigongchaparam).then(chandigongchas => {
         for (let index = 0; index < chandigongchas.length; index++) {
           const element = chandigongchas[index];

@@ -75,7 +75,14 @@ export class MaoliComponent implements OnInit {
       },
 
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'weight', minWidth: 60, aggFunc: 'sum2',
+        cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'weight', minWidth: 60, aggFunc: 'sum',
+        valueGetter: (params) => {
+            if (params.data) {
+              return Number(params.data['weight']);
+            } else {
+              return 0;
+            }
+          },
         valueFormatter: this.settings.valueFormatter3, enableRowGroup: true
       },
 
@@ -390,6 +397,8 @@ export class MaoliComponent implements OnInit {
 
   //毛利计算
   @ViewChild("staticModal") private maoliModal: ModalDirective;
+  @ViewChild("calcModal") private calcModal: ModalDirective;
+
 
   //毛利查询对象
   mlsearch = {};
@@ -403,7 +412,12 @@ export class MaoliComponent implements OnInit {
   hidemaoli() {
     this.maoliModal.hide();
   }
-
+  showcalcfpchengben() {
+    this.calcModal.show();
+  }
+  hidecalcfpchengben() {
+    this.calcModal.hide();
+  }
   //毛利计算
   maolijisuan(isn) {
     let search = {};
@@ -422,12 +436,19 @@ export class MaoliComponent implements OnInit {
 
   //加工成本计算
   calcfpchengben() {
-    this.maoliApi.calcfpchengben().then(data => {
-      this.toast.pop("success", '计算成功！');
-    })
-      .catch(() => {
-        this.toast.pop("error", "计算失败！")
-      })
+    let search = {};
+    if (!this.mlsearch['start'] && !this.mlsearch['end']) {
+      this.toast.pop('error', '请填写开始时间和结束时间');
+    } else {
+      search['start'] = this.datepipe.transform(this.mlsearch['start'], 'y-MM-dd');
+      search['end'] = this.datepipe.transform(this.mlsearch['end'], 'y-MM-dd');
+      this.maoliApi.calcfpchengben(search).then(data => {
+        this.toast.pop('success', '计算成功！');
+      }).catch(() => {
+        this.toast.pop('error', '计算失败！');
+      });
+      this.hidecalcfpchengben();
+    }
   }
   /**合计总数保留两位小数 */
   sumFunctions(values: any) {

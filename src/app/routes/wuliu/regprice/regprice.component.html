@@ -1,10 +1,13 @@
 <div class="content-heading">
-  <em class="fa fa-list-alt"></em> 常规路线询价{{msg['msg']}}
+  <em class="fa fa-list-alt"></em> 物流询价表{{msg['msg']}}
   <div class="pull-right wide-show">
     <button type="button" (click)="inquireprice()" class="btn btn-info btn-bloc">查询</button>
     <button type="button" (click)="addrouteprice()" class="btn btn-info btn-bloc">增加</button>
     <button type="button" (click)="modifyprice()" class="btn btn-info btn-bloc">修改</button>
     <button type="button" (click)="submitprice()" class="btn btn-info btn-bloc">议价</button>
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button"
+    (click)="deleteroute()">批量删除路线</button>
+
   </div>
   <div class="pull-right narrow-show">
     <div class="btn-group" dropdown placement="bottom right">
@@ -51,42 +54,39 @@
       <div class="modal-body">
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="form-group mb fieldsetdnn row" >
-              <label class="col-sm-3 control-label">起始地址</label>
-            </div>
-            <div class="form-group mb fieldsetdnn row">
-              <div class="col-sm-4" style="padding-left:15px;">
-                <p-dropdown [options]="provinces" [(ngModel)]=" routeinquiry['sprovinceid']" 
-                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省份'" (onChange)="getcity()">
+            <div class="row">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12">
+              <label class="col-sm-3 col-xs-12 control-label">起始地：</label>
+              <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                <p-dropdown [options]="provinces" [(ngModel)]="routeinquiry['sprovinceid']" [filter]="true" filterBy="label,value.name"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省'" (onChange)="getcity()">
                 </p-dropdown>
               </div>
-              <div class="col-sm-4" style="padding-left:15px;">
-                <p-dropdown [options]="citys" [(ngModel)]=" routeinquiry['scityid']"
+              <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                <p-dropdown [options]="citys" [(ngModel)]="routeinquiry['scityid']" [filter]="true" filterBy="label,value.name"
                   [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty()">
                 </p-dropdown>
               </div>
-              <div class="col-sm-4" style="padding-left:15px;">
-                <p-dropdown [options]="countys" [(ngModel)]=" routeinquiry['scountyid']"
+              <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                <p-dropdown [options]="countys" [(ngModel)]="routeinquiry['scountyid']" [filter]="true" filterBy="label,value.name"
                   [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
                 </p-dropdown>
               </div>
             </div>
-            <div class="form-group mb fieldsetdnn row" >
-              <label class="col-sm-3 control-label">目的地址</label>
-            </div>
-            <div class="form-group mb fieldsetdnn row" >
-              <div class="col-sm-4" style="padding-left:15px;">
-                <p-dropdown [options]="provinces2" [(ngModel)]=" routeinquiry['eprovinceid']" 
-                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省份'" (onChange)="getcity2()">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12">
+              <label class="col-sm-3 col-xs-12 control-label">目的地：</label>
+              <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                <p-dropdown [options]="provinces2" [(ngModel)]="routeinquiry['eprovinceid']" [filter]="true" filterBy="label,value.name"
+                  [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择省'" (onChange)="getcity2()">
                 </p-dropdown>
               </div>
-              <div class="col-sm-4" style="padding-left:15px;">
-                <p-dropdown [options]="citys2" [(ngModel)]=" routeinquiry['ecityid']"
+              <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                <p-dropdown [options]="citys2" [(ngModel)]="routeinquiry['ecityid']" [filter]="true" filterBy="label,value.name"
                   [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择市'" (onChange)="getcounty2()">
                 </p-dropdown>
               </div>
-              <div class="col-sm-4" style="padding-left:15px;">
-                <p-dropdown [options]="countys2" [(ngModel)]=" routeinquiry['ecountyid']"
+              <div class="col-sm-3 col-xs-12" style="padding-left:15px;">
+                <p-dropdown [options]="countys2" [(ngModel)]="routeinquiry['ecountyid']" [filter]="true" filterBy="label,value.name"
                   [style]="{'width':'100%','font-size':'15px'}" [placeholder]="'请选择县'">
                 </p-dropdown>
               </div>
@@ -109,12 +109,14 @@
                 <wis-wiswlcompanysearch [(company)]="wuliucompany"></wis-wiswlcompanysearch>
               </div>
             </div>
-            <!-- <div class="form-group mb fieldsetdnn col-sm-12">
+            <div class="form-group mb fieldsetdnn col-sm-12">
               <label class="col-sm-3 control-label">备注</label>
               <div class="col-sm-9">
-                <input type="text" [(ngModel)]=" routeinquiry['beizhu']" class="form-control" />
+                <input type="text" [(ngModel)]=" routeinquiry['addbeizhu']" class="form-control" />
               </div>
-            </div> -->
+            </div>
+          </div>
+        </div>
             <div class="modal-footer">
               <div class="form-inline text-center">
                 <div class="form-inline text-center">
@@ -122,18 +124,17 @@
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 
 
 <!-- 查询弹窗--> 
-<div class="modal" bsModal #queryModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-  aria-hidden="true">
+<div class="modal" bsModal #queryModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -142,6 +143,7 @@
         </button>
         <h4 class="modal-title">查询</h4>
       </div>
+      
       <div class="modal-body">
         <div class="panel panel-default">
           <div class="panel-body">
@@ -182,6 +184,7 @@
                     </p-dropdown>
                   </div>
                 </div>
+
             </div>
           </div>
         </div>
@@ -190,6 +193,7 @@
           <button type="button" (click)="querylist()" class="btn btn-primary btn-large">查询</button>
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -208,12 +212,21 @@
       <div class="modal-body">
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="row fieldsetdnn">
+            <div class=" row fieldsetdnn form-group mb col-sm-12">
               <label class="col-sm-3 control-label">
-                <span style="float: right;">价格：</span>
+                <span style="float: right;">  价格：</span>
               </label>
               <div class="col-sm-9">
                 <input type="text" [(ngModel)]="modify['price']" placeholder="修改价格" class="form-control" />
+              </div>
+            </div>
+            <label class="col-sm-3 control-label"></label>
+            <div class=" row form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">物流公司: </span>
+              </label>
+              <div class="col-sm-9">
+                <wis-wiswlcompanysearch [(company)]="wuliucompany2"></wis-wiswlcompanysearch>
               </div>
             </div>
           </div>

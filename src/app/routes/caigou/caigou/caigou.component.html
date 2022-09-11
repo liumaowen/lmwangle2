@@ -48,7 +48,7 @@
               </div>
               <label class="col-md-2 control-label">制单人</label>
               <div class="col-md-4">
-                <wisk-usersearch [(user)]="search['cuserid']"></wisk-usersearch>
+                <wisk-usernamesearch [(user)]="search['cuserid']"></wisk-usernamesearch>
               </div>
             </div>
             <div class="row fieldsetdnn">
@@ -58,7 +58,7 @@
               </div>
               <label class="col-md-2 control-label">业务员</label>
               <div class="col-md-4">
-                <wisk-usersearch [(user)]="search['salemanid']"></wisk-usersearch>
+                <wisk-usernamesearch [(user)]="search['salemanid']"></wisk-usernamesearch>
               </div>
             </div>
             <div class="row fieldsetdnn">
@@ -198,6 +198,19 @@
               <div class="col-sm-9">
                 <p-dropdown [options]="dantypes" [(ngModel)]="caigou['dantype']" [style]="{'width':'calc(100%)'}"
                   [placeholder]="'请选择单据类别'"></p-dropdown>
+              </div>
+            </div>
+            <div class="fieldsetdnn row">
+              <label class="col-sm-3 control-label">是否维实产品：</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="weishi1" type="radio" [value]="true" name="weishi" [(ngModel)]="caigou['isweishi']" />
+                  <span class="fa fa-circle"></span>是
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="weishi2" type="radio" [value]="false" name="weishi" [(ngModel)]="caigou['isweishi']" />
+                  <span class="fa fa-circle"></span>否
+                </label>
               </div>
             </div>
             <div class="row fieldsetdnn">

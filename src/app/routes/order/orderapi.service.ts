@@ -31,11 +31,12 @@ export class OrderapiService {
     });
   }
 
-  reload(id) {
-    return this.http.get('store/api/order/reload/' + id).toPromise().then(data => {
+  reload(id,ordermodal) {
+    return this.http.put('store/api/order/reload/' + id,ordermodal).toPromise().then(data => {
       return data.json() as any[];
     });
   }
+
 
   orderyunfeecalc() {
     return this.http.get('store/api/order/ordercalclist').toPromise().then(data => {
@@ -64,6 +65,15 @@ export class OrderapiService {
   noticeAccountant(search) {
     return this.http.get('store/api/order/noticeAccountant', { search: search }).toPromise();
   }
+  //删除线上明细
+  delorder(search): Promise<any> {
+    return this.http.post('store/api/order/delorder/' ,search ).toPromise();
+  }
+
+    //批量删除线上明细
+    deleteorder(search): Promise<any> {
+      return this.http.post('store/api/order/deleteorder/' ,search ).toPromise();
+    }
 
   getchukufee(search) {
     return this.http.get('store/api/order/getchukufee', { search: search }).toPromise().then(data => {
@@ -263,6 +273,12 @@ export class OrderapiService {
       return data.json() as any[];
     });
   }
+    /**批量删除提前开票单明细 */
+    deleteorderdet(id) {
+      return this.http.delete('store/api/order/deleteorderdet/' + id).toPromise().then(data => {
+        return data.json() as any[];
+      });
+    }
   /**查询合同明细 */
   findorderdetbybillno(search) {
     return this.http.get('store/api/advanceinvoice/getorderdetlist', { search: search }).toPromise().then(data => {

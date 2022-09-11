@@ -291,4 +291,9 @@ export class ReportService {
       return data.json() as any[];
     });
   }
+  querylirun(search) {
+    return this.http.get('store/api/report/orderlirun', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

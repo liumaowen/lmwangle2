@@ -57,6 +57,7 @@ export class InnersaledetailComponent implements OnInit {
     });
 
     this.gridOptions = {
+      rowSelection: 'multiple', 
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
@@ -91,7 +92,8 @@ export class InnersaledetailComponent implements OnInit {
 
 
     this.gridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'group', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'group', minWidth: 90,
+      checkboxSelection: true, headerCheckboxSelection: true },
       { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'guige', minWidth: 300 },
       { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', minWidth: 120 },
       {
@@ -593,4 +595,29 @@ export class InnersaledetailComponent implements OnInit {
       }
     });
   }
+    //批量删除内采单明细
+     innersaleids: any = [];
+      delinnersale() {
+      this.innersaleids = new Array();
+      const innersalelist = this.gridOptions.api.getModel()['rowsToDisplay'];
+      for (let i = 0; i < innersalelist.length; i++) {
+        if (innersalelist[i].selected && innersalelist[i].data && innersalelist[i].data['id']) {
+          this.innersaleids.push(innersalelist[i].data.id);
+        }
+      }
+      if (!this.innersaleids.length) { 
+        this.toast.pop('warning', '请选择明细之后再删除！');
+        return;
+      }
+      console.log(this.innersaleids)
+      if (confirm('你确定要删除吗？')) {
+       this.innersaleApi.removeDet(this.innersaleids).then(data => {
+          this.toast.pop('success', '删除成功！'); 
+          this.listDetail();
+
+     });
+      }
+    } 
+
+  
 }

@@ -45,7 +45,7 @@
             <div class="row fieldsetdnn" *ngIf="!iszong">
               <label class="col-sm-2 control-label">横切规格</label>
               <div class="col-sm-10">
-               <span *ngIf="parentthis['tasklist']['producemode'] === 3">{{parentthis['weishihoudu']}}*{{parentthis['weishiwidth']}}*</span> 
+               <!-- <span *ngIf="parentthis['tasklist']['producemode'] === 3">{{parentthis['weishihoudu']}}*{{parentthis['weishiwidth']}}*</span>  -->
                 <input type="text" name="guige" [(ngModel)]="taskjson['guige']" class="form-control" placeholder="请输入数字。可填写多个，规格间用英文,分隔">
               </div>
             </div>
@@ -61,12 +61,12 @@
                 <input type="text" name="yaoqiu" [(ngModel)]="taskjson['yaoqiu']" class="form-control">
               </div>
             </div>
-            <div class="row fieldsetdnn">
+            <!-- <div class="row fieldsetdnn">
               <label class="col-sm-2 control-label">打包吨位</label>
               <div class="col-sm-10">
                 <input type="number" name="packton" [(ngModel)]="taskjson['packton']" class="form-control">
               </div>
-            </div>
+            </div> -->
             <div class="row fieldsetdnn">
               <label class="col-sm-2 control-label">备注</label>
               <div class="col-sm-10">
@@ -98,11 +98,12 @@
             <div class="row fieldsetdnn">
                 <label class="col-sm-2 control-label">加工费</label>
                 <div class="col-sm-8">
-                  <input type="number" name="fee" [(ngModel)]="taskjson['fee']" class="form-control" placeholder="{{iszong?'请点击右边按钮自动匹配加工费':'请输入加工费'}}">
+                  <input type="number" name="fee" [(ngModel)]="taskjson['fee']" class="form-control" placeholder="{{iszong?'请输入加工费':'请输入加工费'}}">
+                  <!-- placeholder="{{iszong?'请点击右边按钮自动匹配加工费':'请输入加工费'}}" -->
                 </div>
-                <div class="col-sm-2" *ngIf="iszong">
+                <!-- <div class="col-sm-2" *ngIf="iszong">
                     <button type="button" (click)="pipeifee()" class="btn btn-primary btn-small">匹配</button>
-                </div>
+                </div> -->
             </div>
           </div>
         </div>

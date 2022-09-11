@@ -26,6 +26,7 @@ export class RukudetailComponent implements OnInit {
   feegridOptions: GridOptions;
   // 添加对象
   caigoufee = {};
+  producefee = {};
   @ViewChild('feedialog') private feedialog: ModalDirective;
   citys: any[] = [];
   countys: any[] = [];
@@ -55,9 +56,10 @@ export class RukudetailComponent implements OnInit {
       enableFilter: true,
       excelStyles: this.settings.excelStyles,
       getContextMenuItems: this.settings.getContextMenuItems,
+
       getNodeChildDetails: (params) => {
         if (params.group) {
-          return { group: true, children: params.list, field: 'group', key: params.group };
+          return { group: true,expanded:true , children: params.list, field: 'group', key: params.group };
         } else {
           return null;
         }
@@ -174,6 +176,8 @@ export class RukudetailComponent implements OnInit {
     ];
     // 采购费用
     this.feegridOptions = {
+      rowSelection: 'multiple', 
+      groupSelectsChildren: true, // 分组可全选
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
@@ -186,17 +190,25 @@ export class RukudetailComponent implements OnInit {
       getContextMenuItems: this.settings.getContextMenuItems,
       getNodeChildDetails: (params) => {
         if (params.group) {
-          return { group: true, children: params.participants, field: 'group', key: params.group };
+          return {
+            group: true,
+            expanded: null != params.group,
+            children: params.participants,
+            field: 'group',
+            key: params.group
+          };
         } else {
           return null;
         }
-      }
+      },
     };
+  
     this.feegridOptions.onGridReady = this.settings.onGridReady;
     this.feegridOptions.groupSuppressAutoColumn = true;
     // 设置aggird表格列
     this.feegridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '批次号', field: 'group', cellRenderer: 'group', minWidth: 40 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '批次号', field: 'group', cellRenderer: 'group', minWidth: 40,
+      checkboxSelection: true,headerCheckboxSelection: true},
       {
         cellStyle: { 'text-align': 'center' }, headerName: '费用类型', field: 'type', minWidth: 40, valueGetter: (params) => {
           if (params.data['type'] === 1) {
@@ -607,4 +619,57 @@ export class RukudetailComponent implements OnInit {
     }
   }
 
-}
+
+  //货物批量删除明细
+  rukudetids: any = [];
+  deleterukudet() {
+    this.rukudetids = new Array();
+    const rukudetlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < rukudetlist.length; i++) {
+      if (rukudetlist[i].selected && rukudetlist[i].data && rukudetlist[i].data['id']) {
+        this.rukudetids.push(rukudetlist[i].data.id);
+      }
+    }
+    if (!this.rukudetids.length) { 
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+      this.rukuapi.deleterukudet(this.rukudetids).then(data => {
+        this.toast.pop('success', '删除成功！'); 
+        this.getDetail();
+        this.listFeeDetail();
+   
+    });
+    }
+  } 
+
+     //费用批量删除明细
+     rukudetfeeids: any = [];
+    deleterukudetfee() {
+this.rukudetfeeids = new Array();
+    const rukudetfeeidslist = this.feegridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < rukudetfeeidslist.length; i++) {
+if (rukudetfeeidslist[i].selected && rukudetfeeidslist[i].data && rukudetfeeidslist[i].data['id']) {
+        this.rukudetfeeids.push(rukudetfeeidslist[i].data.id);
+      }
+    }
+    if (!this.rukudetfeeids.length) { 
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) 
+      this.rukuapi.deletefee(this.rukudetfeeids).then(data => {
+        this.toast.pop('success', '删除成功！'); 
+        this.listFeeDetail();
+        this.getDetail();
+      });
+    }
+  }  
+  
+ 
+ 
+    
+  
+
+

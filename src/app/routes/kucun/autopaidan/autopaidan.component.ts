@@ -52,6 +52,7 @@ export class AutopaidanComponent implements OnInit {
     private toast: ToasterService,
     private classifyapi: ClassifyApiService) {
     this.gridOptions = {
+      rowSelection: 'multiple', 
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
@@ -68,7 +69,8 @@ export class AutopaidanComponent implements OnInit {
     this.gridOptions.onGridReady = this.settings.onGridReady;
     this.gridOptions.groupSuppressAutoColumn = true;
     this.gridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 60 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 60 ,
+      checkboxSelection: true, headerCheckboxSelection: true},
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 60 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '厚度', field: 'houdu', minWidth: 57,
@@ -360,35 +362,36 @@ export class AutopaidanComponent implements OnInit {
     this.model[label] = event.label;
   }
   create() {
-    if (!this.model['gn']) {
+    console.log(this.requestparams)
+    if (!this.requestparams['gn']) {
       this.toast.pop('warning', '品名必填！');
       return;
     }
-    if (!this.model['chandi']) {
+    if (!this.requestparams['chandi']) {
       this.toast.pop('warning', '产地必填！');
       return;
     }
-    if (!this.model['houdu']) {
+    if (!this.requestparams['houdu']) {
       this.toast.pop('warning', '厚度必填！');
       return;
     }
-    if (!this.model['width']) {
+    if (!this.requestparams['width']) {
       this.toast.pop('warning', '宽度必填！');
       return;
     }
-    if (!this.model['color']) {
+    if (!this.requestparams['color']) {
       this.toast.pop('warning', '颜色必填！');
       return;
     }
-    if (!this.model['duceng']) {
+    if (!this.requestparams['duceng']) {
       this.toast.pop('warning', '镀层必填！');
       return;
     }
-    if (!this.model['caizhi']) {
+    if (!this.requestparams['caizhi']) {
       this.toast.pop('warning', '材质必填！');
       return;
     }
-    delete this.model['chandio'];
+    delete this.requestparams['chandio'];
     this.kucunapi.createautopaidan(this.model).then(data => {
       this.listDetail();
       this.dialogcoles();
@@ -429,6 +432,27 @@ export class AutopaidanComponent implements OnInit {
       if (this.chandioptions.length) {
         this.requestparams['chandi'] = this.chandioptions[this.chandioptions.length - 1]['value'];
       }
+    }
+  }
+  autopaidanandetids: any = [];
+  //批量删除明细
+  deleteautopaidanandet() {
+    this.autopaidanandetids = new Array();
+    const autopaidanandetlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < autopaidanandetlist.length; i++) {
+      if (autopaidanandetlist[i].selected && autopaidanandetlist[i].data && autopaidanandetlist[i].data['id'] ) {
+        this.autopaidanandetids.push(autopaidanandetlist[i].data.id);
+      }
+    }
+    if (!this.autopaidanandetids.length) {
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+      this.kucunapi.delautopaidan(this.autopaidanandetids).then(data => {
+      this.toast.pop('success', '删除成功！');
+      this.listDetail(); 
+      });
     }
   }
 }

@@ -86,7 +86,13 @@ export class TransportfenxiComponent implements OnInit {
       { 
         cellStyle: { 'text-align': 'center' }, headerName: '总金额', field: 'suminnerjine', minWidth: 100,
         valueFormatter: this.settings.valueFormatter2
-      }
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '路线', field: 'luxian', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '去年运输量', field: 'lastsumweight', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '去年运输总金额', field: 'jinesum', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '去年单价平均值', field: 'avginnerprice2', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '起始地区域', field: 'startarea', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '目的地区域', field: 'endarea', minWidth: 100 },
     ];
   }
 
@@ -105,6 +111,9 @@ export class TransportfenxiComponent implements OnInit {
   selectmonth(value) {
     this.search['month'] = this.datepipe.transform(value, 'y-MM-dd');
     this.currmonth = this.search['month'];
+  }
+  selectendmonth(value){
+    this.search['endmonth'] = this.datepipe.transform(value, 'y-MM-dd');
   }
   selectNull() {
     this.search = {
@@ -125,6 +134,8 @@ export class TransportfenxiComponent implements OnInit {
   }
   showDialog() {
     this.selectNull();
+    this.search['isluxian'] = 1;
+    this.search['iscustomer'] = 1;
     this.classicModel.show();
   }
   // 关闭弹窗
@@ -136,10 +147,18 @@ export class TransportfenxiComponent implements OnInit {
       this.toast.pop('warning', '请选择日期');
       return;
     }
+    if (!this.search['endmonth']) {
+      this.toast.pop('warning', '请选择结束日期');
+      return;
+    }
     if (typeof (this.wlcustomer) === 'string' || !this.wlcustomer) {
       this.search['wlcustomerid'] = '';
     } else if (typeof (this.wlcustomer) === 'object' && this.wlcustomer['code']) {
       this.search['wlcustomerid'] = this.wlcustomer['code'];
+    }
+    if(!this.search['isluxian'] && !this.search['iscustomer']){
+      this.toast.pop('warning', '路线和运费单位至少选择一项！');
+      return;
     }
     this.getlist();
     this.classicModel.hide();

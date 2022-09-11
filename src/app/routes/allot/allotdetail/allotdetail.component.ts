@@ -242,7 +242,7 @@ export class AllotdetailComponent implements OnInit {
         if (params.group) {
           return {
             group: true,
-            expanded: params.group === '彩涂' || params.group === '镀锌' || params.group === '镀铝锌',
+            expanded: null != params.group,
             children: params.participants,
             field: 'group',
             key: params.group
@@ -251,6 +251,19 @@ export class AllotdetailComponent implements OnInit {
           return null;
         }
       },
+      // getNodeChildDetails: (params) => {
+      //   if (params.group) {
+      //     return {
+      //       group: true,
+      //       expanded: params.group === '彩涂' || params.group === '镀锌' || params.group === '镀铝锌',
+      //       children: params.participants,
+      //       field: 'group',
+      //       key: params.group
+      //     };
+      //   } else {
+      //     return null;
+      //   }
+      // },
       groupSelectsChildren: true // 分组可全选
     };
     this.gridOptions.onGridReady = this.settings.onGridReady;
@@ -325,6 +338,20 @@ export class AllotdetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: 'gcid', field: 'gcid', minWidth: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '调拨状态', field: 'allottypename', minWidth: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '调入时间', field: 'arrivedate', minWidth: 60 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'amount', minWidth: 60, cellRenderer: params => {
+          return '<a target="_blank">删除</a>';
+        }, onCellClicked: params => {
+          if (confirm('你确定要删除吗?')) {
+            this.allotapi.delallot(params.data.id).then(data => {
+              this.toast.pop('success', '删除成功！');
+              this.getDetail();
+
+        
+            })
+          }
+        }
+      },
 
     ];
 
@@ -335,25 +362,34 @@ export class AllotdetailComponent implements OnInit {
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
       rowDeselection: true,
+      rowSelection: 'multiple',
       overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
       overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
       enableColResize: true,
       enableSorting: true,
       excelStyles: this.settings.excelStyles,
       getContextMenuItems: this.settings.getContextMenuItems,
+      groupSelectsChildren: true, // 分组可全选
       getNodeChildDetails: (params) => {
         if (params.group) {
-          return { group: true, children: params.participants, field: 'group', key: params.group };
+          return {
+            group: true,
+            expanded: null != params.group,
+            children: params.participants,
+            field: 'group',
+            key: params.group
+          };
         } else {
           return null;
         }
-      }
+      },
     };
     this.feegridOptions.onGridReady = this.settings.onGridReady;
     this.feegridOptions.groupSuppressAutoColumn = true;
-
     this.feegridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '批次号', field: 'group', cellRenderer: 'group', minWidth: 40 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '批次号', field: 'group', cellRenderer: 'group', minWidth: 40 ,
+      checkboxSelection: true, headerCheckboxSelection: true
+    },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '费用类型', field: 'type', minWidth: 80, valueGetter: (params) => {
           if (params.data['type'] === 1) return '汽运费';
@@ -427,6 +463,7 @@ export class AllotdetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 60 }
 
     ];
+
     this.wuliuOffergridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
@@ -557,11 +594,14 @@ export class AllotdetailComponent implements OnInit {
     this.allotapi.getdet(this.parentId).then(data => {
       this.gridOptions.api.setRowData(data);
     });
+
     //查询变更日志
     this.allotapi.getlog(this.parentId).then(data => {
       this.loglist = data;
     })
   }
+
+
 
   // 保存按钮
   modifyAllot() {
@@ -1387,7 +1427,6 @@ export class AllotdetailComponent implements OnInit {
         this.getbill();
         this.getDetail();
       })
-
       sweetalert.close();
     });
 
@@ -1529,7 +1568,6 @@ export class AllotdetailComponent implements OnInit {
   /**
  * 根据详细地址自动识别省市县
  */
-   
    selecteddes1(destination) {
     if (destination) {
       const addressObj = this.addressparseService.parsingAddress(destination);
@@ -1588,5 +1626,54 @@ export class AllotdetailComponent implements OnInit {
       }
     }
   }
+
+
+
+    //批量删除调拨明细
+    allotdetids: any = [];
+    deleteallotdet() {
+      this.allotdetids = new Array();
+      const allotdetlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+      for (let i = 0; i < allotdetlist.length; i++) {
+        if (allotdetlist[i].selected && allotdetlist[i].data && allotdetlist[i].data['id']) {
+          this.allotdetids.push(allotdetlist[i].data.id);
+        }
+      }
+      if (!this.allotdetids.length) { 
+        this.toast.pop('warning', '请选择明细之后再删除！');
+        return;
+      }
+      if (confirm('你确定要删除吗？')) {
+        this.allotapi.deleteallotdet(this.allotdetids).then(data => {
+          this.toast.pop('success', '删除成功！');
+                this.getDetail();
+                this.getMyRole();
+        });
+      }
+    }
+
+//费用批量删除明细
+allotdetfeeids: any = [];
+deleteallotdetfee() {
+  this.allotdetfeeids = new Array();
+  const allotdetfeelist = this.feegridOptions.api.getModel()['rowsToDisplay'];
+  for (let i = 0; i < allotdetfeelist.length; i++) {
+    if (allotdetfeelist[i].selected && allotdetfeelist[i].data && allotdetfeelist[i].data['id']) {
+      this.allotdetfeeids.push(allotdetfeelist[i].data.id);
+    }
+  }
+  if (!this.allotdetfeeids.length) { 
+    this.toast.pop('warning', '请选择明细之后再删除！');
+    return;
+  }
+  if (confirm('你确定要删除吗？')) {
+    this.allotapi.removeallotfees(this.allotdetfeeids).then(data => {
+      this.toast.pop('success', '删除成功！'); 
+      this.listFeeDetail();
+      this.getDetail();
+  });
+  }
+} 
+  
 
 }

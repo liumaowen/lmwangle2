@@ -12,6 +12,7 @@ import { StorageService } from './../../../dnn/service/storage.service';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { XiaoshouapiService } from 'app/routes/xiaoshou/xiaoshouapi.service';
+import { isEmpty } from 'lodash';
 const sweetalert = require('sweetalert');
 @Component({
   selector: 'app-producedetail',
@@ -20,13 +21,17 @@ const sweetalert = require('sweetalert');
 })
 export class ProducedetailComponent implements OnInit {
   @ViewChild('producefeeModal') private producefeeModal: ModalDirective;
+  tasklist = { cuser: {} };
   detids;
+  feecollectid;
   // 内部销售单的展示
   produce: any = { isv: false };
   producefee = {};
+  producefee2 = {};
   // 定义一个成品编辑对象
   fpedit = {};
-
+  modifytask = {};
+  producelist = { cuser: {} };
   showbutton = {};
   chanpin = { typecode: 3 };
   basematerialImpbsModalRef: BsModalRef;
@@ -38,8 +43,8 @@ export class ProducedetailComponent implements OnInit {
 
   // 获取当前登录用户的信息
   current = this.storage.getObject('cuser');
-  producefeetype = [{ label: '请选择', value: '' }, { label: '纵剪费', value: 5 },
-  { label: '开平费', value: 4 }];
+  producefeetype = [{ label: '请选择', value: '' }, { label: '纵剪费', value: 6 },
+  { label: '开平费', value: 5 }];
 
   constructor(public settings: SettingsService, private storage: StorageService, private produceApi: ProduceapiService,
     private route: ActivatedRoute, private toast: ToasterService, private router: Router, private bsModalService: BsModalService,
@@ -137,6 +142,7 @@ export class ProducedetailComponent implements OnInit {
         valueFormatter: this.settings.valueFormatter
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '捆包号', field: 'kunbaohao', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '是否入资源中心', field: 'iskucundetail', width: 110 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '成品类型', field: 'fptype', width: 90,
         cellRenderer: (params) => {
@@ -213,6 +219,8 @@ export class ProducedetailComponent implements OnInit {
       enableColResize: true,
       enableSorting: true,
       excelStyles: this.settings.excelStyles,
+      singleClickEdit: true, // 单击编辑
+      stopEditingWhenGridLosesFocus: true, // 焦点离开停止编辑
       getContextMenuItems: this.settings.getContextMenuItems,
       onRowSelected: (params) => {
         if (params.data.group && params.node['selected']) {
@@ -307,13 +315,41 @@ export class ProducedetailComponent implements OnInit {
         cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'weight', width: 80,
         valueFormatter: this.settings.valueFormatter3
       },
+     
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '单价', field: 'price', width: 80,
-        valueFormatter: this.settings.valueFormatter2
+        cellStyle: { 'text-align': 'right' }, headerName: '单价', field: 'price', minWidth: 80,
+        valueFormatter: this.settings.valueFormatter2,
+        cellRenderer: (params) => {
+          if (params.data.price) {
+            if (params['data']['group']) {
+              return `<a>${params.data.price}</a>`;
+            } else {
+              return params.data.price + '';
+            }
+          }
+        }, onCellClicked: (params) => {
+          if (params.data.group) {
+            this.openmodify(params);
+          }
+        }
       },
+   
       {
         cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'jine', width: 80,
-        valueFormatter: this.settings.valueFormatter2
+        valueFormatter: this.settings.valueFormatter2,
+        cellRenderer: (params) => {
+          if (params.data.jine) {
+            if (params['data']['group']) {
+              return `<a>${params.data.jine}</a>`;
+            } else {
+              return params.data.jine + '';
+            }
+          }
+        }, onCellClicked: (params) => {
+          if ( params.data.group) {
+            this.openmodify(params);
+          }
+        }
       },
       {
         cellStyle: { 'text-align': 'right' }, headerName: '内部单价', field: 'innerprice', width: 80,
@@ -362,10 +398,9 @@ export class ProducedetailComponent implements OnInit {
     this.getDetail();
     this.listFeeDetail();
   }
-
+  
   ngOnInit() {
   }
-
   // 获取主表信息
   getProduce() {
     this.produceApi.get(this.route.params['value']['id']).then((data) => {
@@ -386,10 +421,12 @@ export class ProducedetailComponent implements OnInit {
       this.gridOptions.api.setRowData(data);
     });
   }
+  feelist = [];
   /**运费明细 */
   listFeeDetail() {
     this.tihuoApi.listFeeDetail({ tihuoid: this.route.params['value']['id'] }).then((response) => {
       this.feegridOptions.api.setRowData(response);
+      this.feelist = response;
     });
   }
   // 删除仓库
@@ -592,27 +629,54 @@ export class ProducedetailComponent implements OnInit {
   checkAndruku() {
     this.produceApi.judge({ produceid: this.produce['id'] }).then((response) => {
       if (confirm('共需要验收' + response['tweight'] + '吨,' + response['msg'])) {
-        if (this.produce['producemode'] === 1) {
-          this.produceApi.checkOEMFp({ produceid: this.produce['id'] }).then(() => {
-            // Notify.alert('验收成功', { status: 'success' });
-            this.toast.pop('success', '验收成功');
-            // $state.go('app.producedet');
-            this.router.navigateByUrl('producedet');
-          });
-        } else if (this.produce['producemode'] === 3) {
-          this.produceApi.checkWeishiFp({ produceid: this.produce['id'] }).then(() => {
-            // Notify.alert('验收成功', { status: 'success' });
-            this.toast.pop('success', '验收成功');
-            // $state.go('app.producedet');
-            this.router.navigateByUrl('producedet');
-          });
-        } else {
-          this.produceApi.checkFp({ produceid: this.produce['id'] }).then(() => {
-            // Notify.alert('验收成功', { status: 'success' });
-            this.toast.pop('success', '验收成功');
-            // $state.go('app.producedet');
-            this.router.navigateByUrl('producedet');
-          });
+        if(!this.feelist.length){
+            if (this.produce['producemode'] === 1) {
+              this.produceApi.checkOEMFp({ produceid: this.produce['id'] }).then(() => {
+                // Notify.alert('验收成功', { status: 'success' });
+                this.toast.pop('success', '验收成功');
+                // $state.go('app.producedet');
+                this.router.navigateByUrl('producedet');
+              });
+            } else if (this.produce['producemode'] === 3) {
+              if(confirm('未添加费用，你确定要验收吗？')){
+                  this.produceApi.checkWeishiFp({ produceid: this.produce['id'] }).then(() => {
+                    // Notify.alert('验收成功', { status: 'success' });
+                    this.toast.pop('success', '验收成功');
+                   // $state.go('app.producedet');
+                   this.router.navigateByUrl('producedet');
+                  });
+              }
+            } else {
+              this.produceApi.checkFp({ produceid: this.produce['id'] }).then(() => {
+                // Notify.alert('验收成功', { status: 'success' });
+                this.toast.pop('success', '验收成功');
+                // $state.go('app.producedet');
+                this.router.navigateByUrl('producedet');
+              });
+            }
+        }else{
+          if (this.produce['producemode'] === 1) {
+            this.produceApi.checkOEMFp({ produceid: this.produce['id'] }).then(() => {
+              // Notify.alert('验收成功', { status: 'success' });
+              this.toast.pop('success', '验收成功');
+              // $state.go('app.producedet');
+              this.router.navigateByUrl('producedet');
+            });
+          } else if (this.produce['producemode'] === 3) {
+            this.produceApi.checkWeishiFp({ produceid: this.produce['id'] }).then(() => {
+              // Notify.alert('验收成功', { status: 'success' });
+              this.toast.pop('success', '验收成功');
+              // $state.go('app.producedet');
+              this.router.navigateByUrl('producedet');
+            });
+          } else {
+            this.produceApi.checkFp({ produceid: this.produce['id'] }).then(() => {
+              // Notify.alert('验收成功', { status: 'success' });
+              this.toast.pop('success', '验收成功');
+              // $state.go('app.producedet');
+              this.router.navigateByUrl('producedet');
+            });
+          }
         }
       }
     });
@@ -670,22 +734,23 @@ export class ProducedetailComponent implements OnInit {
         this.produceApi.impOEMExcel(addData, this.produce['id']).then(data => {
           this.getDetail();
           this.toast.pop('success', '上传成功！');
+          this.hideDialog();
         });
       } else if (this.produce['producemode'] === 3) {
         this.produceApi.impWEISHIExcel(addData, this.produce['id']).then(data => {
           this.getDetail();
           this.toast.pop('success', '上传成功！');
+          this.hideDialog();
         });
       } else {
         this.produceApi.impExcel(addData, this.produce['id']).then(data => {
           this.getDetail();
           this.toast.pop('success', '上传成功！');
+          this.hideDialog();
         });
       }
 
     }
-    this.getDetail();
-    this.hideDialog();
   }
 
   // 关闭上传弹窗
@@ -750,6 +815,26 @@ export class ProducedetailComponent implements OnInit {
     }
     this.producefee['price'] = Math.round(this.producefee['jine'].div(this.producefee['weight']) * 100) / 100;
   }
+  // 通过单价获取金额
+  getjine1() {
+    if (!this.producefee2['price'] && this.producefee2['price']!=0) {
+      this.toast.pop('warning', '请填写单价');
+      return '';
+    }
+    if (Number(this.producefee2['price']) < 0) {
+      this.toast.pop('warning', '请正确填写单价');
+      return '';
+    }
+    this.producefee2['jine'] = Math.round(this.producefee2['weight'].mul(this.producefee2['price']) * 100) / 100;
+  }
+  // 通过金额获取单价
+  getprice1() {
+    if (!this.producefee2['jine']) {
+      this.toast.pop('warning', '请填写金额');
+      return '';
+    }
+    this.producefee2['price'] = Math.round(this.producefee2['jine'].div(this.producefee2['weight']) * 100) / 100;
+  }
   createproduceFee() {
     if (!this.producefee['feetype']) {
       this.toast.pop('warning', '请选择费用类型！');
@@ -766,6 +851,29 @@ export class ProducedetailComponent implements OnInit {
       this.listFeeDetail();
       this.hideproducefeedialog();
     });
+  }
+  modifypro: any = {};
+  @ViewChild('modifyokModal') private modifyokModal: ModalDirective;
+  @ViewChild('createModal') private createModal: ModalDirective;
+
+  openmodify(params) {
+    const obj = JSON.parse(JSON.stringify(params.data));
+    this.producefee2 = {price:obj['price'],jine:obj['jine'],id:this.produce['id'],feecollectid:obj['group'],weight:obj['weight']};
+    this.createModal.show();
+
+  }
+  modifyok() {
+    this.produceApi.modifyok(this.producefee2).then(data => {
+      this.createModal.hide();
+      this.getDetail();
+      this.listFeeDetail();
+    });
+  }
+  hidemodifyokmodal() {
+    this.modifyokModal.hide();
+  }
+  hidecreatemodal() {
+    this.createModal.hide();
   }
   modify() {
     this.produceApi.modify(this.produce['id'], this.produce).then(data => {
@@ -811,6 +919,11 @@ export class ProducedetailComponent implements OnInit {
         });
       }
     }
+  }
+  weishizhibao(){
+    this.produceApi.reloadweishi(this.produce.id).then(data => {
+      this.getDetail();
+    });
   }
 
 }

@@ -47,6 +47,7 @@ export class GoodscodeComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '编码', field: 'id', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'guige', minWidth: 120},
       { cellStyle: { 'text-align': 'center' }, headerName: '宽度', field: 'width', minWidth: 57},
       {
         cellStyle: { 'text-align': 'center' }, headerName: '厚度', field: 'houdu', minWidth: 57,

@@ -139,7 +139,9 @@ export class CginvoicedetailComponent implements OnInit {
           }
         }, 
         onCellClicked: (params) => {
-          this.open(params.data.id);
+            if (params.data.id) {
+                this.open(params.data.id);
+            }
         }
       },
     ];

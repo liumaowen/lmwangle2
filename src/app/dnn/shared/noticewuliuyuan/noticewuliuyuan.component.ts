@@ -196,7 +196,7 @@ export class NoticewuliuyuanComponent implements OnInit {
       data.forEach(element => {
         this.results.push({
           name: element.address + ' ' + element.title,
-          code: element.address + element.title
+          code: element.address
         });
       });
     });
@@ -206,7 +206,7 @@ export class NoticewuliuyuanComponent implements OnInit {
    */
   selectedenddest1(destination) {
     console.log(destination);
-    destination = destination.name;
+    destination = destination.code;
     // this.wuliunotice['startarea'] = destination;
     if (destination) {
       const addressObj = this.addressparseService.parsingAddress(destination);

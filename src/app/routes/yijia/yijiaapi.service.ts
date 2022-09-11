@@ -48,7 +48,11 @@ export class YijiaapiService {
       return data.json() as any[];
     });
   }
-
+  deleteOne(search){
+    return this.http.post('store/api/customerlevel/deleteone', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 
 
 }

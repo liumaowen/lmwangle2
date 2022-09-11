@@ -98,7 +98,9 @@ export class CangkudetailComponent implements OnInit {
     };
 
     this.gridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: 'ID', field: 'id', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: 'ID', field: 'id', width: 90 , cellRenderer: 'group',
+      headerCheckboxSelection: true, checkboxSelection: true
+  },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandiname', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '现结费用', field: 'nowfee', width: 90 },
@@ -133,7 +135,8 @@ export class CangkudetailComponent implements OnInit {
     };
 
     this.gridOptions1.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: 'ID', field: 'id', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: 'ID', field: 'id', width: 90 ,cellRenderer: 'group',
+      headerCheckboxSelection: true, checkboxSelection: true},
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandiname', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '现结费用', field: 'nowfee', width: 90 },
@@ -198,7 +201,8 @@ export class CangkudetailComponent implements OnInit {
     };
 
     this.gridOptions3.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '结算方式', field: 'settletypename', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '结算方式', field: 'settletypename', width: 90 ,cellRenderer: 'group',
+      headerCheckboxSelection: true, checkboxSelection: true},
       { cellStyle: { 'text-align': 'center' }, headerName: '添加时间', field: 'cdate', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '最小时间', field: 'mintime', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '最大时间', field: 'maxtime', width: 100 },
@@ -214,9 +218,9 @@ export class CangkudetailComponent implements OnInit {
     ];
     this.gridOptions4 = {
       enableFilter: true, // 过滤器
-    //   rowSelection: 'multiple', // 多选单选控制
+       rowSelection: 'multiple', // 多选单选控制
       enableRangeSelection: true,
-    //   rowDeselection: true, // 取消全选
+       rowDeselection: true, // 取消全选
       suppressRowClickSelection: false,
       enableColResize: true, // 列宽可以自由控制
       overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
@@ -226,7 +230,7 @@ export class CangkudetailComponent implements OnInit {
     };
 
     this.gridOptions4.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '加工方式', field: 'typename', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '加工方式', field: 'typename', width: 100, checkboxSelection: true, headerCheckboxSelection: true },
       { cellStyle: { 'text-align': 'center' }, headerName: '加工单重量(t)', field: 'weight', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '原卷宽度(mm)', field: 'originwidth', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '原卷厚度(mm)', field: 'originhoudu', width: 100 },
@@ -895,4 +899,108 @@ export class CangkudetailComponent implements OnInit {
           });
         });
       }
-}
+     
+
+//费用批量删除明细
+  cangkudetfeeids: any = [];
+  delcangkudetfee() {
+    this.cangkudetfeeids = new Array();
+    const rukudetfeelist = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < rukudetfeelist.length; i++) {
+      if (rukudetfeelist[i].selected && rukudetfeelist[i].data && rukudetfeelist[i].data['id']) {
+        this.cangkudetfeeids.push(rukudetfeelist[i].data.id);
+      }
+    }
+    if (!this.cangkudetfeeids.length) { 
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+      this.classifyApi.deleteChukufees(this.cangkudetfeeids).then(() => {
+          this.toast.pop('success', '删除成功！'); 
+          this.classifyApi.chukufeeList(this.route.params['value']['id']).then((data) => {
+            this.gridOptions.api.setRowData(data);
+          });
+      });
+    }
+  }
+  // 转货费批量删除
+  zhuanhuofeeids: any = [];
+  delzhuanhuofee() {
+    this.zhuanhuofeeids = new Array();
+    const zhuanhuofeelist = this.gridOptions1.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < zhuanhuofeelist.length; i++) {
+      if (zhuanhuofeelist[i].selected && zhuanhuofeelist[i].data && zhuanhuofeelist[i].data['id']) {
+        this.zhuanhuofeeids.push(zhuanhuofeelist[i].data.id);
+      }
+    }
+    if (!this.zhuanhuofeeids.length) { 
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+      this.classifyApi.delzhuanhuofees(this.zhuanhuofeeids).then(() => {
+          this.toast.pop('success', '删除成功！！！');
+          this.classifyApi.zhuanhuofeeList(this.route.params['value']['id']).then((response) => {
+            this.gridOptions1.api.setRowData(response);
+          });
+      });
+    }
+  }
+  // 仓储费批量删除
+  cangchufeeids: any = [];
+  delcangchufee() {
+    this.cangchufeeids = new Array();
+    const cangchufeelist = this.gridOptions3.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < cangchufeelist.length; i++) {
+      if (cangchufeelist[i].selected && cangchufeelist[i].data && cangchufeelist[i].data['id']) {
+        this.cangchufeeids.push(cangchufeelist[i].data.id);
+      }
+    }
+    if (!this.cangchufeeids.length) { 
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+        this.cangkuApi.delstoragefees(this.cangchufeeids).then(data => {
+            this.toast.pop('success', '删除成功！');
+            this.getStorageFeeList();
+            if (data) {
+              this.setgridOptions3(this.model['id']);
+            }
+            sweetalert.close();
+        });
+    }
+  }
+
+    // 加工费批量删除
+    jiagongfeeids: any = [];
+    deljiagongfee() {
+    this.jiagongfeeids = new Array();
+    const jiagongfeelist = this.gridOptions4.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < jiagongfeelist.length; i++) {
+      if (jiagongfeelist[i].selected && jiagongfeelist[i].data && jiagongfeelist[i].data['id']) {
+        this.jiagongfeeids.push(jiagongfeelist[i].data.id);
+      }
+    }
+    if (!this.jiagongfeeids.length) { 
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+  
+    if (confirm('你确定要删除吗？')) {
+      this.cangkuApi.delprocessfees(this.jiagongfeeids).then(() => {
+              this.toast.pop('success', '删除成功！'); 
+              this.getprocessfee(this.route.params['value']['id']);
+              sweetalert.close();
+            });
+          }
+        }
+          
+
+ 
+
+
+    }
+
+

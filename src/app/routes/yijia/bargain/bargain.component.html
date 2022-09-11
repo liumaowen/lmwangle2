@@ -117,29 +117,32 @@
             <div class="form-group mb fieldsetdnn row row col-md-6">
               <label class="col-sm-3 control-label">品名</label>
               <div class="col-sm-9">
-                <input (click)="mdmgndialog.show()" [(ngModel)]="requestparams['gn']" class="form-control" placeholder="请选择品名" readonly>
+                <p-dropdown [options]="pmitems" [(ngModel)]="requestparams['gn']" [style]="{'width':'100%'}"
+                  (onChange)="selectGnAction('gn')" [filter]="true" filterBy="label,value.name"></p-dropdown>
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row row col-md-6">
               <label class="col-sm-3 control-label">产地</label>
               <div class="col-sm-9">
-                <p-dropdown [options]="chandioptions" [disabled]="!requestparams['gn']" [(ngModel)]="requestparams['chandi']" [style]="{'width':'100%'}"></p-dropdown>
+                <p-dropdown [options]="filterConditionObj['chandi']" [(ngModel)]="requestparams['chandi']"
+                  [style]="{'width':'100%'}" (onChange)="selectAction('chandi',requestparams['chandi'])"
+                  [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row row col-md-6">
-              <label class="col-sm-3 control-label">议价金额（A类）</label>
+              <label class="col-sm-3 control-label">价格幅度（A类）</label>
               <div class="col-sm-9">
                 <input type="number" class="form-control" [(ngModel)]="requestparams['pricea']" />
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row row col-md-6">
-              <label class="col-sm-3 control-label">议价金额（B类）</label>
+              <label class="col-sm-3 control-label">价格幅度（B类）</label>
               <div class="col-sm-9">
                 <input type="number" class="form-control" [(ngModel)]="requestparams['priceb']" />
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row row col-md-6">
-              <label class="col-sm-3 control-label">议价金额（C类）</label>
+              <label class="col-sm-3 control-label">价格幅度（C类）</label>
               <div class="col-sm-9">
                 <input type="number" class="form-control" [(ngModel)]="requestparams['pricec']" />
               </div>

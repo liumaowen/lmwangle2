@@ -33,12 +33,14 @@ import { MdmService } from 'app/routes/mdm/mdm.service';
 })
 export class QihuodetailComponent implements OnInit {
   oldyufurate: any = '';
+  cangku: { label: string; value: string; }[];
   @ViewChild('chukufeetype') private ckfeetype: ModalDirective;
   //配款
   @ViewChild('allocationModel') private allocationModel: ModalDirective;
   //释放配款
-  @ViewChild('shifangallocationModel') private shifangallocationModel: ModalDirective;
   // 上传弹窗实例
+  @ViewChild('shifangallocationModel') private shifangallocationModel: ModalDirective
+
   @ViewChild('uploaderModel') private uploaderModel: ModalDirective;
   //作废原因填写
   @ViewChild('zuofeiModel') private zuofeiModel: ModalDirective;
@@ -47,7 +49,7 @@ export class QihuodetailComponent implements OnInit {
   // 期货变更提交原因填写
   @ViewChild('qhchangetijiaoModel') private qhchangetijiaoModel: ModalDirective;
   // 修改免息弹窗
-  @ViewChild('interestfreeandunitModel') private interestfreeandunitModel: ModalDirective;
+  @ViewChild('interestfreeandunitandcangkuModel') private interestfreeandunitandcangkuModel: ModalDirective;
   // 采购合同弹窗
   @ViewChild('createCaigouModal') private createCaigouModal: ModalDirective;
   @ViewChild('addqualityModal') private addqualityModal: ModalDirective;
@@ -66,7 +68,11 @@ export class QihuodetailComponent implements OnInit {
   chukufeetypess = {};
   params = {};
   qhqualityModel = {};
-  paytypes = [{ value: '0', label: '款到发货' }, { value: '1', label: '欠款发货' }];
+  changeordermodal={};
+   // 获取当前登录用户的信息
+   current = this.storage.getObject('cuser');
+ 
+   paytypes = [{ value: '0', label: '款到发货' }, { value: '1', label: '欠款发货' }];
   //父页面传过来的qihuoid的值
   qihuoid: number;
   tihuoid: number;
@@ -76,7 +82,8 @@ export class QihuodetailComponent implements OnInit {
   isimport = { flag: true };
   rstypes = [{ value: '1', label: '补重' }, { value: '2', label: '退款' }, { value: '3', label: '订货折让' }];
   saletypes = [{ value: '1', label: '补差' }, { value: '2', label: '退货' }, { value: '3', label: '订货折让' }];
-  qihuomodel = { addrbak: {}, buyer: {}, seller: {}, org: {}, arrearspeople: {}, cuser: {}, vuser: {} ,cperson: {}};
+  ordermodal=[{value:'1',label:'默认模板'},{value:'2',label:'老模板'}];
+  qihuomodel = { addrbak: {}, buyer: {}, seller: {}, org: {}, arrearspeople: {}, cuser: {}, vuser: {} ,cperson: {},jhcangku: {}};
   qihuodet = {};
   wlcustomer = {};
   transporttype;
@@ -102,7 +109,11 @@ export class QihuodetailComponent implements OnInit {
     dingjin: true, isv: false, fisv: false, fp: false, issubmit:
       true, detail: true, isdingjinedit: false, noticecaigou: false,
     isfinish: false, isrecall: false, isorderchange: false, qihuochangestatus: 0, // 期货变更状态：0:变更前;1:变更中;2:审核中
-    isruku: false
+    isruku: false,
+    orderchange:1,//1:默认模板，2：老模板
+  };
+  qihuoflag2: any = {
+    istiaohuo:false
   };
   one: Boolean = true;
   two: Boolean = false;
@@ -123,6 +134,7 @@ export class QihuodetailComponent implements OnInit {
   tabviewindex = 0; // 物流竞价明细选项卡的索引
   wuluiorderlist: any = [];
   zijinmonthrates: any = [];
+  thtypes: any = [];
   storagefees: any = [];
   results: any;
   //aggird 表格初始化对象
@@ -135,6 +147,9 @@ export class QihuodetailComponent implements OnInit {
   wuliuOffergridOptions: GridOptions; // 物流竞价明细
   qihuochangegridOptions: GridOptions; // 期货变更记录
   isshownoticecaigou: boolean; // 是否显示通知采购两个按钮
+
+  isorderchange: boolean; // 是否显示通知采购两个按钮
+
   songaddress: any = ''; // 送货地址
   isSaleman = false; // 是否是业务员
   msgs = [{ severity: 'info', detail: '您没有变更内容，如果提交则不需审批直接返回变更前状态！' }];
@@ -150,13 +165,14 @@ export class QihuodetailComponent implements OnInit {
   editqihuobuyerid = null;
   units: any = []; // 其他单位
   isShowInterestfree = false; // 是否显示免息按钮（期货和期货加工的显示）
-  interestfreeAndUnitObj = {
+  interestfreeAndUnitAndCangkuObj = {
     qihuodetid: null, isinterestfree: false, interestfreedays: null, interestfreereason: '', unitname: null,
-    unitweight: null, unitprice: null, interestfreeOrUnit: ''
+    unitweight: null, unitprice: null,jhcangku:null,cangkuid:'', interestfreeOrUnitOrCangku: ''
   }; // 修改免息和新单位的对象
   // releasetypes = [{ value: '0', label: '不释放' }, { value: '1', label: '等比例释放' }, { value: '2', label: '最后一次释放' }];
   chandigongchas = [];
   packageyaoqius = [];
+  jhcangku: any;
   constructor(public settings: SettingsService, private qihuoapi: QihuoService, private classifyapi: ClassifyApiService,
     private addressparseService: AddressparseService, private caigouApi: CaigouService, private datepipe: DatePipe,
     private toast: ToasterService, private route: ActivatedRoute, private router: Router, private moneyapi: MoneyService,
@@ -397,6 +413,21 @@ export class QihuodetailComponent implements OnInit {
         }
       },
       {
+        cellStyle: { 'text-align': 'center' }, headerName: '交货仓库', field: 'jhcangku', minWidth: 90,
+        onCellClicked: (params) => {
+          if (null === this.qihuomodel['vuserid'] && this.qihuomodel['qihuostatus'] !== 8) {
+            this.showinterestfreeandunitandcangkuModel(params.data, 'cangku');
+          }
+        }
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '交货周期', field: 'jhzhouqi', minWidth: 60, enableRowGroup: true,
+        // editable: this.editable,
+        onCellClicked: (params) => {
+          this.showdetmodify(params['data']['jhzhouqi'], params['data']);
+        }
+      },
+      {
         cellStyle: { 'text-align': 'center' }, headerName: '内部交货期限', field: 'innerqixian', minWidth: 120, enableRowGroup: true,
         editable: (params) => this.editable(params) || (this.qihuoflag['qihuochangestatus'] === 1 && !this.qihuoflag['isruku']),
         valueFormatter: data => {
@@ -481,7 +512,7 @@ export class QihuodetailComponent implements OnInit {
         cellStyle: { 'text-align': 'center' }, headerName: '新单位', field: 'unitname', minWidth: 90,
         onCellClicked: (params) => {
           if (null === this.qihuomodel['vuserid'] && this.qihuomodel['qihuostatus'] !== 8) {
-            this.showinterestfreeandunitModel(params.data, 'unit');
+            this.showinterestfreeandunitandcangkuModel(params.data, 'unit');
           }
         }
       },
@@ -512,7 +543,7 @@ export class QihuodetailComponent implements OnInit {
         },
         onCellClicked: (params) => {
           if (null === this.qihuomodel['vuserid'] && this.isShowInterestfree && this.qihuomodel['qihuostatus'] !== 8) {
-            this.showinterestfreeandunitModel(params.data, 'interestfree');
+            this.showinterestfreeandunitandcangkuModel(params.data, 'interestfree');
           }
         }
       },
@@ -583,12 +614,9 @@ export class QihuodetailComponent implements OnInit {
                 this.impkucundialog(data.data.id);
               }
             }
-          }
-
-
+          },
         ]
       }
-
     ];
     //dingjingridOptions实例对象
     this.dingjingridOptions = {
@@ -743,6 +771,7 @@ export class QihuodetailComponent implements OnInit {
               this.toast.pop('success', '删除成功！');
               this.queryproduct();
               this.getqihuomodel();
+        
             })
           }
         }
@@ -1118,6 +1147,7 @@ export class QihuodetailComponent implements OnInit {
     //获取URL传过来的值
     this.findzijinmonthrate();
     this.findstoragefee();
+    this.findthtype();
     this.tihuoid = this.route.queryParams['value']['tihuoid'];
     this.route.params.subscribe((data) => { this.qihuoid = data['id']; });
     this.getqihuomodel();
@@ -1166,6 +1196,27 @@ export class QihuodetailComponent implements OnInit {
       });
     });
   }
+  //调货类型
+  findthtype() {
+    this.classifyapi.getChildrenTree({ pid: 17947 }).then((data) => {
+      data.forEach(element => {
+        if(this.current.orgid === 22528 || this.current.orgid === 664 || this.current.orgid === 22525 || this.current.orgid === 22524 
+          || this.current.orgid === 22350 || this.current.orgid === 22427 || this.current.orgid === 674){
+          this.thtypes.push({
+            label: element.label,
+            value: element.label
+          });
+        }else{
+          if(!(element.id === 17950)){
+            this.thtypes.push({
+              label: element.label,
+              value: element.label
+            });
+          }
+        }
+      });
+    });
+  }
   //获取仓储费收费标准
   findstoragefee() {
     this.classifyapi.getChildrenTree({ pid: 11326 }).then((data) => {
@@ -1178,39 +1229,49 @@ export class QihuodetailComponent implements OnInit {
     });
   }
   // 打开修改免息弹窗
-  showinterestfreeandunitModel(qihuodet, modifyname) {
+  showinterestfreeandunitandcangkuModel(qihuodet, modifyname) {
     setTimeout(() => {
-      this.interestfreeAndUnitObj = {
+      this.interestfreeAndUnitAndCangkuObj = {
         qihuodetid: qihuodet.id, isinterestfree: qihuodet.isinterestfree,
         interestfreedays: qihuodet.interestfreedays, interestfreereason: qihuodet.interestfreereason, unitname: qihuodet.unitname,
-        unitweight: qihuodet.unitweight, unitprice: qihuodet.unitprice, interestfreeOrUnit: modifyname
+        unitweight: qihuodet.unitweight, unitprice: qihuodet.unitprice,jhcangku:qihuodet.jhcangku,cangkuid:qihuodet.cangkuid, interestfreeOrUnitOrCangku: modifyname
       };
     }, 0);
-    this.interestfreeandunitModel.show();
+    this.interestfreeandunitandcangkuModel.show();
+    // 查找仓库
+    this.cangku = [{ label: '非必填选项', value: '' }];
+    this.classifyApi.cangkulist().then((response) => {
+        response.forEach(element => {
+          this.cangku.push({
+            label: element.name,
+            value: element.id
+        });
+      });
+    });
   }
   interestfreehideDialog() {
-    this.interestfreeandunitModel.hide();
+    this.interestfreeandunitandcangkuModel.hide();
   }
   // 保存免息修改
   modifyinterestfree() {
-    if (this.interestfreeAndUnitObj.interestfreeOrUnit === 'interestfree') {
-      if (this.interestfreeAndUnitObj['isinterestfree']) {
-        if (this.interestfreeAndUnitObj['interestfreedays'] === undefined || this.interestfreeAndUnitObj['interestfreedays'] === null) {
+    if (this.interestfreeAndUnitAndCangkuObj.interestfreeOrUnitOrCangku === 'interestfree') {
+      if (this.interestfreeAndUnitAndCangkuObj['isinterestfree']) {
+        if (this.interestfreeAndUnitAndCangkuObj['interestfreedays'] === undefined || this.interestfreeAndUnitAndCangkuObj['interestfreedays'] === null) {
           this.toast.pop('warning', '免息天数不允许为空！'); return;
         }
-        if (!this.interestfreeAndUnitObj['interestfreereason']) {
+        if (!this.interestfreeAndUnitAndCangkuObj['interestfreereason']) {
           this.toast.pop('warning', '免息原因不允许为空！'); return;
         }
       }
-    } else if (this.interestfreeAndUnitObj.interestfreeOrUnit === 'unit') {
-      if (this.interestfreeAndUnitObj['unitname']) {
-        if (this.interestfreeAndUnitObj['unitweight'] === undefined || this.interestfreeAndUnitObj['unitweight'] === null
-          || this.interestfreeAndUnitObj['unitprice'] === undefined || this.interestfreeAndUnitObj['unitprice'] === null) {
+    } else if (this.interestfreeAndUnitAndCangkuObj.interestfreeOrUnitOrCangku === 'unit') {
+      if (this.interestfreeAndUnitAndCangkuObj['unitname']) {
+        if (this.interestfreeAndUnitAndCangkuObj['unitweight'] === undefined || this.interestfreeAndUnitAndCangkuObj['unitweight'] === null
+          || this.interestfreeAndUnitAndCangkuObj['unitprice'] === undefined || this.interestfreeAndUnitAndCangkuObj['unitprice'] === null) {
           this.toast.pop('warning', '请把新单位信息填写完整！'); return;
         }
       }
     }
-    this.qihuoapi.modifyinterestfree(this.interestfreeAndUnitObj.qihuodetid, this.interestfreeAndUnitObj).then(data => {
+    this.qihuoapi.modifyinterestfree(this.interestfreeAndUnitAndCangkuObj.qihuodetid, this.interestfreeAndUnitAndCangkuObj).then(data => {
       this.toast.pop('success', '修改成功');
       this.getqihuomodel();
       this.findqihuodet();
@@ -1298,13 +1359,12 @@ export class QihuodetailComponent implements OnInit {
   //获取主表的数据
   getqihuomodel() {
     this.qihuoapi.findqihuo(this.qihuoid).then(data => {
-      console.log(111111111111);
-      console.log(data);
-      console.log(this.suser);
 
-      // console.log(data);
-      this.qihuomodel = data.qihuo;
+      this.qihuomodel = data;
       this.qihuomodel['cpersonname'] = data.wuliuname;
+      // if(this.qihuomodel['thtype']){
+      //   this.qihuoflag2['istiaohuo'] = true;
+      // }
       // this.qihuomodel['guigetype'] = this.qihuomodel['guigetype'] === 0 ? '常规' : '特殊';
       // this.qihuomodel['kehutype'] = this.qihuomodel['kehutype'] === 0 ? '直接用户' : '贸易商';
       this.isbaojia = this.qihuomodel['isnoticecaigou'];
@@ -1463,7 +1523,9 @@ export class QihuodetailComponent implements OnInit {
     yunzafeeprice: 0,
     jiagongfeeprice: 0,
     unitname: null,
-    isinterestfree: false
+    isinterestfree: false,
+    jhzhouqi:null,
+    jhcangku:null
   };
   @ViewChild('createqihuodialog') private createqihuodialog: ModalDirective;
   //查询弹窗
@@ -1663,7 +1725,9 @@ export class QihuodetailComponent implements OnInit {
       yunzafeeprice: 0,
       jiagongfeeprice: 0,
       unitname: null,
-      isinterestfree: false
+      isinterestfree: false,
+      jhzhouqi:null,
+      jhcangku:null
     };
     this.one = true;
     this.two = false;
@@ -1702,7 +1766,13 @@ export class QihuodetailComponent implements OnInit {
       }
     }
     if (!this.qihuodetmodel['saleprice']) { this.toast.pop('warning', '销售价格不允许为空！'); return; }
-    if (!this.qihuodetmodel['jiaohuodate']) { this.toast.pop('warning', '交货期限不允许为空！'); return; }
+    if( this.qihuomodel['ordertype'] !== 0 && this.qihuomodel['ordertype'] !== 1){
+      if (!this.qihuodetmodel['jiaohuodate']) { this.toast.pop('warning', '交货期限不允许为空！'); return; }
+    }
+    
+    if( this.qihuomodel['ordertype'] === 0||this.qihuomodel['ordertype']===1){
+      if (!this.qihuodetmodel['jhzhouqi']) { this.toast.pop('warning', '交货周期不允许为空'); return; }
+    }
     if (!this.qihuodetmodel['jiaohuoaddr']) { this.toast.pop('warning', '交货地址不允许为空！'); return; }
     if (!this.qihuodetmodel['yongtu']) { this.toast.pop('warning', '用途不允许为空！'); return; }
     if (!this.qihuodetmodel['zhidaojiagedesc']) { this.toast.pop('warning', '指导价格不允许为空！'); return; }
@@ -1898,12 +1968,12 @@ export class QihuodetailComponent implements OnInit {
   //此处需要有个弹出框，可供选择确认是否欠款发货
   @ViewChild('submitvuser') private submitvuser: ModalDirective;
   submitvuserdialog() {
-    if(!this.qihuomodel['cpersonname'] ){
-      this.toast.pop('error', '请先选择物流专员!');
-      return;
-   }
     if (this.qihuomodel['ischuliquality'] === null && (this.qihuomodel['ordertype'] == 0 || this.qihuomodel['ordertype'] == 1)) {
       this.toast.pop('warning', '请选择是否处理质量异议');
+      return;
+    }
+    if(this.qihuomodel['wuliuid'] === null && this.qihuomodel['type'] === 1){
+      this.toast.pop('warning', '请选择物流员！');
       return;
     }
     this.submitvuser.show();
@@ -1993,9 +2063,12 @@ export class QihuodetailComponent implements OnInit {
       this.qihuoapi.noticeCaigou(this.qihuoid).then(data => {
         this.toast.pop('success', '通知成功！');
         this.getqihuomodel();
+        this.findqihuodet();
       })
     }
   }
+
+ 
   //通知入库申请
   noticerukuapply() {
     if (this.qihuomodel['qihuostatus'] !== 3) {
@@ -2038,12 +2111,36 @@ export class QihuodetailComponent implements OnInit {
       }
     })
   }
+
+
+
+
+ 
+  
+  
+  @ViewChild('ordermodalchange') private ordermodalchange: ModalDirective;
   //生成pdf
   makepdf() {
-    this.qihuoapi.makepdf(this.qihuoid).then(data => {
+    console.log(this.changeordermodal);
+    this.qihuoapi.makepdf(this.qihuoid,this.changeordermodal).then(data => {
       this.toast.pop('success', data.msg);
+      this.hideordermodalchange() ;
+ 
     });
+}
+  hideordermodalchange() {
+    this.ordermodalchange.hide();
   }
+  ordermodalchangeshow() {
+    this.changeordermodal['ordermodal'] = 1;
+    this.ordermodalchange.show();
+  }
+
+
+
+
+
+
   /**修改mdm物料明细 */
   showdetmodify(oldvalueid, data) {
     if (!oldvalueid) { return; }
@@ -2059,6 +2156,14 @@ export class QihuodetailComponent implements OnInit {
     { value: '1', label: '开平板' }, { value: '2', label: '纵剪卷' }];
     if (this.qihuomodel['ordertype'] === 2) {// 如果是临调销售合同则需要添加仓库
       this.getcangkus();
+    }
+    if (this.qihuomodel['isweishi']) {
+        this.packageyaoqius = [{ label: '请选择。。。', value: null }];
+        this.classifyapi.getChildrenTree({ pid: 17746 }).then(data => {
+          data.forEach(element => {
+            this.packageyaoqius.push({ label: element.label, value: element.label });
+          });
+        });
     }
     this.iscountshow = false;
     this.goodscode = { gn: data['goodscode']['gn'] };
@@ -2105,6 +2210,16 @@ export class QihuodetailComponent implements OnInit {
     } else {
       this.editflag.iseditguige = false;
     }
+    // 查找仓库
+    this.cangku = [{ label: '非必填选项', value: '' }];
+    this.classifyApi.cangkulist().then((response) => {
+        response.forEach(element => {
+          this.cangku.push({
+            label: element.name,
+            value: element.id
+           });
+        });
+    });
     this.editTempParam.detdata = data;
     this.one = true;
     this.two = false;
@@ -2446,7 +2561,6 @@ export class QihuodetailComponent implements OnInit {
   }
   hidewuliuidqd() {
     if (this.isuser === 'cperson') {
-
       if (this.suser) {
         if (typeof (this.suser) === 'object') {
           this.qihuomodel['cpersonname'] = this.suser['name'];
@@ -2459,7 +2573,9 @@ export class QihuodetailComponent implements OnInit {
         this.qihuomodel['wuliuid'] = '';
       }
     }
-    this.modify(this.qihuomodel);
+    this.qihuoapi.addwuliuyuan(this.qihuomodel).then(() => {
+    });
+    this.getqihuomodel();
     this.hidewuliuid();
   }
 
@@ -3217,7 +3333,7 @@ export class QihuodetailComponent implements OnInit {
   getRoles() {
     let myrole = JSON.parse(localStorage.getItem('myrole'));
     for (let i = 0; i < myrole.length; i++) {
-      if (myrole[i] === 20 || myrole[i] === 21) {
+      if (myrole[i] === 20 || myrole[i] === 21 || myrole[i] === 33 || myrole[i] === 34) {
         this.neiwuwaiwu = true;
       }
     }
@@ -3255,6 +3371,8 @@ export class QihuodetailComponent implements OnInit {
   hideaddModal() {
     this.addqualityModal.hide();
   }
+
+  
   choice() {
     console.log(this.qhqualityModel['compensation']);
     if (!this.qhqualityModel['ischuliquality']) {
@@ -3365,13 +3483,19 @@ export class QihuodetailComponent implements OnInit {
       yunzafeeprice: 0,
       jiagongfeeprice: 0,
       unitname: null,
-      isinterestfree: false
+      isinterestfree: false,
+      jhzhouqi:null,
+      jhcangku:null
     };
     this.one = true;
     this.two = false;
     this.goodscode = {};
   }
   addmdmgoodscode() {
+    // if(this.qihuomodel['ordertype'] === 9 && !this.qihuomodel['thtype']){
+    //   this.toast.pop('warning', '请选择调货类型');
+    //   return;
+    // }
     this.mdmreset();
     this.zhidaoprices = [{ label: '请选择。。。', value: null },
     { value: '0', label: '正常' }, { value: '1', label: '低于' }, { value: '2', label: '总经理特批' }];
@@ -3389,6 +3513,16 @@ export class QihuodetailComponent implements OnInit {
     if (this.qihuomodel['ordertype'] === 2) {// 如果是临调销售合同则需要添加仓库
       this.getcangkus();
     }
+    // 查找仓库
+    this.cangku = [{ label: '非必填选项', value: '' }];
+    this.classifyApi.cangkulist().then((response) => {
+        response.forEach(element => {
+          this.cangku.push({
+            label: element.name,
+            value: element.id
+          });
+       });
+    });
     this.iscountshow = false;
     this.createmdmqihuodialog.show();
   }
@@ -3446,6 +3580,15 @@ export class QihuodetailComponent implements OnInit {
           this.qihuodetmodel['count'] = this.editTempParam.detdata['count'];
           this.qihuodetmodel['neibujiesuanprice'] = this.editTempParam.detdata['neibujiesuanprice'];
           this.qihuodetmodel['saleprice'] = this.editTempParam.detdata['saleprice'];
+          this.qihuodetmodel['jhzhouqi'] = this.editTempParam.detdata['jhzhouqi'];
+          if (this.qihuomodel['isweishi'] && this.editTempParam.detdata['packageyaoqiu']) {
+            this.qihuodetmodel['dabaoyaoqiu'] = this.editTempParam.detdata['packageyaoqiu'].split(',');
+          }
+          if (this.qihuomodel['isweishi']) {
+            this.qihuodetmodel['unitname'] = this.editTempParam.detdata['unitname'];
+            this.qihuodetmodel['unitweight'] = this.editTempParam.detdata['unitweight'];
+            this.qihuodetmodel['unitprice'] = this.editTempParam.detdata['unitprice'];
+          }
         }
       });
     });
@@ -3484,13 +3627,19 @@ export class QihuodetailComponent implements OnInit {
       }
     }
     if (!this.qihuodetmodel['saleprice']) { this.toast.pop('warning', '销售价格不允许为空！'); return; }
-    if (!this.qihuodetmodel['jiaohuodate']) { this.toast.pop('warning', '交货期限不允许为空！'); return; }
+    if(this.qihuomodel['ordertype'] !== 0 && this.qihuomodel['ordertype']!==1){
+      if (!this.qihuodetmodel['jiaohuodate']) { this.toast.pop('warning', '交货期限不允许为空！'); return; }
+    }
+    if(this.qihuomodel['ordertype'] === 0||this.qihuomodel['ordertype']===1){
+      if (!this.qihuodetmodel['jhzhouqi']) { this.toast.pop('warning', '交货周期不允许为空'); return; }
+    }
     if (!this.qihuodetmodel['jiaohuoaddr']) { this.toast.pop('warning', '交货地址不允许为空！'); return; }
     if (!this.qihuodetmodel['yongtu']) { this.toast.pop('warning', '用途不允许为空！'); return; }
     if (!this.qihuodetmodel['zhidaojiagedesc']) { this.toast.pop('warning', '指导价格不允许为空！'); return; }
     if (this.qihuodetmodel['isurgent'] === undefined) { this.toast.pop('warning', '是否急单不允许为空！'); return; }
-    if (this.qihuodetmodel['unitname']) {
-      if (this.qihuodetmodel['unitweight'] === undefined ||
+    if (this.qihuomodel['isweishi']) {
+      if (!this.qihuodetmodel['unitname'] ||
+        this.qihuodetmodel['unitweight'] === undefined ||
         this.qihuodetmodel['unitweight'] === null ||
         this.qihuodetmodel['unitprice'] === undefined ||
         this.qihuodetmodel['unitprice'] === null) {
@@ -3567,4 +3716,27 @@ export class QihuodetailComponent implements OnInit {
       }
     }
   }
+  //批量删除明细
+  qihuodetids: any = [];
+  deleteqihuodet() {
+    this.qihuodetids = new Array();
+    const qihuodetidsdetlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < qihuodetidsdetlist.length; i++) {
+      if (qihuodetidsdetlist[i].selected && qihuodetidsdetlist[i].data && qihuodetidsdetlist[i].data['id'] ) {
+        this.qihuodetids.push(qihuodetidsdetlist[i].data.id);
+      }
+    }
+    if (!this.qihuodetids.length) {
+      this.toast.pop('warning', '请选择明细之后再删除！');
+      return;
+    }
+    if (confirm('你确定要删除吗？')) {
+      this.qihuoapi.delqihuoDet(this.qihuodetids).then(data => {
+      this.toast.pop('success', '删除成功！');
+      this.getqihuomodel();
+      this.findqihuodet();
+      });
+    }
+  }
+  
 }

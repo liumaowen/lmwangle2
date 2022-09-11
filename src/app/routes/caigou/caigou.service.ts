@@ -632,4 +632,110 @@ export class CaigouService {
       return data.json() as any[];
     });
   }
+  listDiscountregister(model){
+    return this.http.get('store/api/fanlidet/getfanlidet', { search: model }).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  getfanidetgroup(model){
+    return this.http.get('store/api/fanlidet/getfanidetgroup', { search: model }).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  autofanlidet(){
+    return this.http.get('store/api/fanlidet/autofanlidet').toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  // 批量修改采购明细
+  batchUpdateIsfinish(search) {
+    return this.http.put('store/api/fanlidet/batchupdatefinish', search).toPromise().then(data => {
+      return data.json();
+    });
+  }
+  listkid(kid: string): Promise<any> {
+    return this.http.get(`store/api/classify/list/${kid}`).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  createfanlirule(search) {
+    return this.http.post('store/api/fanlirule/create', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  updatefanlirule(search) {
+    return this.http.put('store/api/fanlirule/updatefanlirule', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  getfanliruledet(search) {
+    return this.http.get('store/api/fanlirule/getdet', {search: search}).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  getfanlirulegrnodet(search) {
+    return this.http.get('store/api/fanlirulegrno/getfanlirulegrnodet', {search: search}).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  getfanlirulecaigoudet(search) {
+    return this.http.get('store/api/fanlirule/getfanlirulecaigoudet', {search: search}).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  // 优惠规则表引入采购明细中的资源号
+  importcaigoudet(search) {
+    return this.http.post('store/api/fanlirulegrno/create', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  // 批量删除返利规则的资源号
+  deletefanlirulegrno(search) {
+    return this.http.put('store/api/fanlirulegrno/deletedet', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  // 批量作废返利规则
+  fanlirulezuofei(search) {
+    return this.http.put('store/api/fanlirule/zuofei', search).toPromise().then(data => {
+        return data.json() as any[];
+    });
+  }
+  // 批量完成返利规则
+  finishfalirule(search) {
+    return this.http.put('store/api/fanlirule/finishfalirule', search).toPromise().then(data => {
+        return data.json() as any[];
+    });
+  }
+  // 查询返利规则操作记录
+  getfanlirulelog(id) {
+    return this.http.get('store/api/fanlirule/getfanlirulelog/'+id).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+
+  // 批量修改采购明细
+  batchUpdateYichan(search) {
+    return this.http.put('store/api/caigou/batchupdateyichan', search).toPromise().then(data => {
+      return data.json();
+    });
+  }
+  uploadprice(search) {
+    return this.http.post('store/api/caigou/uploadprice', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  uploadbeizhu2(search) {
+    return this.http.post('store/api/caigou/uploadbeizhu2', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  batchUpdate(search) {
+    return this.http.put('store/api/caigou/batchupdate', search).toPromise().then(data => {
+      return data.json();
+    });
+  }
+  modifyjiesuantype(model) {
+    return this.http.put('store/api/caigou/modifyjiesuantype', model).toPromise().then();
+  }
 }

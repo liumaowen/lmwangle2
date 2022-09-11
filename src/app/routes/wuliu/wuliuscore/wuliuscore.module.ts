@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'wuliuscore', component: WuliuscoreComponent, data: { 'title': '物流评价表' } },
   { path: 'transportfenxi', component: TransportfenxiComponent, data: { 'title': '物流运输分析表' } },
   { path: 'wuliusupplier', component: WuliusupplierComponent, data: { 'title': '物流供应商名录' } },
-  { path: 'regprice', component:  RegpriceComponent, data: { 'title': '常规路线询价表' } }
+  { path: 'regprice', component:  RegpriceComponent, data: { 'title': '物流询价表' } }
 ];
 
 

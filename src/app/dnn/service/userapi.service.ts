@@ -296,6 +296,9 @@ export class UserapiService {
   enableUser(userid, search) {
     return this.http.put(`store/api/user/enableuser/${userid}`, search).toPromise();
   }
+  disableUser(userid, search) {
+    return this.http.put(`store/api/user/disableuser/${userid}`, search).toPromise();
+  }
   modifypas(id, search) {
     return this.http.put(`store/api/user/${id}/password`, search).toPromise();
   }

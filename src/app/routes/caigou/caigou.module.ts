@@ -43,6 +43,8 @@ import { CginvoiceingdetComponent } from './cginvoiceingdet/cginvoiceingdet.comp
 import { CgfukuanplanComponent } from './cgfukuanplan/cgfukuanplan.component';
 import { CaigoujiaofuhuizongComponent } from './caigoujiaofuhuizong/caigoujiaofuhuizong.component';
 import { CaigoujiaofukaoheComponent } from './caigoujiaofukaohe/caigoujiaofukaohe.component';
+import { FanliruleComponent } from './fanlirule/fanlirule.component';
+import { DiscountregisterComponent } from './discountregister/discountregister.component';
 
 const routes: Routes = [
   { path: 'caigou', component: CaigouComponent, data: { 'title': '采购管理' } },
@@ -76,6 +78,9 @@ const routes: Routes = [
   { path: 'cgfukuanplan', component: CgfukuanplanComponent, data: { 'title': '采购付款计划' } },
   { path: 'caigoujiaofuhuizong', component: CaigoujiaofuhuizongComponent, data: { 'title': '采购交付汇总表' } },
   { path: 'caigoujiaofukaohe', component: CaigoujiaofukaoheComponent, data: { 'title': '采购交付考核表' } },
+  { path: 'fanlirule', component: FanliruleComponent, data: { 'title': '钢厂优惠规则表' } },
+  { path: 'discountregister', component: DiscountregisterComponent, data: { 'title': '优惠登记表' } },
+
 ];
 
 @NgModule({
@@ -99,7 +104,7 @@ const routes: Routes = [
     JsbuchadetComponent, JsbuchaimportComponent, JinhuoguanzhiComponent, CgfanliComponent, RukuapplyComponent, RukuapplydetComponent,
     JsbuchadetailsComponent, UrgentcontractComponent, CgfanlihuizongComponent, CaigoujiaofureportComponent,
     CginvoiceTiaohuoComponent, WeidaofanlihuizongComponent, LastyearwdfanlihuizongComponent, CginvoiceingdetComponent,
-    CgfukuanplanComponent, CaigoujiaofuhuizongComponent, CaigoujiaofukaoheComponent],
+    CgfukuanplanComponent, CaigoujiaofuhuizongComponent, CaigoujiaofukaoheComponent, FanliruleComponent, DiscountregisterComponent],
   exports: [RouterModule],
   providers: [CaigouService],
   entryComponents: [CaigoudetimportComponent, CaigoudetimpComponent, JsbuchaimportComponent]

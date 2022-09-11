@@ -508,7 +508,7 @@ export class KucundetimportComponent implements OnInit {
       }
     } else if (this.componentparent.proorder) { // 判断是否是加工合同引入的数据
       for (let i = 0; i < orgids.length; i++) {
-        if (this.componentparent.proorder.org.id !== orgids[i] && orgids[i] !== 670) {
+        if (this.componentparent.proorder.org.id !== orgids[i] && orgids[i] !== 670 && orgids[i] !== 22427 && orgids[i] !== 22350 && orgids[i] !== 21587) {
           this.toast.pop('warning', '只能引用自己机构或涂镀的货物做基料');
           return;
         }

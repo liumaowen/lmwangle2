@@ -49,6 +49,19 @@ export class QihuoService {
   deldet(qihuodetid): Promise<any> {
     return this.http.delete('store/api/qihuo/delqihuodet/' + qihuodetid).toPromise();
   }
+    /**批量删除销售合同明细 */
+    delldorder(search) {
+      return this.http.post('store/api/qihuo/delldorder', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+          }
+
+  /**批量删除销售合同明细 */
+  delqihuoDet(search) {
+    return this.http.post('store/api/qihuo/deleteqihuodet', search).toPromise().then(data => {
+    return data.json() as any[];
+  });
+        }
   // 添加定金
   adddingjin(model): Promise<any> {
     return this.http.post("store/api/qihuo/adddingjin", model).toPromise();
@@ -152,11 +165,12 @@ export class QihuoService {
     });
   }
   //生成pdf
-  makepdf(id): Promise<any> {
-    return this.http.get('store/api/qihuo/reload/' + id).toPromise().then(data => {
-      return data.json();
+  makepdf(id,ordermodal): Promise<any> {
+    return this.http.put('store/api/qihuo/reload/' + id,ordermodal).toPromise().then(data => {
+      return data.json() as any[];
     });
   }
+
   modifygc(detid, model) {
     return this.http.put('store/api/qihuo/modifygc/' + detid, model).toPromise();
   }
@@ -396,5 +410,9 @@ export class QihuoService {
     return this.http.get('store/api/mdm/getmat/' + id).toPromise().then(data => {
       return data.json() as any[];
     });
+  }
+//选择物流专员
+  addwuliuyuan(qihuomodel): Promise<any> {
+    return this.http.put('store/api/qihuo/addwuliuyuan', qihuomodel).toPromise();
   }
 }

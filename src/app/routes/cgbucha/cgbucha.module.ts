@@ -14,6 +14,7 @@ import { CgbuchaComponent } from './cgbucha/cgbucha.component';
 import { CgbuchadetreportComponent } from './cgbuchadetreport/cgbuchadetreport.component';
 import { CgbuchadetailComponent } from './cgbuchadetail/cgbuchadetail.component';
 import { CgbuchaimportComponent } from './../../dnn/shared/cgbuchaimport/cgbuchaimport.component';
+import { CgbuchafanliimportComponent } from 'app/dnn/shared/cgbuchafanliimport/cgbuchafanliimport.component';
 
 const routes: Routes = [
   { path: 'cgbucha', component: CgbuchaComponent, data: { 'title': '采购补差时序表' } },
@@ -34,9 +35,9 @@ const routes: Routes = [
     DropdownModule
   ],
   declarations: [
-    CgbuchaComponent, CgbuchadetreportComponent, CgbuchadetailComponent, CgbuchaimportComponent
+    CgbuchaComponent, CgbuchadetreportComponent, CgbuchadetailComponent, CgbuchaimportComponent,CgbuchafanliimportComponent
   ],
   providers: [CgbuchaapiService],
-  entryComponents: [CgbuchaimportComponent]
+  entryComponents: [CgbuchaimportComponent,CgbuchafanliimportComponent]
 })
 export class CgbuchaModule { }

@@ -9,8 +9,8 @@
       style="background-color:red;border-color:red;color:#ffffff;">删除</button>
     <button *ngIf="showbutton['imp']" type="button" (click)="basematerialImp()"
       class="btn btn-info btn-sm margin-top-bottom-25">基料引入</button>
-    <button *ngIf="tasklist['producemode']===3 && !tasklist['isv']" type="button" (click)="importdet()"
-      class="btn btn-info btn-sm margin-top-bottom-25">销售明细引入</button>
+    <!-- <button *ngIf="tasklist['producemode']===3 && !tasklist['isv']" type="button" (click)="importdet()"
+      class="btn btn-info btn-sm margin-top-bottom-25">销售明细引入</button> -->
     <button *ngIf="showbutton['imp']" type="button" (click)="submit()"
       class="btn btn-info btn-sm margin-top-bottom-25">提交审核</button>
     <!--<button *ngIf="showbutton['verify']&&!isweishi" type="button" (click)="refusverify()"
@@ -87,12 +87,12 @@
   </div>
   <div class="row fieldsetdnn">
 
-    <!-- <div class=" col-lg-3 col-md-6 ">
+    <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 form-control-static">打包带材料:</div>
         <div class="col-md-8 col-xs-6 form-control-static">{{cailiao ? cailiao : '见备注'}}</div>
       </div>
-    </div> -->
+    </div>
     <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 form-control-static">木托数量:</div>
@@ -117,14 +117,14 @@
             <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['packagetype']}}</div>
         </div>
     </div>
+</div>
+<div class="row fieldsetdnn">
     <div class=" col-lg-3 col-md-6 ">
         <div class="row">
             <div class="col-md-4 col-xs-6 form-control-static">卷内径:</div>
             <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['neijing']}}</div>
         </div>
     </div>
-  </div>
-  <div class="row fieldsetdnn">
     <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 form-control-static">是否审核:</div>
@@ -143,22 +143,24 @@
             <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['producemode'] | producemode}}</div>
         </div>
     </div>
-    <div class=" col-lg-3 col-md-6 " *ngIf="tasklist['fee']">
+    </div>
+    <div class="row fieldsetdnn">
+      <div class=" col-lg-3 col-md-6 " >
+        <div class="row">
+            <div class="col-md-4 col-xs-6 form-control-static">备注:</div>
+            <div class="col-md-8 col-xs-6 form-control-static">
+              <input type="text" placeholder="请输入备注" [(ngModel)]="tasklist['beizhu']" (blur)="modifybeizhu(tasklist)"
+                class="form-control" [disabled]="tasklist['isv']" />
+            </div>
+        </div>
+      </div>
+      <div class=" col-lg-3 col-md-6 " *ngIf="tasklist['fee']">
         <div class="row">
             <div class="col-md-4 col-xs-6 form-control-static">加工费:</div>
             <div class="col-md-8 col-xs-6 form-control-static">{{tasklist['fee']}}</div>
         </div>
-    </div>
-    <div class=" col-lg-3 col-md-6 " >
-      <div class="row">
-          <div class="col-md-4 col-xs-6 form-control-static">备注:</div>
-          <div class="col-md-8 col-xs-6 form-control-static">
-            <input type="text" placeholder="请输入备注" [(ngModel)]="tasklist['beizhu']" (blur)="modifybeizhu(tasklist)"
-              class="form-control" [disabled]="tasklist['isv']" />
-          </div>
       </div>
-  </div>
-  </div>
+    </div>
 </div>
 <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 342)+'px'}" #agGrid class="ag-blue wis-auto"
   [gridOptions]="gridOptions">
@@ -191,12 +193,12 @@
                   [placeholder]="'请选择卷内径'"></p-dropdown>
               </div>
             </div>
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">加工费</label>
               <div class="col-sm-9">
                 <input type="text" placeholder="请输入加工费" class="form-control" [(ngModel)]="modifytask['fee']" />
               </div>
-            </div>
+            </div> -->
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">联系电话</label>
               <div class="col-sm-9">
@@ -226,12 +228,12 @@
                 <input type="number" placeholder="请输入木托数量" class="form-control" [(ngModel)]="modifytask['mutuo']" />
               </div>
             </div>
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">钢带数量</label>
               <div class="col-sm-9">
                 <input type="number" placeholder="可不填" class="form-control" [(ngModel)]="modifytask['gangdai']" />
               </div>
-            </div>
+            </div> -->
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6" style="padding: 9.5px 30px;">
               <label class="col-sm-3 control-label">修边</label>
               <div class="col-sm-9">

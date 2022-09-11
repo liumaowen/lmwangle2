@@ -160,6 +160,15 @@ export class ClassifyApiService {
             return data.json() as any[];
         });
     }
+ 
+
+      ///////////////////////* 批量删除费用明细 */
+      deleteChukufees(search) {
+        return this.http.post('store/api/chukufee/chukufees', search ).toPromise();
+      }
+
+  
+
 
     addChukufee(search) {
         return this.http.post('store/api/chukufee', search).toPromise();
@@ -169,6 +178,9 @@ export class ClassifyApiService {
         return this.http.delete('store/api/chukufee/' + id).toPromise();
         // return this.http.post('store/api/projectcrm/fenye/', {}).toPromise();
     }
+    delzhuanhuofees(search) {
+        return this.http.post('store/api/zhuanhuofee/delzhuanhuofees', search ).toPromise();
+      }
 
     zhuanhuofeeList(id) {
         return this.http.get(`store/api/zhuanhuofee/${id}`).toPromise().then(data => {

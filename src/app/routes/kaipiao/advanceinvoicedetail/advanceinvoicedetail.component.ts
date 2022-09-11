@@ -754,7 +754,7 @@ export class AdvanceinvoicedetailComponent implements OnInit {
     this.params['price'] = Math.round(this.params['jine'].div(this.params['weight']) * 100) / 100;
   }
   //批量删除明细
-  detids: any = [];
+/*   detids: any = [];
   deletedetList(){
     this.detids = new Array();
     const detlist = this.gridOptions.api.getModel()['rowsToDisplay'];
@@ -773,7 +773,7 @@ export class AdvanceinvoicedetailComponent implements OnInit {
         this.getDetail();
       });
     }
-  }
+  } */
   /**附件弹窗 */
   showfujianmodal() {
     this.fujianModal.show();

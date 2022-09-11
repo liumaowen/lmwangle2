@@ -50,6 +50,14 @@ export class InnersaleapiService {
   removeOneDet(id): Promise<any> {
     return this.http.get('store/api/innersale/remove/' + id).toPromise();
   }
+  
+ 
+    /**批量删除明细 */
+    removeDet(search) {
+      return this.http.post('store/api/innersale/removelist', search).toPromise().then(data => {
+      return data.json() as any[];
+      });
+    }
 
   zhidingVuser(id): Promise<any> {
     return this.http.get('store/api/innersale/vuser/' + id).toPromise().then(data => {

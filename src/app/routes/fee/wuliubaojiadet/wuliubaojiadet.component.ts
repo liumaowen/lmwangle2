@@ -353,7 +353,7 @@ export class WuliubaojiadetComponent implements OnInit {
 
   listDetail() {
     const myrole = JSON.parse(localStorage.getItem('myrole'));
-    if (myrole.some(item => item === 9 || item === 1)) { // 物流专员和管理员
+    if (myrole.some(item => item === 9 || item === 1 || item === 50)) { // 物流专员和管理员和培训人员
       this.iswuliubu = true;
     } else {
       this.gridOptions.columnDefs.forEach((colde: ColDef) => {

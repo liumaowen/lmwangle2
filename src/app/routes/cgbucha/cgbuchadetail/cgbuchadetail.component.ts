@@ -11,6 +11,7 @@ import { ToasterService } from 'angular2-toaster/angular2-toaster';
 import { CgbuchaimportComponent } from './../../../dnn/shared/cgbuchaimport/cgbuchaimport.component';
 import { DatePipe } from '@angular/common';
 import { sortedUniq } from 'lodash';
+import { CgbuchafanliimportComponent } from 'app/dnn/shared/cgbuchafanliimport/cgbuchafanliimport.component';
 
 const sweetalert = require('sweetalert');
 
@@ -27,7 +28,7 @@ export class CgbuchadetailComponent implements OnInit {
   // 品名选择弹窗
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
   chandioptions: any = [];
-  modify: Object = { id: '', jine: '' };
+  modify: Object = { fanliid: '', jine: '' };
   // 采购补差详情
   caigouModel = { org: {}, buyer: {} };
   isshow: boolean;
@@ -123,9 +124,9 @@ export class CgbuchadetailComponent implements OnInit {
       {
         cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'jine', minWidth: 90,
         onCellClicked: (params) => {
-          if (params.data.fanliid) {
-            console.log(params.data);
-            this.modify['id'] = params.data.id;
+          if (params.data.group) {
+            this.modify['fanliid'] = params.data.fanliid;
+            this.modify['jine'] = params.data.jine;
             this.jineModal.show();
           }
         },
@@ -140,24 +141,31 @@ export class CgbuchadetailComponent implements OnInit {
         valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'amount', minWidth: 60, cellRenderer: (params) => {
-          return '<a target="_blank">删除</a>';
+        cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'amount', minWidth: 60, 
+        cellRenderer: (params) => {
+            if (!params.data.group) {
+                return '<a target="_blank">删除</a>';
+            } else {
+                return '';
+            }
         },
         onCellClicked: (params) => {
-          sweetalert({
-            title: '你确定要删除吗?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#23b7e5',
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            closeOnConfirm: false
-          }, () => {
-            this.cgbuchaApi.removedet(params.data.id).then(data => {
-              this.querydata();
-            });
-            sweetalert.close();
-          });
+            if (!params.data.group) {
+                sweetalert({
+                  title: '你确定要删除吗?',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#23b7e5',
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  closeOnConfirm: false
+                }, () => {
+                  this.cgbuchaApi.removedet(params.data.id).then(data => {
+                    this.querydata();
+                  });
+                  sweetalert.close();
+                });
+            }
         }
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 75 },
@@ -182,7 +190,7 @@ export class CgbuchadetailComponent implements OnInit {
         return;
       }
     }
-    this.cgbuchaApi.modifydet(this.modify['id'], this.modify).then(data => {
+    this.cgbuchaApi.modifydet(this.caigouModel['id'], this.modify).then(data => {
       this.toast.pop('success', '修改成功！', '');
       this.querydata();
       this.jineModal.hide();
@@ -343,6 +351,15 @@ export class CgbuchadetailComponent implements OnInit {
     this.cgbsModalRef = this.modalService.show(CgbuchaimportComponent);
     this.cgbsModalRef.content.parentthis = this;
   }
+  importfanli2() {
+    if (this.caigouModel['ispingzheng']) {
+      this.toast.pop('error', '已生成凭证不允许添加返利！', '');
+      return;
+    }
+    this.modalService.config.class = 'modal-all';
+    this.cgbsModalRef = this.modalService.show(CgbuchafanliimportComponent);
+    this.cgbsModalRef.content.parentthis = this;
+  }
   /**上传 */
   uploaddet() {
     this.uploaderModel.show();
@@ -394,7 +411,7 @@ export class CgbuchadetailComponent implements OnInit {
     this.buchadetids = new Array();
     const buchadetlist = this.gridOptions.api.getModel()['rowsToDisplay'];
     for (let i = 0; i < buchadetlist.length; i++) {
-      if (buchadetlist[i].selected && buchadetlist[i].data) {
+      if (buchadetlist[i].selected && buchadetlist[i].data && !buchadetlist[i].data['group']) {
         this.buchadetids.push(buchadetlist[i].data.id);
       }
     }

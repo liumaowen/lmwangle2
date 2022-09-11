@@ -44,7 +44,8 @@ export class WiskfindbysaleComponent implements OnInit {
       data.forEach(element => {
         this.results.push({
           name: element.company,
-          code: element.id
+          code: element.id,
+          isonline: element.isonline
         });
       });
     });

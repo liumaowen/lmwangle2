@@ -15,6 +15,8 @@
       class="btn btn-info btn-sm margin-top-bottom-25">验收</button>
     <button *ngIf="!showbutton['check']" type="button" (click)="cancelCheck()"
       class="btn btn-info btn-sm margin-top-bottom-25">撤销验收</button>
+    <button *ngIf="!showbutton['check']" type="button" (click)="weishizhibao()"
+      class="btn btn-info btn-sm margin-top-bottom-25">生成质保书</button>
   </div>
 </div>
 
@@ -150,7 +152,7 @@
       [gridOptions]="gridOptions" style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;">
       </ag-grid-angular>
     </p-tabPanel>
-    <p-tabPanel *ngIf="produce['jgdwid'] === 3786" header="费用明细"
+    <p-tabPanel header="费用明细"
       [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc',color: '#ddd'}">
       <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 439)+'px'}" #agGridq
         style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
@@ -335,6 +337,41 @@
           <div class="form-inline text-center">
             <button type="button" (click)="createproduceFee()" class="btn btn-primary btn-large">添加</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加修改弹窗-->
+<div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecreatemodal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">单价</label>
+              <div class="col-sm-9">
+                <input type="number" placeholder="请输入单价" class="form-control" [(ngModel)]="producefee2['price']" (blur)="getjine1()" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">金额</label>
+              <div class="col-sm-9">
+                <input type="number" placeholder="请输入金额" class="form-control" [(ngModel)]="producefee2['jine']" (blur)="getprice1()" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="modifyok()" class="btn btn-primary btn-large">修改</button>
         </div>
       </div>
     </div>

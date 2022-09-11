@@ -19,6 +19,7 @@ import { ProducedetailComponent } from './producedetail/producedetail.component'
 import { ProducechengbenComponent } from './producechengben/producechengben.component';
 import { TasklistComponent } from './tasklist/tasklist.component';
 import { TaskdetComponent } from './taskdet/taskdet.component';
+import { TasklistdetComponent } from './tasklistdet/tasklistdet.component';
 
 const routes: Routes = [
   { path: 'myproduce', component: MyproduceComponent, data: { 'title': '加工单管理' } },
@@ -27,7 +28,8 @@ const routes: Routes = [
   { path: 'producedet', component: ProducedetComponent, data: { 'title': '加工单明细表' } },
   { path: 'producechengben/:id', component: ProducechengbenComponent, data: { 'title': '成本计算方式' } },
   { path: 'tasklist', component: TasklistComponent, data: { 'title': '加工任务单管理' } },
-  { path: 'tasklist/:id', component: TaskdetComponent, data: { 'title': '加工任务单详情' } }
+  { path: 'tasklist/:id', component: TaskdetComponent, data: { 'title': '加工任务单详情' } },
+  { path: 'tasklistdet',component: TasklistdetComponent,data:{'title':'加工任务单明细表'}}
 ];
 
 @NgModule({
@@ -44,7 +46,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [MyproduceComponent, ProduceComponent, ProducedetComponent, ProducedetailComponent, BasematerialimportComponent,
-    FproductimportComponent, ProducechengbenComponent, TasklistComponent, TaskdetComponent, TasklistdetimportComponent],
+    FproductimportComponent, ProducechengbenComponent, TasklistComponent, TaskdetComponent, TasklistdetimportComponent,TasklistdetComponent],
   providers: [ProorderapiService, ProduceapiService],
   entryComponents: [BasematerialimportComponent, FproductimportComponent, TasklistdetimportComponent]
 })
