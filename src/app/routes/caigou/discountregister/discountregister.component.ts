@@ -14,8 +14,8 @@ import { ToasterService } from 'angular2-toaster';
   styleUrls: ['./discountregister.component.scss']
 })
 export class DiscountregisterComponent implements OnInit {
-  start: Date = new Date(new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + 1);
-  end: Date = new Date(new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + 1);
+  start: Date = new Date();
+  end: Date = new Date();
   search: any = {start: this.datepipe.transform(this.start, 'y-MM-dd'),end: this.datepipe.transform(this.end, 'y-MM-dd')};
   gridOptions: GridOptions;
   @ViewChild('gcinfodialog') private gcinfodialog: ModalDirective;
@@ -64,6 +64,16 @@ export class DiscountregisterComponent implements OnInit {
           }
         }
       },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '规则单号', field: 'fanlirulebillno', minWidth: 100,
+        cellRenderer: (params) => {
+          if (params.data && params.data['fanlirulebillno']) {
+            return '<a target="_blank" href="#/fanlirule/' + params.data.fanliruleid + '">' + params.data.fanlirulebillno + '</a>';
+          } else {
+            return '';
+          }
+        }
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '供应商', field: 'supplier', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 90 },
@@ -101,16 +111,16 @@ export class DiscountregisterComponent implements OnInit {
           }
         }, valueFormatter: this.settings.valueFormatter3
       },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '在途重量', field: 'zaituweight', minWidth: 90, aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data) {
-            return Number(params.data['zaituweight']);
-          } else {
-            return 0;
-          }
-        }, valueFormatter: this.settings.valueFormatter3
-      },
+    //   {
+    //     cellStyle: { 'text-align': 'center' }, headerName: '在途重量', field: 'zaituweight', minWidth: 90, aggFunc: 'sum',
+    //     valueGetter: (params) => {
+    //       if (params.data) {
+    //         return Number(params.data['zaituweight']);
+    //       } else {
+    //         return 0;
+    //       }
+    //     }, valueFormatter: this.settings.valueFormatter3
+    //   },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '退货量', field: 'tuihuoweight', minWidth: 90, aggFunc: 'sum',
         valueGetter: (params) => {
@@ -143,6 +153,7 @@ export class DiscountregisterComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '订单是否完成', field: 'isfinish', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '返利类型', field: 'youhuitype', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '单价', field: 'price', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '预估返利金额', field: 'yugufanlijine', minWidth: 120, aggFunc: 'sum', valueGetter: (params) => {
         if (params.data) {
           return Number(params.data['yugufanlijine']);
@@ -175,8 +186,21 @@ export class DiscountregisterComponent implements OnInit {
       }, valueFormatter: this.settings.valueFormatter2 },
       { cellStyle: { 'text-align': 'center' }, headerName: '实际返利节点', field: 'shijifanlijiedian', minWidth: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '返利是否完成', field: 'discountisfinishname', minWidth: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: 'id', field: 'id', minWidth: 50 },
     ];
+    this.getdate();
+  }
+
+  getdate() {
+    let month:any = new Date().getMonth()+1;
+    if (month<10) {
+        month = '0'+month;
+    }
+    this.start = new Date(new Date().getFullYear() + '-' + month + '-01');
+    this.end = new Date(new Date().getFullYear() + '-' + month + '-01');
+    this.search['start'] = this.datepipe.transform(this.start, 'y-MM-dd');
+    this.search['end'] = this.datepipe.transform(this.end, 'y-MM-dd');
   }
 
   ngOnInit() {
@@ -312,8 +336,8 @@ export class DiscountregisterComponent implements OnInit {
     this.search['end'] = this.datepipe.transform(value, 'y-MM-dd');
   }
   autofanlidet() {
-    if (window.confirm('需要花费一定的时间，确定要同步吗？')) {
-        this.caigouApi.autofanlidet().then((data) => {
+    if (window.confirm('需要花费很长的时间，确定要同步吗？')) {
+        this.caigouApi.autofanlidet({}).then((data) => {
             this.listDetail();
         });
     }

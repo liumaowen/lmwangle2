@@ -23,6 +23,8 @@ import { QualityobjectionimportComponent } from 'app/dnn/shared/qualityobjection
 import { RukuService } from 'app/routes/ruku/ruku.service';
 import { MatchcarService } from 'app/routes/matchcar/matchcar.service';
 
+const sweetalert = require('sweetalert');
+
 @Component({
   selector: 'app-businessorderdetail',
   templateUrl: './businessorderdetail.component.html',
@@ -983,13 +985,23 @@ export class BusinessorderdetailComponent implements OnInit {
     if (null == this.businessorder['beizhu']) {
       this.businessorder['beizhu'] = '';
     }
-    if (confirm('你确定要提交审核人吗？')) {
-      // tslint:disable-next-line:max-line-length
-      this.businessorderApi.submitVuser(this.businessorder['id'], { vuserid: this.businessorder['vuserid'], beizhu: this.businessorder['beizhu'] }).then((data) => {
-        this.businessorder = data['order'];
-        this.router.navigateByUrl('order');
-        this.toast.pop('success', '审核人提交成功');
-      });
+    if(this.businessorder['compensation'] === 0){
+      if (confirm('该质量异议钢厂尚未赔付，属于先行赔付，需审批到总经理，是否确认提交')) {
+        this.businessorderApi.submitVuser(this.businessorder['id'], { vuserid: this.businessorder['vuserid'], beizhu: this.businessorder['beizhu'] }).then((data) => {
+          this.businessorder = data['order'];
+          this.router.navigateByUrl('order');
+          this.toast.pop('success', '审核人提交成功');
+        });
+      }
+    }else{
+      if (confirm('你确定要提交审核人吗？')) {
+        // tslint:disable-next-line:max-line-length
+        this.businessorderApi.submitVuser(this.businessorder['id'], { vuserid: this.businessorder['vuserid'], beizhu: this.businessorder['beizhu'] }).then((data) => {
+          this.businessorder = data['order'];
+          this.router.navigateByUrl('order');
+          this.toast.pop('success', '审核人提交成功');
+        });
+      }
     }
   }
 
@@ -1052,7 +1064,7 @@ export class BusinessorderdetailComponent implements OnInit {
         this.orderchange();
       }else{
         this.payordershow();
-        this.businessorderApi.getmoney1({ buyerid: this.businessorder['buyerid'], wcustomerid: this.businessorder['sellerid'] }).then(data => {
+        this.businessorderApi.getmoney1({ buyerid: this.businessorder['buyerid'], wcustomerid: this.businessorder['sellerid'],salemanid: this.businessorder['salemanid']}).then(data => {
           if (!data['wyue']) {
             this.msg['currentmoney'] = '0';
           } else {
@@ -1076,7 +1088,7 @@ export class BusinessorderdetailComponent implements OnInit {
       }
     }else{
       this.payordershow();
-      this.businessorderApi.getmoney1({ buyerid: this.businessorder['buyerid'], wcustomerid: this.businessorder['sellerid'] }).then(data => {
+      this.businessorderApi.getmoney1({ buyerid: this.businessorder['buyerid'], wcustomerid: this.businessorder['sellerid'],salemanid: this.businessorder['salemanid'] }).then(data => {
         if (!data['wyue']) {
           this.msg['currentmoney'] = '0';
         } else {
@@ -1216,7 +1228,7 @@ export class BusinessorderdetailComponent implements OnInit {
 
   // 欠款支付
   arrearspay() {
-    this.businessorderApi.getmoney({ buyerid: this.businessorder['buyerid'], wcustomerid: this.businessorder['sellerid'] }).then((data) => {
+    this.businessorderApi.getmoney({ buyerid: this.businessorder['buyerid'], wcustomerid: this.businessorder['sellerid'],salemanid:this.businessorder['salemanid'] }).then((data) => {
       if (!data['wyue']) {
         this.msg['currentmoney'] = '0';
       } else {
@@ -1525,7 +1537,7 @@ export class BusinessorderdetailComponent implements OnInit {
       this.toast.pop('warning', '请审核后添加配款！');
       return;
     }
-    const moneyquery = { buyerid: this.businessorder['buyer']['id'], wcustomerid: this.businessorder['seller']['id'] };
+    const moneyquery = { buyerid: this.businessorder['buyer']['id'], wcustomerid: this.businessorder['seller']['id'],salemanid: this.businessorder['salemanid']};
     this.moneyapi.getmoney(moneyquery).then(data => {
       if (!data['wyue']) {
         this.curyue = 0;

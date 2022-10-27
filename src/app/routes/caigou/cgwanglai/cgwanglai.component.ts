@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { CustomerapiService } from './../../customer/customerapi.service';
 import { ToasterService } from 'angular2-toaster/angular2-toaster';
 import { ActivatedRoute } from '@angular/router';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-cgwanglai',
@@ -25,10 +26,11 @@ export class CgwanglaiComponent implements OnInit {
   // 开始时间
   start: Date = new Date('2017-01-01');
   // 结束时间
+  current = this.storage.getObject('cuser');
   end: null;
   search: object = { start: '', end: '', orgid: '', supplierid: '' };
   constructor(private caigouApi: CaigouService, public settings: SettingsService, private datepipe: DatePipe,
-    private toast: ToasterService, private customerApi: CustomerapiService, private route: ActivatedRoute) {
+    private toast: ToasterService, private customerApi: CustomerapiService, private route: ActivatedRoute,private storage: StorageService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
@@ -137,6 +139,8 @@ export class CgwanglaiComponent implements OnInit {
   }
   selectstart() { }
   query() {
+    this.search['orgid']=this.current.orgid;
+    this.search['salemanid']=this.current.id;
     if (this.start) {
       this.search['start'] = this.datepipe.transform(this.start, 'y-MM-dd');
     }

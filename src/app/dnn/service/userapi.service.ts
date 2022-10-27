@@ -259,6 +259,12 @@ export class UserapiService {
       return data.json() as any[];
     });
   }
+  // 获取有库存的仓库
+  cangkulist2(): Promise<any> {
+    return this.http.get('store/api/classify/cangkulist2').toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
   // 获取万事达内部公司
   findwiskind(): Promise<any> {
     return this.http.get('store/api/customer/findwiskind').toPromise().then((data) => {

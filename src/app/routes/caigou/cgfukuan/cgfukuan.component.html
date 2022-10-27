@@ -203,7 +203,12 @@
                 <p-dropdown [options]="chandioptions" [disabled]="!model['gn']" [(ngModel)]="model['chandi']" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
-
+            <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">合同月份</label>
+                <div class="col-sm-9">
+                  <wisk-yearmonthselect (select)="selectmonth($event)"></wisk-yearmonthselect>
+                </div>
+              </div>
             <!-- <div class="form-group mb fieldsetdnn row">
               <label class="col-sm-3 control-label">产地</label>
               <div class="col-sm-9">

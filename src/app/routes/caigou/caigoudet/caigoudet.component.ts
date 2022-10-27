@@ -5,7 +5,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CaigouService } from '../caigou.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QihuoService } from '../../qihuo/qihuo.service';
-import { GridOptions } from 'ag-grid/main';
+import { ColDef, GridOptions } from 'ag-grid/main';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { ClassifyApiService } from '../../../dnn/service/classifyapi.service';
 import { ModalDirective, BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
 import { SelectComponent } from 'ng2-select';
 import { CustomerapiService } from 'app/routes/customer/customerapi.service';
 import { MdmService } from 'app/routes/mdm/mdm.service';
+import { HttpParams } from '@angular/common/http';
+import { MaGangAddComponent } from 'app/dnn/shared/magangadd/magangadd.component';
 
 const sweetalert = require('sweetalert');
 @Component({
@@ -52,6 +54,18 @@ export class CaigoudetComponent implements OnInit {
   mdmgnsearch = { pagenum: 1, pagesize: 10, itemname: '', categoryname: '' };
   goodscode: any = {};
   chandigongchas = [];
+  bsModalRef: BsModalRef;
+  noticewuliuparams: any = {}; // 通知物流专员报价弹窗的参数
+  caigoudetList: any = [];
+  selectQihuodetWuliubaojia: any = [];
+  updateDet: any = { ordermodal1:null,id: null, wuliuuserid: null, jibanhoudu: null, jiaoqi1:null,params:null,data:null,transporttype:null};
+    // 控制编辑的
+    model = { expcangku: '', org: '', cuser: '', issubmit: false, buser: {}, cperson: {} };
+  caigoudet= {};
+  jiaoqi: Date = new Date();
+  transporttype = [{ label: '请选择。。。', value: null }, { label: '汽运', value: 1 }, { label: '铁运', value: 2 }, { label: '船运', value: 3 }];
+  changeordermodal1={ordermodal1:null};
+  ordermodal1=[{value:'1',label:'默认模板'},{value:'2',label:'马钢模板'}];
   editTempParam = { detdata: null }; // 修改明细临时变量
   editflag = { zhidan: false };
   @ViewChild('addFeeModal') private addFeeModal: ModalDirective;
@@ -84,7 +98,6 @@ export class CaigoudetComponent implements OnInit {
   caigou: Object = { seller: '', buyer: '', vuser: '', org: '' };
   // 资源号
   grno: Object = { grno: null, detid: '' };
-  updateDet = {};
   // 采购弹窗对象
   cgbsModalRef: BsModalRef;
   cg: object = { jiaohuoaddr: '', id: '', beizhu: '', areaid: '' };
@@ -118,7 +131,7 @@ export class CaigoudetComponent implements OnInit {
   constructor(private caigouApi: CaigouService, private fb: FormBuilder, private actroute: ActivatedRoute, public settings: SettingsService,
     private classifyApi: ClassifyApiService, private toast: ToasterService, private bsModalService: BsModalService,
     private qihuoapi: QihuoService, private router: Router, private datepipe: DatePipe, private storage: StorageService,
-    private customerApi: CustomerapiService, public mdmService: MdmService,) {
+    private customerApi: CustomerapiService, public mdmService: MdmService, private modalService1: BsModalService,) {
     // 表单验证
     this.form = fb.group({
       'caigouweight': [null, Validators.compose([Validators.required,
@@ -168,7 +181,7 @@ export class CaigoudetComponent implements OnInit {
           result.push({
             name: '插行复制',
             action: () => {
-              // console.log('/*/********************', params);
+              console.log('/*/********************', params);
               this.copy['id'] = params.node.data.id;
               this.caigouApi.copydet(this.copy).then(data => {
                 this.toast.pop('success', '复制插行成功！');
@@ -224,12 +237,6 @@ export class CaigoudetComponent implements OnInit {
           });
           console.log('value1asd');
         }
-        // onCellClicked: (params) => {
-        //   this.grno['detid'] = params.data.id;
-        //   this.grno['grno'] = params.data.grno;
-        //   console.log(params);
-        //   this.grnoModal.show();
-        // }
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '合约号', field: 'contractno', minWidth: 100, editable: true,
@@ -481,7 +488,7 @@ export class CaigoudetComponent implements OnInit {
           }
         }
       },
-      {
+      { 
         cellStyle: { 'text-align': 'center' }, headerName: '喷码', field: 'penma', minWidth: 80,
         onCellClicked: (data) => {
           // if (!this.caigou['isv'] && data['data']['orderdetid'] === null && this.caigou['status'] === 0) {
@@ -643,9 +650,12 @@ export class CaigoudetComponent implements OnInit {
         }
       }
     ];
+    
   }
 
   ngOnInit() {
+    console.log(1001)
+    console.log(this.det)
     this.getcaigou();
   }
   orgclose() {
@@ -661,6 +671,14 @@ export class CaigoudetComponent implements OnInit {
         this.isgz = false;
       }
       this.caigou = data.caigou;
+      this.gridOptions.columnDefs.forEach((colde: ColDef) => {
+        if(!data.ismagang){
+          if (colde.colId === "jibanhoudu") {
+            colde.suppressToolPanel = true;
+          }
+        }
+      });
+      
       // if (data.caigou.kind === 1) {
       //   this.flag['qihuo'] = true;
       // } else {
@@ -1051,11 +1069,53 @@ export class CaigoudetComponent implements OnInit {
       this.getcaigou();
     });
   }
-  reload() {
-    this.caigouApi.reloadcg(this.actroute.params['value']['id']).then(data => {
+
+
+
+ // 生成PDF
+ @ViewChild('ordermodalchange') private ordermodalchange: ModalDirective;
+ reload() {
+   if(this.changeordermodal1['ordermodal1']==2){
+    this.caigouaddfieldshow();
+    // this.addfieldshow();
+   }else{
+    this.caigouApi.reloadcg(this.actroute.params['value']['id'],this.changeordermodal1).then(data => {
       this.toast.pop('success', data.msg);
+      this.hideordermodalchange() ;
     });
   }
+}
+  reload1() {
+    this.caigouApi.reloadcg(this.actroute.params['value']['id'],this.changeordermodal1).then(data => {
+      this.toast.pop('success', data.msg);
+      this.hideordermodalchange() ;
+      this.hideaddfield() ;
+    });
+  }
+
+ hideordermodalchange() {
+   this.ordermodalchange.hide();
+
+ }
+ ordermodalchangeshow() {
+  this.jiaoqi = new Date();
+  this.ordermodalchange.show();
+ }
+
+
+// 马钢模板手动输入字段值
+ @ViewChild('caigoudetaddfield') private caigoudetaddfield: ModalDirective;
+ hideaddfield() {
+  this.caigoudetaddfield.hide();
+}
+addfieldshow() {
+  this.jiaoqi = new Date();
+  this.caigoudetaddfield.show();
+}
+
+
+
+
   print() {
     this.caigouApi.cgprint(this.actroute.params['value']['id']).then(data => {
       if (!data.flag) {
@@ -1616,9 +1676,6 @@ export class CaigoudetComponent implements OnInit {
     this.feemodel['ids'] = ids;
     this.addFeeModal.show();
     this.getCategory();
-    console.log(1111111);
-    console.log(ids);
-    console.log(ids[0]);
     if (ids.length === 1) {
       this.caigouApi.getYugufeeList(ids[0]).then(data => {
         this.lines = data;
@@ -1743,5 +1800,59 @@ export class CaigoudetComponent implements OnInit {
     });
     this.jiesuantypclose();
   }
+    // 判断是否可以编辑
+    editable(params) {
+      if (null != params.node.data.order.vuserid) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    /**采购马钢手动弹窗 */
+    shownoticewuliuyuan() {
+      console.log(4545)
+      console.log(this.changeordermodal1)
+      if(this.changeordermodal1['ordermodal1']==2){
+        this.caigoudetList = [];
+        const caigouid = this.actroute.params['value']['id'];
+        this.caigouApi.caigoudetadd(caigouid).then(data => {
+          this.caigoudetList = data;
+          this.noticewuliuparams = { qihuodets: this.caigoudetList, id:caigouid, ordermodal1:this.ordermodal1,changeordermodal1:this.transporttype };
+          this.bsModalRef = this.modalService1.show(MaGangAddComponent, { class: 'modal-all' });
+          this.bsModalRef.content.parentThis = this;
+          this.hideordermodalchange() ;
+          this.hideaddfield() ;
+          this.hidecaigouaddfield();
+        });
+      } else if(this.changeordermodal1['ordermodal1']==1) {
+        this.caigouApi.reloadcg(this.actroute.params['value']['id'],this.changeordermodal1).then(data => {
+          this.toast.pop('success', data.msg);
+          this.hideordermodalchange() ;
+        });
+      }
+    }
+    wuliunoticehide() {
+      this.bsModalRef.hide();
+
+  }
+     
+    
+  
+
+
+
+
+  
+       /**采购马钢手动弹窗 */
+       @ViewChild('caigouaddfield') private caigouaddfield: ModalDirective;
+       hidecaigouaddfield() {
+         this.caigouaddfield.hide();
+       }
+       caigouaddfieldshow() {
+       this.jiaoqi = new Date();
+       this.caigouaddfield.show();
+       }
+  
+ 
 
 }

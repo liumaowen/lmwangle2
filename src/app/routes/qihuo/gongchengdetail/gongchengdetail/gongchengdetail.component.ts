@@ -5,6 +5,7 @@ import { QihuoService } from '../../qihuo.service';
 import { ToasterService } from 'angular2-toaster';
 import { GridOptions } from 'ag-grid';
 import { ModalDirective } from 'ngx-bootstrap';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-gongchengdetail',
@@ -15,13 +16,15 @@ export class GongchengdetailComponent implements OnInit {
   gridOptions: GridOptions;
   search: any = { start: null, end: null, buyerid: '' };
   qihuodetids = new Array();
+  current = this.storage.getObject('cuser');
+
   @ViewChild('setfinishdesc') private setfinishdesc: ModalDirective;
   @ViewChild('searchdialog') private searchdialog: ModalDirective;
   // 开始时间
   start = new Date(); // 设定页面开始时间默认值
   end = new Date();
   maxDate = new Date();
-  constructor(public settings: SettingsService, private datepipe: DatePipe, private qhuoApi: QihuoService, private toast: ToasterService) {
+  constructor(public settings: SettingsService, private datepipe: DatePipe, private qhuoApi: QihuoService, private toast: ToasterService,private storage: StorageService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
@@ -100,6 +103,8 @@ export class GongchengdetailComponent implements OnInit {
     this.searchdialog.hide();
   }
   select() {
+    this.search['salemanid']=this.current.id;
+    this.search['orgid']=this.current.orgid;
     if (!this.start) {
       this.toast.pop('warning', '请填写开始时间');
       return;
@@ -111,9 +116,9 @@ export class GongchengdetailComponent implements OnInit {
     if (this.search['buyerid']) {
       this.search['buyerid'] = this.search['buyerid']['code'];
     }
-    if (this.search['salemanid']) {
-      this.search['salemanid'] = this.search['salemanid']['code'];
-    }
+    // if (this.search['salemanid']) {
+    //   this.search['salemanid'] = this.search['salemanid']['code'];
+    // }
     this.search['start'] = this.datepipe.transform(this.start, 'y-MM-dd');
     this.search['end'] = this.datepipe.transform(this.end, 'y-MM-dd');
     console.log(this.search);

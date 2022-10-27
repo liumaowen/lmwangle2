@@ -76,6 +76,7 @@ import { FkjiesuantypePipe } from './pipe/fkjiesuantype.pipe';
 import { MystarComponent } from './mystar/mystar.component';
 import { WiswiswlcompanysearchComponent } from './wiswlcompanysearch/wiswlcompanysearch.component';
 import { NoticewuliuyuanComponent } from './noticewuliuyuan/noticewuliuyuan.component';
+import { MaGangAddComponent } from 'app/dnn/shared/magangadd/magangadd.component';
 import { InnertransterPipe } from './pipe/innertransfer.pipe';
 import { AgGridModule } from 'ag-grid-angular';
 import { ModalModule, PaginationModule } from 'ngx-bootstrap';
@@ -88,6 +89,8 @@ import { DataTableModule } from 'angular2-datatable';
 import { MdmselectgnComponent } from './mdmselectgn/mdmselectgn.component';
 import { ToasterModule } from 'angular2-toaster';
 import { ProducemodePipe } from './pipe/producemode.pipe';
+import { isLinshicangkuPipe } from './pipe/islinshicangku.pipe';
+import { JiesuanmouldPipe } from './pipe/jiesuanmould.pipe';
 
 
 @NgModule({
@@ -179,12 +182,15 @@ import { ProducemodePipe } from './pipe/producemode.pipe';
     WiskfindbybillnoComponent,
     MystarComponent,
     NoticewuliuyuanComponent,
+    MaGangAddComponent,
     CreategoodscodeComponent,
     MdmselectgnComponent,
     ZaitukucunimportComponent,
     ImpzhiyajinComponent,
     YearselectComponent,
-    ProducemodePipe
+    ProducemodePipe,
+    isLinshicangkuPipe,
+    JiesuanmouldPipe
   ],
   exports: [
     IsTranslatedPipe,
@@ -257,10 +263,13 @@ import { ProducemodePipe } from './pipe/producemode.pipe';
     WiskonlineandsaleComponent,
     MystarComponent,
     NoticewuliuyuanComponent,
+    MaGangAddComponent,
     CreategoodscodeComponent,
     MdmselectgnComponent,
     ZaitukucunimportComponent,
-    YearselectComponent
+    YearselectComponent,
+    isLinshicangkuPipe,
+    JiesuanmouldPipe
   ],
   entryComponents: [MdmselectgnComponent]
 })

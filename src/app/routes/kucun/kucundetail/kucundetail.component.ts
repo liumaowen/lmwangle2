@@ -447,7 +447,7 @@ export class KucundetailComponent implements OnInit {
     }
     if (!this.ckitems) {
       this.ckitems = [{ value: '', label: '全部' }];
-      this.userapi.cangkulist().then(data => {
+      this.userapi.cangkulist2().then(data => {
         data.forEach(element => {
           this.ckitems.push({
             value: element['id'],
@@ -940,7 +940,7 @@ export class KucundetailComponent implements OnInit {
   }
   // 查看质保书的路径
   getZhibaoUrl(data) {
-    if(data.wsid !== null){
+    if(data.wsid){
       this.rukuapi.printWeishiZhibaoshu(data.kunbaohao).then((response) => {
         if (!response['flag']) {
           this.toast.pop('warning', response['msg']);
@@ -1019,7 +1019,7 @@ export class KucundetailComponent implements OnInit {
     const myrole = JSON.parse(localStorage.getItem('myrole'));
     this.gridOptions.columnDefs.forEach((colde: ColDef) => {
       // 如果登陆的用户是非财务人员，设置为不可见
-      if (!myrole.some(item => item === 5)) {
+      if (!myrole.some(item => item === 5 || item === 35)) {
         if (colde.colId === 'buyername2' || colde.colId === 'sellername' || colde.colId === 'ftype') {
           colde.hide = true;
           colde.suppressToolPanel = true;

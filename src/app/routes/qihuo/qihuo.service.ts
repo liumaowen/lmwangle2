@@ -415,4 +415,29 @@ export class QihuoService {
   addwuliuyuan(qihuomodel): Promise<any> {
     return this.http.put('store/api/qihuo/addwuliuyuan', qihuomodel).toPromise();
   }
+  delfujian(search): Promise<any> {
+    return this.http.put('store/api/qihuo/delfujian', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  uploadfujian(search): Promise<any> {
+    return this.http.put('store/api/qihuo/uploadfujian', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  findfujians(qihuoid): Promise<any> {
+    return this.http.get('store/api/qihuo/findfujians/' + qihuoid).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  chakan(model) {
+    return this.http.put('store/api/qihuo/updatechakan', model).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  } 
+  findfujians2(search){
+    return this.http.put('store/api/qihuo/orderdetlist',search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

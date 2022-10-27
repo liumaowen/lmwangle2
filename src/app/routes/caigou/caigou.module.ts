@@ -9,7 +9,7 @@ import { AgGridModule } from 'ag-grid-angular/main';
 import { SelectModule } from 'ng2-select';
 import { SharedModule } from '../../shared/shared.module';
 import { WiskSharedsModule } from '../../dnn/shared/wiskshared.module';
-import { CalendarModule, DropdownModule } from 'primeng/primeng';
+import { CalendarModule, DropdownModule, TabViewModule } from 'primeng/primeng';
 import { DataTableModule } from 'angular2-datatable';
 import { FormsModule } from '@angular/forms';
 import { CgfukuanComponent } from './cgfukuan/cgfukuan.component';
@@ -45,6 +45,7 @@ import { CaigoujiaofuhuizongComponent } from './caigoujiaofuhuizong/caigoujiaofu
 import { CaigoujiaofukaoheComponent } from './caigoujiaofukaohe/caigoujiaofukaohe.component';
 import { FanliruleComponent } from './fanlirule/fanlirule.component';
 import { DiscountregisterComponent } from './discountregister/discountregister.component';
+import { FanliruledetailComponent } from './fanliruledetail/fanliruledetail.component';
 
 const routes: Routes = [
   { path: 'caigou', component: CaigouComponent, data: { 'title': '采购管理' } },
@@ -79,6 +80,7 @@ const routes: Routes = [
   { path: 'caigoujiaofuhuizong', component: CaigoujiaofuhuizongComponent, data: { 'title': '采购交付汇总表' } },
   { path: 'caigoujiaofukaohe', component: CaigoujiaofukaoheComponent, data: { 'title': '采购交付考核表' } },
   { path: 'fanlirule', component: FanliruleComponent, data: { 'title': '钢厂优惠规则表' } },
+  { path: 'fanlirule/:id', component: FanliruledetailComponent, data: { 'title': '钢厂优惠规则详情' } },
   { path: 'discountregister', component: DiscountregisterComponent, data: { 'title': '优惠登记表' } },
 
 ];
@@ -95,7 +97,8 @@ const routes: Routes = [
     CalendarModule,
     DropdownModule,
     DataTableModule,
-    FormsModule
+    FormsModule,
+    TabViewModule
   ],
   declarations: [CaigouComponent, CaigoudetComponent, CaigoudetimportComponent, CaigoudetimpComponent,
     CgfukuanComponent, CgfukuandetComponent,
@@ -104,7 +107,7 @@ const routes: Routes = [
     JsbuchadetComponent, JsbuchaimportComponent, JinhuoguanzhiComponent, CgfanliComponent, RukuapplyComponent, RukuapplydetComponent,
     JsbuchadetailsComponent, UrgentcontractComponent, CgfanlihuizongComponent, CaigoujiaofureportComponent,
     CginvoiceTiaohuoComponent, WeidaofanlihuizongComponent, LastyearwdfanlihuizongComponent, CginvoiceingdetComponent,
-    CgfukuanplanComponent, CaigoujiaofuhuizongComponent, CaigoujiaofukaoheComponent, FanliruleComponent, DiscountregisterComponent],
+    CgfukuanplanComponent, CaigoujiaofuhuizongComponent, CaigoujiaofukaoheComponent, FanliruleComponent, DiscountregisterComponent, FanliruledetailComponent],
   exports: [RouterModule],
   providers: [CaigouService],
   entryComponents: [CaigoudetimportComponent, CaigoudetimpComponent, JsbuchaimportComponent]

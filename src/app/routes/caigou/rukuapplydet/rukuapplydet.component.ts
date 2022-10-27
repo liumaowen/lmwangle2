@@ -45,10 +45,12 @@ export class RukuapplydetComponent implements OnInit {
   jiaohuodatemin: Date = new Date();
   // 交货时间
   jiaohuodate: Date = new Date();
+  wuliunotice: any = { enddest: '', id: null, wuliuuserid: null, transporttype: null, ispieces: false };
   det: object = {
     gn: '', chandi: '', guige: '', rukuapplyid: '', weight: '', count: '', length: '', beizhu: '',
   };
   areas = new Array();
+  caigoudetList: any = [];
   // 品名
   gns: any[];
   gn;
@@ -83,6 +85,7 @@ export class RukuapplydetComponent implements OnInit {
   jiaohuoaddrs: any[];
   // 修改公差
   gongchas: any[];
+  changeordermodal1={};
   gongchaModel: Object = { detid: '', type: '', name: '', id: '' };
   // 转货
   types = [{ value: '1', label: '开平板' }, { value: '2', label: '纵剪卷' }];
@@ -998,10 +1001,12 @@ export class RukuapplydetComponent implements OnInit {
     });
   }
   reload() {
-    this.caigouApi.reloadcg(this.actroute.params['value']['id']).then(data => {
+
+    this.caigouApi.reloadcg(this.actroute.params['value']['id'],this.changeordermodal1).then(data => {
       this.toast.pop('success', data.msg);
     });
-  }
+  
+}
   print() {
     this.caigouApi.cgprint(this.actroute.params['value']['id']).then(data => {
       if (!data.flag) {

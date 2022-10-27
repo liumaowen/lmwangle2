@@ -69,7 +69,13 @@ export class QzkulingComponent implements OnInit {
             valueFormatter: this.settings.valueFormatter
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '权重库龄相比上月底增减', field: 'allreduce', minWidth: 150,
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter,cellRenderer: (params) => {
+                if (params.data && null != params.data.allreduce && undefined != params.data.allreduce && Number(params.data.allreduce)>0) {
+                  return `<font color="red">${params.data.allreduce}</font>`;
+                } else {
+                  return params.data.allreduce;
+                }
+              },
           }
         ]
       },
@@ -83,7 +89,13 @@ export class QzkulingComponent implements OnInit {
             valueFormatter: this.settings.valueFormatter
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '权重库龄相比上月底增减', field: 'qhreduce', minWidth: 150,
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter,cellRenderer: (params) => {
+                if (params.data && null != params.data.qhreduce && undefined != params.data.qhreduce && Number(params.data.qhreduce)>0) {
+                  return `<font color="red">${params.data.qhreduce}</font>`;
+                } else {
+                  return params.data.qhreduce;
+                }
+              }
           }
         ]
       },
@@ -97,7 +109,13 @@ export class QzkulingComponent implements OnInit {
             valueFormatter: this.settings.valueFormatter
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '权重库龄相比上月底增减', field: 'xhreduce', minWidth: 150,
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter,cellRenderer: (params) => {
+                if (params.data && null != params.data.xhreduce && undefined != params.data.xhreduce && Number(params.data.xhreduce)>0) {
+                  return `<font color="red">${params.data.xhreduce}</font>`;
+                } else {
+                  return params.data.xhreduce;
+                }
+              }
           }
         ]
       }

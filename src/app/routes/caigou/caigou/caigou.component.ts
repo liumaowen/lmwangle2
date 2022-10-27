@@ -12,6 +12,7 @@ import { CustomerapiService } from './../../customer/customerapi.service';
 import { ToasterService } from 'angular2-toaster/angular2-toaster';
 import { Cgorgtypes } from 'app/shared/const';
 import { MdmService } from 'app/routes/mdm/mdm.service';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-caigou',
@@ -23,7 +24,7 @@ import { MdmService } from 'app/routes/mdm/mdm.service';
 export class CaigouComponent implements OnInit {
   caigouSelected = new Array<any>();
   caigou: object = { sellerid: '', jiaohuoaddr: '', beizhu: '', type: '', kind: '', caigoutype: '', month: '', gn: '', chandi: '', orgid: '' };
-  dantypes;
+  dantypes = [{ label: '甲单',value: '0'}, { label: '乙单' , value: '1'}, {  label: '丙单',value: '2'}];
   @ViewChild('classicModal') private classicModal: ModalDirective;
   @ViewChild('createModal') private createModal: ModalDirective;
   // 上传弹窗实例
@@ -34,6 +35,7 @@ export class CaigouComponent implements OnInit {
   queryandcreate = 0; // 0-创建，1-查询
   // 开始时间最大时间
   startmax: Date = new Date();
+  current = this.storage.getObject('cuser');
 
   // 结束时间最大时间
   endmax: Date = new Date();
@@ -66,7 +68,7 @@ export class CaigouComponent implements OnInit {
   orgtypes: any = Cgorgtypes;
   constructor(public settings: SettingsService, private caigouApi: CaigouService, private router: Router,
     private classifyApi: ClassifyApiService, private datepipe: DatePipe, private toast: ToasterService, private qihuoapi: QihuoService,
-    private customerApi: CustomerapiService, public mdmService: MdmService) {
+    private customerApi: CustomerapiService, public mdmService: MdmService,private storage: StorageService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
@@ -194,7 +196,7 @@ export class CaigouComponent implements OnInit {
     this.types = [{ id: '0', text: '自提' }, { id: '1', text: '代运' }];
     this.kinds = [{ id: '1', text: '期货' }, { id: '2', text: '现货' }];
     this.caigoutypes = [{ id: '1', text: '工程单' }, { id: '2', text: '库存销售' }, { id: '3', text: '市场调货' }, { id: '4', text: '维实外采' }];
-    this.dantypes = [{ value: '0', label: '甲单' }, { value: '1', label: '乙单' }, { value: '2', label: '丙单' }];
+    this.caigou['dantype'] = 0;
     this.caigouApi.getchandi().then(data => {
       this.gangchangs = data;
     });

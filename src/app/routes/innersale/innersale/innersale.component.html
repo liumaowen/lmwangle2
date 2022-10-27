@@ -42,6 +42,12 @@
             <label>操作:</label>
             <a *ngIf="!item.isv" (click)="removebill(item)">删除</a>
           </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static" *ngIf="item['iscailiao']&&!item['cailiaostatus']&&!item['isv']">
+            <label style="color: red;font-weight: bold;" countdown [model]="item"></label>
+          </div>
+          <div class=" col-lg-2  col-md-3 col-xs-6 form-control-static" *ngIf="item['iscailiao']&&item['cailiaostatus']&&!item['isv']">
+            <a  style="color: red;font-weight: bold;">已取消</a>
+          </div>
         </td>
       </tr>
     </tbody>

@@ -1,0 +1,36 @@
+
+<div class="modal-header">
+  <h4 class="modal-title pull-left"> 马钢手动添加</h4>
+  <div class="pull-right">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+<div class="modal-body">
+  <div class="panel panel-default">
+    <div class="panel-body" style="overflow-y: auto;overflow-x:hidden;" [ngStyle]="{'max-height':(settings.bodyHeight-10)+'px'}">
+      <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+        <label class="col-sm-3 control-label required" >运输类型</label>
+        <div class="col-sm-9">
+          <p-dropdown [options]="transporttype" [(ngModel)]="magang['transporttype']" (click)="transporttype1()"
+            [style]="{'width':'100%'}">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 604)+'px'}" #agGrid
+          style="width: calc(100% + 50px);height:calc(100% + 50px);margin:0 -30px;min-height: 170px;" class="ag-blue" [gridOptions]="gridOptions" [rowData]="rowData">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+  <div class="form-inline text-center">
+    <button type="button" (click)="reload1()" class="btn btn-primary btn-large">生成pdf</button>
+  </div>
+</div>
+
+
+
+
+

@@ -20,6 +20,7 @@ import { FeeyueComponent } from './feeyue/feeyue.component';
 import { FeedetComponent } from './feedet/feedet.component';
 import { FeefukuandetComponent } from './feefukuandet/feefukuandet.component';
 import { BaoxiaofeedetComponent } from './baoxiaofeedet/baoxiaofeedet.component';
+import { ShuiedikouComponent } from './shuiedikou/shuiedikou.component';
 import { WuliubaojiadetComponent } from './wuliubaojiadet/wuliubaojiadet.component';
 import { BiddingorderimportComponent } from './wuliubaojiadet/biddingorderimport/biddingorderimport.component';
 import { YunfeeimportComponent } from './wuliubaojiadet/yunfeeimport/yunfeeimport.component';
@@ -42,6 +43,7 @@ const routes: Routes = [
   { path: 'feefukuandet', component: FeefukuandetComponent, data: { 'title': '费用付款明细表' } },
   { path: 'feefukuandetreporter', component: FeefukuandetreporterComponent, data: { 'title': '费用付款详情表' } },
   { path: 'baoxiaofeedet', component: BaoxiaofeedetComponent, data: { 'title': '报销费用明细表' } },
+  { path: 'shuiedikou', component: ShuiedikouComponent, data: { 'title': '税额抵扣表' } },
   { path: 'wuliubaojiadet', component: WuliubaojiadetComponent, data: { 'title': '物流竞价汇总表' } },
   { path: 'baoxiaofeedethandan', component: BaoxiaofeedethandanComponent, data: { 'title': '邯郸报销费用明细表' } },
   { path: 'maycurloan', component: MaycurloanComponent, data: { 'title': '借款单明细表' } },
@@ -64,7 +66,7 @@ const routes: Routes = [
   declarations: [
     FeefukuanComponent, FeefukuandetailComponent, FeeimplistComponent,
     FeeComponent, FeehuizongComponent, FeewanglaiComponent, FeeyueComponent,
-    FeedetComponent, FeefukuandetComponent, BaoxiaofeedetComponent,
+    FeedetComponent, FeefukuandetComponent, BaoxiaofeedetComponent,ShuiedikouComponent,
     WuliubaojiadetComponent, BiddingorderimportComponent, YunfeeimportComponent,
     FeeDetailReporterComponent, FeefukuandetreporterComponent, BaoxiaofeedethandanComponent,
     MaycurloanComponent, CarfeebaoxiaodetComponent, AdjfeehuizongComponent],

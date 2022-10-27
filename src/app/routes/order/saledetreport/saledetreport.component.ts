@@ -494,7 +494,7 @@ export class SaledetreportComponent implements OnInit {
     const myrole = JSON.parse(localStorage.getItem('myrole'));
     this.gridOptions.columnDefs.forEach((colde: ColDef) => {
       // 如果登陆的用户是非财务人员，设置为不可见
-      if (!myrole.some(item => item === 5)) {
+      if (!myrole.some(item => item === 1 || item === 5 || item === 35)) {
         if (colde.colId === 'ftype' ) {
           colde.hide = true;
           colde.suppressToolPanel = true;

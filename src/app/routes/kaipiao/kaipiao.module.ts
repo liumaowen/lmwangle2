@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'express', component: ExpressComponent, data: { 'title': '快递信息' } },
   { path: 'verifylist', component: VerifylistComponent, data: { 'title': '审核列表' } },
   { path: 'advanceinvoice', component: AdvanceinvoiceComponent, data: { 'title': '销售提前开票明细表' } },
-  { path: 'advanceinvoice/:id', component: AdvanceinvoicedetailComponent, data: { 'title': '提前开票单' } }
+  { path: 'advanceinvoice/:id', component: AdvanceinvoicedetailComponent, data: { 'title': '提前开票单' } },
 ];
 
 @NgModule({

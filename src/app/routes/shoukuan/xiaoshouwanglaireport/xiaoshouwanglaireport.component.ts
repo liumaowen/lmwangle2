@@ -246,12 +246,12 @@ export class XiaoshouwanglaireportComponent implements OnInit {
       } else {
         this.requestparams['salemanid'] = '';
       }
-      if (!this.requestparams.wcustomerid) {
-        this.toast.pop('warning', '卖方单位必填！');
-      } else {
-        this.listDetail();
-        this.hideclassicModal();
-      }
+    //   if (!this.requestparams.wcustomerid) {
+    //     this.toast.pop('warning', '卖方单位必填！');
+    //   } else {
+    //   }
+    this.listDetail();
+    this.hideclassicModal();
     }
   }
 

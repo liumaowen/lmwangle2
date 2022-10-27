@@ -78,7 +78,7 @@ export class TudusaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '当月打单量', field: 'yuedadan', minWidth: 100,
             valueGetter: (params) => {
@@ -88,7 +88,7 @@ export class TudusaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '当月实提量', field: 'yueshiti', minWidth: 100,
             valueGetter: (params) => {
@@ -98,7 +98,7 @@ export class TudusaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '完成比率', field: 'currate', minWidth: 100
           }
@@ -115,7 +115,7 @@ export class TudusaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '季度实提量', field: 'quartershiti', minWidth: 100,
             valueGetter: (params) => {
@@ -125,7 +125,7 @@ export class TudusaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '完成比率', field: 'jirate', minWidth: 100
           }
@@ -142,7 +142,7 @@ export class TudusaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '年度实提量', field: 'yearshiti', minWidth: 100,
             valueGetter: (params) => {
@@ -152,7 +152,7 @@ export class TudusaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '完成比率', field: 'yearrate', minWidth: 100
           }
@@ -161,7 +161,7 @@ export class TudusaledetComponent implements OnInit {
       {
         cellStyle: { 'display': 'block' }, headerName: '当月（1月）', headerClass: 'wis-ag-center', colId: 'curmonthname',
         children: [
-          { cellStyle: { 'text-align': 'center' }, headerName: '创新产品', field: 'newproduct', minWidth: 110,
+          { cellStyle: { 'text-align': 'center' }, headerName: '自由品牌', field: 'newproduct', minWidth: 110,
             valueGetter: (params) => {
               if (params.data && params.data['newproduct']) {
                 return Number(params.data['newproduct']);
@@ -169,7 +169,7 @@ export class TudusaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '销售占比', field: 'salesrate', minWidth: 110
           },
@@ -181,7 +181,7 @@ export class TudusaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           }
 
         ]

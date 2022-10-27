@@ -124,6 +124,7 @@ export class KucunkulingComponent implements OnInit {
     // 设置aggird表格列
     this.gridOptions.columnDefs = [
       { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 90 },
       {
          cellStyle: { 'text-align': 'center' }, headerName: '库存总重量', field: 'tweight', minWidth: 60

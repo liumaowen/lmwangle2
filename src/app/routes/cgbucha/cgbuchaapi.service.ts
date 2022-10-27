@@ -39,8 +39,19 @@ export class CgbuchaapiService {
   importfanli(det): Promise<any> {
     return this.http.post('store/api/cgbucha/importfanli', det).toPromise().then();
   }
+  importfanlinew(det): Promise<any> {
+    return this.http.post('store/api/cgbucha/importfanlinew', det).toPromise().then();
+  }
+  kunbaohaopipeifanli(det): Promise<any> {
+    return this.http.post('store/api/cgbucha/kunbaohaopipeifanli', det).toPromise().then(data => {
+        return data.json() as any[];
+    });
+  }
   modifydet(id,modify): Promise<any> {
     return this.http.put('store/api/cgbucha/modifydet/' + id, modify).toPromise().then();
+  }
+  modifydetnew(id,modify): Promise<any> {
+    return this.http.put('store/api/cgbucha/modifydetnew/' + id, modify).toPromise().then();
   }
   // 删除主表
   removeById(id): Promise<any> {

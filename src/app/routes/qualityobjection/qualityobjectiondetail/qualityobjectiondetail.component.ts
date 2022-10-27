@@ -29,6 +29,9 @@ export class QualityobjectiondetailComponent implements OnInit {
   @ViewChild('wuliuchuliModel') private wuliuchuliModel: ModalDirective;
   @ViewChild('cangkuchuliModel') private cangkuchuliModel: ModalDirective;
   @ViewChild('cancelModel') private cancelModel: ModalDirective;
+  @ViewChild('billnoModel') private billnoModel: ModalDirective;
+  @ViewChild('billnoModel2') private billnoModel2: ModalDirective;
+
   gridOptions: GridOptions;
   gangchangrecord = { beizhu: '', isurl: false, url: '', id: '', type: 1 };
   qualityobjection: any = { seller: '' };
@@ -53,6 +56,7 @@ export class QualityobjectiondetailComponent implements OnInit {
   chulitypes = [{ value: '1', label: '提报钢厂处理' }, { value: '2', label: '不提报钢厂资源中心处理' }, { value: '3', label: '物流处理' }, { value: '4', label: '仓库处理' }];
   // isshowgcjine = true;
   fujians: any = [];
+  billnos: any = [];
   uploadflag = 1; // 1:异议跟踪弹窗 2:主表附件
   isshowgc = true;
   salebillno = ''; // 销售赔付单号
@@ -165,6 +169,7 @@ export class QualityobjectiondetailComponent implements OnInit {
       this.qualityobjection['oldsupplierid'] = data.quality['supplierid'];
       this.loglist = data['loglist'];
       this.fujians = data['fujians'];
+      this.billnos = data['billnos'];
       if (this.qualityobjection['status'] === 1) {
         this.flag.isedit = true;
       } else {
@@ -603,5 +608,33 @@ export class QualityobjectiondetailComponent implements OnInit {
       this.closecancel();
     });
   }
-
+  showbillonmodal() {
+    this.getdetail();
+    this.billnoModel.show();
+  }
+  closebillno() {
+    this.billnoModel.hide();
+  }
+  billnosubmit(){
+    this.billnoModel2.show();
+  }
+  closebillnoModel2(){
+    this.billnoModel2.hide();
+  }
+  billno = {};
+  savebillno(){
+    this.billno['quailtyid'] = this.qualityobjection['id'];
+    this.qualityobjectionApi.addbillnos(this.billno).then(data => {
+      this.getdetail();
+      this.closebillnoModel2();
+    });
+  }
+  delbillno(key) {
+    const params = {id: this.qualityobjection['id'], key: key};
+    this.qualityobjectionApi.delbillno(params).then(data => {
+      
+    });
+    this.getdetail();
+  }
+  
 }

@@ -975,7 +975,7 @@ export class ProorderdetailComponent implements OnInit {
       this.toast.pop('warning', '请审核后添加配款！');
       return;
     }
-    let moneyquery = { buyerid: this.proorder['buyer']['id'], wcustomerid: this.proorder['seller']['id'] };
+    let moneyquery = { buyerid: this.proorder['buyer']['id'], wcustomerid: this.proorder['seller']['id'],salemanid:this.proorder['salemanid'] };
     this.moneyapi.getmoney(moneyquery).then(data => {
       if (!data['wyue']) {
         this.curyue = 0;

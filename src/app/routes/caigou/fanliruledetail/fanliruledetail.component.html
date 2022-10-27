@@ -1,0 +1,391 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">钢厂优惠规则详情</em>
+  <div class="pull-right wide-show">
+    <button class="btn btn-info btn-bloc" type="button" (click)="showadddet()">添加明细</button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="showmodify()">修改</button>
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button" (click)="zuofei()">作废</button>
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button" (click)="finishfanlirule()">完成</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showadddet()">添加明细</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showmodify()">修改</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="zuofei()">作废</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="finishfanlirule()">完成</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class="col-lg-4 col-md-6">
+        <div class="row">
+          <div class="col-md-4 col-xs-6 control-label form-control-static">单号：</div>
+          <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['billno']}}
+          </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['cusername']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单时间：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['cdate']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">品名：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['gn']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">产地：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['chandi']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">供应商：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['sellername']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">油漆种类：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['painttype']}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">材质：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['caizhi']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">镀层：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['duceng']}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-4 col-md-6">
+			<div class="row">
+					<div class="col-md-4 col-xs-6 control-label form-control-static">结算方式：</div>
+					<div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain.jiesuantypename}}</div>
+			</div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">优惠类型：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['youhuitype']}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">计算值：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain.jisuanvaluename}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+		<div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">优惠范围-起：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['monthstart']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">优惠范围-止：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['monthend']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">周期类型：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['zhouqitypename']}}
+        </div>
+      </div>
+    </div>
+	</div>
+	<div class="row fieldsetdnn">
+		<div class="col-lg-4 col-md-6">
+			<div class="row">
+				<div class="col-md-4 col-xs-6 control-label form-control-static">周期(天)：</div>
+				<div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['zhouqi']}}</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6">
+			<div class="row">
+				<div class="col-md-4 col-xs-6 control-label form-control-static">备注：</div>
+				<div class="col-md-8 col-xs-6 form-control-static">{{fanlirulemain['备注']}}</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="wis-auto">
+  <p-tabView [style]="{'padding-top': '3px'}" [activeIndex]="tabviewindex">
+    <p-tabPanel header="优惠规则"
+      [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 472)+'px'}" #agGrid
+        style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;min-height: 120px;" class="ag-blue"
+        [gridOptions]="gridOptions">
+      </ag-grid-angular>
+    </p-tabPanel>
+    <p-tabPanel header="跟踪记录"
+      [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+      <div class="row fieldsetdnn" *ngFor="let item of loglist; let i = index;">
+        <div class=" form-control-static" style="word-wrap: break-word;">{{i + 1}}、{{item.cdate}}--{{item.msg}}</div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+<!--优惠规则修改-->
+<div class="modal" bsModal #youhuirulemodifyModal="bs-modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="hideyouhuirulemodifyModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-4 control-label"><span style="float: right;">品名</span></label>
+              <div class="col-sm-8">
+                <input (click)="mdmgndialog.show()" style="height:31.5px!important;" [(ngModel)]="fanlirule['gn']" class="form-control" placeholder="请选择品名" readonly [disabled]="ismodify">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-4 control-label"><span style="float: right;">产地</span></label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="chandioptions" [disabled]="!fanlirule['gn'] || ismodify" [(ngModel)]="fanlirule['chandi']" [style]="{'width':'100%'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-4 control-label"><span style="float: right;">油漆种类</span></label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="painttypes" [(ngModel)]="fanlirule['painttype']" [style]="{'width':'100%'}" [filter]="true"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-4 control-label"><span style="float: right;">材质</span></label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="caizhis" [(ngModel)]="fanlirule['caizhi']" [style]="{'width':'100%'}" [filter]="true"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+              <label class="col-sm-4 control-label"><span style="float: right;">镀层</span></label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="ducengs" [(ngModel)]="fanlirule['duceng']" [style]="{'width':'100%'}" [filter]="true"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-4 control-label"><span style="float: right;">供应商</span></label>
+                <div class="col-sm-8">
+                  <wisk-suppliersearch [(company)]="fanlirule['sellerid']"></wisk-suppliersearch>
+                </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-4 control-label">
+                  <span style="float: right;">优惠周期</span>
+                </label>
+                <div class="col-sm-8">
+                  <input type="number" [(ngModel)]="fanlirule['zhouqi']" class="form-control" placeholder="请输入优惠周期，只能填数字">
+                </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6" style="padding-top:0.7px;padding-bottom:0.8px;">
+                <label class="col-sm-4 control-label"><span style="float: right;">周期类型</span></label>
+                <div class="col-sm-8" style="padding-top: 0.8px;padding-bottom: 0.8px;">
+                  <p-dropdown [options]="zhouqitypes" [(ngModel)]="fanlirule['zhouqitype']" [style]="{'width':'100%'}"></p-dropdown>
+                </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-4 control-label"><span style="float: right;">优惠范围-起</span></label>
+                <div class="col-sm-8">
+                  <wisk-yearmonthselect [(month)]="start" (select)="selectmonth1($event)"></wisk-yearmonthselect>
+                </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-4 control-label"><span style="float: right;">优惠范围-止</span></label>
+                <div class="col-sm-8">
+                  <wisk-yearmonthselect [(month)]="end" (select)="selectmonth2($event)"></wisk-yearmonthselect>
+                </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-4 control-label"><span style="float: right;">优惠类型</span></label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="youhuitypes" [(ngModel)]="fanlirule['youhuitype']" [style]="{'width':'100%'}"></p-dropdown>
+                </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6">
+                <label class="col-sm-4 control-label"><span style="float: right;">计算值</span></label>
+                <div class="col-sm-8">
+                  <p-dropdown [options]="jisuanvalues" [(ngModel)]="fanlirule['jisuanvalue']" [style]="{'width':'100%'}"></p-dropdown>
+                </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-6" style="padding-top:0.7px;padding-bottom:0.8px;">
+                <label class="col-sm-4 control-label"><span style="float: right;">结算方式</span></label>
+                <div class="col-sm-8" style="padding-top: 0.8px;padding-bottom: 0.8px;">
+                  <p-dropdown [options]="jiesuantypes" [(ngModel)]="fanlirule['jiesuantype']" [style]="{'width':'100%'}"></p-dropdown>
+                </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-12">
+              <label class="col-sm-2 control-label">
+                <span style="float: right;">备注</span>
+              </label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="fanlirule['beizhu']" class="form-control" placeholder="请输入备注">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="modify()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加明细对话框-->
+<div class="modal" bsModal #adddetModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="adddetModalclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加返利规则<span style="font-size:14px;margin-left: 20px;font-weight: normal;color:red;">运算符号仅限：+、-、*、/、(、)、&gt;、≥、&lt;、≤</span></h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+			<div class="form-group mb fieldsetdnn row col-md-12" *ngIf="fanlirulemain.jisuanvalue === 1 || fanlirulemain.jisuanvalue === 2">
+              <label class="col-sm-2 control-label">
+                <span style="float: right;">优惠规则</span>
+              </label>
+              <div class="col-sm-5">
+                <input [(ngModel)]="fanliruledet['youhuirule']" class="form-control" placeholder="请输入优惠规则，如 0≤X<500">
+              </div>
+              <div class="col-sm-5">
+                {{ruleplaceholdervalue}}
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row col-md-12">
+              <label class="col-sm-2 control-label">
+                <span style="float: right;">金额计算表达式</span>
+              </label>
+              <div class="col-sm-5">
+                <input [(ngModel)]="fanliruledet['jineexpression']" class="form-control" [placeholder]="jineplaceholder">
+              </div>
+              <div class="col-sm-5">
+                {{jineplaceholdervalue}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirmadddet()" class="btn btn-primary btn-large">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<toaster-container></toaster-container>
+
+<!--资源号弹窗-->
+<div class="modal" bsModal #grnoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-all">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left"> 此规则的资源号明细</h4>
+        <div class="pull-right">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="grnoModalDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <button type="button" class="btn btn-info btn-bloc" (click)="showquerycaigoudet()">添加</button>
+          <button type="button" class="btn btn-info btn-bloc" (click)="deletegrno()" style="margin-right:10px;">删除</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+          class="ag-blue" [gridOptions]="grnogridOptions">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+</div>
+<!--引入采购明细弹窗-->
+<div class="modal" bsModal #caigoudetModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-all">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left"> 采购明细表</h4>
+        <div class="pull-right">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="querycaigoudethideDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <button type="button" class="btn btn-info btn-bloc" (click)="importcaigoudet()" style="margin-right:10px;">引入</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 160)+'px'}" #agGrid style="width: 100%;height:100%;margin:0;"
+          class="ag-blue" [gridOptions]="caigoudetgridOptions">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>

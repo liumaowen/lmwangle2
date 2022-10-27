@@ -1,9 +1,11 @@
+import { OrgdetailComponent } from './../../org/orgdetail/orgdetail.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { DatePipe } from '@angular/common';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { GridOptions } from 'ag-grid/main';
 import { ReportService } from './../../report/report.service';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-xiaoshouwanglaiyuereport',
@@ -15,17 +17,17 @@ export class XiaoshouwanglaiyuereportComponent implements OnInit {
   start = new Date();
 
   companys;
-
+  current = this.storage.getObject('cuser');
   maxDate = new Date();
 
-  requestparams = { customerid: '', moneyRange: '', start: this.datepipe.transform(this.start, 'y-MM-dd') };
+  requestparams = { customerid: '', moneyRange: '', start: this.datepipe.transform(this.start, 'y-MM-dd')};
 
   moneyRange = [{ value: '', label: '全部' }, { value: 0, label: '不等零' }, { value: 1, label: '大于零' },
   { value: 2, label: '等于零' }, { value: 3, label: '小于零' }];
 
   gridOptions: GridOptions;
 
-  constructor(public settings: SettingsService, private datepipe: DatePipe, private reportApi: ReportService) {
+  constructor(public settings: SettingsService, private datepipe: DatePipe, private reportApi: ReportService,private storage: StorageService) {
 
     this.gridOptions = {
       enableFilter: true, // 过滤器
@@ -34,6 +36,7 @@ export class XiaoshouwanglaiyuereportComponent implements OnInit {
       suppressRowClickSelection: false,
       enableColResize: true, // 列宽可以自由控制
       enableSorting: false, // 排序
+      enableRangeSelection: true,
       overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
       overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
     };
@@ -43,7 +46,7 @@ export class XiaoshouwanglaiyuereportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '客户名称', field: 'customername', width: 280 },
       { cellStyle: { 'text-align': 'center' }, headerName: '卖方名称', field: 'wcustomername', width: 280 },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '账户余额', field: 'money', width: 100,
+        cellStyle: { 'text-align': 'right' }, headerName: '可使用余额', field: 'money', width: 100,
         cellRenderer: (params) => {
           return '<a target="_blank" href="#/xiaoshouwanglaireport/' + params.data.customerid + '">' + params.data.money + '</a>';
         }, valueFormatter: this.settings.valueFormatter2
@@ -69,7 +72,7 @@ export class XiaoshouwanglaiyuereportComponent implements OnInit {
         valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '查询余额', field: 'yue', width: 120,
+        cellStyle: { 'text-align': 'right' }, headerName: '账面余额', field: 'yue', width: 120,
         valueFormatter: this.settings.valueFormatter2
       },
       {
@@ -108,6 +111,8 @@ export class XiaoshouwanglaiyuereportComponent implements OnInit {
 
   // 查询明细
   query() {
+    this.requestparams['salemanid']=this.current.id;
+    this.requestparams['orgid']=this.current.orgid;
     if (this.start) {
       this.requestparams.start = this.datepipe.transform(this.start, 'y-MM-dd');
     }
@@ -125,7 +130,7 @@ export class XiaoshouwanglaiyuereportComponent implements OnInit {
       allColumns: false,
       onlySelected: false,
       suppressQuotes: false,
-      fileName: '销售往来余额表.xls',
+      fileName: '税额抵扣表.xls',
       columnSeparator: ''
     };
     this.gridOptions.api.exportDataAsExcel(params);

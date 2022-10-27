@@ -19,6 +19,7 @@ export class TaskdetComponent implements OnInit {
   @ViewChild('createModal') private createModal: ModalDirective;
   @ViewChild('dateModal') private dateModal: ModalDirective;
   @ViewChild('yaoqiuModal') private yaoqiuModal: ModalDirective;
+  @ViewChild('jiesuantypeModal') private jiesuantypeModal: ModalDirective;
   tasklist = { cuser: {} };
   modifytask = {};
   modifytaskyaoqiu: any = {};
@@ -29,6 +30,7 @@ export class TaskdetComponent implements OnInit {
   start: Date = new Date();
   am_pms = [];
   am_pm = '';
+  jstype: object = {};
   types: any = [{ value: '', label: '请选择打包带材料' }, { value: '1', label: '钢带' }, { value: '2', label: '其他' }];
   // 是否是邯郸维实的加工任务单
   isweishi = false;
@@ -263,6 +265,15 @@ export class TaskdetComponent implements OnInit {
     this.produceApi.reload(this.route.params['value']['id']).then((response) => {
       this.toast.pop('warning', response['msg']);
     });
+  }
+  jiesuantypclose(){
+    this.jiesuantypeModal.hide();
+  }
+  selectNull(){
+
+  }
+  showJiesuanType(){
+    this.jiesuantypeModal.show();
   }
   print() {
     this.produceApi.print(this.route.params['value']['id']).then((response) => {

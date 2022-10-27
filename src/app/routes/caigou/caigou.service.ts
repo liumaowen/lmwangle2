@@ -131,9 +131,14 @@ export class CaigouService {
       return data.json();
     });
   }
-  reloadcg(id): Promise<any> {
-    return this.http.get('store/api/caigou/reload/' + id).toPromise().then(data => {
-      return data.json();
+  // reloadcg(id): Promise<any> {
+  //   return this.http.get('store/api/caigou/reload/' + id).toPromise().then(data => {
+  //     return data.json();
+  //   });
+  // }
+  reloadcg(id,json) {
+    return this.http.put('store/api/caigou/reload/' + id,json).toPromise().then(data => {
+      return data.json() as any;
     });
   }
   submitcg(id): Promise<any> {
@@ -429,6 +434,11 @@ export class CaigouService {
   modifygchtweight(model, detid) {
     return this.http.put('store/api/caigou/gchtweight/' + detid, model).toPromise().then();
   }
+
+  //运输方式
+  modifytransporttype(model, detid) {
+      return this.http.put('store/api/caigou/transporttype/' + detid, model).toPromise().then();
+    }
   //进货管制数据查询
   listjinhuoguozhi(model) {
     return this.http.get('store/api/report/jinhuoguanzhi', { search: model }).toPromise().then(data => {
@@ -471,6 +481,12 @@ export class CaigouService {
       return data.json() as any;
     });
   }
+  /**查询钢厂返利汇总表 */
+  getfanlihuizongdetnew(search): Promise<any> {
+    return this.http.get('store/api/fanlihuizong/listnew', { search: search }).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
   tijiao(search): Promise<any> {
     return this.http.post('store/api/fanlihuizong/submit', search).toPromise().then(data => {
       return data.json() as any;
@@ -493,7 +509,7 @@ export class CaigouService {
       return data.json();
     });
   }
-  // 修改采购明细
+  // 修改采购明细（基板厚度）
   updateCaigouDet(search) {
     return this.http.put('store/api/caigou/updatedet', search).toPromise().then(data => {
       return data.json();
@@ -638,12 +654,19 @@ export class CaigouService {
     });
   }
   getfanidetgroup(model){
-    return this.http.get('store/api/fanlidet/getfanidetgroup', { search: model }).toPromise().then(data => {
+    return this.http.post('store/api/fanlidet/getfanidetgroup', model).toPromise().then(data => {
       return data.json() as any;
     });
   }
-  autofanlidet(){
-    return this.http.get('store/api/fanlidet/autofanlidet').toPromise().then(data => {
+  // 采购补差单中的规则表
+  getcgbuchafanlirule(model){
+    return this.http.get('store/api/fanlirule/getcgbuchafanlirule', { search: model }).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  // 同步返利登记表
+  autofanlidet(model){
+    return this.http.get('store/api/fanlidet/autofanlidet',{ search: model }).toPromise().then(data => {
       return data.json() as any;
     });
   }
@@ -668,6 +691,12 @@ export class CaigouService {
       return data.json() as any[];
     });
   }
+  // 修改返利规则明细
+  modifydetail(search) {
+    return this.http.put('store/api/fanlirule/modifydetail', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
   getfanliruledet(search) {
     return this.http.get('store/api/fanlirule/getdet', {search: search}).toPromise().then(data => {
       return data.json() as any[];
@@ -681,6 +710,18 @@ export class CaigouService {
   getfanlirulecaigoudet(search) {
     return this.http.get('store/api/fanlirule/getfanlirulecaigoudet', {search: search}).toPromise().then(data => {
       return data.json() as any[];
+    });
+  }
+  /**返利规则详情页 */
+  getdetail(id): Promise<any> {
+    return this.http.get('store/api/fanlirule/getdetail/' + id).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  // 添加优惠明细
+  savefanliruledet(search) {
+    return this.http.post('store/api/fanlirule/savefanliruledet', search).toPromise().then(data => {
+        return data.json() as any[];
     });
   }
   // 优惠规则表引入采购明细中的资源号
@@ -738,4 +779,24 @@ export class CaigouService {
   modifyjiesuantype(model) {
     return this.http.put('store/api/caigou/modifyjiesuantype', model).toPromise().then();
   }
+  modifyqihuodet(id, model) {
+    return this.http.put('store/api/caigou/batchupdatedet/' + id, model).toPromise();
+  }
+  /**采购马钢明细分组 */
+  caigoudetadd(id) {
+    return this.http.get('store/api/caigou/groupbygcid/' + id).toPromise().then(data =>{
+      return data.json() as any[];
+    });
+  }
+  //修改交货日期
+  modifyjiaohuodate(id, json) {
+    return this.http.put('store/api/caigou/jiaohuodate/' + id, json).toPromise().then();
+    }
+
+  //运输方式
+  modifytransporttype1(id, json) {
+    return this.http.put('store/api/caigou/transporttype/' + id, json).toPromise().then();
+    }
+
+    
 }

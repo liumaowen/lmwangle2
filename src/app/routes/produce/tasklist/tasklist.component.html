@@ -86,7 +86,7 @@
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-4 control-label">加工仓库</label>
               <div class="col-sm-8">
-                <p-dropdown name="chandi" [options]="cangkus" (onChange)="selectedcangku($event)" placeholder="选择仓库"
+                <p-dropdown name="chandi" [options]="cangkus" (onChange)="selectedcangku($event)" [(ngModel)]="tasklist['cangkuid']" placeholder="选择仓库"
                   [style]="{'width': '100%'}" [filter]="true">
                 </p-dropdown>
               </div>
@@ -203,7 +203,12 @@
                 </label>
               </div>
             </div>
-            
+            <div class="form-group mb fieldsetdnn col-sm-12  col-md-6"  *ngIf="tasklist['islinshicangku']">
+              <label class="col-sm-4 control-label">结算方式</label>
+              <div class="col-sm-8">
+                <p-dropdown [options]="moulds" [(ngModel)]="tasklist['jiesuanmould']" [style]="{'width':'100%','font-size':'15px'}"></p-dropdown>
+              </div>
+            </div>
           </div>
         </div>
         <div class="form-inline text-center">

@@ -15,13 +15,13 @@
             <a [routerLink]="['/deptpricedet', item.id]">{{item.billno}}{{item.id}}</a>
           </div>
           <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
-            <label>机构:</label> {{item.cuser.org.name}}
+            <label>机构:</label>  <a [routerLink]="['/deptpricedet', item.id]"> {{item.cuser.org.name}}</a>
           </div>
           <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
             <label>创建日期:</label> {{item['cdate'] | date:'yyyy-MM-dd'}}
           </div>
           <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
-            <label>创建人:</label>{{item.cuser.realname}}
+            <label>创建人:</label> <a [routerLink]="['/deptpricedet', item.id]"> {{item.cuser.realname}}</a>
           </div>
         </td>
       </tr>

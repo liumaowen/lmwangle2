@@ -1,6 +1,7 @@
 import { ModalDirective } from 'ngx-bootstrap';
 import { DeptpriceapiService } from './../deptpriceapi.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-deptprice',
@@ -19,6 +20,7 @@ export class DeptpriceComponent implements OnInit {
 
   // 查询数据
   search: object = { pagenum: 1, pagesize: 10, billno: '' };
+  current = this.storage.getObject('cuser');
 
 
   // 分页点击查询数据
@@ -29,7 +31,7 @@ export class DeptpriceComponent implements OnInit {
   }
 
 
-  constructor(private deptpriceApi: DeptpriceapiService) { }
+  constructor(private deptpriceApi: DeptpriceapiService,private storage: StorageService) { }
 
   ngOnInit() {
     this.querydata();
@@ -51,6 +53,8 @@ export class DeptpriceComponent implements OnInit {
   }
 
   query() {
+    this.search['cuserid'] = this.current.id;
+    this.search['orgid'] = this.current.orgid;
     this.querydata();
     this.hideclassicModal();
   }

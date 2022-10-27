@@ -2,8 +2,8 @@
   <em class="fa fa-list-alt">钢厂优惠规则表</em>
   <div class="pull-right">
       <button class="btn btn-info btn-bloc" type="button" (click)="showyouhuirulemodal()">添加</button>
-      <button class="btn btn-info btn-bloc" type="button" (click)="zuofei()">作废</button>
-      <button class="btn btn-info btn-bloc" type="button" (click)="finishfanlirule()">完成</button>
+      <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button" (click)="zuofei()">作废</button>
+      <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button" (click)="finishfanlirule()">完成</button>
   </div>
 </div>
 <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
@@ -56,13 +56,13 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="form-group mb fieldsetdnn row col-md-6">
-              <label class="col-sm-4 control-label"><span style="float: right;">品名</span></label>
+              <label class="col-sm-4 control-label requiredlabel"><span style="float: right;">品名</span></label>
               <div class="col-sm-8">
                 <input (click)="mdmgndialog.show()" style="height:31.5px!important;" [(ngModel)]="fanlirule['gn']" class="form-control" placeholder="请选择品名" readonly [disabled]="ismodify">
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row col-md-6">
-              <label class="col-sm-4 control-label"><span style="float: right;">产地</span></label>
+              <label class="col-sm-4 control-label requiredlabel"><span style="float: right;">产地</span></label>
               <div class="col-sm-8">
                 <p-dropdown [options]="chandioptions" [disabled]="!fanlirule['gn'] || ismodify" [(ngModel)]="fanlirule['chandi']" [style]="{'width':'100%'}"></p-dropdown>
               </div>
@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="form-group mb fieldsetdnn row col-md-6">
-                <label class="col-sm-4 control-label">
+                <label class="col-sm-4 control-label requiredlabel">
                   <span style="float: right;">优惠周期</span>
                 </label>
                 <div class="col-sm-8">
@@ -100,31 +100,31 @@
                 </div>
             </div>
             <div class="form-group mb fieldsetdnn row col-md-6" style="padding-top:0.7px;padding-bottom:0.8px;">
-                <label class="col-sm-4 control-label"><span style="float: right;">周期类型</span></label>
+                <label class="col-sm-4 control-label requiredlabel"><span style="float: right;">周期类型</span></label>
                 <div class="col-sm-8" style="padding-top: 0.8px;padding-bottom: 0.8px;">
                   <p-dropdown [options]="zhouqitypes" [(ngModel)]="fanlirule['zhouqitype']" [style]="{'width':'100%'}"></p-dropdown>
                 </div>
             </div>
             <div class="form-group mb fieldsetdnn row col-md-6">
-                <label class="col-sm-4 control-label"><span style="float: right;">优惠范围-起</span></label>
+                <label class="col-sm-4 control-label requiredlabel"><span style="float: right;">优惠范围-起</span></label>
                 <div class="col-sm-8">
                   <wisk-yearmonthselect [(month)]="start" (select)="selectmonth1($event)"></wisk-yearmonthselect>
                 </div>
             </div>
             <div class="form-group mb fieldsetdnn row col-md-6">
-                <label class="col-sm-4 control-label"><span style="float: right;">优惠范围-止</span></label>
+                <label class="col-sm-4 control-label requiredlabel"><span style="float: right;">优惠范围-止</span></label>
                 <div class="col-sm-8">
                   <wisk-yearmonthselect [(month)]="end" (select)="selectmonth2($event)"></wisk-yearmonthselect>
                 </div>
             </div>
             <div class="form-group mb fieldsetdnn row col-md-6">
-                <label class="col-sm-4 control-label"><span style="float: right;">优惠类型</span></label>
+                <label class="col-sm-4 control-label requiredlabel"><span style="float: right;">优惠类型</span></label>
                 <div class="col-sm-8">
                   <p-dropdown [options]="youhuitypes" [(ngModel)]="fanlirule['youhuitype']" [style]="{'width':'100%'}"></p-dropdown>
                 </div>
             </div>
             <div class="form-group mb fieldsetdnn row col-md-6">
-                <label class="col-sm-4 control-label"><span style="float: right;">计算值</span></label>
+                <label class="col-sm-4 control-label requiredlabel"><span style="float: right;">计算值</span></label>
                 <div class="col-sm-8">
                   <p-dropdown [options]="jisuanvalues" [(ngModel)]="fanlirule['jisuanvalue']" [style]="{'width':'100%'}"></p-dropdown>
                 </div>
@@ -135,7 +135,7 @@
                   <p-dropdown [options]="jiesuantypes" [(ngModel)]="fanlirule['jiesuantype']" [style]="{'width':'100%'}"></p-dropdown>
                 </div>
             </div>
-            <div class="form-group mb fieldsetdnn row col-md-12">
+            <!-- <div class="form-group mb fieldsetdnn row col-md-12">
               <label class="col-sm-2 control-label">
                 <span style="float: right;">优惠规则</span>
               </label>
@@ -151,12 +151,12 @@
                 <span style="float: right;">金额计算表达式</span>
               </label>
               <div class="col-sm-7">
-                <input [(ngModel)]="fanlirule['jineexpression']" class="form-control" placeholder="请输入金额计算表达式，如 X*1%/1.13">
+                <input [(ngModel)]="fanlirule['jineexpression']" class="form-control" placeholder="请输入金额计算表达式，如 X*2.5%/2.25">
               </div>
               <div class="col-sm-3">
                 例：X*2.5%/2.25、X*20
               </div>
-            </div>
+            </div> -->
             <div class="form-group mb fieldsetdnn row col-md-12">
               <label class="col-sm-2 control-label">
                 <span style="float: right;">备注</span>
@@ -203,8 +203,8 @@ aria-hidden="true">
           <button type="button" class="close pull-right" aria-label="Close" (click)="grnoModalDialog()">
             <span aria-hidden="true">&times;</span>
           </button>
-          <button type="button" class="btn btn-info btn-bloc" (click)="showquerycaigoudet()">添加</button>
-          <button type="button" class="btn btn-info btn-bloc" (click)="deletegrno()" style="margin-right:10px;">删除</button>
+          <!-- <button type="button" class="btn btn-info btn-bloc" (click)="showquerycaigoudet()">添加</button>
+          <button type="button" class="btn btn-info btn-bloc" (click)="deletegrno()" style="margin-right:10px;">删除</button> -->
         </div>
       </div>
       <div class="modal-body">

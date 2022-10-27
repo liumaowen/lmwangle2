@@ -3,10 +3,11 @@ import { CustomerapiService } from './../../customer/customerapi.service';
 import { OrderapiService } from './../../order/orderapi.service';
 import { ToasterService } from 'angular2-toaster/angular2-toaster';
 import { DatePipe } from '@angular/common';
-import { GridOptions } from 'ag-grid/main';
+import { ColDef, GridOptions } from 'ag-grid/main';
 import { ModalDirective } from 'ngx-bootstrap';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { QihuoService } from 'app/routes/qihuo/qihuo.service';
 
 @Component({
   selector: 'app-salebilldetreport',
@@ -55,6 +56,7 @@ export class SalebilldetreportComponent implements OnInit {
     private customerApi: CustomerapiService,
     private reportApi: ReportService,
     private orderApi: OrderapiService,
+    private qihuoapi: QihuoService,
     private toast: ToasterService) {
 
     this.gridOptions = {
@@ -135,6 +137,21 @@ export class SalebilldetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '审核人', field: 'vusername', width: 75 },
       { cellStyle: { 'text-align': 'center' }, headerName: '审核时间', field: 'vdate', width: 130 },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 150 },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '订单附件', field: 'fujianload', width: 150 , colId: 'fujianload',
+        cellRenderer: params => {
+          if (params.data && undefined != params.data.fujianload && '查看' === params.data.fujianload) {
+            return '<a target="_blank">查看</a>';
+          }
+        }, onCellClicked: (params) => {
+          console.log(111)
+          console.log(params)
+          if (params.data && undefined != params.data.fujianload && '查看' === params.data.fujianload) {
+            this.showfujianmodal(params.data.id);
+          }
+        }
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '是否全部查看', field: 'isalllooks', width: 150 , colId: 'fujianload'},
     ];
     // 快递信息
     this.dgridOptions = {
@@ -292,6 +309,7 @@ export class SalebilldetreportComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getMyRole();
   }
 
   // 导出入库单明细表
@@ -394,6 +412,51 @@ export class SalebilldetreportComponent implements OnInit {
     }
     this.listDetail();
     this.hideUploaderModel();
+  }
+
+  //
+  getMyRole() {
+    const myrole = JSON.parse(localStorage.getItem('myrole'));
+    this.gridOptions.columnDefs.forEach((colde: ColDef) => {
+      // 如果登陆的用户是非财务人员，设置为不可见
+      if (!myrole.some(item => item === 5 || item === 37)) {
+        if (colde.colId === 'fujianload') {
+          colde.hide = true;
+          colde.suppressToolPanel = true;
+        }
+      }
+    });
+  }
+  @ViewChild('fujianModal2') private fujianModal2: ModalDirective;
+  @ViewChild('fujianModal') private fujianModal: ModalDirective;
+  billnos: any = [];
+  showfujianmodal(salebillid){
+    this.orderApi.findBillnos(salebillid).then(data => {
+      this.billnos = data['billnos'];
+    })
+    this.fujianModal2.show();
+  }
+  closefujian2(){
+    this.fujianModal2.hide();
+  }
+  closefujian(){
+    this.fujianModal.hide();
+  }
+  showfujianmodal2(qihuoid) {
+    this.getfujians(qihuoid);
+    this.fujianModal.show();
+  }
+  fujians: any = [];
+  getfujians(qihuoid){
+    this.qihuoapi.findfujians(qihuoid).then(data => {
+      this.fujians = data['fujians'];
+      console.log(this.fujians)
+    })
+  }
+  chakan(model){
+    this.qihuoapi.chakan(model).then((data) => {
+      //this.getfujians(model['qihuoid']);
+    });
   }
 
 }

@@ -39,6 +39,14 @@ export class FeeapiService {
       return data.json() as any[];
     });
   }
+
+  /**税额抵扣表 */
+  shuiedikoudet(search) {
+    return this.http.get('store/api/maycurreporter/shuiedikoudet', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+
   /**报销费用明细表 */
   baoxiaofeedet(search) {
     return this.http.get('store/api/maycurreporter/find', { search: search }).toPromise().then(data => {
@@ -106,6 +114,12 @@ export class FeeapiService {
       return data.json() as any[];
     });
   }
+    /**税额抵扣表同步每刻报 */
+    refreshsemaycur(start) {
+      return this.http.get('store/api/maycurreporter/sebatchcreate?start=' + start).toPromise().then(data => {
+        return data.json() as any[];
+      });
+    }
   /**下载报销明细表模板 */
   downloadExcel() {
     return this.http.get('store/api/maycurreporter/download').toPromise().then(data => {

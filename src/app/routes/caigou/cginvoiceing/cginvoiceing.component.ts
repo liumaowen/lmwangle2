@@ -74,7 +74,8 @@ export class CginvoiceingComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '宽度', field: 'width', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '颜色', field: 'color', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '材质', field: 'caizhi', minWidth: 90 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '背漆', field: 'beiqi', minWidth: 80 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '背漆', field: 'beiqi', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', minWidth: 80 }
     ];
   }
 

@@ -227,6 +227,12 @@ export class ProduceapiService {
       return data.json() as any[];
     });
   }
+ //判断是否是临时仓库
+  judgelinshicangku(search) {
+    return this.http.get('store/api/produce/judgelinshicangku/'+search).toPromise().then(data =>{
+      return data.json() as any[]; 
+    });
+  }
 
   querytasklist(search) {
     return this.http.get('store/api/produce/tasklist', { search: search }).toPromise();

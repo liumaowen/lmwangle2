@@ -23,6 +23,7 @@ import { OnlineorderkaoheComponent } from './onlineorderkaohe/onlineorderkaohe.c
 import { JingliaoorderdetailComponent } from './jingliaoorderdetail/jingliaoorderdetail.component';
 import { QihuodaiyundetComponent } from './qihuodaiyundet/qihuodaiyundet.component';
 import { NoticewuliuyuanComponent } from 'app/dnn/shared/noticewuliuyuan/noticewuliuyuan.component';
+import { MaGangAddComponent } from 'app/dnn/shared/magangadd/magangadd.component';
 import { TudusaledetComponent } from './tudusaledet/tudusaledet.component';
 import { DaydealdetailComponent } from './daydealdetail/daydealdetail.component';
 import { NeicaigoufapiaodetailComponent } from './neicaigoufapiaodetail/neicaigoufapiaodetail.component';
@@ -67,6 +68,6 @@ const routes: Routes = [
     EditComponent, OnlineorderkaoheComponent, JingliaoorderdetailComponent, QihuodaiyundetComponent,
     TudusaledetComponent, DaydealdetailComponent, NeicaigoufapiaodetailComponent, NeicaigoufapiaoreporterComponent,OrderlirunComponent],
   providers: [OrderapiService],
-  entryComponents: [JiagongmsgComponent, EditComponent, NoticewuliuyuanComponent]
+  entryComponents: [JiagongmsgComponent, EditComponent, NoticewuliuyuanComponent,MaGangAddComponent]
 })
 export class OrderModule { }

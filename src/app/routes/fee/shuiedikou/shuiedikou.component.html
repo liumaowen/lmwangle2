@@ -1,0 +1,133 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 税额抵扣表
+  <div class="pull-right wide-show">
+    <button type="button" (click)="openRefreshDialog()" class="btn btn-info btn-bloc">同步每刻报</button>
+    <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="openRefreshDialog()">同步每刻报</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <!-- <li role="menuitem">
+          <a class="dropdown-item" (click)="uploadfinancefee()">上传财务费用</a>
+        </li> -->
+        <li class="divider dropdown-divider"></li>
+        <!-- <li role="menuitem">
+          <a class="dropdown-item" (click)="uploadbaoxiaofee()">上传每刻报</a>
+        </li> -->
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="openQueryDialog()">查询</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <!-- <a class="dropdown-item">
+            <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/finance_fee_baoxiao.xls" target="_blank"
+              style="color:#ffffff;">财务费用模板</a>
+            </a> -->
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <!-- <a class="dropdown-item">
+            <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/%E6%AF%8F%E5%88%BB%E6%8A%A5%E6%A8%A1%E6%9D%BF.xls" target="_blank"
+              style="color:#ffffff;">每刻报模板</a>
+            </a> -->
+        </li>
+        <!-- <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="downExcel()">模板下载</a>
+        </li> -->
+        <li class="divider dropdown-divider"></li>
+        <!-- <li role="menuitem">
+          <a class="dropdown-item" (click)="agExport()">导出</a>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 209)+'px'}" #agGrid
+  style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+<toaster-container></toaster-container>
+
+<!-- 获取指定日期内的数据 -->
+<div class="modal" bsModal #refreshmaycurModel="bs-modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hiderefreshmaycurModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">同步</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">同步日期</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <p-calendar [(ngModel)]="startrefresh" placeholder="同步时间" [maxDate]="maxDate"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNullRefresh()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="queryrefresh()" class="btn btn-primary btn-large">同步</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--查询弹窗-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">开始时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="end || maxDate"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">结束时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate" [minDate]="start"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">单号</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="requestparams['billno']" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -4,6 +4,7 @@ import { Headers } from '@angular/http';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { RukuService } from './../ruku.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-ruku',
@@ -11,6 +12,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./ruku.component.scss']
 })
 export class RukuComponent implements OnInit {
+  current = this.storage.getObject('cuser');
 
   public totalItems: number;
   public currentPage: number = 1;
@@ -21,7 +23,7 @@ export class RukuComponent implements OnInit {
     this.querydata();
   };
 
-  constructor(private rukuapi: RukuService, private datepipe: DatePipe, private toast: ToasterService) {
+  constructor(private rukuapi: RukuService, private datepipe: DatePipe, private toast: ToasterService,private storage: StorageService) {
     this.querydata();
   }
 
@@ -85,6 +87,8 @@ export class RukuComponent implements OnInit {
 
   // 查询
   select() {
+    this.querys['salemanid']=this.current.id;
+    this.querys['orgid']=this.current.orgid;
     this.querys['id'] ? this.search['id'] = this.querys['id'] : '';
     this.querys['start'] ? this.search['start'] = this.datepipe.transform(this.querys['start'], 'y-MM-dd') : '';
     this.querys['end'] ? this.search['end'] = this.datepipe.transform(this.querys['end'], 'y-MM-dd') : '';

@@ -69,7 +69,7 @@ export class ReceivedetailComponent implements OnInit {
   // 获取收款登记单
   get() {
     const myrole = JSON.parse(localStorage.getItem('myrole'));
-    if (myrole.some(item => item === 5 || item === 38 || item === 49)) { // 财务人员和往来管理和测试人员人员
+    if (myrole.some(item => item === 5 || item === 38 || item === 49 || item === 41 || item === 35)) { // 财务人员和往来管理和测试人员人员
       this.iscaiwubu = true;
     }else{
       this.iscaiwubu = false;
@@ -228,6 +228,10 @@ export class ReceivedetailComponent implements OnInit {
     }
     if (!this.model['shoukuantype']) {
       this.toast.pop('warning', '请选择收款类型！');
+      return;
+    }
+    if (!this.model['gpsalemanid']) {
+      this.toast.pop('warning', '请选择业务员！');
       return;
     }
     if (this.model['isv']) {

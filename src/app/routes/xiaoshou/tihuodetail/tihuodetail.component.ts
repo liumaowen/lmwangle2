@@ -120,6 +120,7 @@ export class TihuodetailComponent implements OnInit {
 
     // 设置提货明细表
     this.gridOptions = {
+      groupDefaultExpanded: -1,
       rowSelection: 'multiple',
       overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
       overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
@@ -141,7 +142,7 @@ export class TihuodetailComponent implements OnInit {
           return {
             group: true,
             //大壮说的2022-08-31
-            //expanded: null != params.group,
+            expanded: null != params.group,
             children: params.participants,
             field: 'group',
             key: params.group
@@ -233,6 +234,7 @@ export class TihuodetailComponent implements OnInit {
 
     // 设置临调明细表
     this.storagefeegridOptions = {
+      groupDefaultExpanded: -1,//默认展开
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
       rowSelection: 'multiple',
@@ -242,7 +244,21 @@ export class TihuodetailComponent implements OnInit {
       enableColResize: true,
       enableSorting: true,
       excelStyles: this.settings.excelStyles,
-      getContextMenuItems: this.settings.getContextMenuItems
+      getContextMenuItems: this.settings.getContextMenuItems,
+      getNodeChildDetails: (params) => {
+        if (params.group) {
+          return {
+            group: true,
+            expanded: null != params.group,
+            children: params.participants,
+            field: 'group',
+            key: params.group
+          };
+        } else {
+          return null;
+        }
+      },
+
     };
 
     this.feegridOptions.onGridReady = this.settings.onGridReady;
@@ -1005,7 +1021,7 @@ export class TihuodetailComponent implements OnInit {
     //   this.tihuo['releasejine'] = data1['dingjin'];
 
     // });
-    this.businessOrderApi.getmoney1({ buyerid: this.tihuo.buyerid, wcustomerid: this.tihuo.sellerid }).then((data) => {// 仅仅是获取当前客户的余额
+    this.businessOrderApi.getmoney1({ buyerid: this.tihuo.buyerid, wcustomerid: this.tihuo.sellerid,salemanid: this.tihuo['salemanid'] }).then((data) => {// 仅仅是获取当前客户的余额
       if (!data['wyue']) {
         this.msg.currentmoney = 0;
       } else {
@@ -1186,7 +1202,7 @@ export class TihuodetailComponent implements OnInit {
   }
   // 欠款支付按钮
   arrearspay() {
-    this.businessOrderApi.getmoney({ buyerid: this.tihuo.buyerid, wcustomerid: this.tihuo.sellerid }).then((data) => {
+    this.businessOrderApi.getmoney({ buyerid: this.tihuo.buyerid, wcustomerid: this.tihuo.sellerid,salemanid:this.tihuo['salemanid'] }).then((data) => {
       if (!data['wyue']) {
         this.msg.currentmoney = '0';
       } else {
@@ -2017,7 +2033,7 @@ export class TihuodetailComponent implements OnInit {
         qiankuandays: null, qiankuanreason: null, yedate: null, isqiankuan: false, yue: 0,
         qiankuanhuokuanjine: 0
       };
-      this.businessOrderApi.getmoney1({ buyerid: this.tihuo.buyerid, wcustomerid: this.tihuo.sellerid }).then((data) => {
+      this.businessOrderApi.getmoney1({ buyerid: this.tihuo.buyerid, wcustomerid: this.tihuo.sellerid,salemanid: this.tihuo['salemanid'] }).then((data) => {
         // 仅仅是获取当前客户的余额
         let yue: any = 0;
         if (data['wyue']) {

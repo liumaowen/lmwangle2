@@ -225,23 +225,34 @@ export class XsbuchadetailComponent implements OnInit {
       this.toast.pop('warning', '请先引入明细再提交审核！！！');
       return '';
     }
-    if (this.xsbucha['tjine'] > 0) {
-      this.businessOrderApi.getmoney1({ buyerid: this.xsbucha.buyerid, wcustomerid: this.xsbucha.sellerid }).then((data) => {
-        let msg = {};
-        if (!data['wyue']) {
-          msg['currentmoney'] = 0;
-        } else {
-          msg['currentmoney'] = data['wyue'];
-        }
-        msg['paymoney'] = this.xsbucha.tjine;
-        if (msg['currentmoney'].sub(msg['paymoney']) < 0) {
-          // if (msg['currentmoney'].sub(0) < 0) {
-          if (data['oyue'].sub(0) < 0) {
-            this.overdraft['tjine'] = this.xsbucha.tjine;
-          } else {
-            this.overdraft['tjine'] = (msg['currentmoney'].sub(msg['paymoney'])).mul('-1');
-          }
-          this.arrearspayshow();
+    if(this.xsbucha['compensation'] === 0){
+      if (confirm('该质量异议钢厂尚未赔付，属于先行赔付，需审批到总经理，是否确认提交')){
+        if (this.xsbucha['tjine'] > 0) {
+          this.businessOrderApi.getmoney1({ buyerid: this.xsbucha.buyerid, wcustomerid: this.xsbucha.sellerid,salemanid: this.xsbucha['salemanid'] }).then((data) => {
+            let msg = {};
+            if (!data['wyue']) {
+              msg['currentmoney'] = 0;
+            } else {
+              msg['currentmoney'] = data['wyue'];
+            }
+            msg['paymoney'] = this.xsbucha.tjine;
+            if (msg['currentmoney'].sub(msg['paymoney']) < 0) {
+              // if (msg['currentmoney'].sub(0) < 0) {
+              if (data['oyue'].sub(0) < 0) {
+                this.overdraft['tjine'] = this.xsbucha.tjine;
+              } else {
+                this.overdraft['tjine'] = (msg['currentmoney'].sub(msg['paymoney'])).mul('-1');
+              }
+              this.arrearspayshow();
+            } else {
+              if (confirm('提醒：欠款客户补差单需要财务审核，普通补差单需负责人审核！')) {
+                this.xsbuchaApi.submit(id).then(() => {
+                  this.toast.pop('success', '提交成功');
+                  this.router.navigateByUrl('xsbucha');
+                });
+              }
+            }
+          });
         } else {
           if (confirm('提醒：欠款客户补差单需要财务审核，普通补差单需负责人审核！')) {
             this.xsbuchaApi.submit(id).then(() => {
@@ -250,13 +261,41 @@ export class XsbuchadetailComponent implements OnInit {
             });
           }
         }
-      });
-    } else {
-      if (confirm('提醒：欠款客户补差单需要财务审核，普通补差单需负责人审核！')) {
-        this.xsbuchaApi.submit(id).then(() => {
-          this.toast.pop('success', '提交成功');
-          this.router.navigateByUrl('xsbucha');
+      }
+    }else{
+      if (this.xsbucha['tjine'] > 0) {
+        this.businessOrderApi.getmoney1({ buyerid: this.xsbucha.buyerid, wcustomerid: this.xsbucha.sellerid,salemanid: this.xsbucha['salemanid'] }).then((data) => {
+          let msg = {};
+          if (!data['wyue']) {
+            msg['currentmoney'] = 0;
+          } else {
+            msg['currentmoney'] = data['wyue'];
+          }
+          msg['paymoney'] = this.xsbucha.tjine;
+          if (msg['currentmoney'].sub(msg['paymoney']) < 0) {
+            // if (msg['currentmoney'].sub(0) < 0) {
+            if (data['oyue'].sub(0) < 0) {
+              this.overdraft['tjine'] = this.xsbucha.tjine;
+            } else {
+              this.overdraft['tjine'] = (msg['currentmoney'].sub(msg['paymoney'])).mul('-1');
+            }
+            this.arrearspayshow();
+          } else {
+            if (confirm('提醒：欠款客户补差单需要财务审核，普通补差单需负责人审核！')) {
+              this.xsbuchaApi.submit(id).then(() => {
+                this.toast.pop('success', '提交成功');
+                this.router.navigateByUrl('xsbucha');
+              });
+            }
+          }
         });
+      } else {
+        if (confirm('提醒：欠款客户补差单需要财务审核，普通补差单需负责人审核！')) {
+          this.xsbuchaApi.submit(id).then(() => {
+            this.toast.pop('success', '提交成功');
+            this.router.navigateByUrl('xsbucha');
+          });
+        }
       }
     }
   }
@@ -426,11 +465,10 @@ export class XsbuchadetailComponent implements OnInit {
     console.log(this.category);
   }
   choice(){
-    console.log(this.xsbucha['compensation']);
-    if(!this.xsbucha['compensation'] || this.xsbucha['compensation'] === null){
-      this.toast.pop('warning', '请选择赔付类型！');
-      return;
-    }
+    // if(!this.xsbucha['compensation'] || this.xsbucha['compensation'] === null){
+    //   this.toast.pop('warning', '请选择赔付类型！');
+    //   return;
+    // }
     if (!this.xsbucha.saletype) {
       this.toast.pop('error', '请填写处理类型！');
       return;

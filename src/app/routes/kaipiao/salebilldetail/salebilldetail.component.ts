@@ -9,6 +9,7 @@ import { StorageService } from './../../../dnn/service/storage.service';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { GridOptions } from 'ag-grid/main';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { QihuoService } from 'app/routes/qihuo/qihuo.service';
 
 @Component({
   selector: 'app-salebilldetail',
@@ -49,6 +50,7 @@ export class SalebilldetailComponent implements OnInit {
     private toast: ToasterService,
     private router: Router,
     private datepipe: DatePipe,
+    private qihuoapi: QihuoService,
     private route: ActivatedRoute) {
 
     this.salebill = { buyer: {}, seller: {}, cuser: {} };
@@ -339,9 +341,41 @@ export class SalebilldetailComponent implements OnInit {
   getMyRole() {
     let myrole = JSON.parse(localStorage.getItem('myrole'));
     for (let i = 0; i < myrole.length; i++) {
-      if ((myrole[i] === 5 || myrole[i] === 19) && !(myrole[i] === 41 || myrole[i] === 42)) {
+      if ((myrole[i] === 5 || myrole[i] === 19 || myrole[i] === 37 || myrole[i] === 44 || myrole[i] === 35) && !(myrole[i] === 41 || myrole[i] === 42)) {
         this.caiwu = true;
       }
     }
+  }
+  @ViewChild('fujianModal2') private fujianModal2: ModalDirective;
+  @ViewChild('fujianModal') private fujianModal: ModalDirective;
+
+  billnos: any = [];
+
+  showfujianmodal(){
+    this.orderApi.findBillnos(this.salebill['id']).then(data => {
+      this.billnos = data['billnos'];
+    })
+    this.fujianModal2.show();
+  }
+  closefujian2(){
+    this.fujianModal2.hide();
+  }
+  closefujian(){
+    this.fujianModal.hide();
+  }
+  showfujianmodal2(qihuoid) {
+    this.getfujians(qihuoid);
+    this.fujianModal.show();
+  }
+  fujians: any = [];
+  getfujians(qihuoid){
+    this.qihuoapi.findfujians(qihuoid).then(data => {
+      this.fujians = data['fujians'];
+    })
+  }
+  chakan(model){
+    this.qihuoapi.chakan(model).then((data) => {
+      //this.getfujians(model['qihuoid']);
+    });
   }
 }

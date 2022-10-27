@@ -129,6 +129,39 @@ export class OnechengbenComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
+        cellStyle: { 'text-align': 'center' }, headerName: '今年未到返利', field: 'yearfanli', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['yearfanli']) {
+            return Number(params.data['yearfanli']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '库存返利', field: 'kucunfanli', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['kucunfanli']) {
+            return Number(params.data['kucunfanli']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '去年未到返利', field: 'lastyearfanli', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['lastyearfanli']) {
+            return Number(params.data['lastyearfanli']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
         cellStyle: { 'text-align': 'center' }, headerName: '采购退货单价', field: 'cgtuihuoprice', minWidth: 60, enableRowGroup: true,
         //  aggFunc: 'sum',
         valueGetter: (params) => {

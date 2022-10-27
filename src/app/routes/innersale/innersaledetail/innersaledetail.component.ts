@@ -490,10 +490,10 @@ export class InnersaledetailComponent implements OnInit {
     }
     this.innersaleApi.zhidingVuser(this.innersale['id']).then(data => {
       this.innersale['vuser'] = data.innersale.vuser;
+      this.router.navigateByUrl('innersale');
+      this.router.navigate(['innersale']);
       this.toast.pop('success', '提交成功^o^');
       this.listDetail();
-      // this.router.navigateByUrl('innersalereport');
-      // this.router.navigate(['innersaledetreport']);
     });
   }
 

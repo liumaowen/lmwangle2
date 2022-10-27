@@ -1,6 +1,7 @@
 <div class="content-heading">
   <em class="fa fa-book"></em> 费用付款单
-  <div class="pull-right">
+  <div class="pull-right" >
+    <button  type="button" *ngIf="feefukuan['isv']" class="btn btn-info btn-sm margin-top-bottom-25"   (click)="fukuanreceipt()">付款回执</button>
     <button type="button" *ngIf="caiwuyunying" class="btn btn-info btn-bloc" (click)="getInvoiveUrl()">查看发票</button>
     <button type="button" [disabled]="feefukuan['pcode'] !== 0 && feefukuan['pcode'] !== 7" (click)="showUploadInvoice()" class="btn btn-info btn-sm margin-top-bottom-25">上传发票</button>
     <button type="button" [disabled]="feefukuan['pcode'] !== 7"(click)="submitfapiao()" class="btn btn-info btn-sm margin-top-bottom-25">发票审核</button>

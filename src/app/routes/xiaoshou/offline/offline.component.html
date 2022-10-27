@@ -67,7 +67,7 @@
                 </div>
               </div>
             -->
-              <div *ngIf="isshow">
+              <!-- <div *ngIf="isshow">
                 <div class="form-group mb fieldsetdnn row">
                   <label class="col-sm-3 control-label">车牌号</label>
                   <div class="col-sm-9">
@@ -111,7 +111,8 @@
                       class="text-danger">身份证填写不规范</span>
                   </div>
                 </div>
-              </div>
+              </div> -->
+     
               <div *ngIf="isqihuo" class="form-group mb fieldsetdnn row">
                 <label class="col-sm-3 control-label">是否最后一次期货提货</label>
                 <div class="col-sm-9">
@@ -155,7 +156,7 @@
                   </div>
                 </div> -->
               
-              <div class="form-group mb fieldsetdnn row" *ngIf="flag['isonline']&&isshow">
+              <!-- <div class="form-group mb fieldsetdnn row" *ngIf="flag['isonline']&&isshow">
                 <label class="col-sm-3 control-label">目的地址</label>
                 <div class="col-sm-9">
                   <input type="text" formControlName = "enddest" placeholder="请输入详细地址" [(ngModel)]="params['enddest']" class="form-control"
@@ -186,16 +187,10 @@
                   <p-dropdown [options]="wuliuyuan" formControlName="wuliuyuan" [(ngModel)]="params['wuliuyuan']" [style]="{'width':'100%','font-size':'15px'}"
                     [filter]="true" filterBy="label,value.name"></p-dropdown>
                 </div>
-              </div>
+              </div> -->
 
 
-              <div class="form-group mb fieldsetdnn row">
-                <label class="col-sm-3 control-label">备注</label>
-                <div class="col-sm-9">
-                  <input [(ngModel)]="params['beizhu']" formControlName="beizhu" class="form-control"
-                    placeholder="请输入备注">
-                </div>
-              </div>
+     
 
               <div class="form-group mb fieldsetdnn row">
                 <label class="col-sm-3 control-label">出库费结算方式</label>
@@ -215,6 +210,29 @@
                         [(ngModel)]="params['chukufeetype2']" />
                       <span class="fa fa-circle"></span>免付
                     </label>
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">车号</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="params['chehao']" formControlName="chehao" class="form-control"
+                    placeholder="请输入车号">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">司机信息</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="params['siji']" formControlName="siji" class="form-control"
+                    placeholder="请输入司机信息">
+                </div>
+              </div>
+
+              <div class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">备注</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="params['beizhu']" formControlName="beizhu" class="form-control"
+                    placeholder="请输入备注">
                 </div>
               </div>
               
@@ -548,6 +566,12 @@
               <label class="col-sm-3 control-label">其他打包带材料</label>
               <div class="col-sm-9">
                 <input type="text" [(ngModel)]="tasklist['cailiaobeizhu']" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12  col-md-6"  *ngIf="tasklist['islinshicangku']">
+              <label class="col-sm-3 control-label">结算方式</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="moulds" [(ngModel)]="tasklist['jiesuanmould']" [style]="{'width':'100%','font-size':'15px'}"></p-dropdown>
               </div>
             </div>
           </div>

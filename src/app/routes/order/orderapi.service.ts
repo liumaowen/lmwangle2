@@ -479,5 +479,14 @@ export class OrderapiService {
       return data.json() as any[];
     });
   }
-
+  findBillnos(id) {
+      return this.http.get('store/api/salebill/findbillnos/'+id).toPromise().then(data => {
+        return data.json() as any[];
+      });
+    }
+  getDetail(search){
+    return this.http.get('store/api/salebill/getdetail',{ search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

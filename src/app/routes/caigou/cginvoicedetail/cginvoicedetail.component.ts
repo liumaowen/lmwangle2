@@ -363,7 +363,7 @@ export class CginvoicedetailComponent implements OnInit {
   getMyRole() {
     let myrole = JSON.parse(localStorage.getItem('myrole'));
     for (let i = 0; i < myrole.length; i++) {
-      if (myrole[i] === 5) {
+      if (myrole[i] === 5 || myrole[i] === 35) {
         this.caiwu = true;
       }
     }

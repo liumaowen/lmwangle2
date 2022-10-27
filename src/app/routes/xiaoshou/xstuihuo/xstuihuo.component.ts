@@ -1,6 +1,7 @@
 import { XiaoshouapiService } from './../xiaoshouapi.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-xstuihuo',
@@ -16,10 +17,11 @@ export class XstuihuoComponent implements OnInit {
   suser;
 
   buyer;
+  current = this.storage.getObject('cuser');
 
   status = [{ label: '全部', value: '' }, { label: '待审核', value: 1 }, { label: '已审核', value: 2 }];
 
-  constructor(private tihuoApi: XiaoshouapiService) {
+  constructor(private tihuoApi: XiaoshouapiService,private storage: StorageService) {
     this.querydata();
   }
 
@@ -31,6 +33,7 @@ export class XstuihuoComponent implements OnInit {
   pageChanged(event: any): void {
     this.querys['pagenum'] = event.page;
     this.querys['pagesize'] = event.itemsPerPage;
+    this.querys['orgid'] = this.current.orgid;
     this.querydata();
   };
 

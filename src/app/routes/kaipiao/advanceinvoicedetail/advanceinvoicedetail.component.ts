@@ -9,6 +9,7 @@ import { SettingsService } from './../../../core/settings/settings.service';
 import { GridOptions } from 'ag-grid/main';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ImportorderComponent } from '../importorder/importorder.component';
+import { QihuoService } from 'app/routes/qihuo/qihuo.service';
 const sweetalert = require('sweetalert');
 @Component({
   selector: 'app-advanceinvoicedetail',
@@ -65,6 +66,7 @@ export class AdvanceinvoicedetailComponent implements OnInit {
     private router: Router,
     private datepipe: DatePipe,
     private route: ActivatedRoute,
+    private qihuoapi: QihuoService,
     private bsModal: BsModalService) {
 
     this.salebill = { buyer: {}, seller: {}, cuser: {}, vuser: {}, checkuser: {} };
@@ -211,6 +213,7 @@ export class AdvanceinvoicedetailComponent implements OnInit {
   gnid;
   ngOnInit() {
     this.getDetail();
+    this.getMyRole();
   }
   // 为明细表数据赋值
   getDetail() {
@@ -790,5 +793,47 @@ export class AdvanceinvoicedetailComponent implements OnInit {
     this.orderApi.delfujian(params).then(data => {
       this.getDetail();
     });
+  }
+
+  @ViewChild('fujianModal2') private fujianModal2: ModalDirective;
+  @ViewChild('fujianModal3') private fujianModal3: ModalDirective;
+
+  billnos: any = [];
+
+  showfujianmodal3(){
+    this.orderApi.findBillnos(this.salebill['id']).then(data => {
+      this.billnos = data['billnos'];
+    })
+    this.fujianModal2.show();
+  }
+  closefujian2(){
+    this.fujianModal2.hide();
+  }
+  closefujian3(){
+    this.fujianModal3.hide();
+  }
+  showfujianmodal2(qihuoid) {
+    this.getfujians(qihuoid);
+    this.fujianModal3.show();
+  }
+  fujians: any = [];
+  getfujians(qihuoid){
+    this.qihuoapi.findfujians(qihuoid).then(data => {
+      this.fujians = data['fujians'];
+    })
+  }
+  chakan(model){
+    this.qihuoapi.chakan(model).then((data) => {
+      //this.getfujians(model['qihuoid']);
+    });
+  }
+  caiwu = false;
+  getMyRole() {
+    let myrole = JSON.parse(localStorage.getItem('myrole'));
+    for (let i = 0; i < myrole.length; i++) {
+      if ((myrole[i] === 5 || myrole[i] === 19 || myrole[i] === 37 || myrole[i] === 44 || myrole[i] === 35) && !(myrole[i] === 41 || myrole[i] === 42)) {
+        this.caiwu = true;
+      }
+    }
   }
 }

@@ -4,6 +4,7 @@
       <em class="fa fa-book"></em>{{ordertitle}}</h4>
   </div>
   <div class="pull-right ml-lg wide-show" *ngIf="qihuomodel['status']!==7 && qihuomodel['zuofeiprocessedid'] === null">
+    <button type="button" (click)="showfujianmodal()" class="btn btn-info btn-sm margin-top-bottom-25">上传附件</button>
     <button *ngIf="qihuoflag['issubmit'] && (qihuomodel['ordertype'] == 0 || qihuomodel['ordertype'] == 1)" type="button" (click)="qualitShow()" class="btn btn-info btn-sm margin-top-bottom-25">质量异议</button>
     <button type="button" (click)="caigoudan()" *ngIf="(qihuomodel['qihuostatus']===4 || qihuomodel['qihuostatus']===5|| qihuomodel['qihuostatus']===6||
         qihuomodel['qihuostatus']===7|| qihuomodel['qihuostatus']===8)&& neiwuwaiwu " class="btn btn-info btn-sm margin-top-bottom-25">生成采购单</button>
@@ -2322,6 +2323,12 @@ aria-hidden="true">
                   </label>
               </div>
           </div>
+          <div class="row fieldsetdnn">
+            <label class="col-sm-3 control-label">单据类别</label>
+            <div class="col-sm-9">
+              <p-dropdown [options]="dantypes" [(ngModel)]="caigou['dantype']" [style]="{'width':'calc(100%)'}" ></p-dropdown>
+            </div>
+          </div>
           <!--</form>-->
         </div>
       </div>
@@ -2466,4 +2473,67 @@ aria-hidden="true">
       </div>
     </div> 
   </div>
-   
+</div>
+<!-- 附件弹出框 -->
+<div class="modal" bsModal #fujianModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closefujian()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">附件列表</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <table class="table table-striped" [mfData]="fujians" #mf2="mfDataTable">
+              <thead>
+                <tr>
+                  <th style="width: 50%">
+                    <mfDefaultSorter by="url">链接</mfDefaultSorter>
+                  </th>
+                  <th style="width: 50%">
+                    <mfDefaultSorter>操作</mfDefaultSorter>
+                  </th>
+                </tr>
+              </thead>
+      
+              <tbody>
+                <tr *ngFor="let model of mf2.data">
+                  <td><a [href]="model['url']" target="_blank">{{model['url']}}</a></td>
+                  <td>
+                    <button type="button" (click)="delfujian(model['key'])" class="btn btn-info btn-sm margin-top-bottom-25">
+                      删除
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="fujiansubmit()" class="btn btn-primary btn-large">添加</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 上传图片 -->
+<div class="modal" bsModal #picdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidepicDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam2" [accept]="accept" (select)="pictract($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>

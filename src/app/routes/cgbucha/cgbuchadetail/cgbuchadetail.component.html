@@ -23,11 +23,11 @@
     <span *ngIf="isshow&&lastyearfanli&&submitShow">
       <button class="btn btn-info btn-bloc" type="button" (click)="openadddet()">添加年底未到返利</button>
     </span>
-    <!-- <span *ngIf="isshow&&!chengdui&&!lastyearfanli&&submitShow">
-      <button class="btn btn-info btn-bloc" type="button" (click)="importfanli()">引入返利明细</button>
-    </span> -->
     <span *ngIf="isshow&&!chengdui&&!lastyearfanli&&submitShow">
-      <button class="btn btn-info btn-bloc" type="button" (click)="importfanli2()">引入返利明细</button>
+      <button class="btn btn-info btn-bloc" type="button" (click)="importfanli()">引入返利明细(旧)</button>
+    </span>
+    <span *ngIf="isshow&&!chengdui&&!lastyearfanli&&submitShow">
+      <button class="btn btn-info btn-bloc" type="button" (click)="importfanli2()">引入返利明细(新)</button>
     </span>
     <span *ngIf="isshow&&!chengdui&&!lastyearfanli&&submitShow">
       <button class="btn btn-info btn-bloc" type="button" (click)="openadddet()">添加退款明细</button>

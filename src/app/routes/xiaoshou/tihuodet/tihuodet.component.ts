@@ -28,7 +28,7 @@ export class TihuodetComponent implements OnInit {
   requestparams = {
     gnid: '', cangkuid: '', chandi: '', color: '', width: '', houdu: '',
     duceng: '', caizhi: '', ppro: '', cuserid: '', id: '', start: '', end: '',
-    shitistart: '', shitiend: '', buyerid: '', tihuotype: '', status: '', orgid: '', kunbaohao: ''
+    shitistart: '', shitiend: '', buyerid: '', tihuotype: '', status: '', orgid: '', kunbaohao: '',tihuoinfo:''
   };
   gridOptions: GridOptions;
 
@@ -150,7 +150,8 @@ export class TihuodetComponent implements OnInit {
             return '';
           }
         }
-      }
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '提货信息', field: 'tihuoinfo', minWidth: 100 }
     ];
 
     this.listDetail();
@@ -324,7 +325,7 @@ export class TihuodetComponent implements OnInit {
     this.cuser = null;
     this.companys = null;
     this.saleman = null;
-    this.requestparams = { gnid: '', cangkuid: '', chandi: '', color: '', width: '', houdu: '', duceng: '', caizhi: '', ppro: '', cuserid: '', id: '', start: '', end: '', shitistart: '', shitiend: '', buyerid: '', tihuotype: '', status: '', orgid: '', kunbaohao: '' };
+    this.requestparams = { gnid: '', cangkuid: '', chandi: '', color: '', width: '', houdu: '', duceng: '', caizhi: '', ppro: '', cuserid: '', id: '', start: '', end: '', shitistart: '', shitiend: '', buyerid: '', tihuotype: '', status: '', orgid: '', kunbaohao: '',tihuoinfo:'' };
     this.disabled = true;
     this.attrs = [];
   }

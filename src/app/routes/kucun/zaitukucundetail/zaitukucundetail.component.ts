@@ -468,17 +468,17 @@ export class ZaitukucundetailComponent implements OnInit {
     //     })
     //   });
     // }
-    // if (!this.ckitems) {
-    //   this.ckitems = [{ value: '', label: '全部' }];
-    //   this.userapi.cangkulist().then(data => {
-    //     data.forEach(element => {
-    //       this.ckitems.push({
-    //         value: element['id'],
-    //         label: element['name']
-    //       });
-    //     });
-    //   });
-    // }
+    if (!this.ckitems) {
+      this.ckitems = [{ value: '', label: '全部' }];
+      this.userapi.cangkulist().then(data => {
+        data.forEach(element => {
+          this.ckitems.push({
+            value: element['id'],
+            label: element['name']
+          });
+        });
+      });
+    }
     this.classicModal.show();
   }
 

@@ -10,7 +10,6 @@ import { ClassifyApiService } from '../../../dnn/service/classifyapi.service';
 import { ToasterService } from 'angular2-toaster/angular2-toaster';
 import { CgbuchaimportComponent } from './../../../dnn/shared/cgbuchaimport/cgbuchaimport.component';
 import { DatePipe } from '@angular/common';
-import { sortedUniq } from 'lodash';
 import { CgbuchafanliimportComponent } from 'app/dnn/shared/cgbuchafanliimport/cgbuchafanliimport.component';
 
 const sweetalert = require('sweetalert');
@@ -28,7 +27,7 @@ export class CgbuchadetailComponent implements OnInit {
   // 品名选择弹窗
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
   chandioptions: any = [];
-  modify: Object = { fanliid: '', jine: '' };
+  modify: Object = { id: '', jine: '',fanliid: '' };
   // 采购补差详情
   caigouModel = { org: {}, buyer: {} };
   isshow: boolean;
@@ -73,6 +72,7 @@ export class CgbuchadetailComponent implements OnInit {
       overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
       enableColResize: true,
       enableSorting: true,
+      enableFilter:true,
       excelStyles: this.settings.excelStyles,
       getContextMenuItems: this.settings.getContextMenuItems
     };
@@ -108,6 +108,7 @@ export class CgbuchadetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'goodscode.guige', minWidth: 110 },
       // tslint:disable-next-line:max-line-length
       { cellStyle: { 'text-align': 'center' }, headerName: '资源号', field: 'grno', minWidth: 75 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '捆包号', field: 'kunbaohao', minWidth: 75 },
       { cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'weight', minWidth: 60, valueFormatter: this.settings.valueFormatter3 },
       {
         cellStyle: { 'text-align': 'right' }, headerName: '原价', field: 'oldprice', minWidth: 90,
@@ -124,9 +125,13 @@ export class CgbuchadetailComponent implements OnInit {
       {
         cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'jine', minWidth: 90,
         onCellClicked: (params) => {
-          if (params.data.group) {
-            this.modify['fanliid'] = params.data.fanliid;
+          if (params.data.newfanliid) {
+            this.modify['fanliid'] = params.data.newfanliid;
             this.modify['jine'] = params.data.jine;
+            this.modify['id'] = params.data.id;
+            this.jineModal.show();
+          } else if (params.data.fanliid) {
+            this.modify['id'] = params.data.id;
             this.jineModal.show();
           }
         },
@@ -143,29 +148,23 @@ export class CgbuchadetailComponent implements OnInit {
       {
         cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'amount', minWidth: 60, 
         cellRenderer: (params) => {
-            if (!params.data.group) {
-                return '<a target="_blank">删除</a>';
-            } else {
-                return '';
-            }
+            return '<a target="_blank">删除</a>';
         },
         onCellClicked: (params) => {
-            if (!params.data.group) {
-                sweetalert({
-                  title: '你确定要删除吗?',
-                  type: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: '#23b7e5',
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                  closeOnConfirm: false
-                }, () => {
-                  this.cgbuchaApi.removedet(params.data.id).then(data => {
-                    this.querydata();
-                  });
-                  sweetalert.close();
+            sweetalert({
+                title: '你确定要删除吗?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#23b7e5',
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                closeOnConfirm: false
+              }, () => {
+                this.cgbuchaApi.removedet(params.data.id).then(data => {
+                  this.querydata();
                 });
-            }
+                sweetalert.close();
+              })
         }
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 75 },
@@ -190,11 +189,19 @@ export class CgbuchadetailComponent implements OnInit {
         return;
       }
     }
-    this.cgbuchaApi.modifydet(this.caigouModel['id'], this.modify).then(data => {
-      this.toast.pop('success', '修改成功！', '');
-      this.querydata();
-      this.jineModal.hide();
-    });
+    if(this.modify['fanliid']) {
+        this.cgbuchaApi.modifydetnew(this.modify['id'], this.modify).then(data => {
+            this.toast.pop('success', '修改成功！', '');
+            this.querydata();
+            this.jineModal.hide();
+        });
+    } else {
+        this.cgbuchaApi.modifydet(this.modify['id'], this.modify).then(data => {
+            this.toast.pop('success', '修改成功！', '');
+            this.querydata();
+            this.jineModal.hide();
+        }); 
+    }
   }
   // 查询当前的详情
   querydata() {

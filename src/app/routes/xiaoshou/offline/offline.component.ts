@@ -14,6 +14,8 @@ import { ClassifyApiService } from 'app/dnn/service/classifyapi.service';
 import { WuliuorderimportComponent } from './wuliuorderimport/wuliuorderimport.component';
 import { OrderapiService } from './../../order/orderapi.service';
 import { RoleapiService } from 'app/routes/role/roleapi.service';
+import { ProduceapiService } from 'app/routes/produce/produceapi.service';
+import { QihuoService } from 'app/routes/qihuo/qihuo.service';
 
 @Component({
   selector: 'app-offline',
@@ -43,6 +45,7 @@ export class OfflineComponent implements OnInit {
   am_pms = [];
   am_pm = '上午';
   types: any = [{ value: '', label: '请选择打包带材料' }, { value: '1', label: '钢带' }, { value: '2', label: '其他' }];
+  moulds : any = [{ value: '', label: '请选择结算模板'}, { value: '1', label: '先开票后付款' }, { value: '2', label: '先付款后开票' }]
   companyIsWiskind = [];
   // 创建弹窗
   params = {};
@@ -80,9 +83,9 @@ export class OfflineComponent implements OnInit {
     private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
     private toast: ToasterService, private customerApi: CustomerapiService,
     private matchcarAPi: MatchcarService, private numberpipe: DecimalPipe,
-    private bsModalService: BsModalService, private datepipe: DatePipe,
+    private bsModalService: BsModalService, private datepipe: DatePipe,private qihuoapi: QihuoService,
     private addressparseService: AddressparseService, private classifyApi: ClassifyApiService,
-    private orderApi: OrderapiService, private roleapi: RoleapiService
+    private orderApi: OrderapiService, private roleapi: RoleapiService,private produceApi: ProduceapiService
   ) {
     this.roleapi.getroleusers().then((data) => {
       const wuliuyuanlist = [{ label: '请选择物流员', value: '' }];
@@ -375,6 +378,7 @@ export class OfflineComponent implements OnInit {
   chukufeetype2;
   // 打开创建弹窗
   showDialog() {
+    let isfujian = true;
     const orderdets = new Array();
     const orderdetSelected = this.gridOptions.api.getModel()['rowsToDisplay']; // 获取选中的订单明细。
     // 获得所有选中的待提货物如果没有选中则不允许添加提货人
@@ -395,89 +399,99 @@ export class OfflineComponent implements OnInit {
       let sellcount = 0;
       let chukufeetype = null;
       let chukufeetypecount = 0;
-      for (let i = 0; i < orderdets.length; i++) {
-        if (this.route.data['value']['offline'] && orderdets[i].type === 1) {
-          this.toast.pop('warning', '创建提货单时，请选择自提的货物。');
+      this.qihuoapi.findfujians2(orderdets).then(data => {
+        if(!data['isfujian']){
+          isfujian = false;
+        }
+        for (let i = 0; i < orderdets.length; i++) {
+          if (this.route.data['value']['offline'] && orderdets[i].type === 1) {
+            this.toast.pop('warning', '创建提货单时，请选择自提的货物。');
+            return;
+          }
+          if (orderdets[i].cangkuname.indexOf('在途') !== -1) {
+            this.toast.pop('warning', '创建提货单时，请选择非在途的货物！');
+            return;
+          }
+          if (orderdets[i].billno.substring(0, 2) !== 'QH') {
+            this.isqihuo = false;
+            this.isshowdingjintype = false;
+          } else {
+            this.isqihuo = true;
+            this.isshowdingjintype = true;
+          }
+          if (sellerid !== orderdets[i].sellerid) {
+            sellcount++; sellerid = orderdets[i].sellerid;
+          }
+          if (type !== orderdets[i].type) {
+            typecount++; type = orderdets[i].type;
+          }
+          if (cangkuid !== orderdets[i].cangkuid) { // 判断仓库是否相同
+            cangkucount++; cangkuid = orderdets[i].cangkuid;
+          }
+          if (chukufeetype !== orderdets[i].chukufeetype) {
+            chukufeetypecount++; chukufeetype = orderdets[i].chukufeetype;
+          }
+          orderdetids.push(orderdets[i].orderdetid); // 将orderdetid放到数组中去
+        }
+        if (sellcount > 1) {
+          this.toast.pop('warning', '创建提单时，请选择相同的卖方单位');
+          // Notify.alert('创建提单时，请选择相同的卖方单位', { status: 'warning' });
           return;
         }
-        if (orderdets[i].cangkuname.indexOf('在途') !== -1) {
-          this.toast.pop('warning', '创建提货单时，请选择非在途的货物！');
+        if (typecount > 1) {
+          this.toast.pop('warning', '创建提单时，请选择相同的配送方式');
           return;
         }
-        if (orderdets[i].billno.substring(0, 2) !== 'QH') {
-          this.isqihuo = false;
-          this.isshowdingjintype = false;
+        if (chukufeetypecount > 1) {
+          this.toast.pop('warning', '创建提单时，请选择相同的出库费结算方式');
+          return;
+        }
+        // tslint:disable-next-line:max-line-length
+        /**2018.01.12 转货权开发 cpf MOD start */
+        this.params = {
+          siji: '', sijitel: '', sijiid: '', chehao: '', transcompanyid: null, yunprice: null,
+          ist: null, type: type, tihuotype: '0', cangkuid: '', islasttihuo: '0', dingjinshifangtype: '1'//, chukufeetype2: null
+        };
+        // this.isshow = true;
+        if (type === 2) {
+          this.isshow = false;
+          this.params['tihuotype'] = '1';
         } else {
-          this.isqihuo = true;
-          this.isshowdingjintype = true;
+          this.isshow = true;
+          this.params['tihuotype'] = '0';
         }
-        if (sellerid !== orderdets[i].sellerid) {
-          sellcount++; sellerid = orderdets[i].sellerid;
+        if (type === 0) {
+          this.isshow = false;
         }
-        if (type !== orderdets[i].type) {
-          typecount++; type = orderdets[i].type;
+        /**2018.01.12 转货权开发 end */
+        this.array = orderdetids;
+        if (cangkucount === 1) { // 判断是不是只有一个仓库
+          this.customerApi.findwl().then((data) => {
+            this.transportCompany = data; // 获取运输公司
+          });
+          this.params['cangkuid'] = cangkuid;
+          // 声明一个运输费用的类型
+          this.ists = [{ ist: true, name: '总价' }, { ist: false, name: '单价' }];
+  
+  
+          this.getProvince();
+          this.wuliuyuanType = [{ label: '请选择物流员', value: '' }, { label: '赵雪懿', value: '赵雪懿' },
+          { label: '蔡沙沙', value: '蔡沙沙' }, { label: '刘俊苗', value: '刘俊苗' },
+          { label: '唐文文', value: '唐文文' }, { label: '邓馨', value: '邓馨' }, { label: '马慧芳', value: '马慧芳' }];
+          this.orderApi.getchukufee({ detids: this.array }).then((response) => {
+            this.params['enddest'] = response['mudidi'];
+          });
+          if(!isfujian){
+            if(confirm('为便于后期正常开票，请及时上传双方盖章合同')){
+              this.classicModal.show();
+            }
+          }else{
+            this.classicModal.show();
+          }
+        } else {
+          this.toast.pop('warning', '创建提单时，请选择相同的仓库');
         }
-        if (cangkuid !== orderdets[i].cangkuid) { // 判断仓库是否相同
-          cangkucount++; cangkuid = orderdets[i].cangkuid;
-        }
-        if (chukufeetype !== orderdets[i].chukufeetype) {
-          chukufeetypecount++; chukufeetype = orderdets[i].chukufeetype;
-        }
-        orderdetids.push(orderdets[i].orderdetid); // 将orderdetid放到数组中去
-      }
-      if (sellcount > 1) {
-        this.toast.pop('warning', '创建提单时，请选择相同的卖方单位');
-        // Notify.alert('创建提单时，请选择相同的卖方单位', { status: 'warning' });
-        return;
-      }
-      if (typecount > 1) {
-        this.toast.pop('warning', '创建提单时，请选择相同的配送方式');
-        return;
-      }
-      if (chukufeetypecount > 1) {
-        this.toast.pop('warning', '创建提单时，请选择相同的出库费结算方式');
-        return;
-      }
-      // tslint:disable-next-line:max-line-length
-      /**2018.01.12 转货权开发 cpf MOD start */
-      this.params = {
-        siji: '', sijitel: '', sijiid: '', chehao: '', transcompanyid: null, yunprice: null,
-        ist: null, type: type, tihuotype: '0', cangkuid: '', islasttihuo: '0', dingjinshifangtype: '1'//, chukufeetype2: null
-      };
-      // this.isshow = true;
-      if (type === 2) {
-        this.isshow = false;
-        this.params['tihuotype'] = '1';
-      } else {
-        this.isshow = true;
-        this.params['tihuotype'] = '0';
-      }
-      if (type === 0) {
-        this.isshow = false;
-      }
-      /**2018.01.12 转货权开发 end */
-      this.array = orderdetids;
-      if (cangkucount === 1) { // 判断是不是只有一个仓库
-        this.customerApi.findwl().then((data) => {
-          this.transportCompany = data; // 获取运输公司
-        });
-        this.params['cangkuid'] = cangkuid;
-        // 声明一个运输费用的类型
-        this.ists = [{ ist: true, name: '总价' }, { ist: false, name: '单价' }];
-
-
-        this.getProvince();
-        this.wuliuyuanType = [{ label: '请选择物流员', value: '' }, { label: '赵雪懿', value: '赵雪懿' },
-        { label: '蔡沙沙', value: '蔡沙沙' }, { label: '刘俊苗', value: '刘俊苗' },
-        { label: '唐文文', value: '唐文文' }, { label: '邓馨', value: '邓馨' }, { label: '马慧芳', value: '马慧芳' }];
-        this.orderApi.getchukufee({ detids: this.array }).then((response) => {
-          this.params['enddest'] = response['mudidi'];
-        });
-
-        this.classicModal.show();
-      } else {
-        this.toast.pop('warning', '创建提单时，请选择相同的仓库');
-      }
+      })
     } else {
       this.toast.pop('warning', '请选择提货的货物!');
     }
@@ -511,6 +525,10 @@ export class OfflineComponent implements OnInit {
         this.toast.pop('warning', '身份证填写不规范');
         return '';
       }
+    }
+    if (this.params['chehao'] === '') {
+      this.toast.pop('warning', '请先填写车号再创建提单！');
+      return '';
     }
     console.log(this.params);
     this.params['orderdetids'] = this.array;// 将将要提货的货物加入提货单参数中\
@@ -1014,6 +1032,14 @@ export class OfflineComponent implements OnInit {
       this.toast.pop('warning', '创建加工任务单时，请选择相同的仓库');
       return;
     }
+    //判断是否为临时仓库
+    this.produceApi.judgelinshicangku(cangkuid).then((data) => {
+      if (data['flag']) {
+        this.tasklist['islinshicangku'] = true;
+      }else{
+        this.tasklist['islinshicangku'] = false;
+      }
+    });
     this.array = [];
     this.array = orderdetids;
     this.tasklist = { detids: this.array };
@@ -1084,6 +1110,10 @@ export class OfflineComponent implements OnInit {
     }
     if (this.tasklist['isxiubian'] === null || this.tasklist['isxiubian'] === undefined) {
       this.toast.pop('warning', '请选择是否修边');
+      return;
+    }
+    if (this.tasklist['islinshicangku'] && !this.tasklist['jiesuanmould']) {
+      this.toast.pop('warning', '请选择结算方式');
       return;
     }
     console.log(this.tasklist);

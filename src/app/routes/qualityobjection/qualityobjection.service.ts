@@ -126,5 +126,14 @@ export class QualityobjectionService {
       return data.json() as any;
     });
   }
-
+  addbillnos(search): Promise<any> {
+    return this.http.put('store/api/quality/addbillnos', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  delbillno(search): Promise<any> {
+    return this.http.put('store/api/quality/delbillno', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
 }

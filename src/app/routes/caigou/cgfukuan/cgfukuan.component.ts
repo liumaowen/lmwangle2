@@ -68,7 +68,8 @@ export class CgfukuanComponent implements OnInit {
     chandi: '',
     gn: '',
     orgid: '',
-    sorgid: ''
+    sorgid: '',
+    month:''
   };
   // pageChanged(event: any): void {
   //   this.search['pagenum'] = event.page;
@@ -111,6 +112,7 @@ export class CgfukuanComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '合同月份', field: 'month', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '状态', field: 'status', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '付款类型', field: 'kind', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '结算方式', field: 'jiesuantype', minWidth: 80 },
@@ -295,6 +297,10 @@ export class CgfukuanComponent implements OnInit {
       this.toast.pop('error', '请选择付款类型！', '');
       return;
     }
+    if (!this.model['month']) {
+        this.toast.pop('error', '请选择合同月份！', '');
+        return;
+    }
     if (this.model['shoucustomerid'] instanceof Object) {
       this.model['shoucustomerid'] = this.model['shoucustomerid'].code;
     } else {
@@ -385,6 +391,9 @@ export class CgfukuanComponent implements OnInit {
     if (this.chandioptions.length) {
       this.model['chandi'] = this.chandioptions[this.chandioptions.length-1]['value'];
     }
+  }
+  selectmonth(value) {
+    this.model['month'] = this.datepipe.transform(value, 'y-MM-dd');
   }
 
 }

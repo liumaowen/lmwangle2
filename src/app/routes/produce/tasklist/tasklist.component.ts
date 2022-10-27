@@ -21,6 +21,7 @@ export class TasklistComponent implements OnInit {
   totalItems: any;
   singleData;
   types: any = [{ value: '', label: '请选择打包带材料' }, { value: '1', label: '钢带' }, { value: '2', label: '其他' }];
+  moulds : any = [{ value: '', label: '请选择结算模板'}, { value: '1', label: '先开票后付款' }, { value: '2', label: '先付款后开票' }]
   search = { pagenum: 1, pagesize: 10 };
   public currentPage = 1;
   cangkus = [];
@@ -178,6 +179,10 @@ export class TasklistComponent implements OnInit {
       this.toast.pop('warning', '请选择是否修边');
       return;
     }
+    if (this.tasklist['islinshicangku'] && !this.tasklist['jiesuanmould'] ) {
+      this.toast.pop('warning', '请选择结算方式');
+      return;
+    }
     this.tasklist['jiaoqi'] = this.datepipe.transform(this.start, 'y-MM-dd') + ' ' + this.am_pm;
     console.log(this.tasklist);
     this.produceApi.createtasklist(this.tasklist).then(data => {
@@ -186,6 +191,14 @@ export class TasklistComponent implements OnInit {
   }
   selectedcangku(value) {
     this.tasklist['cangkuid'] = value.value;
+    this.produceApi.judgelinshicangku(this.tasklist['cangkuid']).then((data) => {
+      if (data['flag']) {
+        this.tasklist['islinshicangku'] = true;
+      }else{
+        this.tasklist['islinshicangku'] = false;
+      }
+    });
+    
   }
   hidecreatemodal() {
     this.createModal.hide();

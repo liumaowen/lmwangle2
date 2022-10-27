@@ -29,7 +29,7 @@ export class TihuodetreportComponent implements OnInit {
   requestparams = {
     gn: '', cangkuid: '', chandi: '', color: '', width: '', houdu: '',
     duceng: '', caizhi: '', ppro: '', id: '', start: '', end: '', shitistart: '', shitiend: '',
-    buyerid: '', tihuotype: '', status: '', orgid: '', kunbaohao: '', saleorgid: '', grno: '', iscrm: '', isloan: ''
+    buyerid: '', tihuotype: '', status: '', orgid: '', kunbaohao: '', saleorgid: '', grno: '', iscrm: '', isloan: '',tihuoinfo:''
   };
 
   gridOptions: GridOptions;
@@ -302,7 +302,8 @@ export class TihuodetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '加工方式', field: 'isproduce', minWidth: 50 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否维实产品', field: 'isweishiproduct', minWidth: 50 },
       { cellStyle: { 'text-align': 'center' }, headerName: '机构库龄', field: 'orgkuling', minWidth: 75 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '调货方式', field: 'thtype', minWidth: 75 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '调货方式', field: 'thtype', minWidth: 75 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '提货信息', field: 'tihuoinfo', minWidth: 100 }
     ];
   }
 
@@ -527,7 +528,7 @@ export class TihuodetreportComponent implements OnInit {
     this.requestparams = {
       gn: '', cangkuid: '', chandi: '', color: '', width: '', houdu: '',
       duceng: '', caizhi: '', ppro: '', id: '', start: '', end: '', shitistart: '', shitiend: '',
-      buyerid: '', tihuotype: '', status: '', orgid: '', kunbaohao: '', saleorgid: '', grno: '', iscrm: '', isloan: ''
+      buyerid: '', tihuotype: '', status: '', orgid: '', kunbaohao: '', saleorgid: '', grno: '', iscrm: '', isloan: '',tihuoinfo:''
     };
     this.disabled = true;
     this.attrs = [];

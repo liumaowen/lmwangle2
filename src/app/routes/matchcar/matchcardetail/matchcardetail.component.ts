@@ -157,9 +157,9 @@ export class MatchcardetailComponent implements OnInit {
 
         });
         this.suminfo.tweightsum = this.suminfo.tweightsum.toFixed(3);
-        //this.suminfo.count = rowCount.length;
-        // console.log(this.suminfo.tweightsum);
-        // console.log(this.suminfo.count);
+        this.suminfo.count = rowCount.length;
+        console.log(this.suminfo.tweightsum);
+        console.log(this.suminfo.count);
       },
       getNodeChildDetails: (params) => {
         if (params.group) {
@@ -267,8 +267,8 @@ export class MatchcardetailComponent implements OnInit {
 
   //获取约车单详情
   getdetail() {
+    this.params['matchcarid'] = this.route.params['value']['id'];
     this.matchcarApi.getDetail(this.matchcarid).then(data => {
-      console.log(data);
       this.matchcar = data['matchcar'];
       if (this.matchcar['provincename']) {
         this.pccname = this.matchcar['provincename'];
@@ -286,7 +286,6 @@ export class MatchcardetailComponent implements OnInit {
   getmatchcarfee() {
     if (this.isroleNum) {
       this.matchcarApi.getMatchcarfee(this.matchcarid).then(data => {
-        console.log(data);
         this.feeOptions.api.setRowData(data);
       });
     }
@@ -630,7 +629,6 @@ export class MatchcardetailComponent implements OnInit {
     this.params['reachdate'] = this.datepipe.transform(this.params['reachdate'], 'y-MM-dd');
     // this.params['startaddr'] = this.addr['code'];
     this.params['endaddr'] = this.endaddr['code'];
-    console.log(this.params);
     if (confirm('你确定要创建物流订单吗？')) {
       this.matchcarApi.createRPCwuliuorder(this.params).then(data => {
         if (data['message']) {

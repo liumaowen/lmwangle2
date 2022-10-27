@@ -1,6 +1,7 @@
 import { ToasterService } from 'angular2-toaster/angular2-toaster';
 import { InnersaleapiService } from './../innersaleapi.service';
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-innersale',
@@ -13,15 +14,16 @@ export class InnersaleComponent implements OnInit {
   singleData;
 
   search = { pagenum: 1, pagesize: 10 };
-
+  current = this.storage.getObject('cuser');
 
   public currentPage: number = 1;
 
-  constructor(private innersaleApi: InnersaleapiService, private toast: ToasterService) {
+  constructor(private innersaleApi: InnersaleapiService, private toast: ToasterService,private storage: StorageService) {
     this.listDetail();
   }
 
   listDetail() {
+
     this.innersaleApi.query(this.search).then(data => {
       // 获取到总条目
       this.totalItems = data.headers.get('total');
@@ -32,6 +34,7 @@ export class InnersaleComponent implements OnInit {
 
   //分页点击查询
   pageChanged(event: any): void {
+    this.search['salemanid'] = this.current.id;
     this.search['pagenum'] = event.page;
     this.search['pagesize'] = event.itemsPerPage;
     this.listDetail();

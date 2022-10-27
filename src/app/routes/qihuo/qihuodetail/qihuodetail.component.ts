@@ -55,6 +55,9 @@ export class QihuodetailComponent implements OnInit {
   @ViewChild('addqualityModal') private addqualityModal: ModalDirective;
   @ViewChild('createmdmqihuodialog') private createmdmqihuodialog: ModalDirective;
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
+  @ViewChild('fujianModal') private fujianModal: ModalDirective;
+  @ViewChild('picdialog') private picdialog: ModalDirective;
+
   // 控制页面操作按钮是否显示
   flag: { edit: boolean, editbaocun: boolean, disabled: boolean, verify: boolean, confirm: boolean, querendaohuo: boolean, shenhe: boolean, pdf: boolean, deldet: boolean } =
     { edit: false, editbaocun: false, disabled: false, verify: false, confirm: false, querendaohuo: false, shenhe: false, pdf: false, deldet: false };
@@ -73,6 +76,7 @@ export class QihuodetailComponent implements OnInit {
    current = this.storage.getObject('cuser');
  
    paytypes = [{ value: '0', label: '款到发货' }, { value: '1', label: '欠款发货' }];
+   dantypes = [{ label: '甲单',value: '0'}, { label: '乙单' , value: '1'}, {  label: '丙单',value: '2'}];
   //父页面传过来的qihuoid的值
   qihuoid: number;
   tihuoid: number;
@@ -173,6 +177,7 @@ export class QihuodetailComponent implements OnInit {
   chandigongchas = [];
   packageyaoqius = [];
   jhcangku: any;
+  fujians: any = [];
   constructor(public settings: SettingsService, private qihuoapi: QihuoService, private classifyapi: ClassifyApiService,
     private addressparseService: AddressparseService, private caigouApi: CaigouService, private datepipe: DatePipe,
     private toast: ToasterService, private route: ActivatedRoute, private router: Router, private moneyapi: MoneyService,
@@ -1163,6 +1168,7 @@ export class QihuodetailComponent implements OnInit {
       this.getunits();
     }, 1000);
     this.getRoles();
+    this.getfujians();
   }
   // 获取用户角色，如果登陆的用户是业务员，设置为不可见
   getMyRole() {
@@ -1899,7 +1905,7 @@ export class QihuodetailComponent implements OnInit {
   curyue: any = '0';
   dingjin = { buyerid: null, dingjin: null };
   adddingjindialog() {
-    let moneyquery = { buyerid: this.qihuomodel['buyer']['id'], wcustomerid: this.qihuomodel['seller']['id'] };
+    let moneyquery = { buyerid: this.qihuomodel['buyer']['id'], wcustomerid: this.qihuomodel['seller']['id'],salemanid:this.qihuomodel['salemanid'] };
     this.moneyapi.getmoney(moneyquery).then(data => {
       // console.log('___++++____', data);
       if (!data['wyue']) {
@@ -2652,7 +2658,7 @@ export class QihuodetailComponent implements OnInit {
   //添加配款
   allocation = { buyerid: null, dingjin: null };
   addallocationdialog() {
-    let moneyquery = { buyerid: this.qihuomodel['buyer']['id'], wcustomerid: this.qihuomodel['seller']['id'] };
+    let moneyquery = { buyerid: this.qihuomodel['buyer']['id'], wcustomerid: this.qihuomodel['seller']['id'],salemanid:this.qihuomodel['salemanid'] };
     this.moneyapi.getmoney(moneyquery).then(data => {
       if (!data['wyue']) {
         this.curyue = 0;
@@ -3266,6 +3272,7 @@ export class QihuodetailComponent implements OnInit {
     }
     this.caigou['orderdetids'] = ids;
     this.caigou['orderid'] = this.qihuoid;
+    this.caigou['dantype'] = 0;
     this.selectegangchang(gn, chandi);
     this.findWiskind();
     this.createCaigouModal.show();
@@ -3738,5 +3745,46 @@ export class QihuodetailComponent implements OnInit {
       });
     }
   }
-  
+  uploadParam2: any = { module: 'ruku', count: 1, sizemax: 5, extensions: ['doc', 'pdf', 'png', 'jpg'] };
+
+  showfujianmodal() {
+    this.getfujians();
+    this.fujianModal.show();
+  }
+  closefujian() {
+    this.fujianModal.hide();
+  }
+   // 关闭上传弹窗
+   hidepicDialog() {
+    this.picdialog.hide();
+  }
+  fujiansubmit() {
+    this.picdialog.show();
+  }
+  delfujian(key) {
+    const params = {id: this.qihuomodel['id'], key: key};
+    this.qihuoapi.delfujian(params).then(data => {
+      this.getfujians();
+    });
+  }
+  uploadfujian(url) {
+    const params = {id: this.qihuomodel['id'], url: url};
+    this.qihuoapi.uploadfujian(params).then(data => {
+      this.getfujians();
+    });
+  }
+  // 上传成功执行的回调方法
+  pictract($event) {
+    console.log($event);
+    if ($event.length !== 0) {
+        this.uploadfujian($event.url);
+    }
+    this.hidepicDialog();
+  }
+  getfujians(){
+    this.qihuoapi.findfujians(this.qihuoid).then(data => {
+      this.fujians = data['fujians'];
+      console.log(this.fujians)
+    })
+  }
 }

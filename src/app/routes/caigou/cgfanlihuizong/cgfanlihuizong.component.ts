@@ -124,9 +124,13 @@ export class CgfanlihuizongComponent implements OnInit {
     this.search['month'] = this.datepipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'y-MM-dd');
     this.getDetail();
   }
+  getDetailnew() {
+    this.caigouApi.getfanlihuizongdetnew(this.search).then(data => {
+      this.gridOptions.api.setRowData(data);
+    });
+  }
   getDetail() {
     this.caigouApi.getfanlihuizongdet(this.search).then(data => {
-      console.log(data);
       this.gridOptions.api.setRowData(data);
     });
   }

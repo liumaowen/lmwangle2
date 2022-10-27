@@ -62,7 +62,7 @@ export class RukudetreportComponent implements OnInit {
   kulingtixingconfim = false;
   attrs = [];
   constructor(private rukuapi: RukuService, public settings: SettingsService, private userapi: UserapiService,
-    private datepipe: DatePipe, private toast: ToasterService,private customerApi: CustomerapiService,) {
+    private datepipe: DatePipe, private toast: ToasterService,private customerApi: CustomerapiService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
@@ -314,7 +314,7 @@ export class RukudetreportComponent implements OnInit {
   }
 
   // 查询
-  select() {
+  select() { 
     this.rukudet();
     this.closeclassicmodal();
   }
@@ -322,7 +322,7 @@ export class RukudetreportComponent implements OnInit {
   rukudet() {
     const search = {
       gn: '', cangkuid: '', chandi: '', color: '', width: '', houdu: '', duceng: '', caizhi: '',
-      ppro: '', orgid: '', cuserid: '', id: '', start: null, end: '', sellerid: ''
+      ppro: '',  cuserid: '', id: '', start: null, end: '', sellerid: ''
     };
     search['start'] = this.datepipe.transform(this.search['start'], 'y-MM-dd');
     if (this.search['end']) { search['end'] = this.datepipe.transform(this.search['end'], 'y-MM-dd'); }
@@ -366,7 +366,9 @@ export class RukudetreportComponent implements OnInit {
 
 
   // 查询
-  query() { }
+  query() {
+
+   }
 
 
   // 入库单上传弹窗

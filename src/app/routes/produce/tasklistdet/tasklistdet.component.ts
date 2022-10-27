@@ -8,6 +8,7 @@ import { SettingsService } from '../../../core/settings/settings.service';
 import { ColDef, GridOptions } from 'ag-grid/main';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClassifyApiService } from 'app/dnn/service/classifyapi.service';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-tasklistdet',
@@ -26,6 +27,7 @@ export class TasklistdetComponent implements OnInit {
   cuser = {};
   tasklistdet = { cuser: {} };
   orgs = [];
+  current = this.storage.getObject('cuser');
   requestparams = {
     type: '', cuserid: '', start: this.datepipe.transform(this.start, 'y-MM-dd'),
     end: '', status: '',billno: '',chandi:'' , gn:'',producemode:'',cangkuid:'',
@@ -37,7 +39,7 @@ export class TasklistdetComponent implements OnInit {
   gridOptions: GridOptions;
   
   constructor(public settings: SettingsService, private toast: ToasterService,private classifyApi: ClassifyApiService,
-    private produceApi: ProduceapiService, private orgApi: OrgApiService, private datepipe: DatePipe, private router: Router) {
+    private produceApi: ProduceapiService, private orgApi: OrgApiService, private datepipe: DatePipe, private router: Router,private storage: StorageService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,

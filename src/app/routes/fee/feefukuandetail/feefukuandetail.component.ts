@@ -970,7 +970,7 @@ export class FeefukuandetailComponent implements OnInit {
   getMyRole() {
     let myrole = JSON.parse(localStorage.getItem('myrole'));
     for (let i = 0; i < myrole.length; i++) {
-      if (myrole[i] === 5 || myrole[i] === 6 || myrole[i] === 7 || myrole[i] === 11 || myrole[i] === 13 || myrole[i] === 19) {
+      if (myrole[i] === 5 || myrole[i] === 6 || myrole[i] === 7 || myrole[i] === 11 || myrole[i] === 13 || myrole[i] === 19 || myrole[i] === 20) {
         this.caiwuyunying = true;
       }
     }
@@ -994,6 +994,14 @@ export class FeefukuandetailComponent implements OnInit {
         this.toast.pop('success', '删除成功！');
         this.getFeefukuanAndDet();
       });
+    }
+  }
+//查看付款回执
+  fukuanreceipt() {
+    if (this.feefukuan['fukuanreceipt'] == null) {
+      this.toast.pop('warning', '文件不存在！');
+    } else {
+      window.open(this.feefukuan['fukuanreceipt']);
     }
   }
 }

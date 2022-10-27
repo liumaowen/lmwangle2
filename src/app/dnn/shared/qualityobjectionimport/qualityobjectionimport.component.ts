@@ -12,6 +12,7 @@ import { InnersaleapiService } from 'app/routes/innersale/innersaleapi.service';
 import { CaigouService } from 'app/routes/caigou/caigou.service';
 import { XsbuchaapiService } from 'app/routes/xiaoshou/xsbuchaapi.service';
 import { OrderapiService } from 'app/routes/order/orderapi.service';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 
 @Component({
@@ -43,12 +44,13 @@ export class QualityobjectionimportComponent implements OnInit {
   // 结束时间
   end: Date = new Date();
   gridOptions: GridOptions;
+  current = this.storage.getObject('cuser');
   search: object = {
     start: '', end: '', billno: '', cuserid: '',  supplierid: '', kunbaohao: '', typeid: ''
   };
   constructor(public bsModalRef: BsModalRef,public settings: SettingsService, private qualityobjectionApi: QualityobjectionService, private router: Router,
     private classifyApi: ClassifyApiService, private datepipe: DatePipe, private toast: ToasterService, private innersaleApi: InnersaleapiService,
-    private caigouApi : CaigouService, private xsbuchaApi: XsbuchaapiService,private orderApi: OrderapiService) {
+    private caigouApi : CaigouService, private xsbuchaApi: XsbuchaapiService,private orderApi: OrderapiService,private storage: StorageService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
@@ -158,11 +160,12 @@ export class QualityobjectionimportComponent implements OnInit {
       this.search['status'] = '4#6';
     }
     if(this.qualityModel){
-      this.search['status'] = '6';
+      this.search['status'] = '4#6';
     }
     if(this.qhqualityModel){
       this.search['status'] = '4#6';
     }
+    this.search['orgid'] = this.current.orgid;
     this.qualityobjectionApi.getqualitydet(this.search).then(data => {
       this.gridOptions.api.setRowData(data);
     });

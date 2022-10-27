@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { GridOptions } from 'ag-grid';
 import { ToasterService } from 'angular2-toaster';
 import { SettingsService } from 'app/core/settings/settings.service';
@@ -26,13 +27,13 @@ export class FanliruleComponent implements OnInit {
   accept = '.xls, application/xls';
   // 入库单上传信息及格式
   uploadParam: any = { module: 'ruku', count: 1, sizemax: 1, extensions: ['xls'] };
-  start: Date = new Date(new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + 1);
-  end: Date = new Date(new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + 1);
+  start: Date = new Date();
+  end: Date = new Date();
   gridOptions: GridOptions;
   grnogridOptions: GridOptions;
   caigoudetgridOptions: GridOptions;
   search: object = { month: '' };
-  fanlirule = {gn:'',chandi:'',painttype:'',caizhi:'',sellerid:null,jiesuantype:'',monthstart:'',monthend:'',youhuitype:'',jisuanvalue:'',youhuirule:'',jineexpression:'',beizhu:'',zhouqi: null,zhouqitype:'',itemcode:''};
+  fanlirule = {gn:'',chandi:'',painttype:'',caizhi:'',sellerid:null,jiesuantype:'',monthstart:this.datepipe.transform(this.start, 'y-MM-dd'),monthend:this.datepipe.transform(this.end, 'y-MM-dd'),youhuitype:'',jisuanvalue:'',youhuirule:'',jineexpression:'',beizhu:'',zhouqi: null,zhouqitype:'',itemcode:''};
   chandioptions: any = [];
   painttypes: any = [];
   caizhis: any = [];
@@ -41,11 +42,11 @@ export class FanliruleComponent implements OnInit {
   zhouqitypes = [{ value: '', label: '全部' },{ value: 1, label: '月度' },{ value: 2, label: '季度' },{ value: 3, label: '半年度' },{ value: 4, label: '年度' }];
   youhuitypes = [];
   loglist = [];
-  jisuanvalues = [{ value: '', label: '全部' },{ value: 1, label: '累计合同量' },{ value: 2, label: '累计出货量' },{ value: 3, label: '资源号' },{value:4, label:'金额'}];
-  fanliruleid = null;
+  jisuanvalues = [{ value: '', label: '全部' },{ value: 1, label: '累计合同量' },{ value: 2, label: '累计出货量' },{ value: 3, label: '资源号' },{value:4, label:'金额'},{value:5, label:'付款金额'}];
+  fanliruledetid = null;
   ismodify = false; // 是否修改明细
   constructor(public settings: SettingsService, private caigouApi: CaigouService,
-     private datepipe: DatePipe, private toast: ToasterService,public mdmService: MdmService) {
+     private datepipe: DatePipe, private toast: ToasterService,public mdmService: MdmService, private router: Router) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       rowSelection: 'multiple',
@@ -67,13 +68,24 @@ export class FanliruleComponent implements OnInit {
     this.gridOptions.columnDefs = [
       { field: 'group', rowGroup: true, headerName: '合计', hide: true, valueGetter: (params) => '合计' },
       { cellStyle: { 'text-align': 'center' }, headerName: 'ID', field: 'id', minWidth: 30, checkboxSelection: (params)=> params.data, headerCheckboxSelection:true,valueGetter: (params) => {
-        if (params.data && params.data['id']) {
-          return params.data['id'];
+        if (params.data && params.data['billid']) {
+          return params.data['billid'];
         } else {
           return '合计';
         }
       }  },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '编号', field: 'billno', minWidth: 100,
+        cellRenderer: (params) => {
+          if (params && params.data && null != params.data.billid) {
+            return '<a target="_blank" href="#/fanlirule/' + params.data.billid + '">' + params.data.billno + '</a>';
+          } else {
+            return '';
+          }
+        }
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '制单人', field: 'cusername', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '状态', field: 'statusname', minWidth: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 90 },
@@ -89,18 +101,18 @@ export class FanliruleComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '优惠规则', field: 'youhuirule', minWidth: 120,
         cellRenderer: (params) => {
             if (params['data']) {
-                if (params['data']['jisuanvalue'] === 3 || params['data']['jisuanvalue'] === 4) {
+                if ((params['data']['jisuanvalue'] === 3 || params['data']['jisuanvalue'] === 4) && params['data']['fanliruledetid']) {
                     if(params.data.youhuirule) {
                         return `<a>查看资源号</a>`;
                     } else {
                         return `<a>添加资源号</a>`;
                     }
                 } else {
-                    return params.data.youhuirule;
+                    return `${params.data.youhuirule?params.data.youhuirule.replace("<","&lt;"):''}`;
                 }
             }
         }, onCellClicked: (params) => {
-            if (params['data']['jisuanvalue'] === 3 || params['data']['jisuanvalue'] === 4) {
+            if ((params['data']['jisuanvalue'] === 3 || params['data']['jisuanvalue'] === 4) && params['data']['fanliruledetid']) {
             this.showgrnomodal(params.data);
             }
         }
@@ -123,24 +135,24 @@ export class FanliruleComponent implements OnInit {
         }
       }, valueFormatter: this.settings.valueFormatter2 },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'a', minWidth: 60,
-        cellRenderer: (params) => {
-          if (params['data']) {
-            return `<a>修改</a>`;
-          }
-        }, onCellClicked: (params) => {
-            this.showmodify(params.data);
-        } 
-      },
-      { cellStyle: { 'text-align': 'center' }, headerName: '操作', field: '', minWidth: 60,
-        cellRenderer: (params) => {
-          if (params['data']) {
-            return `<a>日志</a>`;
-          }
-        }, onCellClicked: (params) => {
-            this.showlog(params.data);
-        } 
-      }
+    //   { cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'a', minWidth: 60,
+    //     cellRenderer: (params) => {
+    //       if (params['data']) {
+    //         return `<a>修改</a>`;
+    //       }
+    //     }, onCellClicked: (params) => {
+    //         this.showmodify(params.data);
+    //     } 
+    //   },
+    //   { cellStyle: { 'text-align': 'center' }, headerName: '操作', field: '', minWidth: 60,
+    //     cellRenderer: (params) => {
+    //       if (params['data']) {
+    //         return `<a>日志</a>`;
+    //       }
+    //     }, onCellClicked: (params) => {
+    //         this.showlog(params.data);
+    //     } 
+    //   }
     ];
     this.grnogridOptions = {
         groupDefaultExpanded: -1,
@@ -226,16 +238,16 @@ export class FanliruleComponent implements OnInit {
             }
         }, valueFormatter: this.settings.valueFormatter3
         },
-        {
-          cellStyle: { 'text-align': 'right' }, headerName: '在途量', field: 'zaituweight', aggFunc: 'sum', minWidth: 80,
-          valueGetter: (params) => {
-            if (params.data && params.data['zaituweight']) {
-              return Number(params.data['zaituweight']);
-            } else {
-              return 0;
-            }
-          }, valueFormatter: this.settings.valueFormatter3
-        },
+        // {
+        //   cellStyle: { 'text-align': 'right' }, headerName: '在途量', field: 'zaituweight', aggFunc: 'sum', minWidth: 80,
+        //   valueGetter: (params) => {
+        //     if (params.data && params.data['zaituweight']) {
+        //       return Number(params.data['zaituweight']);
+        //     } else {
+        //       return 0;
+        //     }
+        //   }, valueFormatter: this.settings.valueFormatter3
+        // },
         {
           cellStyle: { 'text-align': 'right' }, headerName: '出货量', field: 'chuhuoweight', aggFunc: 'sum', minWidth: 80,
           valueGetter: (params) => {
@@ -246,7 +258,8 @@ export class FanliruleComponent implements OnInit {
             }
           }, valueFormatter: this.settings.valueFormatter3
         },
-    {
+        { cellStyle: { 'text-align': 'center' }, headerName: '结算单价', field: 'jiesuanprice', minWidth: 80 },
+        {
           cellStyle: { 'text-align': 'center' }, headerName: '厚度', field: 'houdu', minWidth: 80,
           valueFormatter: this.settings.valueFormatter3
         },
@@ -332,16 +345,16 @@ export class FanliruleComponent implements OnInit {
             }
         }, valueFormatter: this.settings.valueFormatter3
         },
-        {
-          cellStyle: { 'text-align': 'right' }, headerName: '在途量', field: 'zaituweight', aggFunc: 'sum', minWidth: 80,
-          valueGetter: (params) => {
-            if (params.data && params.data['zaituweight']) {
-              return Number(params.data['zaituweight']);
-            } else {
-              return 0;
-            }
-          }, valueFormatter: this.settings.valueFormatter3
-        },
+        // {
+        //   cellStyle: { 'text-align': 'right' }, headerName: '在途量', field: 'zaituweight', aggFunc: 'sum', minWidth: 80,
+        //   valueGetter: (params) => {
+        //     if (params.data && params.data['zaituweight']) {
+        //       return Number(params.data['zaituweight']);
+        //     } else {
+        //       return 0;
+        //     }
+        //   }, valueFormatter: this.settings.valueFormatter3
+        // },
         {
           cellStyle: { 'text-align': 'right' }, headerName: '出货量', field: 'chuhuoweight', aggFunc: 'sum', minWidth: 80,
           valueGetter: (params) => {
@@ -365,13 +378,24 @@ export class FanliruleComponent implements OnInit {
         { cellStyle: { 'text-align': 'center' }, headerName: '油漆种类', field: 'painttype', minWidth: 80 },
         { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'guige', minWidth: 200 }
       ];
+      this.getyouhuitypes();
+      this.getdate();
+  }
+  getdate() {
+    let month:any = new Date().getMonth()+1;
+    if (month<10) {
+        month = '0'+month;
+    }
+    this.start = new Date(new Date().getFullYear() + '-' + month + '-01');
+    this.end = new Date(new Date().getFullYear() + '-' + month + '-01');
+    this.fanlirule['monthstart'] = this.datepipe.transform(this.start, 'y-MM-dd');
+    this.fanlirule['monthend'] = this.datepipe.transform(this.end, 'y-MM-dd');
   }
 
   ngOnInit() {
     const date = new Date();
     // this.search['month'] = this.datepipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'y-MM-dd');
     this.getDetail();
-    this.getyouhuitypes();
   }
   getDetail() {
     this.caigouApi.getfanliruledet(this.search).then(data => {
@@ -394,7 +418,7 @@ export class FanliruleComponent implements OnInit {
     this.search['chandiid'] = value.id;
   }
   selectNull() {
-    this.fanlirule = {gn:'',chandi:'',painttype:'',caizhi:'',sellerid:null,jiesuantype:'',monthstart:'',monthend:'',youhuitype:'',jisuanvalue:'',youhuirule:'',jineexpression:'',beizhu:'',zhouqi:null,zhouqitype:'',itemcode:''};
+    this.fanlirule = {gn:'',chandi:'',painttype:'',caizhi:'',sellerid:null,jiesuantype:'',monthstart:this.datepipe.transform(this.start, 'y-MM-dd'),monthend:this.datepipe.transform(this.end, 'y-MM-dd'),youhuitype:'',jisuanvalue:'',youhuirule:'',jineexpression:'',beizhu:'',zhouqi:null,zhouqitype:'',itemcode:''};
   }
   close() {
     this.classicModal.hide();
@@ -422,7 +446,7 @@ export class FanliruleComponent implements OnInit {
   // 查询采购明细
   querycaigoudet() {
     this.caigoudetgridOptions.api.setRowData([]);
-    this.caigouApi.getfanlirulecaigoudet({fanliruleid:this.fanliruleid}).then(data => {
+    this.caigouApi.getfanlirulecaigoudet({fanliruledetid:this.fanliruledetid}).then(data => {
         this.caigoudetgridOptions.api.setRowData(data);
     });
   }
@@ -438,9 +462,10 @@ export class FanliruleComponent implements OnInit {
         this.toast.pop('warning', '请选择要添加的采购明细！');
         return;
     }
-    this.caigouApi.importcaigoudet({fanliruleid:this.fanliruleid,caigoudetids:caigoudetids}).then(data => {
+    this.caigouApi.importcaigoudet({fanliruledetid:this.fanliruledetid,caigoudetids:caigoudetids}).then(data => {
         this.querycaigoudethideDialog();
-        this.fanligrnoApi(this.fanliruleid);
+        this.fanligrnoApi(this.fanliruledetid);
+        this.getDetail();
     });
   }
   // 添加优惠规则
@@ -523,14 +548,14 @@ export class FanliruleComponent implements OnInit {
         this.toast.pop('error', '请填写优惠周期类型！');
         return;
     }
-    if (Number(this.fanlirule.jisuanvalue)!==3 &&!this.fanlirule.jineexpression) {
-        this.toast.pop('error', '请填写优惠规则！');
-        return;
-    }
-    if (!this.fanlirule.jineexpression) {
-        this.toast.pop('error', '请填写金额计算表达式！');
-        return;
-    }
+    // if (Number(this.fanlirule.jisuanvalue)!==3 &&!this.fanlirule.jineexpression) {
+    //     this.toast.pop('error', '请填写优惠规则！');
+    //     return;
+    // }
+    // if (!this.fanlirule.jineexpression) {
+    //     this.toast.pop('error', '请填写金额计算表达式！');
+    //     return;
+    // }
     if (this.fanlirule['sellerid'] instanceof Object) {
         this.fanlirule['sellerid'] = this.fanlirule['sellerid'].code;
     } else {
@@ -546,17 +571,18 @@ export class FanliruleComponent implements OnInit {
         this.caigouApi.createfanlirule(this.fanlirule).then(data => {
             this.youhuirulecreateModal.hide();
             this.getDetail();
+            this.router.navigate(['fanlirule', data['id']]);
         })
     }
   }
   // 资源号
   showgrnomodal(params) {
     this.grnoModal.show();
-    this.fanligrnoApi(params['id']);
-    this.fanliruleid = params['id'];
+    this.fanligrnoApi(params['fanliruledetid']);
+    this.fanliruledetid = params['fanliruledetid'];
   }
-  fanligrnoApi(fanliruleid) {
-    this.caigouApi.getfanlirulegrnodet({fanliruleid:fanliruleid}).then(data => {
+  fanligrnoApi(fanliruledetid) {
+    this.caigouApi.getfanlirulegrnodet({fanliruledetid:fanliruledetid}).then(data => {
         this.grnogridOptions.columnApi.autoSizeAllColumns();
         this.grnogridOptions.api.setRowData(data);
     })
@@ -577,7 +603,8 @@ export class FanliruleComponent implements OnInit {
         return;
     }
     this.caigouApi.deletefanlirulegrno(fanlirulegrnoids).then(data => {
-        this.fanligrnoApi(this.fanliruleid);
+        this.fanligrnoApi(this.fanliruledetid);
+        this.getDetail();
     })
   }
   /**
@@ -588,14 +615,14 @@ export class FanliruleComponent implements OnInit {
     const selectdata = this.gridOptions.api.getModel()['rowsToDisplay'];
     for (let i = 0; i < selectdata.length; i++) {
         if (selectdata[i].selected && selectdata[i]['data']) {
-            detids.push(selectdata[i]['data']['id']);
+            detids.push(selectdata[i]['data']['fanliruledetid']);
         }
     }
     if (!detids.length) {
         this.toast.pop('warning', '请选择要作废的明细！');
         return;
     }
-    if (confirm('你确定要作废吗？')) {
+    if (confirm('确定后会发起审批到资源中心负责人，你确定要作废吗？')) {
         this.caigouApi.fanlirulezuofei({detids:detids}).then(data => {
           this.getDetail();
         });
@@ -609,14 +636,14 @@ export class FanliruleComponent implements OnInit {
     const selectdata = this.gridOptions.api.getModel()['rowsToDisplay'];
     for (let i = 0; i < selectdata.length; i++) {
         if (selectdata[i].selected && selectdata[i]['data']) {
-            detids.push(selectdata[i]['data']['id']);
+            detids.push(selectdata[i]['data']['fanliruledetid']);
         }
     }
     if (!detids.length) {
         this.toast.pop('warning', '请选择要完成的明细！');
         return;
     }
-    if (confirm('你确定要完成吗？')) {
+    if (confirm('完成之后则不会再计算返利，你确定要完成吗？')) {
         this.caigouApi.finishfalirule({detids:detids}).then(data => {
           this.getDetail();
         });
@@ -664,7 +691,6 @@ export class FanliruleComponent implements OnInit {
         this.fanlirule.sellerid = {name:params['sellername'],code:params['sellerid']};
         this.fanlirule['monthstart'] = this.datepipe.transform(this.start, 'y-MM-dd');
         this.fanlirule['monthend'] = this.datepipe.transform(this.end, 'y-MM-dd');
-        console.log(this.fanlirule);
     });
     this.youhuirulecreateModal.show();
   }
