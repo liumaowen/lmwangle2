@@ -47,6 +47,7 @@ export class RegpriceComponent implements OnInit {
   twight:any;
   beizhu:any;
   routeinquiry = { accountdirection: 2 };
+  transporttype=[{value:'1',label:'汽运'},{value:'2',label:'船运'},{value:'2',label:'铁运'}];
   modify: Object = { price: null, detid: '', wuliucompany:null,wuliucompany2:null};
   issaleman = false;
 
@@ -86,18 +87,21 @@ export class RegpriceComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '目的省', field: 'eprovincename', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '目的市', field: 'ecityname', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '目的区/县', field: 'ecountyname', width: 90 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '路线', field: 'route', width: 90 
-    },
+      { cellStyle: { 'text-align': 'center' }, headerName: '路线', field: 'route', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '运输方式', field: 'transporttype', width: 260 },
       { cellStyle: { 'text-align': 'center' }, headerName: '吨位', field: 'tweight', width: 90 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '单价/总价', field: 'price', width: 260 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '含税单价/含税总价', field: 'price', width: 260 },
       { cellStyle: { 'text-align': 'center' }, headerName: '金额', field: 'jine', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '物流公司', field: 'wuliucompanyname', width: 200,colId: 'wuliucompanyname' },
       { cellStyle: { 'text-align': 'center' }, headerName: '物流专员', field: 'wuliuyuan', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '议价人', field: 'yijiaren', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '议价价格', field: 'bargaining', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'addbeizhu', width: 100 }
-
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'addbeizhu', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '不含税单价', field: 'notaxprice', width: 260 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '系统单价', field: 'systemprice', width: 260 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '税点', field: 'taxpoint', width: 260 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '税额', field: 'taxjine', width: 260 },
     ];
 
     this.getMyRole();

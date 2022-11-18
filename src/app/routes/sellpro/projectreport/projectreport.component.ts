@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-// OnChanges, DoCheck, AfterContentInit, AfterContentChecked,AfterViewInit, AfterViewChecked, OnDestroy
-import { OrgApiService } from './../../../dnn/service/orgapi.service';
 import { ClassifyApiService } from './../../../dnn/service/classifyapi.service';
 import { ToasterService } from 'angular2-toaster/angular2-toaster';
 import { DatePipe, DecimalPipe } from '@angular/common';
@@ -23,7 +21,6 @@ export class ProjectreportComponent implements OnInit {
   @ViewChild('chandi') public chandi: SelectComponent;
   @ViewChild('weight') public weight: SelectComponent;
   @ViewChild('status') public status: SelectComponent;
-  // OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit,AfterViewChecked, OnDestroy
   search: object = {
     area: '',
     orgid: '',
@@ -61,6 +58,8 @@ export class ProjectreportComponent implements OnInit {
 
   // 弹窗
   @ViewChild('classicModal') private classicModel: ModalDirective;
+  @ViewChild('forwardModal') private forwardModal: ModalDirective;
+  @ViewChild('overModal') private overModal: ModalDirective;
   orgs: any[];
   chandis: any[];
   weights: any[];
@@ -69,9 +68,13 @@ export class ProjectreportComponent implements OnInit {
   statuses: any[] = [];
   // 获取当前登录用户的信息
   current = this.storage.getObject('cuser');
+  forwardparams = {projectids:[],newuserid:null,reason:'',issalemancomfig:false}; // 项目转交参数
+  overparams = {projectids:[],overreason:'',issalemancomfig:false}; // 项目终止参数
+  newuser;
+  total = { count: 0};
   constructor(public settings: SettingsService, private sellproApi: SellproService,
-    private datepipe: DatePipe, private numpipe: DecimalPipe, private storage: StorageService,
-    private toasterService: ToasterService, private orgApi: OrgApiService, private classifyApi: ClassifyApiService) {
+    private datepipe: DatePipe, private storage: StorageService,
+    private classifyApi: ClassifyApiService,private toast: ToasterService,) {
     // aggird实例对象
     this.gridOptions = {
       groupDefaultExpanded: -1,
@@ -83,9 +86,20 @@ export class ProjectreportComponent implements OnInit {
       enableColResize: true,
       enableSorting: true,
       enableFilter: true,
+      rowSelection: 'multiple',
       excelStyles: this.settings.excelStyles,
       getContextMenuItems: this.settings.getContextMenuItems,
-      localeText: this.settings.LOCALETEXT
+      localeText: this.settings.LOCALETEXT,
+      onRowSelected: (params) => {
+        let allselected = this.gridOptions.api.getModel()['rowsToDisplay'];
+        const selected = [];
+        for (var i = 0; i < allselected.length; i++) {
+          if (allselected[i].isSelected() && allselected[i].data['id']) {
+            selected.push(allselected[i].data['id']);
+          }
+        }
+        this.total.count = selected.length;
+      },
     };
 
     this.gridOptions.onGridReady = this.settings.onGridReady;
@@ -94,7 +108,11 @@ export class ProjectreportComponent implements OnInit {
 
     // 设置aggird表格列
     this.gridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '项目名称', field: 'name', minWidth: 150 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '选择', minWidth: 60, pinned: 'left',
+        checkboxSelection: true, headerCheckboxSelection: true, headerCheckboxSelectionFilteredOnly: true,
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '项目名称', field: 'name', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否实地拜访', field: 'isfieldvisit', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否终端项目', field: 'zhongduan', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '项目来源', field: 'projectsourcename', minWidth: 90 },
@@ -102,14 +120,14 @@ export class ProjectreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '到访/拜访地点', field: 'visitaddr', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '接待方式', field: 'receptionname', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '接待人', field: 'tusername', minWidth: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '创建时间', field: 'cdate', minWidth: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '审核时间', field: 'vdate', minWidth: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '签单时间', field: 'sdate', minWidth: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '终止时间', field: 'odate', minWidth: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '负责人', field: 'cusername', minWidth: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', minWidth: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '业主', field: 'owner', minWidth: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '客户单位', field: 'customer', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '创建时间', field: 'cdate', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '审核时间', field: 'vdate', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '签单时间', field: 'sdate', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '终止时间', field: 'odate', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '负责人', field: 'cusername', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '业主', field: 'owner', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '客户单位', field: 'customer', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '省', field: 'provincename', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '市', field: 'cityname', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '县', field: 'countyname', minWidth: 100 },
@@ -142,8 +160,8 @@ export class ProjectreportComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '订单号', field: 'billno', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否备案', field: 'isbeian', minWidth: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '审核意见', field: 'comment', minWidth: 100 },
-      { cellStyle: { 'text-align': 'center' }, colId: 'plogcount', headerName: '日志更新条数', field: 'plogcount', minWidth: 100 },
+    //   { cellStyle: { 'text-align': 'center' }, headerName: '审核意见', field: 'comment', minWidth: 100 },
+    //   { cellStyle: { 'text-align': 'center' }, colId: 'plogcount', headerName: '日志更新条数', field: 'plogcount', minWidth: 100 },
     ];
   }
 
@@ -235,7 +253,6 @@ export class ProjectreportComponent implements OnInit {
     if (this.search['cuserid'] instanceof Object) {
       this.search['cuserid'] = this.search['cuserid'].code;
     }
-    console.log(this.search);
     this.sellproApi.projectlist(this.search).then(data => {
       this.gridOptions.api.setRowData(data);
       this.gridOptions.columnApi.autoSizeAllColumns();
@@ -257,5 +274,76 @@ export class ProjectreportComponent implements OnInit {
   onGridReady(params) {
     this.gridApi = params.api;
     params.api.sizeColumnsToFit();
+  }
+  // 选择项目明细转交
+  showforwardDialog() {
+    this.forwardparams.projectids = [];
+    let selected = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (var i = 0; i < selected.length; i++) {
+      if (selected[i].isSelected() && selected[i].data['id']) {
+        this.forwardparams.projectids.push(selected[i].data.id);
+      }
+    };
+    if (!this.forwardparams.projectids.length) {
+      this.toast.pop('error', '请选择项目明细！');
+      return;
+    }
+    this.forwardModal.show();
+  }
+  forwardselectNull() {
+    this.newuser = null;
+    this.forwardparams.newuserid = null;
+    this.forwardparams.reason = '';
+  }
+  forwardcoles() {
+    this.forwardModal.hide();
+  }
+  // 确认转交
+  forwardconfim() {
+    if (this.newuser instanceof Object) {
+      this.forwardparams['newuserid'] = this.newuser.code;
+    }
+    if (!this.forwardparams.reason) {
+      this.toast.pop('error', '请填写转交原因！');
+      return;
+    }
+    if (!this.forwardparams.newuserid) {
+      this.toast.pop('error', '请选择转交人！');
+      return;
+    }
+    this.sellproApi.batchforwardBPM(this.forwardparams).then(data => {
+      this.forwardModal.hide();
+      this.newuser = null;
+      this.toast.pop('success', '转交申请提交成功！');
+    });
+  }
+  // 选择项目明细终止
+  showoverDialog() {
+    this.overparams.projectids = [];
+    let selected = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (var i = 0; i < selected.length; i++) {
+      if (selected[i].isSelected() && selected[i].data['id']) {
+        this.overparams.projectids.push(selected[i].data.id);
+      }
+    };
+    if (!this.overparams.projectids.length) {
+      this.toast.pop('error', '请选择项目明细！');
+      return;
+    }
+    this.overModal.show();
+  }
+  overcoles() {
+    this.overModal.hide();
+  }
+  // 确认终止
+  overconfim() {
+    if (!this.overparams.overreason) {
+      this.toast.pop('error', '请填写转交原因！');
+      return;
+    }
+    this.sellproApi.batchoverBPM(this.overparams).then(data => {
+      this.overModal.hide();
+      this.toast.pop('success', '终止申请提交成功！');
+    });
   }
 }

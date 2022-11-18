@@ -182,6 +182,11 @@ export class CaigouComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '审核时间', field: 'vdate', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '结算方式', field: 'jiesuantype', minWidth: 100 },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '结算价格', field: 'jiesuanprice', minWidth: 100,
+        valueFormatter: this.settings.valueFormatter2
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '物料编码', field: 'gcid', minWidth: 100 },
     ];
   }
   selectstart() { }

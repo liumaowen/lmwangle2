@@ -139,8 +139,6 @@ export class CgwanglaiComponent implements OnInit {
   }
   selectstart() { }
   query() {
-    this.search['orgid']=this.current.orgid;
-    this.search['salemanid']=this.current.id;
     if (this.start) {
       this.search['start'] = this.datepipe.transform(this.start, 'y-MM-dd');
     }

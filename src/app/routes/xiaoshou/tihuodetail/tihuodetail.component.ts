@@ -330,6 +330,10 @@ export class TihuodetailComponent implements OnInit {
           return params.data.weight;
         }, valueFormatter: this.settings.valueFormatter3
       },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '金额', field: 'jine', minWidth: 90,
+        valueFormatter: this.settings.valueFormatter2
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '资源号', field: 'grno', minWidth: 120 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '捆包号', field: 'kunbaohao', minWidth: 120
@@ -1680,6 +1684,10 @@ export class TihuodetailComponent implements OnInit {
     if (tihuodetids1.length <= 0) {
       this.toast.pop('warning', '请选择提货单中实提的货物！！！');
       return '';
+    }
+    if (this.beizhu === '' || !this.beizhu) {
+      this.toast.pop('warning', '请填写退货原因！');
+      return;
     }
     let msg = '你确定要做销售退货吗？';
     if (produceStatus.some(item => item === 2)) {

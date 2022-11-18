@@ -265,11 +265,11 @@ export class OfflineComponent implements OnInit {
         cellStyle: { 'text-align': 'center' }, headerName: '出库费结算', field: 'chukufeetype', minWidth: 110,
         cellRenderer: (params) => {
           if (params.data) {
-            if (params.data.chukufeetype === '0') {
+            if (params.data.chukufeetype === 0) {
               return '现结';
-            } else if (params.data.chukufeetype === '1') {
+            } else if (params.data.chukufeetype === 1) {
               return '月结';
-            } else if (params.data.chukufeetype === '2') {
+            } else if (params.data.chukufeetype === 2) {
               return '免付';
             } else {
               return '';

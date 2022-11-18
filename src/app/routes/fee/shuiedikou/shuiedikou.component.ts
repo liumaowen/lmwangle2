@@ -85,44 +85,20 @@ export class ShuiedikouComponent implements OnInit {
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '含税金额', field: 'totalpriceandtax', width: 90, aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data) {
-            return Number(params.data['totalpriceandtax']);
-          } else {
-            return 0;
-          }
-        }, valueFormatter: this.settings.valueFormatter2
+        valueFormatter: this.settings.valueFormatter2
       },//发票上的金额
      
       {
         cellStyle: { 'text-align': 'center' }, headerName: '不含税金额', field: 'totalpriceamount', width: 90, aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data) {
-            return Number(params.data['totalpriceamount']);
-          } else {
-            return 0;
-          }
-        }, valueFormatter: this.settings.valueFormatter2
+        valueFormatter: this.settings.valueFormatter2
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '内销抵扣税额', field: 'taxjineinner', width: 100, aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data) {
-            return Number(params.data['taxjineinner']);
-          } else {
-            return 0;
-          }
-        }, valueFormatter: this.settings.valueFormatter2
+        valueFormatter: this.settings.valueFormatter2
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '其他抵扣税额', field: 'taxjineother', width: 100, aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data) {
-            return Number(params.data['taxjineother']);
-          } else {
-            return 0;
-          }
-        }, valueFormatter: this.settings.valueFormatter2
+        valueFormatter: this.settings.valueFormatter2
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '报销人', field: 'employeename', width: 70

@@ -296,4 +296,20 @@ export class ReportService {
       return data.json() as any[];
     });
   }
+  submitChange(search) {
+    return this.http.post('store/api/customer/submitchange', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  //客户变更记录
+  customerchange(search) {
+    return this.http.get('store/api/customer/customerchange', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  customerlist(search) {
+    return this.http.get('store/api/customer/customerlist', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

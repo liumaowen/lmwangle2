@@ -320,6 +320,8 @@ export class KucundetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '包装方式', field: 'packagetype', minWidth: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '喷码', field: 'penma', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '涂层', field: 'tuceng', minWidth: 57 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '基板', field: 'matbasilarplate', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '背漆涂层种类', field: 'matbackcoatingtype', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '批次号', field: 'nrno', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否标记', field: 'issign', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否外贸', field: 'isft', minWidth: 80 },

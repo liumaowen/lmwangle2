@@ -242,14 +242,14 @@
         </div>
       </div>
     </div>
-    <div class=" col-lg-3 col-md-6 ">
+    <!-- <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 control-label form-control-static">税率:</div>
         <div class="col-md-8 col-xs-6 form-control-static">
           {{feefukuan['taxrate']}}%
         </div>
       </div>
-    </div>
+    </div> -->
     <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 control-label form-control-static">不含税金额:</div>
@@ -419,14 +419,14 @@
                 </p-dropdown>
               </div>
             </div>
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify']">
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify']">
               <label class="col-sm-3 control-label">税率</label>
               <div class="col-sm-9">
                 <input type="number" style="display:inline-block;width:95%;" class="form-control"
                   [(ngModel)]="params['taxrate']" (blur)="getnotaxjine()" />&nbsp;%
               </div>
-            </div>
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify']">
+            </div> -->
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify']">
               <label class="col-sm-3 control-label">不含税金额</label>
               <div class="col-sm-9">
                 <input type="number" class="form-control" [(ngModel)]="params['notaxjine']" (blur)="gettaxjine()" />
@@ -437,7 +437,7 @@
               <div class="col-sm-9">
                 <input type="number" class="form-control" [(ngModel)]="params['taxjine']" />
               </div>
-            </div>
+            </div> -->
             <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify']">
               <label class="col-sm-3 control-label">实际付款单位</label>
               <div class="col-sm-9">
@@ -543,8 +543,8 @@ aria-hidden="true">
         <div class="panel panel-default" style="overflow:'inherit'">
           <div class="panel-body">
             
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify'] || flag['tiqianzhifu']">
-              <label class="col-sm-3 control-label">实际付款单位</label>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify'] || flag['tiqianzhifu'] || flag['zhidan']">
+              <label class="col-sm-3 control-label">实际发票抬头</label>
               <div class="col-sm-9">
                 <p-dropdown [options]="companyIsWiskind" [(ngModel)]="params['actpcustomerid']"
                   [style]="{'width':'100%'}" (onChange)="getbank(params['actpcustomerid'])"></p-dropdown>
@@ -577,6 +577,43 @@ aria-hidden="true">
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!--  修改税率 -->
+<div class="modal" bsModal #taxrateVerify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideshowtaxrate()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改税率</h4>
+      </div>
+
+      <div class="modal-body">
+          <div class="panel-body">               
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" >
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">税率：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="number" [(ngModel)]="params['taxrate']" class="form-control" style="display:inline-block;width:95%;"/>&nbsp;%
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="reset()" class="btn btn-primary btn-large">重置</button>
+            <button type="button" (click)="modifytaxrate()" class="btn btn-primary btn-large">保存</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

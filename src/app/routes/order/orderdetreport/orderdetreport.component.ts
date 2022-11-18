@@ -229,7 +229,8 @@ export class OrderdetreportComponent implements OnInit {
             return '';
           }
         }
-      }
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '调货类型', field: 'thtype', width: 150 },
 
     ];
 

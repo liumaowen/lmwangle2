@@ -115,6 +115,13 @@
                 <input type="text" [(ngModel)]=" routeinquiry['addbeizhu']" class="form-control" />
               </div>
             </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-xs-12">
+              <label class="col-sm-3  control-label">运输方式：</label>
+              <div class="col-sm-9 " >
+                <p-dropdown [options]="transporttype" placeholder="选择运输方式" [(ngModel)]="routeinquiry['transporttype']"  [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
           </div>
         </div>
             <div class="modal-footer">
@@ -227,6 +234,16 @@
               </label>
               <div class="col-sm-9">
                 <wis-wiswlcompanysearch [(company)]="wuliucompany2"></wis-wiswlcompanysearch>
+              </div>
+            </div>
+            <label class="col-sm-3 control-label"></label>
+            <div class=" row form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">运输方式: </span>
+              </label>
+              <div class="col-sm-9 " >
+                <p-dropdown [options]="transporttype" placeholder="选择运输方式" [(ngModel)]="modify['transporttype']"  [style]="{'width': '100%'}">
+                </p-dropdown>
               </div>
             </div>
           </div>

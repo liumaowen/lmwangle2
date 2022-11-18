@@ -14,6 +14,9 @@ import { MycustomeraddressComponent } from './mycustomeraddress/mycustomeraddres
 import { MycustomerbankaccountComponent } from './mycustomerbankaccount/mycustomerbankaccount.component';
 import { MycustomerusersComponent } from './mycustomerusers/mycustomerusers.component';
 import { TabViewModule } from 'primeng/primeng';
+import { CustomerchaoqiimportComponent } from '../../dnn/shared/customerchaoqiimport/customerchaoqiimport.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { ReportService } from '../report/report.service';
 
 const routes: Routes = [
   { path: '', component: MycustomerComponent, data: { 'title': '客户管理' } },
@@ -42,10 +45,13 @@ const routes: Routes = [
     TabViewModule,
     DropdownModule,
     FormsModule,
+    AgGridModule
   ],
-  declarations: [MycustomerComponent, MycustomerdetailComponent, MycustomereditComponent, MycustomeraddressComponent, MycustomerbankaccountComponent, MycustomerusersComponent],
+  declarations: [MycustomerComponent, MycustomerdetailComponent, MycustomereditComponent, MycustomeraddressComponent, MycustomerbankaccountComponent,
+     MycustomerusersComponent,CustomerchaoqiimportComponent],
   providers: [
-    MycustomerapiService
-  ]
+    MycustomerapiService,ReportService
+  ],
+  entryComponents: [CustomerchaoqiimportComponent]
 })
 export class MycustomerModule { }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { GridOptions } from 'ag-grid/main';
+import { ColDef, GridOptions } from 'ag-grid/main';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { KucunService } from './../kucun.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -51,11 +51,36 @@ export class CangkudetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '负责人', field: 'user', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '特殊提醒', field: 'warn', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '创建时间', field: 'cdate', minWidth: 80 },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '关联公司', field: 'customername', minWidth: 90 ,
+        cellRenderer: (params) => {
+        if (params.data && null != params.data.customername) {
+              return '<a target="_blank" href="#/customer/' + params.data.customerid + '/edit">' + params.data.customername + '</a>';
+         }
+         return '';
+        },
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '合作期限', field: 'hezuodate', minWidth: 90 ,colId: 'hezuodate'},
     ];
+    this.getMyRole();
   }
 
   ngOnInit() {
   }
+
+  getMyRole() {
+    const myrole = JSON.parse(localStorage.getItem('myrole'));
+    this.gridOptions.columnDefs.forEach((colde: ColDef) => {
+    // 如果登陆的用户不是物流员，资源内勤，销售内勤，设置为不可见
+    if (!myrole.some(item => item === 9 || item === 1 || item === 53 || item === 54)) {
+      if (colde.colId === 'hezuodate' ) {
+        colde.hide = true;
+        colde.suppressToolPanel = true;
+      }
+    }
+  });
+  }
+  
   openquery() {
     this.classicModal.show();
   }

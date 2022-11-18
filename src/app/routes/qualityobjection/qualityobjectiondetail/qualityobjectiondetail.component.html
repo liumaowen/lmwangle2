@@ -8,7 +8,7 @@
     <button [disabled]="!flag.isreportgc" class="btn btn-info btn-bloc" type="button" (click)="opengongchang()">
       {{qualityobjection['status'] === 4?'异议跟踪':'异议处理'}}
     </button>
-    <button [disabled]="!flag.isResourceCenter" *ngIf = "gangchangrecord['chulitype'] === '1'" type="button" (click)="showgangchangModal()" class="btn btn-info btn-bloc">钢厂处理</button>
+    <button [disabled]="!flag.isResourceCenter" *ngIf = "qualityobjection['chulitype'] === 1" type="button" (click)="showgangchangModal()" class="btn btn-info btn-bloc">钢厂处理</button>
     <!-- <button [disabled]="!flag.isResourceCenter" type="button" (click)="showresourceCenterModal()" class="btn btn-info btn-bloc">资源中心处理</button>
     <button [disabled]="!flag.issale&&!flag.isResourceCenter" type="button" (click)="showsaleModal()" class="btn btn-info btn-bloc">销售业务处理</button> -->
     <button [disabled]="!flag.isedit" class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button" (click)="deletequality()">删除</button>

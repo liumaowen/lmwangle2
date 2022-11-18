@@ -148,4 +148,8 @@ export class FeefukuanapiService {
       return data.json() as any[];
     });
   }
+
+  modifytaxrate(id, search) {
+    return this.http.put('store/api/feefukuan/modifytaxrate/' + id, search).toPromise();
+  }
 }

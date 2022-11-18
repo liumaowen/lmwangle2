@@ -925,8 +925,17 @@ export class QihuodetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '资源号', field: 'grno', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '提货Id', field: 'tihuoid', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '库存Id', field: 'kucunid', width: 90 },
-      { cellStyle: { 'text-align': 'center' }, headerName: 'gcId', field: 'gcid', width: 90 }
-
+      { cellStyle: { 'text-align': 'center' }, headerName: 'gcId', field: 'gcid', width: 90 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '是否释放', field: 'iscancel', width: 110,
+        cellRenderer: (params) => {
+          if (params.data) {
+            return params.data.iscancel? '是' : '';
+          } else {
+            return null;
+          }
+         }
+      }
     ];
     this.wuliuOffergridOptions = {
       groupDefaultExpanded: -1,

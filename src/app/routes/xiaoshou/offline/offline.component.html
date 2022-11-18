@@ -24,7 +24,7 @@
     共有{{total['count']}}件，总重{{total['tweight'] | number:'1.3-3'}}吨,总米数{{total['tlength'] | number:'1.3-3'}}米,总金额￥{{total['tmoney'] | number:'1.2-2'}}
   </div>
   <div style="font-size: 16px;padding-top: 5px;" *ngIf="!flag['isonline']">
-    可释放定金金额￥{{shifangmap['keshifangdingjin'] | number:'1.0-2'}}，释放后剩余定金金额￥{{shifangmap['dingjinshengyu'] | number:'1.0-2'}}，可释放配款金额￥{{shifangmap['keshifangallocation'] | number:'1.0-2'}}，预估欠款金额￥{{shifangmap['qiankuanjine'] | number:'1.0-2'}}
+    可释放定金金额￥{{shifangmap['keshifangdingjin'] | number:'1.0-2'}}，释放后剩余定金金额￥{{shifangmap['dingjinshengyu'] | number:'1.0-2'}}（如本次发货为最后一次提货，则定金可全部释放），可释放配款金额￥{{shifangmap['keshifangallocation'] | number:'1.0-2'}}，预估欠款金额￥{{shifangmap['qiankuanjine'] | number:'1.0-2'}}
   </div>
 </div>
 
@@ -600,8 +600,9 @@
               <label class="col-sm-3 control-label">释放原因</label>
               <div class="col-sm-9">
                 <input type="text" name="reason" placeholder="请输入释放原因" class="form-control" [(ngModel)]="reason" />
-              </div>
+              </div>             
             </div>
+            <span class="col-sm-3" style="color: red;">*释放原因必填</span>
           </div>
         </div>
         <div class="form-inline text-center">

@@ -279,13 +279,13 @@ export class CginvoicedetailComponent implements OnInit {
 
   // 修改明细金额
   update(){
-    if(this.det['jine'] == null || this.det['jine'] == ''){
-      this.toast.pop('error', '请填写含税金额！！！', '');
-    }
-    else if(this.det['bjine'] == null || this.det['bjine'] == ''){
-      this.toast.pop('error', '请填写不含税金额！！！', '');
-    }
-    else if(this.det['tax'] == null || this.det['tax'] == ''){
+    // if(this.det['jine'] == null || this.det['jine'] == ''){
+    //   this.toast.pop('error', '请填写含税金额！！！', '');
+    // }
+    // else if(this.det['bjine'] == null || this.det['bjine'] == ''){
+    //   this.toast.pop('error', '请填写不含税金额！！！', '');
+    // }
+    if(this.det['tax'] == null || this.det['tax'] == ''){
       this.toast.pop('error', '请填写税额！！！', '');
     }else{
       this.det['id'] = this.detid;

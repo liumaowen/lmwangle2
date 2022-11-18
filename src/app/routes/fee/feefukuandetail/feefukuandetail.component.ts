@@ -42,7 +42,7 @@ export class FeefukuandetailComponent implements OnInit {
   // 声明一个控制显示的对象
   flag = {
     cur: false, cangchu: false, verify: false, payuser: false, showPrint: false, pcheck: false,
-    tiqianzhifu: false, curfapiao: false, paycheck: false
+    tiqianzhifu: false, curfapiao: false, paycheck: false,zhidan:false
   };
   feeImpbsModalRef: BsModalRef;
   gridOptions: GridOptions;
@@ -189,6 +189,25 @@ export class FeefukuandetailComponent implements OnInit {
         valueFormatter: this.settings.valueFormatter2
       },
       {
+        cellStyle: { 'text-align': 'right' }, headerClass: 'text-red', headerName: '税率', field: 'taxrate', width: 90,
+        cellRenderer: (params) => {
+          if (this.flag.cur) {
+            if (params.data.id) {
+              return params.data.taxrate;
+            } 
+          } else {
+            return params.data.taxrate;
+          }
+        },
+        onCellClicked: (params) => {
+          if (this.flag.cur) {
+            this.feefukuandettail.orgid = params.data.orgid;
+            this.feefukuandettail.paycustomerid = params.data.paycustomerid;
+            this.showtaxrate();
+          }
+        }
+      },
+      {
         cellStyle: { 'text-align': 'right' }, headerName: '机构名称', field: 'feeorgname', width: 90,
         valueFormatter: this.settings.valueFormatter2
       },
@@ -202,7 +221,7 @@ export class FeefukuandetailComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'miaoshu', width: 90 },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '实际付款单位', field: 'actpcustomername', width: 90,
+        cellStyle: { 'text-align': 'center' }, headerName: '实际发票抬头', field: 'actpcustomername', width: 90,
         cellRenderer: (params) => {
           if (this.flag.verify || this.flag.tiqianzhifu) {
             if (params.data.id) {
@@ -215,7 +234,7 @@ export class FeefukuandetailComponent implements OnInit {
           }
         },
         onCellClicked: (params) => {
-          if (this.flag.verify || this.flag.tiqianzhifu) {
+          if (this.flag.verify || this.flag.tiqianzhifu || this.flag.zhidan) {
             this.feefukuandettail.orgid = params.data.orgid;
             this.feefukuandettail.paycustomerid = params.data.paycustomerid;
             this.showfuhedanweiVerify();
@@ -304,7 +323,6 @@ export class FeefukuandetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '创建人', field: 'cusername', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '创建时间', field: 'cdate', width: 90 }
     ];
-
     this.getFeefukuanAndDet();
   }
 
@@ -316,7 +334,7 @@ export class FeefukuandetailComponent implements OnInit {
   getFeefukuanAndDet() {
     this.flag = {
       cur: false, cangchu: false, verify: false, payuser: false, showPrint: false, pcheck: false,
-      tiqianzhifu: false, curfapiao: false, paycheck: false
+      tiqianzhifu: false, curfapiao: false, paycheck: false,zhidan:false
     }; // 初始化
     this.feefukuanApi.getFeefukuanAndDet(this.route.params['value']['id']).then((response) => {
       this.feefukuan = response['feefukuan'];
@@ -332,6 +350,9 @@ export class FeefukuandetailComponent implements OnInit {
       }
       if (this.feefukuan['vuserid'] === this.current.id && this.pcode === 1) {
         this.flag['cangchu'] = true;
+      }
+      if (this.feefukuan['vuserid'] === this.current.id && this.pcode === 0) {
+        this.flag.zhidan = true;
       }
       if (this.feefukuan['pcheckuserid'] === this.current.id && this.pcode === 4) {
         this.flag.pcheck = true;
@@ -386,6 +407,10 @@ export class FeefukuandetailComponent implements OnInit {
     }
     if (!this.feefukuan['actraccount']) {
       this.toast.pop('warning', '请填写实际收款账号！');
+      return;
+    }
+    if (!this.feefukuan['fapiaohao']) {
+      this.toast.pop('warning', '请填写发票号！');
       return;
     }
     if (this.detaildata.length) {
@@ -655,18 +680,18 @@ export class FeefukuandetailComponent implements OnInit {
         this.toast.pop('warning', '请选择结算方式！');
         return;
       }
-      if (this.params['taxrate'] === '' || this.params['taxrate'] === null || this.params['taxrate'] === undefined) {
-        this.toast.pop('warning', '请选择税率！');
-        return;
-      }
-      if (this.params['notaxjine'] === '' || this.params['notaxjine'] === null || this.params['notaxjine'] === undefined) {
-        this.toast.pop('warning', '请选择不含税金额！');
-        return;
-      }
-      if (this.params['taxjine'] === '' || this.params['taxjine'] === null || this.params['taxjine'] === undefined) {
-        this.toast.pop('warning', '请选择税额！');
-        return;
-      }
+      // if (this.params['taxrate'] === '' || this.params['taxrate'] === null || this.params['taxrate'] === undefined) {
+      //   this.toast.pop('warning', '请选择税率！');
+      //   return;
+      // }
+      // if (this.params['notaxjine'] === '' || this.params['notaxjine'] === null || this.params['notaxjine'] === undefined) {
+      //   this.toast.pop('warning', '请选择不含税金额！');
+      //   return;
+      // }
+      // if (this.params['taxjine'] === '' || this.params['taxjine'] === null || this.params['taxjine'] === undefined) {
+      //   this.toast.pop('warning', '请选择税额！');
+      //   return;
+      // }
       // if (!this.params['actpcustomerid']) {
       //   this.toast.pop('warning', '请选择实际付款单位！');
       //   return;
@@ -970,7 +995,7 @@ export class FeefukuandetailComponent implements OnInit {
   getMyRole() {
     let myrole = JSON.parse(localStorage.getItem('myrole'));
     for (let i = 0; i < myrole.length; i++) {
-      if (myrole[i] === 5 || myrole[i] === 6 || myrole[i] === 7 || myrole[i] === 11 || myrole[i] === 13 || myrole[i] === 19 || myrole[i] === 20) {
+      if (myrole[i] === 5 || myrole[i] === 6 || myrole[i] === 7 || myrole[i] === 11 || myrole[i] === 13 || myrole[i] === 19 || myrole[i] === 20 || myrole[i] === 35) {
         this.caiwuyunying = true;
       }
     }
@@ -1004,4 +1029,28 @@ export class FeefukuandetailComponent implements OnInit {
       window.open(this.feefukuan['fukuanreceipt']);
     }
   }
+
+  @ViewChild('taxrateVerify') private taxrateVerify: ModalDirective;
+  showtaxrate() {
+    this.taxrateVerify.show();
+  }
+  hideshowtaxrate() {
+    this.taxrateVerify.hide();
+    this.params = {};
+  }
+  modifytaxrate() {
+    let paramsdata = {};
+    paramsdata = {
+      taxrate:this.params['taxrate'],
+      paycustomerid: this.feefukuandettail.paycustomerid, orgid: this.feefukuandettail.orgid
+    };
+    this.feefukuanApi.modifytaxrate(this.feefukuan['id'],paramsdata).then(() => {
+      this.toast.pop('success', '保存成功');
+      this.getFeefukuanAndDet();
+      this.hideshowtaxrate();
+      this.feefukuandettail = {};
+    });
+  }
+
+
 }

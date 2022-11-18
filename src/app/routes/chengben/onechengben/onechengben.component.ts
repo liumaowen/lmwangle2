@@ -129,33 +129,33 @@ export class OnechengbenComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '今年未到返利', field: 'yearfanli', minWidth: 60, enableRowGroup: true,
+        cellStyle: { 'text-align': 'center' }, headerName: '今年未到返利', field: 'wffanli', minWidth: 60, enableRowGroup: true,
         aggFunc: 'sum',
         valueGetter: (params) => {
-          if (params.data && params.data['yearfanli']) {
-            return Number(params.data['yearfanli']);
+          if (params.data && params.data['wffanli']) {
+            return Number(params.data['wffanli']);
           } else {
             return 0;
           }
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '库存返利', field: 'kucunfanli', minWidth: 60, enableRowGroup: true,
+        cellStyle: { 'text-align': 'center' }, headerName: '库存返利', field: 'wfkucunfanli', minWidth: 60, enableRowGroup: true,
         aggFunc: 'sum',
         valueGetter: (params) => {
-          if (params.data && params.data['kucunfanli']) {
-            return Number(params.data['kucunfanli']);
+          if (params.data && params.data['wfkucunfanli']) {
+            return Number(params.data['wfkucunfanli']);
           } else {
             return 0;
           }
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '去年未到返利', field: 'lastyearfanli', minWidth: 60, enableRowGroup: true,
+        cellStyle: { 'text-align': 'center' }, headerName: '去年已到返利', field: 'lastyifan', minWidth: 60, enableRowGroup: true,
         aggFunc: 'sum',
         valueGetter: (params) => {
-          if (params.data && params.data['lastyearfanli']) {
-            return Number(params.data['lastyearfanli']);
+          if (params.data && params.data['lastyifan']) {
+            return Number(params.data['lastyifan']);
           } else {
             return 0;
           }

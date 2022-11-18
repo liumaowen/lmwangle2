@@ -443,7 +443,8 @@ export class XsbuchadetailComponent implements OnInit {
     { label: '小数点平账', value: 2 },
     { label: '承兑贴息', value: 3 },
     { label: '处理质量异议', value: 4 },
-    { label: '延期利息', value: 5 }
+    { label: '延期利息', value: 5 },
+    { label: '其他', value: 6 },
   ];
   category = '';
   getCategory() {
@@ -461,6 +462,8 @@ export class XsbuchadetailComponent implements OnInit {
       this.category = '处理质量异议';
     }else if (category === 5) {
       this.category = '延期利息';
+    }else if (category === 6) {
+      this.category = '其他';
     }
     console.log(this.category);
   }

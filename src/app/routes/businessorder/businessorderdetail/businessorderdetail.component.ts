@@ -315,6 +315,7 @@ export class BusinessorderdetailComponent implements OnInit {
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '预估毛利单价', field: 'amount', width: 100,
+        valueFormatter: this.settings.valueFormatter2,
         cellRenderer: (params) => {
           let price = params.data.price;
           console.log(price);
@@ -324,7 +325,7 @@ export class BusinessorderdetailComponent implements OnInit {
                 price = (price + '').split('->')[0];
               }
             }
-            return (params.data.pertprice - price - params.data.yugufeeprice) + ' ';
+            return (params.data.pertprice.sub(price).sub(params.data.yugufeeprice)) + ' ';
           } else if (params.data.group) {
             return;
           } else {
@@ -333,7 +334,7 @@ export class BusinessorderdetailComponent implements OnInit {
                 price = (price + '').split('->')[0];
               }
             }
-            return (params.data.pertprice - price) + ' ';
+            return (params.data.pertprice.sub(price)) + ' ';
           }
         }
       },
@@ -407,7 +408,17 @@ export class BusinessorderdetailComponent implements OnInit {
 
         }
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: 'gcId', field: 'gcid', width: 90 }
+      { cellStyle: { 'text-align': 'center' }, headerName: 'gcId', field: 'gcid', width: 90 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '是否释放', field: 'iscancel', width: 110,
+        cellRenderer: (params) => {
+          if (params.data) {
+            return params.data.iscancel? '是' : ' ';
+          } else {
+            return null;
+          }
+         }
+      }
     ];
     // 定义网格
     this.proordergridOptions = {

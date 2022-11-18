@@ -125,6 +125,10 @@ export class CgbuchadetailComponent implements OnInit {
       {
         cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'jine', minWidth: 90,
         onCellClicked: (params) => {
+          if (this.caigouModel['status']!==0) {
+            this.toast.pop('warning', '只有制单中允许修改！');
+            return;
+          }
           if (params.data.newfanliid) {
             this.modify['fanliid'] = params.data.newfanliid;
             this.modify['jine'] = params.data.jine;

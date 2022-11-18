@@ -42,15 +42,13 @@ export class WuliuscoreapiService {
     });
   }
 
-
-  
   getRoute(search){
     return this.http.get('store/api/wliu/getroute',{search:search}).toPromise().then(data => {
       return data.json() as any[];
     })
   }
 
-//修改价格公司
+//修改价格公司运输方式
   modfiyPrice(modify) {
     return this.http.put('store/api/wliu/modfiyprice',modify).toPromise().then(data => {
     return data.json() as any[];

@@ -80,7 +80,11 @@ export class XiaoshouwanglaiyuereportComponent implements OnInit {
         valueFormatter: this.settings.valueFormatter2
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '业务负责人', field: 'realname', width: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '所属机构', field: 'orgname', width: 220 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '所属机构', field: 'orgname', width: 220 },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '未实提金额', field: 'wshitijine', width: 120,
+        valueFormatter: this.settings.valueFormatter2
+      }
     ];
   }
 

@@ -161,7 +161,7 @@ export class TudusaledetComponent implements OnInit {
       {
         cellStyle: { 'display': 'block' }, headerName: '当月（1月）', headerClass: 'wis-ag-center', colId: 'curmonthname',
         children: [
-          { cellStyle: { 'text-align': 'center' }, headerName: '自由品牌', field: 'newproduct', minWidth: 110,
+          { cellStyle: { 'text-align': 'center' }, headerName: '自有品牌', field: 'newproduct', minWidth: 110,
             valueGetter: (params) => {
               if (params.data && params.data['newproduct']) {
                 return Number(params.data['newproduct']);

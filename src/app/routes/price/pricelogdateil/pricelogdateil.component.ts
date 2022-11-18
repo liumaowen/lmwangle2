@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { GridOptions } from 'ag-grid/main';
 import { Component, OnInit } from '@angular/core';
+const sweetalert = require('sweetalert');
 
 @Component({
   selector: 'app-pricelogdateil',
@@ -344,13 +345,26 @@ export class PricelogdateilComponent implements OnInit {
         const paramsData = {};
         paramsData['pricelog'] = this.pricelogmodel;
         paramsData['pricelogDet'] = this.priceList;
-        console.log(this.priceList);
-        this.pricelogdetApi.createpricelog(paramsData).then(data => {
-          this.isv = false;
-          this.toast.pop('success', '调价成功，请等待领导审核！');
-          this.router.navigateByUrl('pricelog');
-        })
-      }
+        console.log(this.pricelogmodel);      
+        console.log(this.priceList);  
+        this.pricelogdetApi.judge(paramsData).then((response) => {
+          if(response['islowprice']){
+            if(confirm('该调价单中，存在宽度：'+ response['width'] +'厚度：'+response['houdu']+'重量：'+response['weight']+'捆包号：'+response['kunbaohao']+'钢卷，定价'+response['gjdprice']+'元，原内采单价'+response['gjyprice']+'元')){
+              this.pricelogdetApi.createpricelog(paramsData).then(data => {
+                this.isv = false;
+                this.toast.pop('success', '调价成功，请等待领导审核！');
+                this.router.navigateByUrl('pricelog');
+              })
+            }            
+          }else{
+            this.pricelogdetApi.createpricelog(paramsData).then(data => {
+              this.isv = false;
+              this.toast.pop('success', '调价成功，请等待领导审核！');
+              this.router.navigateByUrl('pricelog');
+            })
+          }
+        });
+      }    
     } else {
       this.toast.pop('warning', '请你调整价格后提交');
     }

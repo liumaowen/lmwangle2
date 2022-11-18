@@ -39,6 +39,7 @@ import { AutopaidanComponent } from './autopaidan/autopaidan.component';
 import { DailypriceComponent } from './dailyprice/dailyprice.component';
 import { SelectModule } from 'ng2-select';
 import { LaoercolornumComponent } from './laoercolornum/laoercolornum.component';
+import { KucuncustomerComponent } from './kucuncustomer/kucuncustomer.component';
 
 const routes: Routes = [{ path: 'kucun', component: KucunComponent, data: { 'title': '库存汇总表' } },
 { path: 'kucundetail', component: KucundetailComponent, data: { 'title': '库存明细表' } },
@@ -66,6 +67,7 @@ const routes: Routes = [{ path: 'kucun', component: KucunComponent, data: { 'tit
 { path: 'autopaidan', component: AutopaidanComponent, data: { 'title': '自动排单表' } },
 { path: 'dailyprice', component: DailypriceComponent, data: { 'title': '每日价格登记' } },
 { path: 'laoercolornum', component: LaoercolornumComponent, data: { 'title': '劳尔色号对照表' } },
+{ path: 'kucuncustomer', component: KucuncustomerComponent, data: { 'title': '各机构流通商未付款待提货库存' } },
 ];
 
 @NgModule({
@@ -85,7 +87,7 @@ const routes: Routes = [{ path: 'kucun', component: KucunComponent, data: { 'tit
     GoodscodeComponent, CangkudetComponent, KucundayComponent, SaleandcaigouComponent,
     TudufenxiComponent, NoticeshelveComponent, OnlinekucundetailComponent, ZaitukucundetailComponent,
     ZaitucangkuComponent, OverduekucunComponent, QzkulingComponent, LongkucuninterestComponent, BasematerialComponent,KucunkulingComponent,
-    KucuncheckComponent, KucuncheckhuizongComponent, KucunfqkComponent, AutopaidanComponent, DailypriceComponent, LaoercolornumComponent],
+    KucuncheckComponent, KucuncheckhuizongComponent, KucunfqkComponent, AutopaidanComponent, DailypriceComponent, LaoercolornumComponent,KucuncustomerComponent],
   providers: [KucunService, ReportService, OrderstatusPipe, GetdayPipe],
   entryComponents: [FavoritelistComponent, ZaitucangkuComponent]
 })

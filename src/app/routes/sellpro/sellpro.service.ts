@@ -97,4 +97,20 @@ export class SellproService {
       return data.json() as any[];
     });
   }
+ /**
+  * 批量转交项目
+  */
+  batchforwardBPM(search): Promise<any> {
+    return this.http.put(`store/api/crm/project/batchforwardBPM`,  search).toPromise().then(data => {
+        return data.json() as any[];
+    });
+  }
+ /**
+  * 批量终止项目
+  */
+  batchoverBPM(search): Promise<any> {
+    return this.http.put(`store/api/crm/project/batchoverBPM`,  search).toPromise().then(data => {
+        return data.json() as any[];
+    });
+  }
 }

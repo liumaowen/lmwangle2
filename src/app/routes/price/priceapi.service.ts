@@ -46,7 +46,16 @@ export class PriceapiService {
       return data.json() as any[];
     });
   }
-
+  judgeprice(search) {
+    return this.http.post('store/api/pricelog/judgeprice',search ).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  judge(search) {
+    return this.http.post('store/api/pricelog/judge',search ).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
   // auditprice(search) {
   //   return this.http.get('store/api/pricelog/verify', { search: search }).toPromise();
   // }

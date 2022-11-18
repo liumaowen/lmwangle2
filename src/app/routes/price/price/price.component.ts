@@ -34,6 +34,7 @@ export class PriceComponent implements OnInit {
     private router: Router,
     private toast: ToasterService,
     private userapi: UserapiService,
+    private pricelogdetApi: PriceapiService,
     private classifyapi: ClassifyApiService) {
     this.gridOptions = {
       enableFilter: true, // 过滤器
@@ -316,12 +317,25 @@ export class PriceComponent implements OnInit {
             isonline: this.tongtiaomodel['isonline'],
             orgid: this.tongtiaomodel['orgid'], isdifftiao: this.tongtiaomodel['isdifftiao'],
             lastprice: this.tongtiaomodel['lastprice'], describe: res['describe'], priceid: priceid
-          };
-          this.priceApi.createpricelog(pricelog).then((data) => {
-            this.router.navigate(['pricelogdet', data]);
-            this.toast.pop('success', '调价单创建成功');
-            this.tongtiaodialogcoles();
-          })
+          }; 
+          console.log('1233', pricelog);     
+          this.pricelogdetApi.judgeprice(pricelog).then((response) => {
+            if(response['islowprice']){
+              if(confirm('该调价单中，存在宽度：'+ response['width'] +'厚度：'+response['houdu']+'重量：'+response['weight']+'捆包号：'+response['kunbaohao']+'钢卷，定价'+response['gjdprice']+'元，原内采单价'+response['gjyprice']+'元')){
+                  this.priceApi.createpricelog(pricelog).then((data) => {
+                      this.router.navigate(['pricelogdet', data]);
+                      this.toast.pop('success', '调价单创建成功');
+                       this.tongtiaodialogcoles();
+                  })
+              }                
+            }else{
+              this.priceApi.createpricelog(pricelog).then((data) => {
+                this.router.navigate(['pricelogdet', data]);
+                this.toast.pop('success', '调价单创建成功');
+                 this.tongtiaodialogcoles();
+              })
+            }
+         });
         }
       })
     }

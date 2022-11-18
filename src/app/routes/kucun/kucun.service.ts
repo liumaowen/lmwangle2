@@ -386,4 +386,10 @@ export class KucunService {
       return data.json() as any[];
     });
   }
+  //各机构流通商未付款待提货库存
+  kucuncustomer(search) {
+    return this.http.get('store/api/kucun/kucuncustomer', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

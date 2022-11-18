@@ -2,10 +2,11 @@ import { StorageService } from './../../../dnn/service/storage.service';
 import { CustomerapiService } from './../../customer/customerapi.service';
 import { ToasterService } from 'angular2-toaster';
 import { Router } from '@angular/router';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { ClassifyApiService } from './../../../dnn/service/classifyapi.service';
 import { MycustomerapiService } from './../mycustomerapi.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { CustomerchaoqiimportComponent } from 'app/dnn/shared/customerchaoqiimport/customerchaoqiimport.component';
 
 @Component({
   selector: 'app-mycustomer',
@@ -37,12 +38,17 @@ export class MycustomerComponent implements OnInit {
   flag = [{ label: '请选择', value: '' }, { label: '线上客户', value: true }, { label: '线下客户', value: false }];
 
   categorys;
+  //超期客户
+  cqbsModalRef: BsModalRef;
+
+  isimport = { flag: true };
 
   constructor(private mycustomerApi: MycustomerapiService,
     private customerApi: CustomerapiService,
     private storage: StorageService,
     private router: Router,
     private toast: ToasterService,
+    private modalService: BsModalService,
     private classifyApi: ClassifyApiService) {
     this.querydata();
   }
@@ -159,6 +165,13 @@ export class MycustomerComponent implements OnInit {
 
   hidecreateModal() {
     this.createModal.hide();
+  }
+
+  changeShow(){
+    this.modalService.config.class = 'modal-all';
+    this.cqbsModalRef = this.modalService.show(CustomerchaoqiimportComponent);
+    this.cqbsModalRef.content.isimport = this.isimport;
+    this.cqbsModalRef.content.parent = this;
   }
 
 }
