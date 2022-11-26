@@ -797,6 +797,11 @@ export class CaigouService {
   modifytransporttype1(id, json) {
     return this.http.put('store/api/caigou/transporttype/' + id, json).toPromise().then();
     }
-
+  // 批量推送CBS
+  pushcbs(search) {
+    return this.http.put('store/api/cgfukuan/pushcbs', search).toPromise().then(data => {
+        return data.json() as any[];
+    });
+  }
     
 }

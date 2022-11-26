@@ -185,6 +185,8 @@ export class ProducedetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '后处理', field: 'ppro', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '采购公司', field: 'buyername2', minWidth: 80 , colId: 'buyername2'},
       { cellStyle: { 'text-align': 'center' }, headerName: '销售公司', field: 'sellername', minWidth: 80 , colId: 'sellername'},
+      { cellStyle: { 'text-align': 'center' }, headerName: '费用单价', field: 'feeprice', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '费用金额', field: 'feejine', width: 90 },
     ];
     this.getMyRole();
     // this.listDetail();

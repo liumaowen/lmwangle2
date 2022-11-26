@@ -647,12 +647,23 @@ export class ProducedetailComponent implements OnInit {
                   });
               }
             } else {
-              this.produceApi.checkFp({ produceid: this.produce['id'] }).then(() => {
-                // Notify.alert('验收成功', { status: 'success' });
-                this.toast.pop('success', '验收成功');
-                // $state.go('app.producedet');
-                this.router.navigateByUrl('producedet');
-              });
+              if(response['feemsg']){
+                if(confirm(response['feemsg'])){
+                  this.produceApi.checkFp({ produceid: this.produce['id'] }).then(() => {
+                    // Notify.alert('验收成功', { status: 'success' });
+                    this.toast.pop('success', '验收成功');
+                    // $state.go('app.producedet');
+                    this.router.navigateByUrl('producedet');
+                  });
+                }
+              }else{
+                this.produceApi.checkFp({ produceid: this.produce['id'] }).then(() => {
+                  // Notify.alert('验收成功', { status: 'success' });
+                  this.toast.pop('success', '验收成功');
+                  // $state.go('app.producedet');
+                  this.router.navigateByUrl('producedet');
+                });
+              }
             }
         }else{
           if (this.produce['producemode'] === 1) {
@@ -923,6 +934,46 @@ export class ProducedetailComponent implements OnInit {
   weishizhibao(){
     this.produceApi.reloadweishi(this.produce.id).then(data => {
       this.getDetail();
+    });
+  }
+  //成品费用添加
+  showFproductfeedialog() {
+    this.detids = new Array();
+    const fproducts = this.gridOptions.api.getModel()['rowsToDisplay']; // 获取选中的提货单明细。
+    let weight = '0';
+    for (let i = 0; i < fproducts.length; i++) {
+      if (fproducts[i].data.group && fproducts[i].selected) {
+        this.toast.pop('warning', '请选择成品明细进行添加费用！');
+        return;
+      }
+      if (fproducts[i].selected && !fproducts[i].data.cangku) {
+        weight = weight['add'](fproducts[i].data.weight);
+        this.detids.push(fproducts[i].data.fpid);
+      }
+    }
+    if (this.detids.length === 0) {
+      this.toast.pop('warning', '请选择明细进行添加费用！');
+      return;
+    }
+    this.producefee['weight'] = weight;
+    this.producefeeModal.show();
+  }
+
+  createFproduceFee() {
+    if (!this.producefee['feetype']) {
+      this.toast.pop('warning', '请选择费用类型！');
+      return '';
+    }
+    if (!this.producefee['price']) {
+      this.toast.pop('warning', '请填写单价!');
+      return '';
+    }
+    this.producefee['produceid'] = this.produce['id'];
+    this.producefee['detids'] = this.detids;
+    this.produceApi.createFproducefee(this.producefee).then(data => {
+      this.toast.pop('success', '添加成功！');
+      this.listFeeDetail();
+      this.hideproducefeedialog();
     });
   }
 

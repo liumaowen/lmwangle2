@@ -129,39 +129,6 @@ export class OnechengbenComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '今年未到返利', field: 'wffanli', minWidth: 60, enableRowGroup: true,
-        aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data && params.data['wffanli']) {
-            return Number(params.data['wffanli']);
-          } else {
-            return 0;
-          }
-        }, valueFormatter: this.settings.valueFormatter2
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '库存返利', field: 'wfkucunfanli', minWidth: 60, enableRowGroup: true,
-        aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data && params.data['wfkucunfanli']) {
-            return Number(params.data['wfkucunfanli']);
-          } else {
-            return 0;
-          }
-        }, valueFormatter: this.settings.valueFormatter2
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '去年已到返利', field: 'lastyifan', minWidth: 60, enableRowGroup: true,
-        aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data && params.data['lastyifan']) {
-            return Number(params.data['lastyifan']);
-          } else {
-            return 0;
-          }
-        }, valueFormatter: this.settings.valueFormatter2
-      },
-      {
         cellStyle: { 'text-align': 'center' }, headerName: '采购退货单价', field: 'cgtuihuoprice', minWidth: 60, enableRowGroup: true,
         //  aggFunc: 'sum',
         valueGetter: (params) => {
@@ -413,6 +380,39 @@ export class OnechengbenComponent implements OnInit {
         valueGetter: (params) => {
           if (params.data && params.data['xsfeejine']) {
             return Number(params.data['xsfeejine']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '今年未到返利', field: 'wffanli', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['wffanli']) {
+            return Number(params.data['wffanli']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '库存返利', field: 'wfkucunfanli', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['wfkucunfanli']) {
+            return Number(params.data['wfkucunfanli']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '去年已到返利', field: 'lastyifan', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['lastyifan']) {
+            return Number(params.data['lastyifan']);
           } else {
             return 0;
           }

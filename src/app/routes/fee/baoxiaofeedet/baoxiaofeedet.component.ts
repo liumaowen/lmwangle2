@@ -166,6 +166,12 @@ export class BaoxiaofeedetComponent implements OnInit {
         cellStyle: { 'text-align': 'center' }, headerName: '费用类型', field: 'feetype', width: 100
       },
       {
+        cellStyle: { 'text-align': 'center' }, headerName: '产品', field: 'gn', width: 110
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', width: 110
+      },
+      {
         cellStyle: { 'text-align': 'center' }, headerName: '单据编号', field: 'billno', width: 100
       },
       {

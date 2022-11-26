@@ -233,7 +233,11 @@ export class QihuoexecuteComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '创建人', field: 'cuser', minWidth: 60, enableRowGroup: true },
-      { cellStyle: { 'text-align': 'center' }, headerName: '代理人', field: 'auser', minWidth: 60, enableRowGroup: true }
+      { cellStyle: { 'text-align': 'center' }, headerName: '代理人', field: 'auser', minWidth: 60, enableRowGroup: true },
+      { cellStyle: { 'text-align': 'center' }, headerName: '已退货', field: 'tuihuoweight', minWidth: 60, enableRowGroup: true },
+      { cellStyle: { 'text-align': 'center' }, headerName: '已释放', field: 'shifangweight', minWidth: 60, enableRowGroup: true },
+      { cellStyle: { 'text-align': 'center' }, headerName: '交货状态', field: 'jiaohuostatus', minWidth: 60, enableRowGroup: true }
+    
 
     ];
     this.route.queryParams.subscribe((res) => {

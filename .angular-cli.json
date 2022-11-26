@@ -35,7 +35,8 @@
       "dev": "environments/environment.ts",
       "test": "environments/environment.test.ts",
       "abc": "environments/environment.abc.ts",
-      "prod": "environments/environment.prod.ts"
+      "prod": "environments/environment.prod.ts",
+      "dev1": "environments/environment.dev.ts"
     }
   }],
   "e2e": {

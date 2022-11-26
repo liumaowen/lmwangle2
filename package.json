@@ -9,7 +9,7 @@
     "build": "ng build",
     "buildtest": "ng build --aot --prod --environment=test --base-href /gmerp/ ",
     "buildgm": "ng build --aot --prod  --environment=prod --base-href /gmerp/",
-    "buildabc": "ng build --aot --prod --environment=abc --base-href /gmerp/",
+    "builddev": "ng build --aot --prod --environment=dev1 --base-href /gmerp/",
     "test": "ng test",
     "lint": "ng lint",
     "modernizr": "modernizr -c modernizr-config.json -d src/modernizr.js",

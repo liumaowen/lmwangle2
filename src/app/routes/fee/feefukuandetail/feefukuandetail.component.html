@@ -543,7 +543,7 @@ aria-hidden="true">
         <div class="panel panel-default" style="overflow:'inherit'">
           <div class="panel-body">
             
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify'] || flag['tiqianzhifu'] || flag['zhidan']">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12" *ngIf="flag['verify'] || flag['tiqianzhifu'] || flag['zhidan'] || flag['cur']">
               <label class="col-sm-3 control-label">实际发票抬头</label>
               <div class="col-sm-9">
                 <p-dropdown [options]="companyIsWiskind" [(ngModel)]="params['actpcustomerid']"

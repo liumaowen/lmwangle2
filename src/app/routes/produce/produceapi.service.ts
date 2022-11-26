@@ -52,6 +52,10 @@ export class ProduceapiService {
   createproducefee(search) {
     return this.http.post('store/api/producefee/createproducefee', search).toPromise();
   }
+  /**添加成品费用明细 */
+  createFproducefee(search) {
+    return this.http.post('store/api/producefee/createfproducefee', search).toPromise();
+  }
   removeById(id) {
     return this.http.delete('store/api/produce/' + id).toPromise();
   }

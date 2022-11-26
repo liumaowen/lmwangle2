@@ -93,6 +93,7 @@ export class CgfukuanComponent implements OnInit {
       excelStyles: this.settings.excelStyles,
       getContextMenuItems: this.settings.getContextMenuItems,
       enableFilter: true,
+      rowSelection: 'multiple'
     };
     this.gridOptions.onGridReady = this.settings.onGridReady;
     // this.gridOptions.groupUseEntireRow = true;
@@ -102,6 +103,7 @@ export class CgfukuanComponent implements OnInit {
       { field: 'group', rowGroup: true, headerName: '合计', hide: true, valueGetter: (params) => '合计' },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '编号', field: 'billno', minWidth: 100,
+        checkboxSelection: (params)=> params.data, headerCheckboxSelection:true,headerCheckboxSelectionFilteredOnly:true,
         cellRenderer: (params) => {
           if (params && params.data && null != params.data.billno) {
             return '<a target="_blank" href="#/cgfukuan/' + params.data.id + '">' + params.data.billno + '</a>';
@@ -142,7 +144,9 @@ export class CgfukuanComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '付款银行', field: 'paybank', minWidth: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '付款账户', field: 'banknum', minWidth: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否外贸', field: 'isft', minWidth: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 120 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '推送CBS', field: 'iscbs', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '审核人机构', field: 'orgname2', minWidth: 80 },
     ];
     this.querydata();
   }
@@ -395,5 +399,26 @@ export class CgfukuanComponent implements OnInit {
   selectmonth(value) {
     this.model['month'] = this.datepipe.transform(value, 'y-MM-dd');
   }
-
+  /**
+   * 推送CBS
+   */
+  pushcbs() {
+    const detids = new Array();
+    const selectdata = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < selectdata.length; i++) {
+        if (selectdata[i].selected && selectdata[i]['data']) {
+            detids.push(selectdata[i]['data']['id']);
+        }
+    }
+    if (!detids.length) {
+        this.toast.pop('warning', '请选择要推送的采购付款明细！');
+        return;
+    }
+    if (confirm('确定推送到CBS吗？')) {
+        this.toast.pop('success', '正在推送CBS，等待几秒......');
+        this.caigouApi.pushcbs({detids:detids}).then(data => {
+          this.querydata();
+        });
+    }
+  }
 }

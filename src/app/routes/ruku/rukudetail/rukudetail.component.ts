@@ -344,7 +344,7 @@ export class RukudetailComponent implements OnInit {
       return '';
     }
     this.caigoufee['tweight'] = weight;
-    this.caigoufee['accountdirection'] = 2;
+    this.caigoufee['accountdirection'] = '1';
     this.caigoufee['payorreceive'] = 1;
 
     this.feedialog.show();

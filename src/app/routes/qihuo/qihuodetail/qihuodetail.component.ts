@@ -24,7 +24,7 @@ import { QualityobjectionimportComponent } from 'app/dnn/shared/qualityobjection
 import { OrderapiService } from 'app/routes/order/orderapi.service';
 import { MdmService } from 'app/routes/mdm/mdm.service';
 
-
+const sweetalert = require('sweetalert');
 
 @Component({
   selector: 'app-qihuodetail',
@@ -178,6 +178,7 @@ export class QihuodetailComponent implements OnInit {
   packageyaoqius = [];
   jhcangku: any;
   fujians: any = [];
+
   constructor(public settings: SettingsService, private qihuoapi: QihuoService, private classifyapi: ClassifyApiService,
     private addressparseService: AddressparseService, private caigouApi: CaigouService, private datepipe: DatePipe,
     private toast: ToasterService, private route: ActivatedRoute, private router: Router, private moneyapi: MoneyService,
@@ -621,7 +622,9 @@ export class QihuodetailComponent implements OnInit {
             }
           },
         ]
-      }
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '已退货', field: 'tuihuoweight', minWidth: 90, enableRowGroup: true},
+      { cellStyle: { 'text-align': 'center' }, headerName: '已释放', field: 'shifangweight', minWidth: 110,enableRowGroup: true}
     ];
     //dingjingridOptions实例对象
     this.dingjingridOptions = {
@@ -2072,16 +2075,41 @@ export class QihuodetailComponent implements OnInit {
       })
     }
   }
+  fujian :any = [];
+ 
   //通知采购
   noticecaigou() {
-    if (confirm('你确定通知采购吗？')) {
-      this.qihuoapi.noticeCaigou(this.qihuoid).then(data => {
-        this.toast.pop('success', '通知成功！');
-        this.getqihuomodel();
-        this.findqihuodet();
-      })
-    }
-  }
+    this.qihuoapi.findfujian(this.qihuoid).then(data => {
+    this.fujian = data['isfujian'];
+    console.log(this.fujian);
+    console.log(123);
+    if(this.fujian){
+      if (confirm('你确定通知采购吗？')) {
+        this.qihuoapi.noticeCaigou(this.qihuoid).then(data => {
+          this.toast.pop('success', '通知成功！');
+          this.getqihuomodel();
+          this.findqihuodet();
+        })
+      } 
+    }else{ 
+      sweetalert({
+        title: '该订单未上传客户公章合同，是否确认通知采购？',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#23b7e5',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnConfirm: false
+      }, () => {
+        this.qihuoapi.noticeCaigou(this.qihuoid).then(data => {
+          this.toast.pop('success', '通知成功！');
+          this.getqihuomodel();
+          this.findqihuodet();
+        });
+      });
+    } 
+  });
+}
 
  
   //通知入库申请

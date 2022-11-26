@@ -392,4 +392,10 @@ export class KucunService {
       return data.json() as any[];
     });
   }
+  //上传备注
+  addbeizhu(search): Promise<any> {
+    return this.http.post('store/api/kucun/addbeizhu', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

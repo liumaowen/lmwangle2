@@ -259,7 +259,8 @@ export class SalebilldetailComponent implements OnInit {
   // 保存发票号码
   saveInvoiceNo() {
     const reg = new RegExp(/^\d{8}([，,]\d{8})*$/);
-    if (this.invoice['no'] && reg.test(this.invoice['no']) && this.start) {
+    const reg1 = new RegExp(/^\d{20}([，,]\d{20})*$/);
+    if (this.invoice['no'] && (reg.test(this.invoice['no']) || reg1.test(this.invoice['no'])) && this.start) {
       this.invoice['id'] = this.salebill['id'];
       this.invoice['no'] = this.invoice['no'].replace('，', ',');
       this.invoice['date'] = this.datepipe.transform(this.start, 'y-MM-dd');

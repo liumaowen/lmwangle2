@@ -874,6 +874,8 @@ export class KucundetailComponent implements OnInit {
   }
   // 上传弹窗实例
   @ViewChild('parentModal') private uploaderModel: ModalDirective;
+  @ViewChild('beizhuModal') private beizhuModal: ModalDirective;
+
 
   /**上传仓储号 */
   uploadstorageno() {
@@ -881,7 +883,7 @@ export class KucundetailComponent implements OnInit {
   }
   // 入库单上传信息及格式
   uploadParam: any = { module: 'addstorageno', count: 1, sizemax: 1, extensions: ['xls'] };
-
+  beizhuuploadParam: any = { module: 'addbeizhu', count: 1, sizemax: 1, extensions: ['xls'] };
   // 设置上传的格式
   accept = ".xls, application/xls";
 
@@ -1035,5 +1037,25 @@ export class KucundetailComponent implements OnInit {
         }
       }
     });
+  }
+  /**上传备注 */
+  uploadbeizhu() {
+    this.beizhuModal.show();
+  }
+  // 关闭上传弹窗
+  hideBeizhuDialog() {
+    this.beizhuModal.hide();
+  }
+    // 上传成功执行的回调方法
+  uploadsbeizhu($event) {
+    const addData = [$event.url];
+    if ($event.length !== 0) {
+      this.kucunapi.addbeizhu(addData).then(data => {
+        this.listDetail();
+        this.toast.pop('success', '上传成功！');
+      });
+    }
+    this.listDetail();
+    this.hideBeizhuDialog();
   }
 }

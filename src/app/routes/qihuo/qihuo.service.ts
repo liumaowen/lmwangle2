@@ -49,6 +49,7 @@ export class QihuoService {
   deldet(qihuodetid): Promise<any> {
     return this.http.delete('store/api/qihuo/delqihuodet/' + qihuodetid).toPromise();
   }
+
     /**批量删除销售合同明细 */
     delldorder(search) {
       return this.http.post('store/api/qihuo/delldorder', search).toPromise().then(data => {
@@ -437,6 +438,12 @@ export class QihuoService {
   } 
   findfujians2(search){
     return this.http.put('store/api/qihuo/orderdetlist',search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+    //根据qihuoid获取是否上传附件
+  findfujian(qihuoid): Promise<any> {
+    return this.http.get('store/api/qihuo/findfujian/'+qihuoid).toPromise().then(data => {
       return data.json() as any[];
     });
   }

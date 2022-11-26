@@ -7,9 +7,9 @@ import { SettingsService } from './../../../core/settings/settings.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-Overduekucun',
-  templateUrl: './Overduekucun.component.html',
-  styleUrls: ['./Overduekucun.component.scss']
+  selector: 'app-overduekucun',
+  templateUrl: './overduekucun.component.html',
+  styleUrls: ['./overduekucun.component.scss']
 })
 export class OverduekucunComponent implements OnInit {
   kulingobj: any = {};

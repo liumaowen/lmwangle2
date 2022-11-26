@@ -55,7 +55,7 @@ export class CangkudetComponent implements OnInit {
         cellStyle: { 'text-align': 'center' }, headerName: '关联公司', field: 'customername', minWidth: 90 ,
         cellRenderer: (params) => {
         if (params.data && null != params.data.customername) {
-              return '<a target="_blank" href="#/customer/' + params.data.customerid + '/edit">' + params.data.customername + '</a>';
+              return '<a target="_blank" href="#/customer/' + params.data.customerid + '/certmanagement">' + params.data.customername + '</a>';
          }
          return '';
         },

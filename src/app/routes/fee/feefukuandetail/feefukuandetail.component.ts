@@ -169,8 +169,8 @@ export class FeefukuandetailComponent implements OnInit {
       },
       {
         cellStyle: { 'text-align': 'right' }, headerClass: 'text-red', headerName: '税额', field: 'taxjine', width: 90,
-        editable: (params) => {
-          if (this.flag.verify) {
+        valueFormatter: this.settings.valueFormatter2,editable: (params) => {
+          if (this.flag.cur || this.flag.verify) {
             if (params.node.data.taxjine) {
               return true;
             } else {
@@ -185,22 +185,23 @@ export class FeefukuandetailComponent implements OnInit {
             this.toast.pop('success', '修改成功');
             this.getFeefukuanAndDet();
           });
-        },
-        valueFormatter: this.settings.valueFormatter2
+        }       
       },
       {
         cellStyle: { 'text-align': 'right' }, headerClass: 'text-red', headerName: '税率', field: 'taxrate', width: 90,
-        cellRenderer: (params) => {
-          if (this.flag.cur) {
-            if (params.data.id) {
-              return params.data.taxrate;
-            } 
+        editable: (params) => {
+          if (this.flag.cur || this.flag.verify ) {
+            if (params.node.data.taxrate) {
+              return true;
+            } else {
+              return false;
+            }
           } else {
-            return params.data.taxrate;
+            return false;
           }
         },
         onCellClicked: (params) => {
-          if (this.flag.cur) {
+          if (this.flag.cur || this.flag.verify) {
             this.feefukuandettail.orgid = params.data.orgid;
             this.feefukuandettail.paycustomerid = params.data.paycustomerid;
             this.showtaxrate();
@@ -234,7 +235,7 @@ export class FeefukuandetailComponent implements OnInit {
           }
         },
         onCellClicked: (params) => {
-          if (this.flag.verify || this.flag.tiqianzhifu || this.flag.zhidan) {
+          if (this.flag.verify || this.flag.tiqianzhifu || this.flag.zhidan || this.flag.cur) {
             this.feefukuandettail.orgid = params.data.orgid;
             this.feefukuandettail.paycustomerid = params.data.paycustomerid;
             this.showfuhedanweiVerify();

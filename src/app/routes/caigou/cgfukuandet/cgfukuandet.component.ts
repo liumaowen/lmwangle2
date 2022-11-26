@@ -3,7 +3,7 @@ import { CaigouService } from '../caigou.service';
 import { ToasterService } from 'angular2-toaster/angular2-toaster';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-cgfukuandet',
@@ -20,8 +20,9 @@ export class CgfukuandetComponent implements OnInit {
   fukuanModel: any = { org: {}, paycustomer: {}, vuser: {}, shoucustomer: {}, payuser: {}, fuheuser: {} };
   beizhu: any;
   modify = { id: '', beizhu: '' };
+  fukuanModelmonth = null;
   constructor(private numberpipe: DecimalPipe, private caigouApi: CaigouService, private toast: ToasterService,
-    private route: ActivatedRoute, private router: Router) {
+    private route: ActivatedRoute, private router: Router,private datepipe: DatePipe,) {
     this.getcgfukuan();
   }
 
@@ -32,6 +33,7 @@ export class CgfukuandetComponent implements OnInit {
     this.caigouApi.cgfukuan(this.route.params['value']['id']).then(data => {
       console.log('xxx', data);
       this.fukuanModel = data.fukuanModel;
+      this.fukuanModelmonth = this.fukuanModel['month'];
       this.fukuanModel['bigjine'] = data.bigjine;
       this.fukuanModel['jine'] = this.numberpipe.transform(this.fukuanModel['jine'], '1.2-2');
       if (this.fukuanModel.status === 0) {
@@ -50,6 +52,10 @@ export class CgfukuandetComponent implements OnInit {
     this.classModal.hide();
   }
   submit() {
+    if (!this.fukuanModel['month']) {
+        this.toast.pop('error', '请选择合同月份！', '');
+        return;
+    }
     if (confirm('确认要提交审核吗？')) {
       this.caigouApi.submitfk(this.fukuanModel.id).then(data => {
         this.toast.pop('success', '提交成功！', '');
@@ -169,5 +175,15 @@ export class CgfukuandetComponent implements OnInit {
         this.getcgfukuan();
       });
     }
+  }
+  selectmonth1(value) {
+    this.fukuanModel['month'] = this.datepipe.transform(value, 'y-MM-dd');
+    this.modify['id'] = this.route.params['value']['id'];
+    this.modify['beizhu'] = this.fukuanModel['beizhu'];
+    this.modify['month'] = this.fukuanModel['month'];
+    this.caigouApi.fkmodifybeizhu(this.modify).then(data => {
+        this.toast.pop('success', '月份修改成功');
+        this.getcgfukuan();
+    });
   }
 }

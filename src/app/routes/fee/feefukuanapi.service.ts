@@ -140,7 +140,6 @@ export class FeefukuanapiService {
   // 修改税额
   updatetaxjine(search): Promise<any> {
     return this.http.put('store/api/feefukuan/updatetaxjine' ,search).toPromise().then(data => {
-      return data.json() as any[];
     });
   }
   deleteFeefuandet(search) {
