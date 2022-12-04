@@ -10,6 +10,7 @@ import { SettingsService } from './../../../core/settings/settings.service';
 import { GridOptions } from 'ag-grid/main';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QihuoService } from 'app/routes/qihuo/qihuo.service';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-salebilldetail',
@@ -379,4 +380,62 @@ export class SalebilldetailComponent implements OnInit {
       //this.getfujians(model['qihuoid']);
     });
   }
+
+
+//上传附件
+@ViewChild('fpModal') private fpModal: ModalDirective;
+@ViewChild('picdialog') private picdialog: ModalDirective;
+//合同上传信息及格式
+uploadParam: any = { module: 'ruku', count: 1, sizemax: 5, extensions: ['doc', 'pdf', 'jpeg', 'png', 'jpg'] };
+// 设置上传的格式
+accept = null;// ".xls, application/xls";
+fps: any = [];
+showfpmodal() {
+    this.getfps();
+    this.fpModal.show();
 }
+closefp() {
+  this.fpModal.hide();
+}
+delfp2(key) {
+  const params = {id: this.salebill['id'], key: key};
+  this.orderApi.delfp2(params).then(data => {
+    this.getfps();
+  });
+}
+fpsubmit() {
+  this.picdialog.show();
+}
+hidepicDialog() {
+  this.picdialog.hide();
+}
+  // 上传成功执行的回调方法
+pictract($event) {
+    console.log($event);
+    if ($event.length !== 0) {
+        this.uploadfp2($event.url);
+    }
+    this.hidepicDialog();
+}
+uploadfp2(url) {
+    const params = {id: (this.salebill['id']), url: url};
+    this.orderApi.uploadfp2(params).then(data => {
+      this.getfps();
+    });
+}
+getfps(){
+    this.orderApi.findfps(this.salebill['id']).then(data => {
+      this.fps = data['fujians'];
+      console.log(this.fujians)
+    })
+}
+//查看发票
+fpreceipt() {
+  if (this.salebill['url'] == null) {
+    this.toast.pop('warning', '文件不存在！');
+  } else {
+    window.open(this.salebill['url']);
+  }
+}
+}
+

@@ -375,6 +375,43 @@ export class OrderapiService {
       return data.json() as any[];
     });
   }
+  // 开票单匹配发票号
+  addfpData(search): Promise<any> {
+    return this.http.post('store/api/salebill/addfpdata', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+
+  //上传发票
+  uploadfp(search): Promise<any> {
+    return this.http.put('store/api/salebill/uploadfp', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  delfp(search): Promise<any> {
+    return this.http.put('store/api/salebill/delfp', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+
+  //开票单上传发票
+  uploadfp2(search): Promise<any> {
+    return this.http.put('store/api/salebill/uploadfp2', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  findfps(salebillid): Promise<any> {
+    return this.http.get('store/api/salebill/findfps/' + salebillid).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  delfp2(search): Promise<any> {
+    return this.http.put('store/api/salebill/delfp2', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+
+
   /**涂镀销量进度表历史记录月份 */
   tudusalegroupByMonth() {
     return this.http.get('store/api/report/tudusalegroupByMonth').toPromise().then(data => {

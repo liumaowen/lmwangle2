@@ -382,7 +382,9 @@ export class QihuodetailComponent implements OnInit {
           {
             cellStyle: { 'text-align': 'center' }, headerName: '已验收', field: 'yijiagongweight', minWidth: 80, enableRowGroup: true,
             valueFormatter: this.settings.valueFormatter3
-          }
+          },
+          { cellStyle: { 'text-align': 'center' }, headerName: '已退货', field: 'tuihuoweight', minWidth: 90, enableRowGroup: true},
+          { cellStyle: { 'text-align': 'center' }, headerName: '已释放', field: 'shifangweight', minWidth: 110,enableRowGroup: true}
         ]
       },
       {
@@ -623,8 +625,7 @@ export class QihuodetailComponent implements OnInit {
           },
         ]
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '已退货', field: 'tuihuoweight', minWidth: 90, enableRowGroup: true},
-      { cellStyle: { 'text-align': 'center' }, headerName: '已释放', field: 'shifangweight', minWidth: 110,enableRowGroup: true}
+  
     ];
     //dingjingridOptions实例对象
     this.dingjingridOptions = {
@@ -2106,6 +2107,7 @@ export class QihuodetailComponent implements OnInit {
           this.getqihuomodel();
           this.findqihuodet();
         });
+        sweetalert.close();
       });
     } 
   });

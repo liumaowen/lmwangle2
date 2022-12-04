@@ -44,7 +44,7 @@ export class ProducedetailComponent implements OnInit {
   // 获取当前登录用户的信息
   current = this.storage.getObject('cuser');
   producefeetype = [{ label: '请选择', value: '' }, { label: '纵剪费', value: 6 },
-  { label: '开平费', value: 5 }];
+  { label: '开平费', value: 5 }, { label: '出库费', value: 4 }];
 
   constructor(public settings: SettingsService, private storage: StorageService, private produceApi: ProduceapiService,
     private route: ActivatedRoute, private toast: ToasterService, private router: Router, private bsModalService: BsModalService,

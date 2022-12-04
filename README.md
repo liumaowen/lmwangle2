@@ -2,6 +2,13 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.2.
 
+## Node
+nvm install 8.17.0
+## 添加本地私服
+npm config set registry http://192.168.7.171/
+## 拷贝本地样式替换node_modules中的样式
+拷贝base.js文件中的文件到node_modules中
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -26,3 +33,5 @@ Before running the tests make sure you are serving the app via `ng serve`.
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+

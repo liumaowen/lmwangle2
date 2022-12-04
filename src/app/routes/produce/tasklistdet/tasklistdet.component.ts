@@ -70,6 +70,7 @@ export class TasklistdetComponent implements OnInit {
           }
         }
       },
+      { cellStyle: { 'text-align': 'center' }, headerName: '客户名称', field: 'buyername', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '加工仓库', field: 'cangkuname', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '加工类型', field: 'type', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否验收', field: 'isys', width: 90 },
@@ -111,7 +112,6 @@ export class TasklistdetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否审核', field: 'isv', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '审核日期', field: 'vdate', width: 90 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '客户名称', field: 'buyername', width: 90 },
 
     ];
     

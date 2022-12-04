@@ -1030,7 +1030,7 @@ export class KucundetailComponent implements OnInit {
         }
       }
       // 如果登陆的用户是非资源中心（材料），设置为不可见
-      if (!myrole.some(item => item === 45)) {
+      if (!myrole.some(item => item === 45 || item === 63)) {
         if (colde.colId === 'originchandi') {
           colde.hide = true;
           colde.suppressToolPanel = true;

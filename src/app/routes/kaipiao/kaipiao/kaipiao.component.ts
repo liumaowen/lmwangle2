@@ -278,7 +278,7 @@ export class KaipiaoComponent implements OnInit {
           //   this.gnlist = gnlists;
           // });
           this.isonlines = [{ value: '', label: '请选择客户类型' }, { value: true, label: '线上客户' }, { value: false, label: '线下客户' }];
-          this.types = [{ value: '', label: '请选择发票类型' }, { value: '0', label: '增值税（普通）' }, { value: '1', label: '增值税（专用）' }];
+          this.types = [{ value: '', label: '请选择发票类型' }, { value: '0', label: '增值税（普通）' }, { value: '1', label: '增值税（专用）' },{value: '2', label: '电子增值税专用发票'},{value: '3', label: '普通电子发票'}];
           this.orderApi.gethuandan(this.maifangids[0]).then(huandans => {
             if (this.advanceinvoicedetids.length !== huandans.length) {
               sweetalert({

@@ -49,7 +49,7 @@ export class DingjinfanxiComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '期限', field: 'qixian', width: 110 },
       { cellStyle: { 'text-align': 'center' }, headerName: '月利率', field: 'monthrate', width: 100 },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '反息金额', field: 'fanxianjine', width: 100,
+        cellStyle: { 'text-align': 'center' }, headerName: '返息金额', field: 'fanxianjine', width: 100,
         valueFormatter: this.settings.valueFormatter2
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '月份', field: 'dingjinmonth', width: 100 },

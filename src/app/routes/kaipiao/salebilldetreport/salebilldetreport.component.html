@@ -1,6 +1,19 @@
 <div class="content-heading">
   <em class="fa fa-list-alt"></em> 销售发票明细表
   <div class="pull-right">
+    <button type="button" (click)="showpicdialog()" class="btn btn-info btn-sm margin-top-bottom-25">上传发票</button>
+    <div class="btn-group" dropdown>
+      <button type="button" tooltip="下载模板请点击右边箭头" placement="bottom" class="btn btn-info btn-sm margin-top-bottom-25" (click)="showFpuploaderModel()">发票号码上传</button>
+      <button id="button-split" type="button" dropdownToggle class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
+              aria-controls="dropdown-split">
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-split" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-split">
+        <li role="menuitem"><a class="dropdown-item" href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/Importsalebillno.xls">下载模板</a>
+        </li>
+      </ul>
+    </div>
     <button type="button" (click)="showUploaderModel()" class="btn btn-info btn-bloc">快递单号上传</button>
     <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
     <button type="button" (click)="agExport()" class="btn btn-info btn-bloc">导出</button>
@@ -253,3 +266,84 @@
     </div>
   </div>
 </div>
+
+
+<!--添加发票号显示上传发票号弹窗-->
+<div class="modal" bsModal #fpuploaderModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidefpuploaderModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="fpuploadParam" [accept]="accept" (select)="fpuploads($event)"></wisk-uploader>
+      <div class="form-inline"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 上传发票弹出框 -->
+<div class="modal" bsModal #fpModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closefp()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">附件列表</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <table class="table table-striped" [mfData]="fps" #mf2="mfDataTable">
+              <thead>
+                <tr>
+                  <th style="width: 50%">
+                    <mfDefaultSorter by="url">链接</mfDefaultSorter>
+                  </th>
+                  <th style="width: 50%">
+                    <mfDefaultSorter>操作</mfDefaultSorter>
+                  </th>
+                </tr>
+              </thead>      
+              <tbody>
+                <tr *ngFor="let model of mf2.data">
+                  <td><a [href]="model['url']" target="_blank">{{model['url']}}</a></td>
+                  <td>
+                    <button type="button" (click)="delfp(model['key'])" class="btn btn-info btn-sm margin-top-bottom-25">
+                      删除
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="fpsubmit()" class="btn btn-primary btn-large">添加</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 上传图片 -->
+<div class="modal" bsModal #picdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidepicDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParamfp" [accept]="acceptfp" (select)="pictract($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+

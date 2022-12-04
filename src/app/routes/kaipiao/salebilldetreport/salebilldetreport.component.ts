@@ -64,6 +64,7 @@ export class SalebilldetreportComponent implements OnInit {
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
       rowDeselection: true,
+      rowSelection: 'multiple',
       overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
       overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
       enableColResize: true,
@@ -74,6 +75,7 @@ export class SalebilldetreportComponent implements OnInit {
     };
     this.gridOptions.groupSuppressAutoColumn = true;
     this.gridOptions.columnDefs = [
+      { cellStyle: { 'text-align': 'center' }, headerName: '选择', width: 50, suppressMenu: true, checkboxSelection: true },
       { field: 'group', rowGroup: true, headerName: '合计', hide: true, valueGetter: (params) => '合计' },
       { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', width: 130 },
       {
@@ -121,7 +123,18 @@ export class SalebilldetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '快递单号', field: 'expressno', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否到付', field: 'ispay', width: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '快递公司', field: 'express', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '发票号码', field: 'invoiceno', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '发票号码', field: 'invoiceno', width: 100 
+      },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '发票', field: 'url', width: 100,
+        cellRenderer: (params) => {
+          if (params && params.data && null != params.data.url) {       
+             return `<a target="_blank" href="${params.data.url}">查看发票</a>`;
+          } else {
+            return '';
+          }
+        }
+     },
       { cellStyle: { 'text-align': 'center' }, headerName: '开票日期', field: 'invoicedate', width: 130 },
       { cellStyle: { 'text-align': 'center' }, headerName: '邮寄地址', field: 'maddress', width: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '预邮寄日期', field: 'yexpressdate', width: 150 },
@@ -169,6 +182,7 @@ export class SalebilldetreportComponent implements OnInit {
     };
     this.dgridOptions.groupSuppressAutoColumn = true;
     this.dgridOptions.columnDefs = [
+      
       { cellStyle: { 'text-align': 'center' }, headerName: '订单编号', field: 'billno', width: 130 },
       { cellStyle: { 'text-align': 'center' }, headerName: '收件人', field: 'shoujianren', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '固话', field: '', width: 80 },
@@ -182,7 +196,8 @@ export class SalebilldetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '是否返单（是/否）', field: '', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '登记单备注', field: 'beizhu', width: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '发票号', field: 'invoiceno', width: 150 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '快递公司', field: 'express', width: 100 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '快递公司', field: 'express', width: 100 },
+     
     ];
   }
 
@@ -283,7 +298,6 @@ export class SalebilldetreportComponent implements OnInit {
       this.msg = ' 共' + total + '件 ';
     });
   }
-
   selectNull() {
     this.cuser = undefined;
     this.vuser = undefined;
@@ -322,7 +336,11 @@ export class SalebilldetreportComponent implements OnInit {
       onlySelected: false,
       suppressQuotes: false,
       fileName: '发票明细表.xls',
-      columnSeparator: ''
+      columnSeparator: '',
+      processCellCallback(params) {
+        const value = params.value;
+        return value && params.column.colId==="invoiceno"? `\n\t\r${value}`: value;
+      }
     };
     this.gridOptions.api.exportDataAsExcel(params);
   }
@@ -414,7 +432,91 @@ export class SalebilldetreportComponent implements OnInit {
     this.hideUploaderModel();
   }
 
-  //
+  //上传发票信息
+  @ViewChild('fpuploaderModel') private fpuploaderModel: ModalDirective;
+  showFpuploaderModel() {
+    this.fpuploaderModel.show();
+  }
+  hidefpuploaderModel(){
+    this.fpuploaderModel.hide();
+  }
+  // 上传参数
+  fpuploadParam: any = { module: 'Importsalebillno', count: 1, sizemax: 1, extensions: ['xls'] };
+  // 设置上传的格式
+  fpaccept = ".xls, application/xls";
+  // 上传成功执行的回调方法
+  fpuploads($event) {
+    const addData = [$event.url];
+    if ($event.length !== 0) {
+      this.orderApi.addfpData(addData).then(data => {
+        this.listDetail();
+        this.toast.pop('success', '上传成功！');
+      });
+    }
+    this.listDetail();
+    this.hidefpuploaderModel();
+  }
+
+//上传发票
+  @ViewChild('fpModal') private fpModal: ModalDirective;
+  @ViewChild('picdialog') private picdialog: ModalDirective;
+  fps: any =[];
+  //合同上传信息及格式
+  uploadParamfp: any = { module: 'ruku', count: 1, sizemax: 5, extensions: ['pdf', 'jpeg', 'png', 'jpg'] };
+  // 设置上传的格式
+  acceptfp = null;
+  xsdetSelected = new Array<any>();
+  /**附件弹窗 */
+  showfpmodal() {
+    this.fpModal.show();
+  }
+  closefp() {
+    this.fpModal.hide();
+  }
+  fpsubmit() {
+    this.picdialog.show();
+  }
+  // 关闭上传弹窗
+  hidepicDialog() {
+    this.picdialog.hide();
+  }
+  showpicdialog() {
+  const xsdet = this.gridOptions.api.getModel()['rowsToDisplay'];
+  this.xsdetSelected = [];
+  for (let i = 0; i <= xsdet.length - 1; i++) {
+    if (xsdet[i].selected) {
+      this.xsdetSelected.push(xsdet[i].data.id);
+    }
+  }
+  if (this.xsdetSelected.length <= 0) {
+    this.toast.pop('warning', '请选择要上传的发票明细！！');
+    return;
+  }
+    this.picdialog.show();
+  }
+  delfp(key) {
+    const params = {id:this.xsdetSelected, key: key};
+    this.orderApi.delfp(params).then(data => {
+      this.listDetail();
+    });
+  }
+// 上传成功执行的回调方法
+pictract($event) {
+    console.log($event);
+    if ($event.length !== 0) {
+        this.uploadfp($event.url);
+    }
+    this.hidepicDialog();
+    this.closefp()
+}
+uploadfp(url) {
+  const params = { id:this.xsdetSelected , url: url};
+  this.orderApi.uploadfp(params).then(data => {      
+    this.listDetail();
+  }); 
+}
+
+
   getMyRole() {
     const myrole = JSON.parse(localStorage.getItem('myrole'));
     this.gridOptions.columnDefs.forEach((colde: ColDef) => {

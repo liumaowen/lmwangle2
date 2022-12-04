@@ -97,6 +97,7 @@ export class QihuoexecuteComponent implements OnInit {
         }
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '订单状态', field: 'orderstatus', minWidth: 60, enableRowGroup: true },
+      { cellStyle: { 'text-align': 'center' }, headerName: '交货状态', field: 'jiaohuostatus', minWidth: 60, enableRowGroup: true },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '机构名称', field: 'orgname', minWidth: 60, enableRowGroup: true,
         valueFormatter: this.settings.valueFormatter2
@@ -188,6 +189,26 @@ export class QihuoexecuteComponent implements OnInit {
           }
         }, valueFormatter: this.settings.valueFormatter3
       },
+      { cellStyle: { 'text-align': 'center' }, headerName: '已退货', field: 'tuihuoweight', minWidth: 60, enableRowGroup: true,
+      aggFunc: 'sum',
+      valueGetter: (params) => {
+        if (params.data && params.data['tuihuoweight']) {
+          return Number(params.data['tuihuoweight']);
+        } else {
+          return 0;
+        }
+      }, valueFormatter: this.settings.valueFormatter3 
+    },
+      { cellStyle: { 'text-align': 'center' }, headerName: '已释放', field: 'shifangweight', minWidth: 60, enableRowGroup: true,
+      aggFunc: 'sum',
+      valueGetter: (params) => {
+        if (params.data && params.data['shifangweight']) {
+          return Number(params.data['shifangweight']);
+        } else {
+          return 0;
+        }
+      }, valueFormatter: this.settings.valueFormatter3  
+    },
       { cellStyle: { 'text-align': 'center' }, headerName: '合同比例', field: 'htexecuterate', minWidth: 60, enableRowGroup: true },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '销售价格', field: 'saleprice', minWidth: 60, enableRowGroup: true,
@@ -234,11 +255,8 @@ export class QihuoexecuteComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '创建人', field: 'cuser', minWidth: 60, enableRowGroup: true },
       { cellStyle: { 'text-align': 'center' }, headerName: '代理人', field: 'auser', minWidth: 60, enableRowGroup: true },
-      { cellStyle: { 'text-align': 'center' }, headerName: '已退货', field: 'tuihuoweight', minWidth: 60, enableRowGroup: true },
-      { cellStyle: { 'text-align': 'center' }, headerName: '已释放', field: 'shifangweight', minWidth: 60, enableRowGroup: true },
-      { cellStyle: { 'text-align': 'center' }, headerName: '交货状态', field: 'jiaohuostatus', minWidth: 60, enableRowGroup: true }
-    
-
+     
+  
     ];
     this.route.queryParams.subscribe((res) => {
       const arr = Object.getOwnPropertyNames(res);

@@ -73,9 +73,9 @@ export class GmbiService {
       return data.json() as any[];
     });
   }
-  /**获取运营支持中心人员 */
+  /**获取运营通用人员 */
   getroleusers(): Promise<any> {
-    return this.http.get('store/api/role/listUserByRoleid?roleid=6').toPromise().then(data => {
+    return this.http.get('store/api/role/listUserByRoleid?roleid=52').toPromise().then(data => {
       return data.json() as any[];
     });
   }

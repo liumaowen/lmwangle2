@@ -303,7 +303,8 @@ export class TihuodetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '是否维实产品', field: 'isweishiproduct', minWidth: 50 },
       { cellStyle: { 'text-align': 'center' }, headerName: '机构库龄', field: 'orgkuling', minWidth: 75 },
       { cellStyle: { 'text-align': 'center' }, headerName: '调货方式', field: 'thtype', minWidth: 75 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '提货信息', field: 'tihuoinfo', minWidth: 100 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '提货信息', field: 'tihuoinfo', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '采购人员', field: 'cgusername', minWidth: 100 }
     ];
   }
 
