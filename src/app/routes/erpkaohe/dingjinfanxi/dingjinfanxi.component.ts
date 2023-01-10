@@ -38,13 +38,16 @@ export class DingjinfanxiComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '规格性质', field: 'guigetype', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '合同重量', field: 'htweight', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '合同单价', field: 'hprice', width: 90 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '合同金额', field: 'htjine', width: 120,
         valueFormatter: this.settings.valueFormatter2
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '实际定金比例', field: 'shijidingjinrate', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '返息定金金额', field: 'fanxidingjine', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '返息开始时间', field: 'dingjincdate', width: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '期货入库重量', field: 'qihuorukuweight', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '入库吨位', field: 'qihuorukuweight', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '入库类型', field: 'rukutype', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '返息结束时间', field: 'firstrukudate', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '期限', field: 'qixian', width: 110 },
       { cellStyle: { 'text-align': 'center' }, headerName: '月利率', field: 'monthrate', width: 100 },

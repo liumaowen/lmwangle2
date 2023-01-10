@@ -5,10 +5,10 @@
   "scripts": {
     "ng": "ng",
     "install.backup": "napa",
-    "start": "ng serve --host 0.0.0.0 --disableHostCheck=true --proxy-config loca.conf.json",
+    "start": "node --max_old_space_size=819200  node_modules\\@angular\\cli\\bin\\ng serve --proxy-config loca.conf.json",
     "build": "ng build",
-    "buildtest": "node --max_old_space_size=10240 ./node_modules/@angular/cli/bin/ng build --aot --prod --environment=test --base-href /gmerp/ ",
-    "buildgm": "node --max_old_space_size=10240 ./node_modules/@angular/cli/bin/ng build --aot --prod  --environment=prod --base-href /gmerp/",
+    "buildtest": "ng build --aot --prod --environment=test --base-href /gmerp/ ",
+    "buildgm": "ng build --aot --prod  --environment=prod --base-href /gmerp/",
     "builddev": "node --max_old_space_size=10240 ./node_modules/@angular/cli/bin/ng build --environment=dev1 --base-href /gmerp/",
     "test": "ng test",
     "lint": "ng lint",

@@ -235,7 +235,32 @@
                     placeholder="请输入备注">
                 </div>
               </div>
-              
+
+              <div *ngIf="isqihuo" class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">超额定金转配款</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio1" type="radio" formControlName="istopeikuan" value="0" [(ngModel)]="params['istopeikuan']" />
+                    <span class="fa fa-circle"></span>否
+                  </label>
+                  <label class="radio-inline c-radio">
+                    <input id="inlineradio2" type="radio" (click)="chaoedingjin()" formControlName="istopeikuan" value="1" [(ngModel)]="params['istopeikuan']" />
+                    <span class="fa fa-circle"></span>是
+                  </label>
+                </div>
+                <span class="col-sm-9" style="color: red;">*已转配款的超额定金不再返息</span>
+              </div>
+
+              <div *ngIf = "params['istopeikuan'] === '1'" class="form-group mb fieldsetdnn row">
+                <label class="col-sm-3 control-label">现有超额定金</label>
+                <div class="col-sm-3">
+                  <input type="number" formControlName="chaodingjin" [(ngModel)]="params['chaodingjin']" class="form-control" disabled>
+                </div>
+                <label class="col-sm-3 control-label">元，转配款</label>
+                <div class="col-sm-3">
+                  <input type="number" formControlName="topeikuanjine" [(ngModel)]="params['topeikuanjine']" class="form-control">
+                </div>
+              </div>
             </div>
           </div>
         </div>

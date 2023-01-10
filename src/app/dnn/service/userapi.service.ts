@@ -197,6 +197,24 @@ export class UserapiService {
           this.myrole2().then(data => {
             this.storage.setObject('myrole', data);
             resolve(data);
+            setTimeout(() => {
+                // 属于新美达查看报价角色的用户不允许登录涂镀ERP
+                const myrole = data;
+                if (myrole.some(item => item === 55)) {
+                    console.log("禁止用户使用涂镀ERP");
+                    if (confirm("禁止用户使用涂镀ERP")) {
+                        this.storage.reomveOther(); // 如果出错，删除session中所有数据
+                        if (environment.ismenhu) {
+                          window.open(`${environment.mainappUrl}`, '_self');
+                        }
+                    } else {
+                        this.storage.reomveOther(); // 如果出错，删除session中所有数据
+                        if (environment.ismenhu) {
+                          window.open(`${environment.mainappUrl}`, '_self');
+                        }
+                    }
+                }
+            }, 2000);
           }, err => {
             reject('net::ERR_CONNECTION_REFUSED');
           });

@@ -78,7 +78,6 @@ export class HttpInterceptorService extends Http {
       return this.intercept(Observable.throw(resp));
     }
 
-
     return this.intercept(super.request(url, this.getRequestOptionArgs(options)));
   }
   get(url: string, options?: RequestOptionsArgs): Observable<Response> {

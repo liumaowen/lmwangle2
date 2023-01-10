@@ -212,7 +212,7 @@ export class QihuodetailComponent implements OnInit {
             }
           }
         ];
-        if (this.qihuomodel['ordertype'] === 1 || this.qihuomodel['ordertype'] === 10 || this.qihuomodel['ordertype'] === 14) {
+        if (this.qihuomodel['ordertype'] === 1 || this.qihuomodel['ordertype'] === 10 || this.qihuomodel['ordertype'] === 14 ||this.qihuomodel['ordertype'] === 17||this.qihuomodel['ordertype'] === 19 ) {
           result.push({
             name: '成品添加',
             action: () => {
@@ -612,7 +612,7 @@ export class QihuodetailComponent implements OnInit {
           },
           {
             cellStyle: { 'text-align': 'center' }, headerName: '引入', field: '', minWidth: 60, enableRowGroup: true, cellRenderer: data => {
-              if (this.qihuomodel['qihuostatus'] !== 8) {
+              if (this.qihuomodel['qihuostatus'] !== 8 && !data.data.finish) {
                 return '<a target="_blank">引入</a>';
               } else {
                 return '';
@@ -620,6 +620,32 @@ export class QihuodetailComponent implements OnInit {
             }, onCellClicked: (data) => {
               if (this.qihuomodel['qihuostatus'] !== 8) {
                 this.impkucundialog(data.data.id);
+              }
+            }
+          },
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '引入完成', field: '', minWidth: 60, enableRowGroup: true, cellRenderer: data => {
+              if (this.qihuomodel['qihuostatus'] !== 8 && !data.data.finish && (this.qihuomodel['ordertype'] === 0 || this.qihuomodel['ordertype'] === 1)) {
+                return '<a target="_blank">引入完成</a>';
+              } else {
+                return '';
+              }
+            }, onCellClicked: (params) => {
+              if (!params.data.finish && params.data.id) {
+                sweetalert({
+                  title: '你确定要完成吗？',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#23b7e5',
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  closeOnConfirm: false
+                }, () => {
+                  this.qihuoapi.finish(params.data.id).then(data => {
+                    this.toast.pop('success', '引入已完成！');
+                  });
+                  sweetalert.close();
+                });
               }
             }
           },
@@ -991,9 +1017,6 @@ export class QihuodetailComponent implements OnInit {
       },
       {
         cellStyle: { 'text-align': 'center' }, colId: 'innerjine', headerName: '实付金额', field: 'innerjine', width: 90
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', width: 90
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '起始地', field: 'startarea', width: 90
@@ -1391,11 +1414,11 @@ export class QihuodetailComponent implements OnInit {
         this.ordertitle = '期货加工订单';
         this.qihuodetname = '采购明细';
         this.orderdetname = '已验收成品';
-      } else if (this.qihuomodel['ordertype'] === 9) {
+      } else if (this.qihuomodel['ordertype'] === 9 || this.qihuomodel['ordertype'] === 16 ||this.qihuomodel['ordertype'] === 18  ) {
         this.ordertitle = '调货订单';
         this.qihuodetname = '销售明细';
         this.orderdetname = '已入库钢卷';
-      } else if (this.qihuomodel['ordertype'] === 10) {
+      } else if (this.qihuomodel['ordertype'] === 10 ||this.qihuomodel['ordertype'] === 17 ||this.qihuomodel['ordertype'] === 19  ) {
         this.ordertitle = '调货加工订单';
         this.qihuodetname = '采购明细';
         this.orderdetname = '已验收成品';
@@ -1436,7 +1459,8 @@ export class QihuodetailComponent implements OnInit {
           }
         }
       })
-      if (this.qihuomodel['ordertype'] === 1 || this.qihuomodel['ordertype'] === 10 || this.qihuomodel['ordertype'] === 14) {
+      if (this.qihuomodel['ordertype'] === 1 || this.qihuomodel['ordertype'] === 10 || this.qihuomodel['ordertype'] === 14 
+      || this.qihuomodel['ordertype'] === 17 || this.qihuomodel['ordertype'] === 19) {
         this.qihuoflag['fp'] = true;
       }
       if (this.qihuomodel['vuserid']) {
@@ -2077,7 +2101,7 @@ export class QihuodetailComponent implements OnInit {
     }
   }
   fujian :any = [];
- 
+  
   //通知采购
   noticecaigou() {
     this.qihuoapi.findfujian(this.qihuoid).then(data => {
@@ -2357,6 +2381,9 @@ export class QihuodetailComponent implements OnInit {
   qihuodetchange(changeloglist: any[]) {
     for (let i = 0; i < changeloglist.length; i++) {
       const ele = changeloglist[i];
+      console.log(222);
+      console.log(ele);
+      
       if (ele['qihuodetid']) { // 明细
         for (let j = 0; j < this.qihuodetlist.length; j++) {
           const qihuodet = this.qihuodetlist[j];
@@ -2385,6 +2412,9 @@ export class QihuodetailComponent implements OnInit {
               qihuodet['innerqixian'] = ele['innerqixian'];
 
             }
+            if(ele['type'] === '钢厂交货地变更'){
+              qihuodet['innerjiaohuoaddr'] = ele['innerjiaohuoaddr'];
+            }
           }
         }
       } else { // 主表
@@ -2396,6 +2426,12 @@ export class QihuodetailComponent implements OnInit {
         }
         if (ele['type'] === '收货地址变更') {
           this.songaddress = ele['addrname'];
+        }
+        if (ele['type'] === '销售备注变更') {
+          this.qihuomodel['beizhu'] = ele['beizhu1'];
+        }
+        if (ele['type'] === '外部交期变更') {
+          this.qihuomodel['jiaohuoqixian']  = ele['jiaohuoqixian1'];
         }
       }
     }
@@ -2421,11 +2457,17 @@ export class QihuodetailComponent implements OnInit {
   buyer: any = {};
   openmodifymain() {
     this.editqihuo = JSON.parse(JSON.stringify(this.qihuomodel));
-    this.editqihuo['jiaohuoqixian'] = new Date(this.editqihuo['jiaohuoqixian']);
+    if (this.qihuomodel['qihuostatus'] === 8) {
+      this.editqihuo['jiaohuoqixian'] = this.editqihuo['jiaohuoqixian'].split('->')[0];
+    }
     this.editqihuo['shengxiaodate'] = new Date(this.editqihuo['shengxiaodate']);
     this.findAddr(this.editqihuo['buyerid'], true);
     this.buyer = {};
     this.editqihuobuyerid = this.editqihuo['buyerid'];
+    this.editqihuo['beizhu'] = undefined;
+    this.editqihuo['jiaohuogongcha'] = '以钢厂实际交货数量为准';  
+    console.log( this.editqihuo);
+    console.log(123);
     this.mainmodifydialog.show();
   }
   closemaindialog() {
@@ -2718,7 +2760,7 @@ export class QihuodetailComponent implements OnInit {
       jine: this.allocation['jine']
     };
     this.qihuoapi.addAllocation(model).then(() => {
-      this.toast.pop('success', '添加成功');
+      this.toast.pop('success', '添加成功'); 
       this.closeallocationdialog();
       this.queryallocation();
       this.getqihuomodel();
@@ -2777,13 +2819,18 @@ export class QihuodetailComponent implements OnInit {
   }
   // 计算约定比率
   calcyufurate() {
-    if (this.qihuomodel['dingjin'] !== null && this.qihuomodel['dingjin'] !== undefined) {
-      let result = parseFloat(this.qihuomodel['dingjin']);
-      result = Math.round(this.qihuomodel['dingjin'] * 100) / 100;
-      this.qihuomodel['dingjin'] = result;
-      this.qihuomodel['yufurate'] = this.GetPercent(this.qihuomodel['dingjin'], this.qihuomodel['tjine']);
-      this.oldyufurate = this.qihuomodel['yufurate'];
+    if(this.qihuomodel['ordertype'] ==16|| this.qihuomodel['ordertype'] ==17 ){
+      this.qihuomodel['yufurate'] = 100;
       this.modify(this.qihuomodel);
+    }else{
+      if (this.qihuomodel['dingjin'] !== null && this.qihuomodel['dingjin'] !== undefined) {
+        let result = parseFloat(this.qihuomodel['dingjin']);
+        result = Math.round(this.qihuomodel['dingjin'] * 100) / 100;
+        this.qihuomodel['dingjin'] = result;
+        this.qihuomodel['yufurate'] = this.GetPercent(this.qihuomodel['dingjin'], this.qihuomodel['tjine']);
+        this.oldyufurate = this.qihuomodel['yufurate'];
+        this.modify(this.qihuomodel);
+      }
     }
   }
   // 计算约定定金
@@ -3235,16 +3282,16 @@ export class QihuodetailComponent implements OnInit {
   /**点击期货变更按钮 */
   orderchange() {
     if (this.qihuoflag['qihuochangestatus'] === 0) {
-      if (confirm('钢厂下单前：一键撤回到制单中\n库存入库前，可变更项 ：价格、买方公司、运输方式、规格、订货量\n库存入库后，可变更项 ：价格、买方公司、运输方式\n点击后合同不能被其他单据引用，确定要变更吗？')) {
-        if (this.qihuoflag['isorderchange']) {
+      if (confirm('库存入库前，可变更项 ：价格、买方公司、运输方式、规格、订货量\n下单备注、销售备注、外部交期、内部交货期、钢厂交货地\n库存入库后，可变更项 ：价格、买方公司、运输方式\n点击后合同不能被其他单据引用，确定要变更吗？')) {
+        // if (this.qihuoflag['isorderchange']) {
           this.qihuoapi.orderchange(this.qihuoid).then(data => {
             this.getqihuomodel();
             this.findqihuodet();
           });
-        }
-        if (this.qihuoflag['isrecall']) {
-          this.oneRecall();
-        }
+        // }
+        // if (this.qihuoflag['isrecall']) {
+        //   this.oneRecall();
+        // }
       }
     } else if (this.qihuoflag['qihuochangestatus'] === 1) {
       this.showqhchangetijiao();
@@ -3692,8 +3739,16 @@ export class QihuodetailComponent implements OnInit {
         this.toast.pop('warning', '请把新单位信息填写完整！'); return;
       }
     }
-    this.qihuodetmodel['jiaohuodate'] ?
-      this.qihuodetmodel['jiaohuodate'] = this.datepipe.transform(this.qihuodetmodel['jiaohuodate'], 'y-MM-dd') : '';
+    // this.qihuodetmodel['jiaohuodate'] ?
+    //   this.qihuodetmodel['jiaohuodate'] = this.datepipe.transform(this.qihuodetmodel['jiaohuodate'], 'y-MM-dd') : '';
+    if (this.qihuodetmodel['jiaohuodate'] ) {
+      if (this.qihuodetmodel['jiaohuodate'] instanceof Date) {
+        this.qihuodetmodel['jiaohuodate'] = this.datepipe.transform(this.qihuodetmodel['jiaohuodate'], 'y-MM-dd');
+      }
+    }
+    // if((this.qihuomodel['ordertype']!== 0 && this.qihuomodel['ordertype']!== 1) || this.editflag.zhidan){
+    //   this.qihuodetmodel['jiaohuodate'] = this.qihuodetmodel['jiaohuodate'] ? this.datepipe.transform(this.qihuodetmodel['jiaohuodate'], 'y-MM-dd'): '';
+    // }
     this.qihuodetmodel['id'] = this.qihuoid;
     this.qihuodetmodel['fees'] = this.lines;
     if (this.qihuomodel['ordertype'] === 15) {

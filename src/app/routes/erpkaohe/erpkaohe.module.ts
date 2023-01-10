@@ -19,7 +19,7 @@ import { JixiaotemplateComponent } from './jixiaotemplate/jixiaotemplate.compone
 import { DingjinshouxiComponent } from './dingjinshouxi/dingjinshouxi.component';
 
 const routes: Routes = [
-  { path: 'dingjinfanxi', component: DingjinfanxiComponent, data: { 'title': '定金反息' } },
+  { path: 'dingjinfanxi', component: DingjinfanxiComponent, data: { 'title': '定金返息' } },
   { path: 'dingjinshouxi', component: DingjinshouxiComponent, data: { 'title': '定金收息' } },
   { path: 'yanqitihuo', component: YanqitihuoComponent, data: { 'title': '延期提货' } },
   { path: 'htexecute', component: DingjinfanxiComponent, data: { 'title': '合同执行情况' } },

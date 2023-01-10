@@ -181,7 +181,7 @@ export class FeefukuandetailComponent implements OnInit {
           }
         },
         onCellValueChanged: (params) => {
-          this.feefukuanApi.updatetaxjine({ taxjine: params.newValue, paycustomerid: params.data.paycustomerid, feefukuanid: this.feefukuan['id'] }).then(data => {
+          this.feefukuanApi.updatetaxjine({ taxjine: params.newValue, paycustomerid: params.data.paycustomerid, feefukuanid: this.feefukuan['id'],orgid: params.data.orgid }).then(data => {
             this.toast.pop('success', '修改成功');
             this.getFeefukuanAndDet();
           });
@@ -363,6 +363,7 @@ export class FeefukuandetailComponent implements OnInit {
       }
       if (this.feefukuan['pcheckuserid'] === this.current.id && this.pcode === 6) {
         this.flag.tiqianzhifu = true;
+        this.flag.verify = true;
       }
       if (this.feefukuan['ischeck']) {
         this.flag['showPrint'] = true;

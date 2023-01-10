@@ -77,7 +77,12 @@ export class DingjinshouxiComponent implements OnInit {
         cellStyle: { 'text-align': 'center' }, headerName: '定金利息', field: 'dingjinlixi1', width: 120 ,
         valueFormatter: this.settings.valueFormatter2
       },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '变更后定金利息', field: 'dingjinlixi2', width: 120 ,
+        valueFormatter: this.settings.valueFormatter2
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '天数', field: 'count', width: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '变更后天数', field: 'count1', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '计息开始时间', field: 'startdate', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '计息结束时间', field: 'enddate', width: 120 }
     ];

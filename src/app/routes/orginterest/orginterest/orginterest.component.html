@@ -43,6 +43,13 @@
       [gridOptions]="ziyuanKucunOptions">
     </ag-grid-angular>
   </p-tabPanel>
+  <p-tabPanel header="中心级资金占用利息汇总表" *ngIf="center" 
+    [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
+    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
+      style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+      [gridOptions]="ziyuanGridOptions">
+    </ag-grid-angular>
+  </p-tabPanel>
   </p-tabView>
 </div>
 

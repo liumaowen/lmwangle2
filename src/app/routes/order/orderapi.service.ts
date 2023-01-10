@@ -526,4 +526,10 @@ export class OrderapiService {
       return data.json() as any[];
     });
   }
+   //开票单上传发票
+   uploadfp3(search): Promise<any> {
+    return this.http.put('store/api/advanceinvoice/uploadfp2', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
 }

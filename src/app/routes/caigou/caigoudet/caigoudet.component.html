@@ -2,26 +2,25 @@
   <em class="fa fa-list-alt">采购订单</em>
   <div *ngIf="caigou['status']!==3" class="pull-right">
     <!-- <button class="btn btn-info btn-bloc" type="button" (click)="subReview()">提交审核</button> -->
+    <button type="button" (click)="openmodifymain()" class="btn btn-info btn-sm margin-top-bottom-25">修改订单</button>
     <button class="btn btn-info btn-bloc" type="button" (click)="showAddFee()">预估费用</button>
     <button class="btn btn-info btn-bloc" type="button" (click)="showgaizhanglog()" *ngIf = 'isgz'>盖章</button>
     <button class="btn btn-info btn-bloc" type="button" (click)="showgcinfodialog()">合同月份修改</button>
     <button class="btn btn-info btn-bloc" type="button" (click)=" ordermodalchangeshow()">生成PDF</button>
     <!-- <button class="btn btn-info btn-bloc" type="button" (click)="reload()">生成PDF</button> -->
     <button class="btn btn-info btn-bloc" type="button" (click)="print()">打印预览</button>
-    <button class="btn btn-info btn-bloc" type="button"
-      (click)="contractUploader()">合同上传</button>
-    <button *ngIf="caigou['type']===3 || caigou['type']===4" type="button" (click)="lookContract()"
+    <button class="btn btn-info btn-bloc" type="button" (click)="contractUploader()">合同上传</button>
+    <button *ngIf="caigou['type']===3 || caigou['type']===4 || caigou['type']===5 || caigou['type']===6" type="button" (click)="lookContract()"
       class="btn btn-info btn-sm margin-top-bottom-25">查看合同
     </button>
-    <button *ngIf="(!caigou['isv'] && (caigou['type']===3 || caigou['type']===4)) || (!caigou['isv']&&caigou['isweishi'])" 
-    class="btn btn-info btn-bloc" type="button" (click)="submitcg()">
-      提交审核</button>
+    <button *ngIf="(!caigou['isv'] && (caigou['type']===3 || caigou['type']===4 || caigou['type']===5|| caigou['type']===6 )) || (!caigou['isv']&&caigou['isweishi'])" 
+    class="btn btn-info btn-bloc" type="button" (click)="submitcg()"> 提交审核</button>
      <!-- <button *ngIf="flag['shenhe']" class="btn btn-info btn-bloc" type="button" (click)="verifycg()">审核</button>
     <button *ngIf="flag['shenhe']" class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;"
       type="button" (click)="back()">回退</button>
     <button *ngIf="flag['qishen']" class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;"
       type="button" (click)="refuse()">弃审</button> -->
-    <button class="btn btn-info btn-bloc" type="button" (click)="importdet()" *ngIf="caigou['kind']===1">引入期货合同</button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="importdet()" *ngIf="caigou['kind']===1 || caigou['kind']===3 ">引入期货合同</button>
     <button class="btn btn-info btn-bloc" type="button" (click)="addmdmdet()">插行</button>
     <!-- <button class="btn btn-info btn-bloc" type="button" (click)="addmdmdet()">mdm插行</button> -->
     <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button"
@@ -77,13 +76,13 @@
     <div class="col-lg-3 col-md-6">
       <div class="row">
         <div class="col-md-4 col-xs-6 control-label form-control-static">合同性质：</div>
-        <div class="col-md-8 col-xs-6 form-control-static">{{caigou | caigoukind}}</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['kind'] | caigoukind}}</div>
       </div>
     </div>
     <div class="col-lg-3 col-md-6">
       <div class="row">
         <div class="col-md-4 col-xs-6 control-label form-control-static">采购类型：</div>
-        <div class="col-md-8 col-xs-6 form-control-static">{{caigou | caigoutype}}</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['type'] | caigoutype}}</div>
       </div>
     </div>
     <div class="col-lg-3 col-md-6">
@@ -1310,6 +1309,47 @@ aria-hidden="true">
       </div>
     </div>
   </div>
+</div>
+
+   <!-- 修改主表信息 -->
+<div class="modal" bsModal #mainmodifydialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" 
+   aria-hidden="true">
+   <div class="modal-dialog modal-xs">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" aria-label="Close" (click)="closemaindialog()">
+           <span aria-hidden="true">&times;</span>
+         </button>
+         <h4 class="modal-title">修改</h4>
+       </div>
+       <div class="modal-body">
+         <div class="panel panel-default">
+           <div class="panel-body">
+             <div class="form-group mb fieldsetdnn row" >
+               <label class="col-sm-3 control-label">合同性质：</label>
+               <div class="col-sm-9">
+                 <p-dropdown [options]="kinds"  [(ngModel)]="editcaigou['kind']" placeholder="请选择合同性质" 
+                 [style]="{'width':'calc(100%)'}" ></p-dropdown>
+               </div>
+             </div>
+             <div class="form-group mb fieldsetdnn row" >
+              <label class="col-sm-3 control-label">采购类型：</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="types" [(ngModel)]="editcaigou['type']" [style]="{'width':'calc(100%)'}"
+                  [placeholder]="'请选择采购类型'"></p-dropdown>
+              </div>
+             </div>
+           </div>
+         </div>
+         <div class="form-inline text-center">
+           <button type="button" (click)="modifymain()" class="btn btn-primary btn-large">修改</button>
+         </div>
+       </div>
+     </div>
+   </div>
+</div>
+
+ 
 <!-- 选择马钢模板，手填部分字段弹窗 -->
 <!-- <div class="modal" bsModal #caigoudetaddfield="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
   aria-hidden="true">

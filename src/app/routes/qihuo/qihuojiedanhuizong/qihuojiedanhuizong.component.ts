@@ -139,7 +139,7 @@ export class QihuojiedanhuizongComponent implements OnInit {
         }
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '资源中心-项目', field: 'zyproject', minWidth: 90, aggFunc: 'sum',
+        cellStyle: { 'text-align': 'center' }, headerName: '资源中心', field: 'zyproject', minWidth: 90, aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['zyproject']) {
             return Number(params.data['zyproject']);
@@ -148,16 +148,16 @@ export class QihuojiedanhuizongComponent implements OnInit {
           }
         }
       },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '资源中心-材料', field: 'zycailiao', minWidth: 90, aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data && params.data['zycailiao']) {
-            return Number(params.data['zycailiao']);
-          } else {
-            return '';
-          }
-        }
-      },
+    //   {
+    //     cellStyle: { 'text-align': 'center' }, headerName: '资源中心-材料', field: 'zycailiao', minWidth: 90, aggFunc: 'sum',
+    //     valueGetter: (params) => {
+    //       if (params.data && params.data['zycailiao']) {
+    //         return Number(params.data['zycailiao']);
+    //       } else {
+    //         return '';
+    //       }
+    //     }
+    //   },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '要客服务中心', field: 'yaokeservice', minWidth: 90, aggFunc: 'sum',
         valueGetter: (params) => {

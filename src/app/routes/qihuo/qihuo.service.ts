@@ -447,4 +447,17 @@ export class QihuoService {
       return data.json() as any[];
     });
   }
+  finish(id): Promise<any> {
+    return this.http.get('store/api/qihuo/finish/' + id).toPromise().then();
+  }
+  chaoedingjin(id): Promise<any> {
+    return this.http.get('store/api/qihuo/chaoedingjin/' + id).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  dingjinTixing(search) {
+    return this.http.post('store/api/qihuo/dingjintixing', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

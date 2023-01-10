@@ -20,7 +20,7 @@ export class RukudetreportComponent implements OnInit {
   // 查询条件对象
   search = {
     gn: '', cangkuid: '', chandi: '', color: '', width: '', houdu: '', duceng: '', sellerid: '',
-    caizhi: '', ppro: '', orgid: '', cuserid: '', id: '', start: new Date(), end: NaN, grno: ''
+    caizhi: '', ppro: '', orgid: '', cuserid: '', id: '', start: new Date(), end: NaN, grno: '',kunbaohao:''
   };
   supplier: any;
   gridOptions: GridOptions;
@@ -357,7 +357,7 @@ export class RukudetreportComponent implements OnInit {
   selectNull() {
     this.search = {
       gn: '', cangkuid: '', chandi: '', color: '', width: '', houdu: '', duceng: '', sellerid: '',
-      caizhi: '', ppro: '', orgid: '', cuserid: '', id: '', start: new Date(), end: NaN, grno: ''
+      caizhi: '', ppro: '', orgid: '', cuserid: '', id: '', start: new Date(), end: NaN, grno: '',kunbaohao:''
     };
     this.disabled = true;
     this.attrs = [];
@@ -458,7 +458,7 @@ export class RukudetreportComponent implements OnInit {
         rows.push(item.data);
       }
       const objectparams = {
-        cgdetid: item.data.cgdetid, isfinish: item.data.isfinish, tweight: item.data.tweight, tcount : item.data.tcount, tlength : item.data.tlength
+        cgdetid: item.data.cgdetid, isfinish: item.data.isfinish, tweight: item.data.tweight, tcount : item.data.tcount, tlength : item.data.tlength,cangkuname:item.data.cangkuname
       };
       params.push(objectparams);
     });

@@ -37,8 +37,7 @@ export class KucundetailComponent implements OnInit {
 
   // 记录全部数量
   msglength;
-  orgtypes: any = [{ value: '', label: '请选择机构' }, { value: '22427', label: '资源中心-项目' },
-  { value: '22350', label: '资源中心-材料' }, { value: '670', label: '涂镀应用艺术' }];
+  orgtypes: any = [{ value: '', label: '请选择机构' }, { value: '22427', label: '资源中心' }];
   // 默认禁止选择
   disabled = true;
   //边丝调价非邯郸机构不允许查看

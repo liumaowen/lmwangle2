@@ -59,9 +59,9 @@ export class CaigouComponent implements OnInit {
   showGuige: boolean;
   isChandi: boolean;
   types: any;
-  kinds: any;
-  caigoutypes: any;
-  // 规格
+  kinds= [{ label: '期货',value: '1'}, { label: '现货' , value: '2'}, {  label: '调货',value: '3'}];
+  caigoutypes= [{ label: '工程单',value: '1'}, { label: '库存销售' , value: '2'}, {  label: '维实外采',value: '4'}
+  , {  label: '现货',value: '5'}, {  label: '期货',value: '6'}];
   attrs: any;
   jiaohuoaddrs: any[];
   uploadtype: number;
@@ -199,14 +199,23 @@ export class CaigouComponent implements OnInit {
       gn: '', chandi: '', orgid: '', isweishi: false
     };
     this.types = [{ id: '0', text: '自提' }, { id: '1', text: '代运' }];
-    this.kinds = [{ id: '1', text: '期货' }, { id: '2', text: '现货' }];
-    this.caigoutypes = [{ id: '1', text: '工程单' }, { id: '2', text: '库存销售' }, { id: '3', text: '市场调货' }, { id: '4', text: '维实外采' }];
     this.caigou['dantype'] = 0;
     this.caigouApi.getchandi().then(data => {
       this.gangchangs = data;
     });
     this.findWiskind();
+    this.caigoutypes= [{ label: '工程单',value: '1'}, { label: '库存销售' , value: '2'}, {  label: '维实外采',value: '4'}
+    , {  label: '现货',value: '5'}, {  label: '期货',value: '6'}];
     this.createModal.show();
+  }
+  getcaigoutype(event) {
+    if (event.value === '1' || event.value === '2') {
+      this.caigoutypes= [{ label: '工程单',value: '1'}, { label: '库存销售' , value: '2'}, {  label: '维实外采',value: '4'}];
+      this.caigou['caigoutype'] = '';
+    } else if (event.value === '3') {
+      this.caigoutypes= [{  label: '现货',value: '5'}, {  label: '期货',value: '6'}];
+      this.caigou['caigoutype'] = '';
+    }
   }
   selectetype(value) {
     this.caigou['type'] = value.id;

@@ -111,6 +111,12 @@
                 </div>
               </div>
               <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">捆包号</label>
+                <div class="col-sm-9">
+                  <input [(ngModel)]="search['kunbaohao']" class="form-control" placeholder="请输入捆包号">
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
                 <label class="col-sm-3 control-label">供应商</label>
                 <div class="col-sm-9">
                   <wisk-suppliersearch [(company)]="supplier" [style]="{'width':'100%'}"></wisk-suppliersearch>

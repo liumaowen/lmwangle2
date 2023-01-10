@@ -1479,6 +1479,7 @@ export class TihuodetailComponent implements OnInit {
     } else {
       this.fee['tweight'] = this.tihuo['tweight'];
     }
+    this.fee['isdianfu'] = "false";
     this.getProvince();
     this.getProvince2();
     this.showDialog();

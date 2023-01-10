@@ -54,7 +54,12 @@ export class XiaoshouapiService {
       return data.json() as any[];
     });
   }
-
+ //判断合同变更后是否上传客户公章
+ iskehugaizhang(search): Promise<any> {
+  return this.http.post('store/api/tihuo/iskehugaizhang',search).toPromise().then(data => {
+    return data.json() as any[];
+  });
+}
   emancipation(search) {
     return this.http.post('store/api/businessorder/emancipation', search).toPromise();
   }

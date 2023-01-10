@@ -153,26 +153,26 @@ export class RukudetailComponent implements OnInit {
     this.huizonggridOptions.groupSuppressAutoColumn = true;
     // 设置aggird表格列
     this.huizonggridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: 'ID', field: 'id', minWidth: 90 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'goodscode.gn', minWidth: 90 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'goodscode.guige', minWidth: 110 },
+      { cellStyle: { 'text-align': 'center' }, headerName: 'ID', field: 'rukuCollectdet.id', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'rukuCollectdet.goodscode.gn', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'rukuCollectdet.goodscode.guige', minWidth: 110 },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '价格', field: 'price', minWidth: 90,
+        cellStyle: { 'text-align': 'right' }, headerName: '价格', field: 'rukuCollectdet.price', minWidth: 90,
         valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'tweight', minWidth: 60,
+        cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'rukuCollectdet.tweight', minWidth: 60,
         valueFormatter: this.settings.valueFormatter3
       },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'jine', minWidth: 90,
+        cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'rukuCollectdet.jine', minWidth: 90,
         valueFormatter: this.settings.valueFormatter2
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '资源号', field: 'grno', minWidth: 75 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'ruku.org.name', minWidth: 75 },
-      { cellStyle: { 'text-align': 'center' }, headerName: 'ERP库龄', field: 'erpkuling', minWidth: 75 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', minWidth: 75 },
-      { cellStyle: { 'text-align': 'center' }, headerName: 'gcid', field: 'gcid', minWidth: 75 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '资源号', field: 'rukuCollectdet.grno', minWidth: 75 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'collectorgname', minWidth: 75 },
+      { cellStyle: { 'text-align': 'center' }, headerName: 'ERP库龄', field: 'rukuCollectdet.erpkuling', minWidth: 75 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'rukuCollectdet.beizhu', minWidth: 75 },
+      { cellStyle: { 'text-align': 'center' }, headerName: 'gcid', field: 'rukuCollectdet.gcid', minWidth: 75 }
     ];
     // 采购费用
     this.feegridOptions = {
@@ -401,6 +401,10 @@ export class RukudetailComponent implements OnInit {
     if (this.caigoufee['actualfeecustomerid'] === this.caigoufee['feecustomerid']) {
       this.toast.pop('warning', '费用单位和实际费用单位重复！');
       return;
+    }
+    if (this.caigoufee['type'] === 9 && this.caigoufee['accountdirection']!=='1') {
+        this.toast.pop('warning', '仓储费只能选择采购的记账方向！');
+        return; 
     }
     // 2017.04.08 费用修改付费单位 end
     this.caigoufee['feecustomerid'] = this.companyOfProduce['code'];

@@ -181,16 +181,16 @@
             <div class="row fieldsetdnn">
               <label class="col-sm-3 control-label">合同性质</label>
               <div class="col-sm-9">
-                <ng-select [allowClear]="true" [items]="kinds" (selected)="selectekind($event)" placeholder="请选择合同性质">
-                </ng-select>
+                <!-- <ng-select [allowClear]="true" [items]="kinds" (selected)="selectekind($event)" placeholder="请选择合同性质"></ng-select> -->
+                <p-dropdown [options]="kinds" (onChange)="getcaigoutype($event)" [(ngModel)]="caigou['kind']" [style]="{'width':'calc(100%)'}" placeholder="请选择合同性质"></p-dropdown>
+
               </div>
             </div>
             <div class="row fieldsetdnn">
               <label class="col-sm-3 control-label">采购类型</label>
               <div class="col-sm-9">
-                <ng-select [allowClear]="true" [items]="caigoutypes" (selected)="selectecaigoutype($event)"
-                  placeholder="请选择采购类型">
-                </ng-select>
+                <!-- <ng-select [allowClear]="true" [items]="caigoutypes" (selected)="selectecaigoutype($event)" placeholder="请选择采购类型"></ng-select> -->
+                <p-dropdown [options]="caigoutypes" [(ngModel)]="caigou['caigoutype']" [style]="{'width':'calc(100%)'}" placeholder="请选择采购类型"></p-dropdown>
               </div>
             </div>
             <div class="row fieldsetdnn">

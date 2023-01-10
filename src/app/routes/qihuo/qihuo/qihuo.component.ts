@@ -141,11 +141,12 @@ export class QihuoComponent implements OnInit {
     this.ordertypes = [{ label: '请选择。。。', value: null },
     { label: '期货', value: 0 }, { label: '期货加工', value: 1 },
     { label: '维实品牌', value: 15 },
-    { label: '调货', value: 9 }, { label: '调货加工', value: 10 },
-    { label: '净料期货加工', value: 11 }, { label: '净料现货加工', value: 12 },
+    // { label: '调货', value: 9 }, { label: '调货加工', value: 10 },
+    // { label: '净料期货加工', value: 11 }, { label: '净料现货加工', value: 12 },
     { label: '临调', value: 2 },
     { label: '在途', value: 13 }, { label: '在途加工', value: 14 }];
     this.dantypes = [{ value: '0', label: '甲单' }, { value: '1', label: '乙单' }, { value: '2', label: '丙单' }];
+    this.qihuo['jiaohuogongcha'] = '以钢厂实际交货数量为准';
     this.getcategory();
     this.createqihuodialog.show();
   }
@@ -250,10 +251,7 @@ export class QihuoComponent implements OnInit {
       this.toast.pop('warning', '请选择卖方公司');
       return;
     }
-    if (!this.qihuo['jiaohuogongcha']) {
-      this.toast.pop('warning', '请输入交货公差');
-      return;
-    }
+    this.qihuo['jiaohuogongcha'] = '以钢厂实际交货数量为准';
     if (!this.qihuo['jiaohuoqixian']) {
       this.toast.pop('warning', '请选择交货期限');
       return;

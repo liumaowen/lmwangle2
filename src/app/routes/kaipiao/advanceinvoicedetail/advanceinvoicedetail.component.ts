@@ -22,6 +22,7 @@ export class AdvanceinvoicedetailComponent implements OnInit {
   //上传合同
   @ViewChild('orderModal') private orderModal: ModalDirective;
   @ViewChild('fujianModal') private fujianModal: ModalDirective;
+  @ViewChild('picdialog') private picdialog: ModalDirective;
   orderurls: any = [];
   // 引入合同弹窗对象
   kcbsModalRef: BsModalRef;
@@ -835,5 +836,35 @@ export class AdvanceinvoicedetailComponent implements OnInit {
         this.caiwu = true;
       }
     }
+  }
+  //合同上传信息及格式
+uploadParam2: any = { module: 'ruku', count: 1, sizemax: 5, extensions: ['doc', 'pdf', 'jpeg', 'png', 'jpg'] };
+// 设置上传的格式
+accept2 = null;// ".xls, application/xls";
+  fpsubmit() {
+    this.picdialog.show();
+  }
+  hidepicDialog() {
+    this.picdialog.hide();
+  }
+  fpreceipt() {
+    if (this.salebill['url'] == null) {
+      this.toast.pop('warning', '文件不存在！');
+    } else {
+      window.open(this.salebill['url']);
+    }
+  }
+  // 上传成功执行的回调方法
+  pictract($event) {
+    console.log($event);
+    if ($event.length !== 0) {
+        this.uploadfp2($event.url);
+    }
+    this.hidepicDialog();
+  }
+  uploadfp2(url) {
+    const params = {id: (this.salebill['id']), url: url};
+    this.orderApi.uploadfp3(params).then(data => {
+    });
   }
 }

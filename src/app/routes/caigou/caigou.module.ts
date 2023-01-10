@@ -46,6 +46,7 @@ import { CaigoujiaofukaoheComponent } from './caigoujiaofukaohe/caigoujiaofukaoh
 import { FanliruleComponent } from './fanlirule/fanlirule.component';
 import { DiscountregisterComponent } from './discountregister/discountregister.component';
 import { FanliruledetailComponent } from './fanliruledetail/fanliruledetail.component';
+import { KucunfanlidetComponent } from './kucunfanlidet/kucunfanlidet.component';
 
 const routes: Routes = [
   { path: 'caigou', component: CaigouComponent, data: { 'title': '采购管理' } },
@@ -82,6 +83,7 @@ const routes: Routes = [
   { path: 'fanlirule', component: FanliruleComponent, data: { 'title': '钢厂优惠规则表' } },
   { path: 'fanlirule/:id', component: FanliruledetailComponent, data: { 'title': '钢厂优惠规则详情' } },
   { path: 'discountregister', component: DiscountregisterComponent, data: { 'title': '优惠登记表' } },
+  { path: 'kucunfanlidet', component: KucunfanlidetComponent, data: { 'title': '库存返利明细表' } },
 
 ];
 
@@ -107,7 +109,7 @@ const routes: Routes = [
     JsbuchadetComponent, JsbuchaimportComponent, JinhuoguanzhiComponent, CgfanliComponent, RukuapplyComponent, RukuapplydetComponent,
     JsbuchadetailsComponent, UrgentcontractComponent, CgfanlihuizongComponent, CaigoujiaofureportComponent,
     CginvoiceTiaohuoComponent, WeidaofanlihuizongComponent, LastyearwdfanlihuizongComponent, CginvoiceingdetComponent,
-    CgfukuanplanComponent, CaigoujiaofuhuizongComponent, CaigoujiaofukaoheComponent, FanliruleComponent, DiscountregisterComponent, FanliruledetailComponent],
+    CgfukuanplanComponent, CaigoujiaofuhuizongComponent, CaigoujiaofukaoheComponent, FanliruleComponent, DiscountregisterComponent, FanliruledetailComponent, KucunfanlidetComponent],
   exports: [RouterModule],
   providers: [CaigouService],
   entryComponents: [CaigoudetimportComponent, CaigoudetimpComponent, JsbuchaimportComponent]

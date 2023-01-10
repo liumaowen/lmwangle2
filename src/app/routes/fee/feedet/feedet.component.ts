@@ -35,7 +35,8 @@ export class FeedetComponent implements OnInit {
     end: '',
     orgid: '',
     ststart: '',
-    stend: ''
+    stend: '',
+    includechengben: ''
   };
   gridOptions: GridOptions;
 
@@ -65,6 +66,9 @@ export class FeedetComponent implements OnInit {
   payorreceives = [{ label: '全部', value: '' },
   { label: '应付', value: '1' },
   { label: '应收', value: '2' }];
+  chengbens = [{ label: '全部', value: '' },
+  { label: '是', value: true },
+  { label: '否', value: false }];
 
   paycustomers = [];
 
@@ -154,6 +158,7 @@ export class FeedetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '锌层', field: 'duceng', width: 75 },
       { cellStyle: { 'text-align': 'center' }, headerName: '材质', field: 'caizhi', width: 75 },
       { cellStyle: { 'text-align': 'center' }, headerName: '后处理', field: 'ppro', width: 75 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '计入个别计价成本表的日期', field: 'inchengbendate', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: 'kucunid', field: 'kucunid', width: 75 }
     ];
 
@@ -197,6 +202,7 @@ export class FeedetComponent implements OnInit {
       orgid: '',
       ststart: '',
       stend: '',
+      includechengben: ''
     };
 
     this.companyOfCode = undefined;

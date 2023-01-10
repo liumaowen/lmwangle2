@@ -30,7 +30,12 @@ export class SalebilldetreportComponent implements OnInit {
 
   msg;
 
-
+  excelStyles = [
+    {
+    //  必填 样式的ID，该id是唯一的字符串
+      id: 'invoicenostr',
+      dataType:'string'
+    }];
   maxDate = new Date();
 
   requestparams = {
@@ -123,7 +128,8 @@ export class SalebilldetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '快递单号', field: 'expressno', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否到付', field: 'ispay', width: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '快递公司', field: 'express', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '发票号码', field: 'invoiceno', width: 100 
+      { cellStyle: { 'text-align': 'center' }, headerName: '发票号码', field: 'invoiceno', width: 100,
+      cellClass: ['invoicenostr'], 
       },
       { 
         cellStyle: { 'text-align': 'center' }, headerName: '发票', field: 'url', width: 100,
@@ -145,7 +151,7 @@ export class SalebilldetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '类型', field: 'type', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '税率', field: 'taxrate', width: 60 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '买方税号', field: 'buyertax', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '买方税号', field: 'buyertax', width: 100,cellClass: ['invoicenostr'] },
       { cellStyle: { 'text-align': 'center' }, headerName: '代理人', field: 'ausername', width: 75 },
       { cellStyle: { 'text-align': 'center' }, headerName: '审核人', field: 'vusername', width: 75 },
       { cellStyle: { 'text-align': 'center' }, headerName: '审核时间', field: 'vdate', width: 130 },
@@ -339,7 +345,7 @@ export class SalebilldetreportComponent implements OnInit {
       columnSeparator: '',
       processCellCallback(params) {
         const value = params.value;
-        return value && params.column.colId==="invoiceno"? `\n\t\r${value}`: value;
+        return value && params.column.colId==="invoiceno"? `${value}`: value;
       }
     };
     this.gridOptions.api.exportDataAsExcel(params);

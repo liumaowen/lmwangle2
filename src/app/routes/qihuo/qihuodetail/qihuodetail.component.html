@@ -359,9 +359,8 @@
     <div class=" col-lg-3 col-md-6 ">
       <div class="row">
         <div class="col-md-4 col-xs-6 control-label form-control-static">外部交货期限:</div>
-        <div class="col-md-8 col-xs-6 form-control-static">
-          {{qihuomodel['jiaohuoqixian']}}
-        </div>
+        <div class="col-md-8 col-xs-6 form-control-static" *ngIf="qihuomodel['qihuostatus'] !== 8" >{{qihuomodel['jiaohuoqixian']}} </div>
+        <div class="col-md-8 col-xs-6 form-control-static" *ngIf="qihuomodel['qihuostatus'] === 8"> {{qihuomodel['jiaohuoqixian']}} </div> 
       </div>
     </div>
   </div>
@@ -491,7 +490,7 @@
           </div>
         </div>
       </div>
-      <div class=" col-lg-3 col-md-6 " *ngIf = "qihuomodel['ordertype'] == 9 || qihuomodel['ordertype'] == 10" >
+      <!-- <div class=" col-lg-3 col-md-6 " *ngIf = "qihuomodel['ordertype'] == 9 || qihuomodel['ordertype'] == 10" >
         <div class="row">
           <div class="col-md-4 col-xs-7 form-control-static">调货类型:</div>
           <div class="col-md-8 col-xs-5 ">
@@ -500,7 +499,7 @@
             </p-dropdown>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="row fieldsetdnn">
       <div *ngIf = "qihuomodel['ordertype'] == 0 || qihuomodel['ordertype'] == 1" class=" col-lg-3 col-md-6 ">
@@ -1006,7 +1005,7 @@ aria-labelledby="mySmallModalLabel" aria-hidden="true">
                   </label>
                   <div class="col-sm-9">
                     <p-dropdown [options]="item.options" placeholder='请选择{{item.name}}'
-                      [(ngModel)]="qihuodetmodel[item.value]" [filter]="true" [style]="{'width': '100%'}" [disabled]="editflag.iseditguige">
+                      [(ngModel)]="qihuodetmodel[item.value]" [filter]="true" [style]="{'width': '100%'}" [disabled]="item.name !== '交货地'? editflag.iseditguige: false">
                     </p-dropdown>
                   </div>
                 </div>
@@ -1515,15 +1514,12 @@ aria-hidden="true">
               <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid']">
                 <label class="col-sm-3 control-label">交货公差:</label>
                 <div class="col-sm-9">
-                  <input type="text" name="gongcha" [(ngModel)]="editqihuo['jiaohuogongcha']" class="form-control"
-                    placeholder="请输入交货公差" />
-                </div>
+                  <input type="text" name="gongcha" [(ngModel)]="editqihuo['jiaohuogongcha']" class="form-control" disabled />                </div>
               </div>
-              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid']">
+              <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid'] || qihuoflag['qihuochangestatus'] === 1 && !this.qihuoflag['isruku']">
                 <label class="col-sm-3 control-label">交货期限:</label>
                 <div class="col-sm-9 wiskind-calendar">
-                  <p-calendar [(ngModel)]="editqihuo['jiaohuoqixian']" placeholder="请输入交货期限">
-                  </p-calendar>
+                  <p-calendar [(ngModel)]="editqihuo['jiaohuoqixian']" placeholder="请输入交货期限"></p-calendar>
                 </div>
               </div>
               <div class="form-group mb fieldsetdnn row" *ngIf="!qihuomodel['vuserid']">
@@ -1531,6 +1527,12 @@ aria-hidden="true">
                 <div class="col-sm-9 wiskind-calendar">
                   <p-calendar [(ngModel)]="editqihuo['shengxiaodate']" placeholder="请输入交货期限">
                   </p-calendar>
+                </div>
+              </div>
+              <div class="form-group mb fieldsetdnn row" *ngIf=" qihuoflag['qihuochangestatus'] === 1 && !this.qihuoflag['isruku']">
+                <label class="col-sm-3 control-label">销售备注:</label>
+                <div class="col-sm-9">
+                  <input type="text"  [(ngModel)]="editqihuo['beizhu']" class="form-control"  placeholder="请输入销售备注" />
                 </div>
               </div>
             </div>
@@ -1924,7 +1926,7 @@ aria-hidden="true">
                   <span style="float: right;">实付货款：</span>
                 </label>
                 <div class="col-sm-9">
-                  <input [(ngModel)]="allocation['jine']" class="form-control" placeholder="请输入实付定金" required>
+                  <input [(ngModel)]="allocation['jine']" class="form-control" placeholder="请输入实付定金" required> 
                 </div>
               </div>
 
@@ -2148,9 +2150,13 @@ aria-hidden="true">
               </div>
               <p style="color:red;font-size: 10px;">*修改规格审批流程：业务员-资源外务</p>
               <p style="color:red;font-size: 10px;">*修改买方公司审批流程：业务员-机构负责人</p>
-              <p style="color:red;font-size: 10px;">*修改订货量审批流程：业务员-资源外务-机构负责人</p>
+              <p style="color:red;font-size: 10px;">*修改订货量增加审批流程：业务员-资源外务-机构负责人-中心总监</p>
+              <p style="color:red;font-size: 10px;">*修改订货量减少审批流程：业务员-资源外务-机构负责人</p>
               <p style="color:red;font-size: 10px;">*修改销售单价审批流程：业务员-机构负责人-中心总监</p>
               <p style="color:red;font-size: 10px;">*修改考核单价审批流程：业务员-资源外务-机构负责人-中心总监</p>
+              <p style="color:red;font-size: 10px;">*修改销售备注审批流程：业务员-机构负责人</p>
+              <p style="color:red;font-size: 10px;">*修改下单备注审批流程：业务员-资源外务-机构负责人</p>
+              <p style="color:red;font-size: 10px;">*修改内部交期审批流程：业务员-资源外务-资源中心负责人-机构负责人-中心负责人</p>
             </div>
           </div>
           <div class="form-inline text-center">

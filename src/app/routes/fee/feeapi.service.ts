@@ -227,4 +227,14 @@ export class FeeapiService {
       return data.json() as any[];
     });
   }
+  wuliubaojiaRoute(id) {
+    return this.http.get('store/api/wuliuorder/findroute/' + id).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  confirm(search) {
+    return this.http.put('store/api/wuliuorder/confirmprice/',  search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

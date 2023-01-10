@@ -1,6 +1,7 @@
 <div class="content-heading">
   <em class="fa fa-list-alt"></em> 物流竞价汇总表
   <div class="pull-right wide-show">
+    <button type="button" (click)="impRoute()" class="btn btn-info btn-bloc">引入竞价路线</button>
     <button *ngIf="iswuliubu" type="button" (click)="toyunjiacankao()" class="btn btn-info btn-bloc">转为运价参考值</button>
     <button type="button" (click)="changeguding()" class="btn btn-info btn-bloc">竞价转固定路线</button>
     <button type="button" (click)="showbiddingorder()" class="btn btn-info btn-bloc">查询中选单</button>

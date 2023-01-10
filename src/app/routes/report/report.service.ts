@@ -312,4 +312,10 @@ export class ReportService {
       return data.json() as any[];
     });
   }
+  // 内部公司交易明细表
+  intercompanydet(search) {
+    return this.http.get('store/api/report/intercompanydet', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

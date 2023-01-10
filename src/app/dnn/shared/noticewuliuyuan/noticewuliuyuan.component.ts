@@ -10,6 +10,8 @@ import { DatePipe } from '@angular/common';
 import { UserapiService } from 'app/dnn/service/userapi.service';
 import { MatchcarService } from 'app/routes/matchcar/matchcar.service';
 
+const sweetalert = require('sweetalert');
+
 @Component({
   selector: 'app-noticewuliuyuan',
   templateUrl: './noticewuliuyuan.component.html',
@@ -345,10 +347,10 @@ export class NoticewuliuyuanComponent implements OnInit {
       return;
     }
     if(!this.wuliunotice['endcangkuid']){
-      if (!this.wuliunotice['enddest']) {
-        this.toast.pop('warning', '请输入卸货地址！！！');
-        return;
-      }
+      // if (!this.wuliunotice['enddest']) {
+      //   this.toast.pop('warning', '请输入卸货地址！！！');
+      //   return;
+      // }
       if (this.provinces.length) {
         if (!this.wuliunotice['provinceid']) {
           this.toast.pop('warning', '请把卸货地省填写完成!');
@@ -406,8 +408,38 @@ export class NoticewuliuyuanComponent implements OnInit {
     if(this.wuliunotice['enddest']){
       this.wuliunotice['enddest'] = this.wuliunotice['enddest'].name;
     }
-    this.wuliunotice['qihuodets'] = this.rowData;
-    this.noticewuliuyuan(this.wuliunotice);
+    let istixing = false;
+    console.log(this.selectQihuodetWuliubaojia);
+    console.log(123)
+    for(let i = 0; i<this.selectQihuodetWuliubaojia.length;i++){
+      if((this.parentThis.ordertitle === '期货订单' || this.parentThis.ordertitle === '期货加工订单') && this.selectQihuodetWuliubaojia[i].weight-this.selectQihuodetWuliubaojia[i].sumyibaojia<this.selectQihuodetWuliubaojia[i].baojialiang){
+        istixing=true;
+        console.log(istixing)
+      }
+    }
+    if(istixing){
+      // if(confirm('竞价量＞订货量-已报价量!您确定要继续竞价吗？')){
+      //   this.wuliunotice['qihuodets'] = this.rowData;
+      //   this.noticewuliuyuan(this.wuliunotice);
+      //   return;
+      // }
+    sweetalert({
+      title: '竞价量＞订货量-已报价量!您确定要继续竞价吗？',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#23b7e5',
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      closeOnConfirm: false
+    }, () => {
+      this.wuliunotice['qihuodets'] = this.rowData;
+      this.noticewuliuyuan(this.wuliunotice);
+      sweetalert.close();
+    });
+    }else{
+      this.wuliunotice['qihuodets'] = this.rowData;
+      this.noticewuliuyuan(this.wuliunotice);
+    }    
   }
   /**
    * 通知物流员

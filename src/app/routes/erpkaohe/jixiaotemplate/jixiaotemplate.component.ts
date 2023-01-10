@@ -182,12 +182,17 @@ export class JixiaotemplateComponent implements OnInit {
             aggFunc: 'sum'
           },
           {
-            cellClass: 'text-center', headerName: '材料终端客户激励', field: 'cailiaojili',
+            cellClass: 'text-center', headerName: '材料终端客户激励个数激励', field: 'cailiaojiligeshu',
             minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
             aggFunc: 'sum'
           },
           {
             cellClass: 'text-center', headerName: '特殊产品激励', field: 'specialjili',
+            minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+            aggFunc: 'sum'
+          },
+          {
+            cellClass: 'text-center', headerName: '材料终端客户激励销量激励', field: 'cailiaojilixiaoliang',
             minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
             aggFunc: 'sum'
           }

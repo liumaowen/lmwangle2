@@ -189,7 +189,7 @@ export class BankuailirunComponent implements OnInit {
   suser;
 
     // 定义orgid的值
-    bankuai = [{ label: '请选择板块', value: '' }, { label: '资源项目', value: 1 }, { label: '资源材料', value: 2 }];
+    bankuai = [{ label: '请选择板块', value: '' }, { label: '资源中心', value: 1 }];
 
   companys;
   // 查询

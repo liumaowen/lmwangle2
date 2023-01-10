@@ -29,6 +29,7 @@ import { FeefukuandetreporterComponent } from './feefukuandetreporter/feefukuand
 import { BaoxiaofeedethandanComponent } from './baoxiaofeedethandan/baoxiaofeedethandan';
 import { MaycurloanComponent } from './maycurloan/maycurloan.component';
 import { CarfeebaoxiaodetComponent } from './carfeebaoxiaodet/carfeebaoxiaodet.component';
+import { WuliubaojiadetimportComponent } from './wuliubaojiadet/wuliubaojiadetimport/wuliubaojiadetimport.component';
 
 const routes: Routes = [
   { path: 'feefukuan', component: FeefukuanComponent, data: { 'title': '费用付款列表' } },
@@ -69,10 +70,10 @@ const routes: Routes = [
     FeedetComponent, FeefukuandetComponent, BaoxiaofeedetComponent,ShuiedikouComponent,
     WuliubaojiadetComponent, BiddingorderimportComponent, YunfeeimportComponent,
     FeeDetailReporterComponent, FeefukuandetreporterComponent, BaoxiaofeedethandanComponent,
-    MaycurloanComponent, CarfeebaoxiaodetComponent, AdjfeehuizongComponent],
+    MaycurloanComponent, CarfeebaoxiaodetComponent, AdjfeehuizongComponent,WuliubaojiadetimportComponent],
   providers: [
     FeefukuanapiService, FeeapiService
   ],
-  entryComponents: [FeeimplistComponent, BiddingorderimportComponent, YunfeeimportComponent]
+  entryComponents: [FeeimplistComponent, BiddingorderimportComponent, YunfeeimportComponent,WuliubaojiadetimportComponent]
 })
 export class FeeModule { }

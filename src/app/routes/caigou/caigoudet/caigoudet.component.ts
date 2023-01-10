@@ -51,6 +51,11 @@ export class CaigoudetComponent implements OnInit {
   @ViewChild('mdmgndialog') mdmgndialog: ModalDirective;
   @ViewChild('jiesuantypeModal') private jiesuantypeModal: ModalDirective;
   @ViewChild('cangkuModal') private cangkuModal: ModalDirective;
+  //修改主表信息
+  @ViewChild('mainmodifydialog') private mainmodifydialog: ModalDirective;
+  editcaigou: any = {}; // 修改订单的主表
+  kinds;//合同性质
+  types;//采购类型
   mdmgnsearch = { pagenum: 1, pagesize: 10, itemname: '', categoryname: '' };
   goodscode: any = {};
   chandigongchas = [];
@@ -1125,7 +1130,7 @@ addfieldshow() {
       }
     });
   }
-  // 提交审核
+  // 单提交审核
   submitcg() {
     if (this.caigou['tiaohuocgprocessid'] !== null) {
       this.toast.pop('error', '已经提交审核，不允许重复提交！');
@@ -1835,24 +1840,38 @@ addfieldshow() {
       this.bsModalRef.hide();
 
   }
-     
-    
-  
+   /**采购马钢手动弹窗 */
+   @ViewChild('caigouaddfield') private caigouaddfield: ModalDirective;
+   hidecaigouaddfield() {
+       this.caigouaddfield.hide();
+  }
+   caigouaddfieldshow() {
+    this.jiaoqi = new Date();
+    this.caigouaddfield.show();
+  }
 
-
-
-
-  
-       /**采购马钢手动弹窗 */
-       @ViewChild('caigouaddfield') private caigouaddfield: ModalDirective;
-       hidecaigouaddfield() {
-         this.caigouaddfield.hide();
-       }
-       caigouaddfieldshow() {
-       this.jiaoqi = new Date();
-       this.caigouaddfield.show();
-       }
-  
- 
+   /**修改采购订单中的合同性质、采购类型*/
+  openmodifymain() {
+    this.editcaigou = JSON.parse(JSON.stringify(this.caigou));  
+    this.kinds = [{ label: '请选择合同性质', value: '' },{ value: '1', label: '期货' }, { value: '2', label: '现货' }, { value: '3', label: '调货' }];  
+    this.types = [{ label: '请选择采购类型', value: '' },{ value: '1', label: '工程单' }, { value: '2', label: '库存销售' }, { value: '3', label: '市场调货' }, { value: '4', label: '维实外采' }, { value: '5', label: '现货' }, { value: '6', label: '期货' }];  
+    console.log( this.editcaigou);
+    console.log(123);
+    this.mainmodifydialog.show();
+    this.mainmodifydialog.show();
+  }
+  closemaindialog() {
+    this.mainmodifydialog.hide();
+  }
+  modifymain() {
+    console.log(222);
+    console.log( this.editcaigou);
+    if (confirm('你确定修改吗？')) {
+      this.caigouApi.modifycaigou(this.editcaigou).then(() => {
+      this.closemaindialog();
+       this.getcaigou();
+    });
+   }
+ }
 
 }

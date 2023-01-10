@@ -16,6 +16,7 @@ import { AddressparseService } from 'app/dnn/service/address_parse';
 import { ClassifyApiService } from 'app/dnn/service/classifyapi.service';
 import { QihuoService } from 'app/routes/qihuo/qihuo.service';
 import { YunfeeapiService } from '../../yunfee/yunfeeapi.service';
+import { WuliubaojiadetimportComponent } from './wuliubaojiadetimport/wuliubaojiadetimport.component';
 
 @Component({
   selector: 'app-wuliubaojiadet',
@@ -43,9 +44,12 @@ export class WuliubaojiadetComponent implements OnInit {
     start: this.datePipe.transform(this.start, 'y-MM-dd'),
     end: '', customerid: '', salemanid: '', orgid: '', isdel: false
   };
+  isimport = { flag: true };
   changegudingparams = {
     minweight: '', maxweight: '', wuliuorderid: ''
   };
+  //路线
+  wuliubsModalRef: BsModalRef;
 
   gridOptions: GridOptions;
   yfgridOptions: GridOptions; // 固定路线明细
@@ -82,6 +86,7 @@ export class WuliubaojiadetComponent implements OnInit {
     private classifyApi: ClassifyApiService,
     private qihuoapi: QihuoService,
     private router: Router,
+    private modalService: BsModalService,
     private customerapi: CustomerapiService
   ) {
     this.gridOptions = {
@@ -179,29 +184,45 @@ export class WuliubaojiadetComponent implements OnInit {
         cellStyle: { 'text-align': 'center' }, headerName: '运输方式', field: 'transporttype', minWidth: 80, menuTabs: ['filterMenuTab']
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', minWidth: 80, menuTabs: ['filterMenuTab']
+        cellClass: 'text-center', headerName: '起始地', headerClass: 'wis-ag-center',
+        children: [
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '省', field: 'startprovincename', minWidth: 80, menuTabs: ['filterMenuTab']
+          },
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '市', field: 'startcityname', minWidth: 80, menuTabs: ['filterMenuTab']
+          },
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '县', field: 'startcountyname', minWidth: 80, menuTabs: ['filterMenuTab']
+          },
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '详细地址', field: 'startarea', minWidth: 120, menuTabs: ['filterMenuTab']
+          },
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'startcangname', minWidth: 80, menuTabs: ['filterMenuTab']
+          },
+        ]
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '起始地', field: 'startarea', minWidth: 120, menuTabs: ['filterMenuTab']
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '省', field: 'provincename', minWidth: 80, menuTabs: ['filterMenuTab']
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '市', field: 'cityname', minWidth: 80, menuTabs: ['filterMenuTab']
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '县', field: 'countyname', minWidth: 80, menuTabs: ['filterMenuTab']
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '起始地仓库', field: 'startcangname', minWidth: 80, menuTabs: ['filterMenuTab']
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '目的地', field: 'enddest', minWidth: 100, menuTabs: ['filterMenuTab']
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '目的地仓库', field: 'endcangkuname', minWidth: 80, menuTabs: ['filterMenuTab']
-      },
+        cellClass: 'text-center', headerName: '目的地', headerClass: 'wis-ag-center',
+        children: [
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '省', field: 'provincename', minWidth: 80, menuTabs: ['filterMenuTab']
+          },
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '市', field: 'cityname', minWidth: 80, menuTabs: ['filterMenuTab']
+          },
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '县', field: 'countyname', minWidth: 80, menuTabs: ['filterMenuTab']
+          },
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '详细地址', field: 'enddest', minWidth: 100, menuTabs: ['filterMenuTab']
+          },
+          {
+            cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'endcangkuname', minWidth: 80, menuTabs: ['filterMenuTab']
+          },
+        ]
+      },     
       {
         cellStyle: { 'text-align': 'center' }, headerName: '报价方式', field: 'ist', minWidth: 80, menuTabs: ['filterMenuTab']
       },
@@ -1094,6 +1115,28 @@ export class WuliubaojiadetComponent implements OnInit {
     this.feeApi.createyunpricecankao(params).then(() => {
       this.toast.pop('success', '成功转成运价参考值！');
     });
+  }
+  //引入竞价路线
+  wuliuorderids = new Array();
+  impRoute(){
+    const wuliuorderlist = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < wuliuorderlist.length; i++) {
+      if (wuliuorderlist[i].selected && wuliuorderlist[i].data) {
+        if(wuliuorderlist[i].data.wuliuordertype !== 1){
+          this.toast.pop('warning', '请选择已通知状态的数据');
+          return;
+        }
+        this.wuliuorderids.push(wuliuorderlist[i].data.id);
+      }
+    }
+    if (this.wuliuorderids.length !== 1) {
+      this.toast.pop('warning', '请选择一条明细！');
+      return;
+    }
+    this.modalService.config.class = 'modal-all';
+    this.wuliubsModalRef = this.modalService.show(WuliubaojiadetimportComponent);
+    this.wuliubsModalRef.content.isimport = this.isimport;
+    this.wuliubsModalRef.content.wuliuorderids = this.wuliuorderids;
   }
 
 

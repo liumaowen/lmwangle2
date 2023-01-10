@@ -803,5 +803,15 @@ export class CaigouService {
         return data.json() as any[];
     });
   }
+  listkucunfanlidet(model){
+    return this.http.get('store/api/kucunfanlidet/getkucunfanlidet', { search: model }).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
+  //修改采购订单主表信息
+  modifycaigou(editcaigou) {
+    return this.http.put('store/api/caigou/modifycaigou', editcaigou).toPromise();
+  }
+
     
 }

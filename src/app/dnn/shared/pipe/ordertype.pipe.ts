@@ -38,6 +38,14 @@ export class OrdertypePipe implements PipeTransform {
       return '在途加工';
     } else if (value === 15) {
       return '维实品牌';
+    }else if (value === 16) {
+      return '现货调货';
+    } else if (value === 17) {
+      return '现货调货加工';
+    }else if (value === 18) {
+      return '期货调货';
+    }else if (value === 19) {
+      return '期货调货加工';
     }
     return null;
   }

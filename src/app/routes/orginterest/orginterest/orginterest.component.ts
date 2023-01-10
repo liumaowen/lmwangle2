@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { GridOptions } from 'ag-grid/main';
+import { ColDef, GridOptions } from 'ag-grid/main';
 import { SettingsService } from '../../../core/settings/settings.service';
 import { DatePipe } from '@angular/common';
 import { OrginterestService } from '../orginterest.service';
@@ -24,6 +24,7 @@ export class OrginterestComponent implements OnInit {
   kucunGridOptions: GridOptions;
   gnGridOptions: GridOptions;
   ziyuanKucunOptions: GridOptions;
+  ziyuanGridOptions: GridOptions;
   constructor(
     public settings: SettingsService,
     private datepipe: DatePipe,
@@ -94,11 +95,25 @@ export class OrginterestComponent implements OnInit {
       getContextMenuItems: this.settings.getContextMenuItems,
       enableFilter: true
     };
+    this.ziyuanGridOptions = {
+      groupDefaultExpanded: -1,
+      suppressAggFuncInHeader: true,
+      enableRangeSelection: true,
+      rowDeselection: true,
+      overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
+      overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
+      enableColResize: true,
+      enableSorting: true,
+      excelStyles: this.settings.excelStyles,
+      getContextMenuItems: this.settings.getContextMenuItems,
+      enableFilter: true
+    };
     this.gridOptions.groupSuppressAutoColumn = true;
     this.yufuGridOptions.groupSuppressAutoColumn = true;
     this.kucunGridOptions.groupSuppressAutoColumn = true;
     this.gnGridOptions.groupSuppressAutoColumn = true;
     this.ziyuanKucunOptions.groupSuppressAutoColumn = true;
+    this.ziyuanGridOptions.groupSuppressAutoColumn = true;
     this.gridOptions.columnDefs = [
       { field: 'group', rowGroup: true, headerName: '合计', hide: true, valueGetter: (params) => '合计' },
       { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', width: 100 },
@@ -142,7 +157,7 @@ export class OrginterestComponent implements OnInit {
           }
         }, valueFormatter: this.settings.valueFormatter2
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 120 },
+     // { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 120 },
     ];
 
     this.yufuGridOptions.columnDefs = [
@@ -229,6 +244,53 @@ export class OrginterestComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
     ];
+    this.ziyuanGridOptions.columnDefs = [
+      // { field: 'group', rowGroup: true, headerName: '合计', hide: true, valueGetter: (params) => '合计' },
+      { cellStyle: { 'text-align': 'center' }, headerName: '中心', field: 'orgtype2', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', width: 100 },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '利息金额', field: 'tjine', width: 90, aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['tjine']) {
+            return Number(params.data['tjine']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '预收利息', field: 'yushouinterest', width: 90, aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['yushouinterest']) {
+            return Number(params.data['yushouinterest']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '预付利息', field: 'yufuinterest', width: 90, aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['yufuinterest']) {
+            return Number(params.data['yufuinterest']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '库存利息', field: 'kucuninterest', width: 90, aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['kucuninterest']) {
+            return Number(params.data['kucuninterest']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+     // { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 120 },
+    ];
+    this.getMyRole();
   }
 
   ngOnInit() {
@@ -254,6 +316,7 @@ export class OrginterestComponent implements OnInit {
       this.kucunGridOptions.api.setRowData(response.kucunSummaryList);
       this.gnGridOptions.api.setRowData(response.gnSummaryList);
       this.ziyuanKucunOptions.api.setRowData(response.ziyuanKucunSummary);
+      this.ziyuanGridOptions.api.setRowData(response.ziyuanSummaryList);
     });
   };
 
@@ -283,6 +346,16 @@ export class OrginterestComponent implements OnInit {
 
   hideclassicModal() {
     this.classicModal.hide();
+  }
+  // 获取用户角色，如果登陆的用户不是财务，设置为不可见
+  center:boolean = false;
+  getMyRole() {
+    let myrole = JSON.parse(localStorage.getItem('myrole'));
+    for (let i = 0; i < myrole.length; i++) {
+      if (myrole[i] === 71) {
+        this.center = true;
+      }
+    }
   }
 
 }

@@ -63,6 +63,8 @@ import { QuestionPermissionModule } from '../questionpermission/questionpermissi
 import { ChandimaoliModule } from './chandimaoli/chandimaoli.module';
 import { ChengyunweightModule } from './chengyunweight/chengyunweight.module';
 import { WuliupushModule } from './wuliupush/wuliupush.module';
+import { IntercompanyModule } from './intercompany/intercompany.module';
+import { TiaohuoModule } from '../tiaohuo/tiaohuo.module';
 
 
 
@@ -131,7 +133,9 @@ const routes: Routes = [
     QuestionPermissionModule,
     ChandimaoliModule,
     ChengyunweightModule,
-    WuliupushModule
+    WuliupushModule,
+    IntercompanyModule,
+    TiaohuoModule
   ],
   declarations: [ReportComponent],
   exports: [

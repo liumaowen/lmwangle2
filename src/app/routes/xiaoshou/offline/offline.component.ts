@@ -17,6 +17,8 @@ import { RoleapiService } from 'app/routes/role/roleapi.service';
 import { ProduceapiService } from 'app/routes/produce/produceapi.service';
 import { QihuoService } from 'app/routes/qihuo/qihuo.service';
 
+const sweetalert = require('sweetalert');
+
 @Component({
   selector: 'app-offline',
   templateUrl: './offline.component.html',
@@ -26,6 +28,7 @@ export class OfflineComponent implements OnInit {
   offlineForm: FormGroup;
   isshowdingjintype = true;
   isqihuo = true;
+  isqihuo2 = true;
   total = { count: 0, tweight: 0, tlength: 0, tmoney: 0 };
   @ViewChild('classicModal') private classicModal: ModalDirective;
   @ViewChild('matchcarModal') private matchcarModal: ModalDirective;
@@ -115,6 +118,9 @@ export class OfflineComponent implements OnInit {
       'countyid': [],
       'wuliuyuan': [],
       'chukufeetype2': [],
+      'istopeikuan':[],
+      'chaodingjin':[],
+      'topeikuanjine':[],
 
     });
     this.matchcarForm = fb.group({
@@ -151,16 +157,16 @@ export class OfflineComponent implements OnInit {
             this.total.count += 1;
             this.total.tweight = this.total.tweight['add'](params.node.data.weight);
             this.total.tlength = this.total.tlength['add'](params.node.data.length);
-            const linemoney = Number(params.node.data.pertprice) * Number(params.node.data.weight);
-            this.total.tmoney = this.total.tmoney['add'](linemoney.toFixed(2));
+            const linemoney = params.node.data.pertprice['mul'](params.node.data.weight);
+            this.total.tmoney = this.total.tmoney['add'](linemoney['fmoney'](2,false));
           }
         } else {
           if (params.data) {
             this.total.count = this.total.count - 1;
             this.total.tweight = this.total.tweight['sub'](params.node.data.weight);
             this.total.tlength = this.total.tlength['sub'](params.node.data.length);
-            const linemoney = Number(params.node.data.pertprice) * Number(params.node.data.weight);
-            this.total.tmoney = this.total.tmoney['sub'](linemoney.toFixed(2));
+            const linemoney = params.node.data.pertprice['mul'](params.node.data.weight);
+            this.total.tmoney = this.total.tmoney['sub'](linemoney['fmoney'](2,false));
           }
         }
         if (!this.flag['isonline']) {
@@ -376,6 +382,7 @@ export class OfflineComponent implements OnInit {
   }
   wuliuyuanType = []
   chukufeetype2;
+  orderdetid;
   // 打开创建弹窗
   showDialog() {
     let isfujian = true;
@@ -389,6 +396,7 @@ export class OfflineComponent implements OnInit {
     }
     // 首先判断是否是选择的同一个仓库下的货物进行运费添加
     if (orderdets.length > 0) {
+      this.orderdetid = orderdets[0].billid
       // 定义一个数组存放订单明细表的id。
       let orderdetids = new Array();
       let cangkuid = null;
@@ -450,7 +458,7 @@ export class OfflineComponent implements OnInit {
         /**2018.01.12 转货权开发 cpf MOD start */
         this.params = {
           siji: '', sijitel: '', sijiid: '', chehao: '', transcompanyid: null, yunprice: null,
-          ist: null, type: type, tihuotype: '0', cangkuid: '', islasttihuo: '0', dingjinshifangtype: '1'//, chukufeetype2: null
+          ist: null, type: type, tihuotype: '0', cangkuid: '', islasttihuo: '0', dingjinshifangtype: '1',istopeikuan:'0'//, chukufeetype2: null
         };
         // this.isshow = true;
         if (type === 2) {
@@ -516,7 +524,7 @@ export class OfflineComponent implements OnInit {
       this.isshow = false;
     }
   }
-
+  iskehugaizhang :any = [];
   // 创建提单
   submittihuo() {
     const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
@@ -530,9 +538,25 @@ export class OfflineComponent implements OnInit {
       this.toast.pop('warning', '请先填写车号再创建提单！');
       return '';
     }
-    console.log(this.params);
     this.params['orderdetids'] = this.array;// 将将要提货的货物加入提货单参数中\
-    console.log(this.params['islasttihuo']);
+    console.log(this.params);
+    if(this.params['istopeikuan'] === '1'){
+      this.qihuoapi.dingjinTixing(this.params).then((response) => {// 创建提货单
+        if(response['istixing']){
+          if(confirm('注意：本次超额定金转配款后，现有定金小于10万元，非最后一次提货将无法等比例释放')){
+            this.aaa();
+          }
+        }else{
+          this.aaa();
+        }
+      });
+    }else{
+      this.aaa();
+    }
+    
+    
+  }
+  aaa(){
     if (this.route.data['value']['offline']) {
       this.params['isonline'] = false;
     } else {
@@ -544,14 +568,34 @@ export class OfflineComponent implements OnInit {
     } else {
       this.params['islasttihuo'] = false;
     }
-
-
-    console.log(this.params);
-    this.tihuoApi.createtihuo(this.params).then((response) => {// 创建提货单
-      this.hideDialog(); // 关闭弹出框
-      this.toast.pop('success', '提货单创建成功');
-      this.router.navigate(['/tihuo', response['tihuo']['id']]);
+    this.tihuoApi.iskehugaizhang(this.params).then(data => {
+      this.iskehugaizhang=data['iskehugaizhang'];
+      if(this.iskehugaizhang){
+         this.tihuoApi.createtihuo(this.params).then((response) => {// 创建提货单
+            this.hideDialog(); // 关闭弹出框
+            this.toast.pop('success', '提货单创建成功');
+            this.router.navigate(['/tihuo', response['tihuo']['id']]);
+          }); 
+      }else{ 
+        sweetalert({
+          title: '此合同变更后尚未上传双方盖章合同',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#23b7e5',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          closeOnConfirm: false
+        }, () => {
+          this.tihuoApi.createtihuo(this.params).then((response) => {// 创建提货单
+            this.hideDialog(); // 关闭弹出框
+            this.toast.pop('success', '提货单创建成功');
+            this.router.navigate(['/tihuo', response['tihuo']['id']]);
+          });
+          sweetalert.close();
+        });
+      } 
     });
+    
   }
 
   // 关闭创建弹窗
@@ -1125,5 +1169,11 @@ export class OfflineComponent implements OnInit {
         this.router.navigate(['tasklist', data]);
       });
     }
+  }
+  //chaodingjin;
+  chaoedingjin(){
+    this.qihuoapi.chaoedingjin(this.orderdetid).then(data => {
+      this.params['chaodingjin'] = data.chaodingjin;
+    })
   }
 }
