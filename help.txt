@@ -1,6 +1,6 @@
 ﻿//--------------angle编译----------------------------------------------------------------------
 安装 nodejs 自带 npm ；GIT ； 再安装
-
+ 
 npm install cnpm -g --registry=https://registry.npm.taobao.org
 cnpm install bower -g 安装bower  npm uninstall bower -g 卸载bower
 master文件夹下执行cnpm install和bower install,执行gulp进行编译
