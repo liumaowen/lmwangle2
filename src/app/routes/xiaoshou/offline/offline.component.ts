@@ -450,10 +450,10 @@ export class OfflineComponent implements OnInit {
           this.toast.pop('warning', '创建提单时，请选择相同的配送方式');
           return;
         }
-        if (chukufeetypecount > 1) {
-          this.toast.pop('warning', '创建提单时，请选择相同的出库费结算方式');
-          return;
-        }
+        // if (chukufeetypecount > 1) {
+        //   this.toast.pop('warning', '创建提单时，请选择相同的出库费结算方式');
+        //   return;
+        // }
         // tslint:disable-next-line:max-line-length
         /**2018.01.12 转货权开发 cpf MOD start */
         this.params = {
@@ -728,10 +728,10 @@ export class OfflineComponent implements OnInit {
         this.toast.pop('warning', '创建提单时，请选择相同的客户单位');
         return;
       }
-      if (chukufeetypecount > 1) {
-        this.toast.pop('warning', '创建提单时，请选择相同的出库费结算方式');
-        return;
-      }
+      // if (chukufeetypecount > 1) {
+      //   this.toast.pop('warning', '创建提单时，请选择相同的出库费结算方式');
+      //   return;
+      // }
       this.array = orderdetids;
       if (cangkucount === 1) { // 判断是不是只有一个仓库
         this.customerApi.findwl().then((data) => {

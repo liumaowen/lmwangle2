@@ -121,7 +121,8 @@ export class OverdraftdetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '产品类别', field: 'gntype', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'reason', width: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '付款类型', field: 'paytype', width: 150 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '单据状态', field: 'status', width: 100 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '单据状态', field: 'status', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '欠款分类', field: 'qiankuantype', width: 150 }
     ];
   }
 

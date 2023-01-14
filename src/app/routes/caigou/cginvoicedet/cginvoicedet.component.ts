@@ -61,6 +61,12 @@ export class CginvoicedetComponent implements OnInit {
   uploadParam: any = { module: 'ruku', count: 1, sizemax: 1, extensions: ['xls'] };
   // 设置上传的格式
   accept = '.xls, application/xls';
+  excelStyles = [
+    {
+    //  必填 样式的ID，该id是唯一的字符串
+      id: 'invoicenostr',
+      dataType:'string'
+    }];
   constructor(private caigouApi: CaigouService, public settings: SettingsService, private datepipe: DatePipe,
     private classifyapi: ClassifyApiService,private customerApi: CustomerapiService, private toast: ToasterService, private router: Router) {
     this.gridOptions = {
@@ -97,7 +103,7 @@ export class CginvoicedetComponent implements OnInit {
         // }
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '发票日期', field: 'invoicedate', minWidth: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '发票号码', field: 'invoiceno', minWidth: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '发票号码', field: 'invoiceno', minWidth: 120,cellClass: ['invoicenostr'] },
       { cellStyle: { 'text-align': 'center' }, headerName: '供应商', field: 'supplier', minWidth: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '采购公司', field: 'buyer', minWidth: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '资源号', field: 'grno', minWidth: 80 },

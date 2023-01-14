@@ -18,7 +18,17 @@ const sweetalert = require('sweetalert');
 })
 export class IntercompanyComponent implements OnInit {
 
+  disabled = true;
+  start = new Date();
+  end;
+  orderstart: Date;
+  orderend: Date;
+  requestparams = { gn: '', chandi: '', orgid: '', cuserid: '', vuserid: '', id: '', start: undefined, end: undefined, orderstart: undefined, orderend: undefined };
   maxDate = new Date();
+  
+  cuser = {};
+  vuser = {};
+
   gridOptions: GridOptions;
   // 品名选择弹窗
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
@@ -26,9 +36,6 @@ export class IntercompanyComponent implements OnInit {
   constructor(public settings: SettingsService,
     private reportApi: ReportService, private classifyApi: ClassifyApiService, private toast: ToasterService,
     private router: Router, private datepipe: DatePipe, private orgApi: OrgApiService) {
-
-    this.start = new Date(); // 设定页面开始时间默认值
-
     this.gridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
@@ -86,68 +93,15 @@ export class IntercompanyComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  start;
-  end;
-
-  // tslint:disable-next-line:max-line-length
-  // tslint:disable-next-line:member-ordering
-  requestparams = { gn: '', cangkuid: '', borgid: '', sorgid: '', chandi: '', color: '', width: '', houdu: '', duceng: '', caizhi: '', ppro: '', orgid: '', cuserid: '', vuserid: '', id: '', start: '', end: '', isv: '' };
-
-  // 状态
-  // tslint:disable-next-line:member-ordering
-  names = [{ value: '', label: '全部' }, { value: 1, label: '已审核/已付款(含撤销)' }, { value: 2, label: '未审核/未付款(含取消)' }];
-
-  // 单据类型
-  // tslint:disable-next-line:member-ordering
-  billtype = [{ value: '', label: '全部' }, { value: 1, label: '内部采购' }, { value: 2, label: '机构代销' }];
-
-  // 导出明细表
-  agExport() {
-    let params = {
-      skipHeader: false,
-      skipFooters: false,
-      skipGroups: false,
-      allColumns: false,
-      onlySelected: false,
-      suppressQuotes: false,
-      fileName: '内采明细表.csv',
-      columnSeparator: ''
-    };
-    this.gridOptions.api.exportDataAsCsv(params);
-  }
   listDetail() {
     this.reportApi.intercompanydet(this.requestparams).then((response) => {
       this.gridOptions.api.setRowData(response); // 网格赋值
     });
   };
 
-  cangku;
-
-  gns;
-  orgs;
-
   @ViewChild('classicModal') private classicModal: ModalDirective;
 
   openQueryDialog() {
-    this.orgs = [{ value: '', label: '全部' }];
-    this.orgApi.listAll(0).then(data => {
-      data.forEach(element => {
-        this.orgs.push({
-          value: element['id'],
-          label: element['name']
-        });
-      });
-    })
-    this.cangku = [{ value: '', label: '全部' }];
-    this.classifyApi.cangkulist().then((response) => {
-      response.forEach(element => {
-        this.cangku.push({
-          value: element['id'],
-          label: element['name']
-        });
-      });
-    });
     this.classicModal.show();
   };
 
@@ -155,35 +109,23 @@ export class IntercompanyComponent implements OnInit {
     this.classicModal.hide();
   }
 
-  //常量作为字段名
-  fieldArr = [
-    'chandi',//产地
-    'color',//颜色
-    'width', //宽度
-    'houdu',//厚度 
-    'duceng', //镀层
-    'caizhi', //材质
-    'ppro'//后处理
-  ];
-  disabled = true;
-
   // 重置条件后重选从服务端获取查询条件
   selectNull() {
     this.start = new Date();
     this.end = null;
-    this.requestparams = { gn: '', cangkuid: '', borgid: '', sorgid: '', chandi: '', color: '', width: '', houdu: '', duceng: '', caizhi: '', ppro: '', orgid: '', cuserid: '', vuserid: '', id: '', start: undefined, end: undefined, isv: '' };
-    // this.requestparams={};
+    this.requestparams = { gn: '', chandi: '', orgid: '', cuserid: '', vuserid: '', id: '', start: undefined, end: undefined, orderstart: undefined, orderend: undefined };
     this.cuser = undefined;
     this.vuser = undefined;
     this.attrs = [];
+    this.orderstart = null;
+    this.orderend = null;
   };
   // 查询明细
   query() {
     this.requestparams['start'] = this.datepipe.transform(this.start, 'yyyy-MM-dd');
     if (this.end) this.requestparams['end'] = this.datepipe.transform(this.end, 'yyyy-MM-dd');
-    console.log(this.requestparams);
-    // this.requestparams.start = $filter('date')(this.requestparams.start, 'yyyy-MM-dd');
-    // this.requestparams.end = $filter('date')(this.requestparams.end, 'yyyy-MM-dd');
+    if (this.orderstart) this.requestparams['orderstart'] = this.datepipe.transform(this.orderstart, 'y-MM-dd');
+    if (this.orderend) this.requestparams['orderend'] = this.datepipe.transform(this.orderend, 'y-MM-dd');
     if (!this.requestparams.start) {
       this.toast.pop('warning', '开始时间必填！');
       // Notify.alert('开始时间必填！', 'warning');
@@ -201,16 +143,9 @@ export class IntercompanyComponent implements OnInit {
       // 设定运行查询，再清除页面data变量
       this.listDetail();
       this.coles();
-      // ngDialog.close();
-      // 			this.selectNull();
     }
   };
 
-  // 通过用户模糊查询用户信息（制单人的选择）
-  // tslint:disable-next-line:member-ordering
-  cuser = {};
-  // tslint:disable-next-line:member-ordering
-  vuser = {};
   selectgn(params) {
     this.mdmgndialog.hide();
     const item = params['item'];

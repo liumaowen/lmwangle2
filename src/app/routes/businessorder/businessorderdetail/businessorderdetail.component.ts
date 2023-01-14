@@ -148,6 +148,7 @@ export class BusinessorderdetailComponent implements OnInit {
   wuluiorderlist: any = [];
   qhchangetijiaobeizhu = ''; // 合同变更提交备注
   isshowzhibaoshu: Boolean = false;
+  qiankuantypes;
   msgs = [{ severity: 'info', detail: '您没有变更内容，如果提交则不需审批直接返回变更前状态！' }];
   constructor(public settings: SettingsService, private businessorderApi: BusinessorderapiService, private route: ActivatedRoute,
     private router: Router, private storage: StorageService, private orderApi: OrderapiService, private userApi: UserapiService,
@@ -1138,6 +1139,10 @@ export class BusinessorderdetailComponent implements OnInit {
       this.toast.pop('warning', '请填写欠款原因！');
       return;
     }
+    if (!this.overdraft['qiankuantype']) {
+      this.toast.pop('warning', '请选择欠款类型！');
+      return;
+    }
     this.overdraft['type'] = 1;
     this.businessorderApi.createoverdraft(this.overdraft).then(() => {
       this.payorderhide();
@@ -1170,6 +1175,10 @@ export class BusinessorderdetailComponent implements OnInit {
     }
     if (!this.overdraft['reason']) {
       this.toast.pop('warning', '请填写欠款原因！');
+      return;
+    }
+    if (!this.overdraft['qiankuantype']) {
+      this.toast.pop('warning', '请选择欠款类型！');
       return;
     }
     this.overdraft['zhiyajins'] = this.zhiyajins;
@@ -1231,10 +1240,19 @@ export class BusinessorderdetailComponent implements OnInit {
       this.haszhiyajin = data['haszhiyajin'];
       this.zhiyajins = data['zhiyajins'];
     });
+    this.qiankuantypes = [{ value: '1', label: '正常欠款' },{ value: '2', label: '质押金欠款' },{ value: '3', label: '客户货到付款' }, { value: '4', label: '小数点问题' }, { value: '5', label: '其他' }];
     this.arrearspayDialog.show();
   }
   arrearspayhide() {
     this.arrearspayDialog.hide();
+  }
+  shengchengbucha;
+  getbucha(event) {
+    if (event.value === '4') {
+      this.shengchengbucha= true;
+    } else {
+      this.shengchengbucha= false;
+    }
   }
 
   // 欠款支付

@@ -43,6 +43,7 @@ export class TihuodetailComponent implements OnInit {
   weiimpjine: any;
   zhiyajinimpjine: any;
   msg: any = { name: '获取验证码', flag: false, arrearsflag: false, payflag: false };
+  qiankuantypes;
   // 控制页面按钮显示与否
   showflag: any = {};
   tihuo: any = {};
@@ -1108,6 +1109,15 @@ export class TihuodetailComponent implements OnInit {
     // }
     this.arrearspayshow();
   }
+  shengchengbucha;
+  getbucha(event) {
+    console.log(event); 
+    if (event.value === '4') {
+      this.shengchengbucha= true;
+    } else {
+      this.shengchengbucha= false;
+    }
+  }
   // 提交欠款发货申请
   submitapply() {
     this.overdraft['billid'] = this.tihuo['id'];
@@ -1122,6 +1132,10 @@ export class TihuodetailComponent implements OnInit {
     }
     if (!this.overdraft['reason']) {
       this.toast.pop('warning', '请填写欠款原因！');
+      return;
+    }
+    if (!this.overdraft['qiankuantype']) {
+      this.toast.pop('warning', '请选择欠款类型！');
       return;
     }
     this.overdraft['type'] = 2;
@@ -1146,6 +1160,10 @@ export class TihuodetailComponent implements OnInit {
     }
     if (!this.overdraft['reason']) {
       this.toast.pop('warning', '请填写欠款原因！');
+      return;
+    }
+    if (!this.overdraft['qiankuantype']) {
+      this.toast.pop('warning', '请选择欠款类型！');
       return;
     }
     this.overdraft['zhiyajins'] = this.zhiyajins;
@@ -1237,6 +1255,7 @@ export class TihuodetailComponent implements OnInit {
       this.haszhiyajin = data['haszhiyajin'];
       this.zhiyajins = data['zhiyajins'];
     });
+    this.qiankuantypes = [{ value: '1', label: '正常欠款' },{ value: '2', label: '质押金欠款' },{ value: '3', label: '客户货到付款' }, { value: '4', label: '小数点问题' }, { value: '5', label: '其他' }];
     this.arrearspayDialog.show();
   }
   arrearspayhide() {

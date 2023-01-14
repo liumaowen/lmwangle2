@@ -62,7 +62,7 @@ export class CgfanlihuizongComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '当月返回上年未补贴返利金额', field: 'curmonthlastyearwbjine', minWidth: 120, aggFunc: 'sum',
+        cellStyle: { 'text-align': 'right' }, headerName: '当月返回以前年度未补贴返利金额', field: 'curmonthlastyearwbjine', minWidth: 120, aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['curmonthlastyearwbjine']) {
             return Number(params.data['curmonthlastyearwbjine']);
@@ -72,7 +72,7 @@ export class CgfanlihuizongComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'right' }, headerName: '上年未补贴金额', field: 'lastyearwbjine', minWidth: 120, aggFunc: 'sum',
+        cellStyle: { 'text-align': 'right' }, headerName: '以前年度未补贴金额', field: 'lastyearwbjine', minWidth: 120, aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['lastyearwbjine']) {
             return Number(params.data['lastyearwbjine']);

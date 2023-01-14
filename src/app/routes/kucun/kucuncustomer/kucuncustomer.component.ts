@@ -4,6 +4,7 @@ import { GridOptions } from 'ag-grid/main';
 import { SettingsService } from '../../../core/settings/settings.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { KucunService } from '../kucun.service';
+import { ToasterService } from 'angular2-toaster/angular2-toaster';
 
 @Component({
   selector: 'app-kucuncustomer',
@@ -17,10 +18,8 @@ export class KucuncustomerComponent implements OnInit {
   requestparams = {};
   saleuser;
   constructor(
-    public settings: SettingsService,
-    private datePipe: DatePipe,
-    public numberPipe: DecimalPipe,
-    private kucunApi: KucunService) {
+    public settings: SettingsService,private datepipe: DatePipe,private datePipe: DatePipe,public numberPipe: DecimalPipe,
+    private kucunApi: KucunService ,private toast: ToasterService,) {
     this.gridOptions = {
       enableFilter: true, // 过滤器
       rowSelection: 'multiple', // 多选单选控制 single
@@ -60,25 +59,27 @@ export class KucuncustomerComponent implements OnInit {
   ngOnInit() {
     this.query();
   }
+  progress = { month: '' };
   openQueryDialog() {
-    this.selectNull();
-    this.showclassicModal();
-
+    this.progress = { month: '' };
+    this.classicModal.show();
   }
-  // 清空
-  selectNull() {
-    this.requestparams = {};
-    this.saleuser = undefined;
+  selectmonth(value) {
+    this.progress['month'] = this.datepipe.transform(value, 'y-MM-dd');
   }
   // 查询
   query() {
-    this.kucunApi.kucuncustomer(this.requestparams).then((response) => {
-      this.gridOptions.api.setRowData(response);
+    // if (this.progress['riqi'] === '') {
+    //   this.toast.pop('warning', '请选择月份！');
+    //   return;
+    // }
+    console.log(this.progress);
+    console.log(111);
+
+    this.kucunApi.kucuncustomer(this.progress).then((response) => {
+      this.gridOptions.api.setRowData(response);// 网格赋值
       this.hideclassicModal();
     });
-  }
-  showclassicModal() {
-    this.classicModal.show();
   }
   hideclassicModal() {
     this.classicModal.hide();

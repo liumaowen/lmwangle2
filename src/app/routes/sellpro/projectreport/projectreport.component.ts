@@ -151,7 +151,8 @@ export class ProjectreportComponent implements OnInit {
       {
         cellStyle: { 'text-align': 'center' }, headerName: '联系人', field: 'linkmanname', minWidth: 154,
         cellRenderer: (params) => {
-          if (params.data.cuserid === this.current.id) {
+            // 只有自己和董晓莉能查看联系人
+          if (params.data.cuserid === this.current.id || 17986 === this.current.id) {
             return params.data.linkmanname;
           } else {
             return '';
@@ -208,6 +209,7 @@ export class ProjectreportComponent implements OnInit {
     });
   }
   showDialog() {
+    console.log(this.current);
     this.industrys = [];
     this.weights = [{ value: '', label: '请选择规模' }, { value: '8194', label: '0~199' }, { value: '2', label: '200~499' },
     { value: '8196', label: '≥500' }];

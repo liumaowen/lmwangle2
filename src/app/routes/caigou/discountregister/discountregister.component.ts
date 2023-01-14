@@ -77,6 +77,7 @@ export class DiscountregisterComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '供应商', field: 'supplier', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '计入返利汇总年份', field: 'year', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '合同月份', field: 'month', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '资源号', field: 'grno', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '油漆种类', field: 'painttype', minWidth: 90 },
@@ -146,6 +147,16 @@ export class DiscountregisterComponent implements OnInit {
         valueGetter: (params) => {
           if (params.data) {
             return Number(params.data['chuhuoweight']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter3
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '今年出货量', field: 'curyearchuhuoweight', minWidth: 90, aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['curyearchuhuoweight']) {
+            return Number(params.data['curyearchuhuoweight']);
           } else {
             return 0;
           }

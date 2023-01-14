@@ -378,7 +378,6 @@ export class FanliruleComponent implements OnInit {
         { cellStyle: { 'text-align': 'center' }, headerName: '油漆种类', field: 'painttype', minWidth: 80 },
         { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'guige', minWidth: 200 }
       ];
-      this.getyouhuitypes();
       this.getdate();
   }
   getdate() {
