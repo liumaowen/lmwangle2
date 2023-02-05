@@ -29,7 +29,7 @@ export class ClassifydetailComponent implements OnInit {
   }
 
   updateModel() {
-    if (confirm('确定要保存？')) {
+    if (confirm('您确定要保存？')) {
       this.classifyApi.update(this.model['id'], this.model).then((model) => {
         // classifyController 给父亲传值
         ClassifyComponent.nextobj(this.model);
