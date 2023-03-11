@@ -4,8 +4,8 @@
       <em class="fa fa-book"></em>价格表</h4>
   </div>
   <div class="pull-right ml-lg">
-    <button type="button" (click)="changePrice()" class="btn btn-info btn-bloc">调价</button>
-    <button type="button" (click)="tongtiaodialog()" class="btn btn-info btn-bloc">统调</button>
+    <button *ngIf="isshowbiansitiaojia" type="button" (click)="changePrice()" class="btn btn-info btn-bloc">调价</button>
+    <button *ngIf="isshowbiansitiaojia" type="button" (click)="tongtiaodialog()" class="btn btn-info btn-bloc">统调</button>
     <button type="button" (click)="checkAll()" class="btn btn-info btn-bloc">全选</button>
     <button type="button" (click)="finddialog()" class="btn btn-info btn-bloc">查询</button>
     <!-- <button type="button" (click)="uncheckAll()" class="btn btn-info btn-bloc">取消选择</button> -->

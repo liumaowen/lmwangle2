@@ -29,6 +29,7 @@ import { DaydealdetailComponent } from './daydealdetail/daydealdetail.component'
 import { NeicaigoufapiaodetailComponent } from './neicaigoufapiaodetail/neicaigoufapiaodetail.component';
 import { NeicaigoufapiaoreporterComponent } from './neicaigoufapiaoreporter/neicaigoufapiaoreporter.component';
 import { OrderlirunComponent } from './orderlirun/orderlirun.component';
+import { PrivatesaledetComponent } from './privatesaledet/privatsaledet.component';
 
 const routes: Routes = [
   { path: 'order', component: OrderComponent, data: { 'title': '订单管理' } },
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path: 'neicaigoufapiao/:id', component: NeicaigoufapiaodetailComponent, data: { 'title': '内部采购发票明细表' } },
   { path: 'neicaigoufapiaoreporter', component: NeicaigoufapiaoreporterComponent, data: { 'title': '内部采购发票表' } },
   { path: 'orderlirun', component: OrderlirunComponent, data: { 'title': '订单创造利润一览表' } },
+  { path: 'privatesaledet', component: PrivatesaledetComponent, data: { 'title': '自有品牌销量情况' } },
 ];
 
 @NgModule({
@@ -63,7 +65,7 @@ const routes: Routes = [
     SelectModule
   ],
   declarations: [OrderComponent, OrderdetailComponent, OrderdetreportComponent, OrderdetcxreportComponent,
-    OrdercalcComponent,
+    OrdercalcComponent,PrivatesaledetComponent,
     SaledetreportComponent, ProorderdetailComponent, OrderjiagongfeeComponent, JiagongmsgComponent,
     EditComponent, OnlineorderkaoheComponent, JingliaoorderdetailComponent, QihuodaiyundetComponent,
     TudusaledetComponent, DaydealdetailComponent, NeicaigoufapiaodetailComponent, NeicaigoufapiaoreporterComponent,OrderlirunComponent],

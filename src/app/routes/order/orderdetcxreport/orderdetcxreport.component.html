@@ -3,6 +3,17 @@
   <div class="pull-right">
     <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
     <button type="button" (click)="agExport()" class="btn btn-info btn-bloc">导出</button>
+    <div class="btn-group" dropdown>
+      <button type="button" tooltip="下载模板请点击右边箭头" placement="bottom" class="btn btn-info btn-sm margin-top-bottom-25" (click)="uploadbeizhu()">匹配备注</button>
+      <button id="button-split" type="button" dropdownToggle class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
+              aria-controls="dropdown-split">
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-split" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-split">
+        <li role="menuitem"><a class="dropdown-item" href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/uploadbeizhu.xls">下载模板</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -37,36 +48,6 @@
                 <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate" [minDate]="start"></p-calendar>
               </div>
             </div>
-
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
-              <label class="col-sm-3 control-label">买方</label>
-              <div class="col-sm-9">
-                <wisk-companysearch [(company)]="companys"></wisk-companysearch>
-              </div>
-            </div>
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
-              <label class="col-sm-3 control-label">卖方</label>
-              <div class="col-sm-9">
-                <p-dropdown [options]="sellersResult" [(ngModel)]="requestparams['sellerid']" [style]="{'width':'100%','font-size':'15px'}"
-                  [filter]="true" filterBy="label,value.name"></p-dropdown>
-              </div>
-            </div>
-
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
-              <label class="col-sm-3 control-label">机构</label>
-              <div class="col-sm-9">
-                <p-dropdown [options]="orgs" [(ngModel)]="requestparams['orgid']" [style]="{'width':'100%','font-size':'15px'}" [filter]="true"
-                  filterBy="label,value.name"></p-dropdown>
-              </div>
-            </div>
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
-              <label class="col-sm-3 control-label">仓库</label>
-              <div class="col-sm-9">
-                <p-dropdown [options]="cangku" [(ngModel)]="requestparams['cangkuid']" [style]="{'width':'100%','font-size':'15px'}" [filter]="true"
-                  filterBy="label,value.name"></p-dropdown>
-              </div>
-            </div>
-
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">业务员</label>
               <div class="col-sm-9">
@@ -80,6 +61,33 @@
               </div>
             </div>
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">机构</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="orgs" [(ngModel)]="requestparams['orgid']" [style]="{'width':'100%','font-size':'15px'}" [filter]="true"
+                  filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">买方</label>
+              <div class="col-sm-9">
+                <wisk-companysearch [(company)]="companys"></wisk-companysearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">卖方</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="sellersResult" [(ngModel)]="requestparams['sellerid']" [style]="{'width':'100%','font-size':'15px'}"
+                  [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div> -->
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">仓库</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="cangku" [(ngModel)]="requestparams['cangkuid']" [style]="{'width':'100%','font-size':'15px'}" [filter]="true"
+                  filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div> -->
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">品名</label>
               <div class="col-sm-9">
                 <input (click)="mdmgndialog.show()" style="height:33px;" [(ngModel)]="requestparams['gn']" class="form-control" placeholder="请选择品名" readonly>
@@ -92,8 +100,7 @@
                   <p-dropdown style="padding:0;border:0;" [options]="item.options" [(ngModel)]="requestparams[item.value]" [style]="{'width':'100%'}" [disabled]="disabled" class="form-control" [filter]="true" filterBy="label,value.name"></p-dropdown>
                 </div>
               </div>
-            </div>
-
+            </div> -->
             <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">品名</label>
               <div class="col-sm-9">
@@ -150,18 +157,18 @@
                   [disabled]="disabled" [filter]="true" filterBy="label,value.name"></p-dropdown>
               </div>
             </div> -->
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">状态</label>
               <div class="col-sm-9">
                 <p-dropdown [options]="billtype" [(ngModel)]="requestparams['billtype']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
               </div>
-            </div>
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+            </div> -->
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">线上线下</label>
               <div class="col-sm-9">
                 <p-dropdown [options]="isonline" [(ngModel)]="requestparams['isonline']" [style]="{'width':'100%'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="form-inline text-center">
@@ -173,8 +180,7 @@
   </div>
 </div>
 <!-- 品名选择弹窗 -->
-<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-aria-hidden="true">
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -187,3 +193,21 @@ aria-hidden="true">
     </div>
   </div>
 </div>
+
+<div class="modal" bsModal #beizhuModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideBeizhuDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="beizhuuploadParam" [accept]="accept" (select)="uploadsbeizhu($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+

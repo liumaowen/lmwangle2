@@ -8,6 +8,7 @@ import { GridOptions } from 'ag-grid/main';
 import { PriceapiService } from './../priceapi.service';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { StorageService } from 'app/dnn/service/storage.service';
 
 @Component({
   selector: 'app-price',
@@ -17,7 +18,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class PriceComponent implements OnInit {
 
   // 查询的弹窗
-  @ViewChild('classicModal') private classicModal: ModalDirective;
+  // @ViewChild('classicModal') private classicModal: ModalDirective;
   // 品名选择弹窗
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
   flag = 0;
@@ -35,6 +36,7 @@ export class PriceComponent implements OnInit {
     private toast: ToasterService,
     private userapi: UserapiService,
     private pricelogdetApi: PriceapiService,
+    private storage: StorageService,
     private classifyapi: ClassifyApiService) {
     this.gridOptions = {
       enableFilter: true, // 过滤器
@@ -87,6 +89,7 @@ export class PriceComponent implements OnInit {
         cellStyle: { 'text-align': 'center' }, headerName: '是否上架', field: 'isup', width: 100
       }
     ];
+    this.getMyRole();
 
     //this.listDetail();
 
@@ -140,13 +143,12 @@ export class PriceComponent implements OnInit {
     }
   }
 
-  showclassicModal() {
-    this.classicModal.show();
-  }
+  // showclassicModal() {
+  //   this.classicModal.show();
+  // }
+  //   this.classicModal.hide();
+  // }
 
-  hideclassicModal() {
-    this.classicModal.hide();
-  }
   // 统调前准备数据
   areas: any[];
   getareas() {
@@ -317,8 +319,8 @@ export class PriceComponent implements OnInit {
             isonline: this.tongtiaomodel['isonline'],
             orgid: this.tongtiaomodel['orgid'], isdifftiao: this.tongtiaomodel['isdifftiao'],
             lastprice: this.tongtiaomodel['lastprice'], describe: res['describe'], priceid: priceid
-          }; 
-          console.log('1233', pricelog);     
+          };
+          console.log('1233', pricelog);
           this.pricelogdetApi.judgeprice(pricelog).then((response) => {
             if(response['islowprice']){
               if(confirm('该调价单中，存在宽度：'+ response['width'] +'厚度：'+response['houdu']+'重量：'+response['weight']+'捆包号：'+response['kunbaohao']+'钢卷，定价'+response['gjdprice']+'元，原内采单价'+response['gjyprice']+'元')){
@@ -327,7 +329,7 @@ export class PriceComponent implements OnInit {
                       this.toast.pop('success', '调价单创建成功');
                        this.tongtiaodialogcoles();
                   })
-              }                
+              }
             }else{
               this.priceApi.createpricelog(pricelog).then((data) => {
                 this.router.navigate(['pricelogdet', data]);
@@ -412,5 +414,11 @@ export class PriceComponent implements OnInit {
       }
     }
   }
-
+  isshowbiansitiaojia = false;
+  getMyRole() {
+    let current = this.storage.getObject('cuser');
+    if(current['id'] !== 18001){
+      this.isshowbiansitiaojia = true;
+    }
+  }
 }

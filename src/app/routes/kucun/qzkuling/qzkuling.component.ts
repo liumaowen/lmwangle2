@@ -89,7 +89,8 @@ export class QzkulingComponent implements OnInit {
             valueFormatter: this.settings.valueFormatter
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '权重库龄相比上月底增减', field: 'qhreduce', minWidth: 150,
-            valueFormatter: this.settings.valueFormatter,cellRenderer: (params) => {
+            valueFormatter: this.settings.valueFormatter,
+            cellRenderer: (params) => {
                 if (params.data && null != params.data.qhreduce && undefined != params.data.qhreduce && Number(params.data.qhreduce)>0) {
                   return `<font color="red">${params.data.qhreduce}</font>`;
                 } else {
@@ -109,7 +110,8 @@ export class QzkulingComponent implements OnInit {
             valueFormatter: this.settings.valueFormatter
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '权重库龄相比上月底增减', field: 'xhreduce', minWidth: 150,
-            valueFormatter: this.settings.valueFormatter,cellRenderer: (params) => {
+            valueFormatter: this.settings.valueFormatter,
+            cellRenderer: (params) => {
                 if (params.data && null != params.data.xhreduce && undefined != params.data.xhreduce && Number(params.data.xhreduce)>0) {
                   return `<font color="red">${params.data.xhreduce}</font>`;
                 } else {
@@ -128,6 +130,11 @@ export class QzkulingComponent implements OnInit {
   // 网格赋值
   listDetail() {
     this.kucunApi.getqzkuling(this.search).then(data => {
+      data.forEach(element => {
+        element.qhreduce = element.qhreduce?element.qhreduce+'':'';
+        element.xhreduce = element.xhreduce?element.xhreduce+'':'';
+        element.allreduce = element.allreduce?element.allreduce+ '':'';
+      });
       this.gridOptions.api.setRowData(data);
       this.gridOptions.columnApi.autoSizeAllColumns();
     });
@@ -140,6 +147,11 @@ export class QzkulingComponent implements OnInit {
   /**查询历史数据 */
   gethistory() {
     this.kucunApi.getqzkulingmonth().then(data => {
+      data.forEach(element => {
+        element.qhreduce = element.qhreduce?element.qhreduce+'':'';
+        element.xhreduce = element.xhreduce?element.xhreduce+'':'';
+        element.allreduce = element.allreduce?element.allreduce+ '':'';
+      });
       this.gridColumnApi.setColumnVisible('month', true);
       this.gridOptions.api.setRowData(data);
       this.gridOptions.columnApi.autoSizeAllColumns();

@@ -3,6 +3,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { ClassifyApiService } from './../../../dnn/service/classifyapi.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { TreeNode } from 'angular-tree-component';
 import { Subject } from 'rxjs/Subject';
 
 

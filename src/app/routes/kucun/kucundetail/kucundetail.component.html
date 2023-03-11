@@ -4,9 +4,7 @@
     <div class="pull-right wide-show">
       <button type="button" class="btn btn-info btn-bloc" (click)="openclassicmodal()">查询</button>
       <button type="button" class="btn btn-info btn-bloc" (click)="sign()">标记</button>
-      <button *ngIf="isshowbiansitiaojia" type="button" class="btn btn-info btn-bloc"
-        (click)="showBiansiTiaojia()">边丝调价</button>
-        
+      <button *ngIf="isshowbiansitiaojia" type="button" class="btn btn-info btn-bloc" (click)="biansitiaojia()">边丝调价</button>
       <button type="button" *ngIf="neiwuWaiwu" class="btn btn-info btn-bloc" (click)="addToTuihuo()">新建采购退货单</button>
       <button type="button" class="btn btn-info btn-bloc" (click)="addToFav()">加入收藏夹</button>
       <button type="button" class="btn btn-info btn-bloc" (click)="openFav()">查看收藏夹</button>

@@ -224,6 +224,23 @@
                 <wisk-suppliersearch [(company)]="model['shoucustomerid']"></wisk-suppliersearch>
               </div>
             </div>
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">收款银行</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="bankaccounts" [(ngModel)]="model['shoubankid']" (click)="getbank2()" 
+                 (onChange)="getcardno(model['shoubankid'])"
+                  [style]="{'width':'100%'}"></p-dropdown>
+                <!-- <wisk-usersearch [(user)]="cuser"></wisk-usersearch> -->
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">收款账号</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="" [(ngModel)]="model['shoubanknnum']" class="form-control" disabled="disabled" required/>
+              </div>
+            </div>
+
             <div class="form-group mb fieldsetdnn row">
               <label class="col-sm-3 control-label">付款公司</label>
               <div class="col-sm-9">
@@ -290,6 +307,7 @@
           </div>
           <div class="form-inline text-center">
             <button type="button" (click)="addfukuan()" class="btn btn-primary btn-large">创建</button>
+            <button type="button" (click)="selectnull()" class="btn btn-primary btn-large">重置</button>
           </div>
         </div>
       </div>

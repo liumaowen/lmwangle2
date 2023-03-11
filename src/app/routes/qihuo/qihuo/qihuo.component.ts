@@ -140,7 +140,7 @@ export class QihuoComponent implements OnInit {
     this.selectNull();
     this.ordertypes = [{ label: '请选择。。。', value: null },
     { label: '期货', value: 0 }, { label: '期货加工', value: 1 },
-    { label: '维实品牌', value: 15 },
+   // { label: '维实品牌', value: 15 },
     // { label: '调货', value: 9 }, { label: '调货加工', value: 10 },
     // { label: '净料期货加工', value: 11 }, { label: '净料现货加工', value: 12 },
     { label: '临调', value: 2 },

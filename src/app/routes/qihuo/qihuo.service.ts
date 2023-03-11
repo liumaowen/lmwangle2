@@ -460,4 +460,7 @@ export class QihuoService {
       return data.json() as any[];
     });
   }
+  emancipation(search) {
+    return this.http.post('store/api/proorder/emancipation', search).toPromise();
+  }
 }

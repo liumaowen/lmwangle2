@@ -62,6 +62,22 @@ export class ReportService {
       return data.json() as any[];
     });
   }
+
+    //上传备注
+    addbeizhu(search): Promise<any> {
+      return this.http.post('store/api/report/addbeizhu', search).toPromise().then(data => {
+        return data.json() as any[];
+      });
+    }
+      // 编辑保存备注信息
+  modifyBeizhu(search): Promise<any> {
+    console.log(search);
+    console.log(456);
+    return this.http.post('store/api/report/modifybeizhu' , search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+    
   // 获得线上订单考核明细数据
   getonlineorderdet(search) {
     return this.http.get('store/api/order/onlineOrderKaohe', { search: search }).toPromise().then(data => {

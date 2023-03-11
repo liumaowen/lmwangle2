@@ -33,6 +33,7 @@ export class DingjinfanxiComponent implements OnInit {
           return '<a target="_blank" href="#/qihuo/' + params.data.billid + '">' + params.data.billno + '</a>';
         }
       },
+    
       { cellStyle: { 'text-align': 'center' }, headerName: '客户名称', field: 'customername', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '客户性质', field: 'kehutype', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 120 },
@@ -57,7 +58,8 @@ export class DingjinfanxiComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '月份', field: 'dingjinmonth', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '业务员', field: 'cusername', width: 100 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '业务员', field: 'cusername', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '订单类型', field: 'ordertype', width: 100 },
     ];
   }
 

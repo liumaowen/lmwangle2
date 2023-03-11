@@ -57,6 +57,8 @@ export class QihuodetailComponent implements OnInit {
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
   @ViewChild('fujianModal') private fujianModal: ModalDirective;
   @ViewChild('picdialog') private picdialog: ModalDirective;
+   // 释放货物弹窗
+  @ViewChild('releaseDialog') private releaseDialog: ModalDirective;
 
   // 控制页面操作按钮是否显示
   flag: { edit: boolean, editbaocun: boolean, disabled: boolean, verify: boolean, confirm: boolean, querendaohuo: boolean, shenhe: boolean, pdf: boolean, deldet: boolean } =
@@ -141,6 +143,7 @@ export class QihuodetailComponent implements OnInit {
   thtypes: any = [];
   storagefees: any = [];
   results: any;
+  reason = ''; // 释放原因
   //aggird 表格初始化对象
   gridOptions: GridOptions;//期货
   pgridOptions: GridOptions;//成品
@@ -625,13 +628,13 @@ export class QihuodetailComponent implements OnInit {
           },
           {
             cellStyle: { 'text-align': 'center' }, headerName: '引入完成', field: '', minWidth: 60, enableRowGroup: true, cellRenderer: data => {
-              if (this.qihuomodel['qihuostatus'] !== 8 && !data.data.finish && (this.qihuomodel['ordertype'] === 0 || this.qihuomodel['ordertype'] === 1)) {
+              if (this.qihuomodel['qihuostatus'] !== 8 && !data.data.finish && (this.qihuomodel['ordertype'] === 0 || this.qihuomodel['ordertype'] === 1|| this.qihuomodel['ordertype'] === 15)) {
                 return '<a target="_blank">引入完成</a>';
               } else {
                 return '';
               }
             }, onCellClicked: (params) => {
-              if (!params.data.finish && params.data.id) {
+              if (!params.data.finish && params.data.id && (this.qihuomodel['ordertype'] === 0 || this.qihuomodel['ordertype'] === 1|| this.qihuomodel['ordertype'] === 15) ) {
                 sweetalert({
                   title: '你确定要完成吗？',
                   type: 'warning',
@@ -816,6 +819,7 @@ export class QihuodetailComponent implements OnInit {
     //基料
     this.bmgridOptions = {
       groupDefaultExpanded: -1,
+      rowSelection: 'multiple',
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
       rowDeselection: true,
@@ -830,7 +834,8 @@ export class QihuodetailComponent implements OnInit {
     this.bmgridOptions.onGridReady = this.settings.onGridReady;
     this.bmgridOptions.groupSuppressAutoColumn = true;
     this.bmgridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'goodscode.gn', minWidth: 60, enableRowGroup: true },
+      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'goodscode.gn', minWidth: 60, enableRowGroup: true,
+      checkboxSelection: true },
       { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangku.name', minWidth: 60, enableRowGroup: true },
       { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'guige', minWidth: 300, enableRowGroup: true },
       {
@@ -855,14 +860,20 @@ export class QihuodetailComponent implements OnInit {
       {
         cellStyle: { 'text-align': 'center' }, headerName: '操作', field: '', minWidth: 60, enableRowGroup: true,
         cellRenderer: (params) => {
-          return '<a target="_blank">删除</a>';
+          if(!(this.qihuomodel['ordertype'] === 1 || this.qihuomodel['ordertype'] === 17 || this.qihuomodel['ordertype'] === 19)){
+            return '<a target="_blank">删除</a>';
+          }else{
+            return '';
+          }
         },
         onCellClicked: (params) => {
-          if (confirm('你确定要删除吗？')) {
-            this.qihuoapi.deleteProorderdet(params.data.id).then(data => {
-              this.toast.pop('success', '操作成功');
-              this.getbasematerial();
-            })
+          if(!(this.qihuomodel['ordertype'] === 1 || this.qihuomodel['ordertype'] === 17 || this.qihuomodel['ordertype'] === 19)){
+            if (confirm('你确定要删除吗？')) {
+              this.qihuoapi.deleteProorderdet(params.data.id).then(data => {
+                this.toast.pop('success', '操作成功');
+                this.getbasematerial();
+              })
+            }
           }
         }
       },
@@ -2415,6 +2426,12 @@ export class QihuodetailComponent implements OnInit {
             if(ele['type'] === '钢厂交货地变更'){
               qihuodet['innerjiaohuoaddr'] = ele['innerjiaohuoaddr'];
             }
+            if(ele['type'] === '单卷重变更'){
+              qihuodet['oneweight'] = ele['oneweight'];
+            }
+            if(ele['type'] === '用途变更'){
+              qihuodet['yongtu'] = ele['yongtu'];
+            }
           }
         }
       } else { // 主表
@@ -3880,5 +3897,42 @@ export class QihuodetailComponent implements OnInit {
       this.fujians = data['fujians'];
       console.log(this.fujians)
     })
+  }
+  emancipation() {
+    this.params = {};
+    const proorderdets = this.bmgridOptions.api.getSelectedRows(); 
+    if (proorderdets.length > 0) {
+      console.log(proorderdets)
+      const orderdetids = new Array(); // 定义一个数组存放订单明细表的id
+      for (let i = 0; i < proorderdets.length; i++) {
+        orderdetids.push(proorderdets[i].id); // 将orderdetid放到数组中去
+      }
+      this.params['orderdetids'] = orderdetids;
+      this.showReleaseDialog();
+    } else {
+      this.toast.pop('warning', '请选择要释放的基料');
+    }
+  }
+  showReleaseDialog() {
+    this.reason = '';
+    this.releaseDialog.show();
+  }
+  hideReleaseDialog() {
+    this.releaseDialog.hide();
+  }
+  createRelease() {
+    if (this.reason === '' || !this.reason) {
+      this.toast.pop('warning', '请填写释放原因！');
+      return;
+    }
+    if (confirm('你确定释放货物吗？')) {
+      this.params['reason'] = this.reason;
+      this.qihuoapi.emancipation(this.params).then(() => {
+        this.toast.pop('success', '货物释放发起审批');
+        this.getqihuomodel();
+        this.getbasematerial();
+        this.hideReleaseDialog();
+      });
+    }
   }
 }

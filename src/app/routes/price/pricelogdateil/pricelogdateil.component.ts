@@ -23,9 +23,13 @@ export class PricelogdateilComponent implements OnInit {
   // 默认可以加备注
   edit = true;
 
+  // 是否为边丝调价记录
+  isbiansi = false;
+
   flag = { verify: false };
 
   gridOptions: GridOptions;
+  gridOptionsbiansi: GridOptions;
 
   // 存储修改后的差价
   priceList = new Array();
@@ -89,7 +93,7 @@ export class PricelogdateilComponent implements OnInit {
     };
 
     this.gridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'dprice.gn', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'dprice.gn', width: 90, },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'dprice.chandi', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'dprice.cangku', width: 90 },
       {
@@ -234,6 +238,117 @@ export class PricelogdateilComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'dprice.comments', width: 100 }];
 
+    this.gridOptionsbiansi = {
+      rowSelection: 'single',
+      // 排序
+      enableSorting: true,
+      rowDeselection: true,
+      suppressRowClickSelection: false,
+      singleClickEdit: true,
+      enableColResize: true,
+      overlayLoadingTemplate: this.settings.overlayLoadingTemplate,
+      overlayNoRowsTemplate: this.settings.overlayNoRowsTemplate,
+      onCellClicked: (params) => {
+        params.node.setSelected(true, true);
+      }
+    };
+
+    this.gridOptionsbiansi.columnDefs = [
+      { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'dprice.gn', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'dprice.chandi', width: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'dprice.cangku', width: 90 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '厚度', field: 'dprice.houdu', width: 120,
+        valueFormatter: this.settings.valueFormatter3
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '宽度', field: 'dprice.width', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '颜色/锌层', field: 'dprice.color', width: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '材质', field: 'dprice.caizhi', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '镀层', field: 'dprice.duceng', width: 120 },
+      {
+        cellStyle: { 'text-align': 'right' }, suppressMenu: true, headerName: '<font color="red">线下价差</font>',
+        field: 'diff', width: 90, editable: true,
+        cellRenderer: (params) => {
+          if ('0' !== this.route.queryParams['value']['pricelogid']) {
+            params.colDef.editable = false;
+          }
+          if (params.value === null || params.value === undefined) {
+            return null;
+          } else if (isNaN(params.value)) {
+            return 'NaN';
+          } else {
+            return params.value;
+          }
+        }, newValueHandler: (params) => {
+          if (!params.newValue) {
+            return;
+          }
+          let price = {};
+          for (let i = 0; i < this.priceList.length; i++) {
+            if (this.priceList[i].id === params.data.id) {
+              price = this.priceList[i];
+              this.priceList.splice(i, 1); // 删除重复的
+              break;
+            }
+          }
+          price['id'] = params.data.id;
+          price['diff'] = params.newValue;
+          this.priceList.push(price);
+          if (this.route.queryParams['value']['isdel']) {
+            params.data.endprice = parseFloat(params.data.dprice.price) + parseFloat(params.newValue);
+            params.data.range = parseFloat(params.data.endprice) - parseFloat(params.data.price);
+          } else {
+            params.data.endprice = parseFloat(params.data.price) + parseFloat(params.newValue);
+            params.data.range = parseFloat(params.data.endprice) - parseFloat(params.data.price);
+            if (params.data.olprice) {
+              params.data.olendprice = parseFloat(params.data.price) + parseFloat(params.newValue)
+                + parseFloat(params.data.oldiff ? params.data.oldiff : '0');
+            }
+          }
+          params.data.diff = params.newValue;
+          params.api.redrawRows();
+          return true;
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '调价前价格', field: 'price', width: 110,
+        valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '调价后价格', field: 'endprice', width: 110,
+        valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '操作', field: 'del', width: 80,
+        cellRenderer: (params) => {
+          if (!params.data.isv) {
+            return '<a target="_blank">删除</a>';
+          } else {
+            return '';
+          }
+        },
+        onCellClicked: (params) => {
+          console.log("删除明细行");
+          console.log(params.data.id);
+          console.log(params.data.kucunid);
+          this.gridOptionsbiansi.api.updateRowData({ remove: [params.data] });
+          // this.priceList.splice(this.priceList.indexOf(params.data.id), 1);
+          for (let i = 0; i < this.priceList.length; i++) {
+            if (this.priceList[i].id === params.data.id) {
+              this.priceList.splice(i, 1); // 删除重复的
+              break;
+            }
+          }
+          // console.log(this.route.queryParams['value']['priceids'].splice(this.route.queryParams['value']['priceids'].indexOf(params.data.id), 1));
+          // this.pricelogdetApi.delpricelogdet(params.data.id).then(() => {
+            this.toast.pop('success', '删除成功！');
+            // this.listpricelogdet();
+          // });
+
+        }
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'dprice.comments', width: 100 }];
+
     this.listpricelogdet();
   }
   // // 判断priceid是不是空的如果是空的则使用id否则用priceid
@@ -284,6 +399,39 @@ export class PricelogdateilComponent implements OnInit {
         console.log(data);
         this.gridOptions.api.setRowData(data);
       });
+    } else if (this.route.params['value']['id'] === '1'){
+      console.log("边丝调价跳转");
+      console.log(this.route.queryParams);
+      //从库存明细表边丝调价跳转过来的情况下
+      // 创建新的调价记录单
+      this.isbiansi = true;
+      this.pricelogmodel['isdel'] = false;
+      this.pricelogmodel['cdate'] = new Date();
+      this.pricelogmodel['isv'] = false;
+      this.pricelogmodel['beizhu'] = null;
+      this.edit = true; // 默认可以加备注
+      this.userApi.userInfo2().then(data => {
+        this.pricelogmodel['cuser'] = data;
+      })
+      const params = {};
+      params['priceid'] = this.route.queryParams['value']['priceids'];
+      this.pricelogdetApi.getkucunSelect(params).then((data) => {
+        // 获取调价记录单中的明细表中的数据
+        for (let i = 0; i < data.length; i++) {
+          data[i].dprice = {
+            gn: data[i].gn,
+            chandi: data[i].chandi,
+            cangku: data[i].cangku,
+            houdu: data[i].houdu,
+            width: data[i].width,
+            color: data[i].color,
+            caizhi: data[i].caizhi,
+            duceng: data[i].duceng
+          };
+        }
+        this.gridOptionsbiansi.api.setRowData(data);
+        this.priceList = new Array();
+      });
     } else {
       this.pricelogdetApi.getpriceLogAndDet(this.route.params['value']['id']).then((resource) => {
         // 一般的查看和审核记录单明细页面,和重新定价页面
@@ -324,6 +472,7 @@ export class PricelogdateilComponent implements OnInit {
           data[i].olendprice = data[i].olprice;
           data[i].olprice = data[i].olpreprice;
         }
+        console.log("=========================================");
         console.log(data);
         this.gridOptions.api.setRowData(data);
       });
@@ -333,38 +482,50 @@ export class PricelogdateilComponent implements OnInit {
   // 修改完成之后进行提交
   save() {
     if (this.priceList.length > 0) {
-      if (this.isziyuanzhongxin && (this.pricelogmodel['isshelve']==='' || this.pricelogmodel['isshelve']===undefined || this.pricelogmodel['isshelve']===null)) {
-        this.toast.pop('warning', '请选择是否上架后再提交');
-        return;
-      }
-      let msg = '你将要调整‘' + this.priceList.length + '’个价格，确定调价吗？';
-      if (this.pricelogmodel['isshelve']) {
-        msg = '你将要调整‘' + this.priceList.length + '’个价格，审批后会同时上架，确定调价吗？';
-      }
-      if (confirm(msg)) {
+      if (this.route.params['value']['id'] === '1'){
         const paramsData = {};
         paramsData['pricelog'] = this.pricelogmodel;
         paramsData['pricelogDet'] = this.priceList;
-        console.log(this.pricelogmodel);      
-        console.log(this.priceList);  
-        this.pricelogdetApi.judge(paramsData).then((response) => {
-          if(response['islowprice']){
-            if(confirm('该调价单中，存在宽度：'+ response['width'] +'厚度：'+response['houdu']+'重量：'+response['weight']+'捆包号：'+response['kunbaohao']+'钢卷，定价'+response['gjdprice']+'元，原内采单价'+response['gjyprice']+'元')){
+
+        this.pricelogdetApi.createpricelogfromkucun(paramsData).then(data => {
+          this.isv = false;
+          this.toast.pop('success', '边丝调价成功，请等待领导审核！');
+          this.router.navigateByUrl('pricelog');
+        })
+      }else {
+        if (this.isziyuanzhongxin && (this.pricelogmodel['isshelve']==='' || this.pricelogmodel['isshelve']===undefined || this.pricelogmodel['isshelve']===null)) {
+          this.toast.pop('warning', '请选择是否上架后再提交');
+          return;
+        }
+        let msg = '你将要调整‘' + this.priceList.length + '’个价格，确定调价吗？';
+        if (this.pricelogmodel['isshelve']) {
+            msg = '你将要调整‘' + this.priceList.length + '’个价格，审批后会同时上架，确定调价吗？';
+        }
+        if (confirm(msg)) {
+          const paramsData = {};
+          paramsData['pricelog'] = this.pricelogmodel;
+          paramsData['pricelogDet'] = this.priceList;
+          console.log(this.pricelogmodel);
+          console.log(this.priceList);
+          this.pricelogdetApi.judge(paramsData).then((response) => {
+            if(response['islowprice']){
+              if(confirm('该调价单中，存在宽度：'+ response['width'] +'厚度：'+response['houdu']+'重量：'+response['weight']+'捆包号：'+response['kunbaohao']+'钢卷，定价'+response['gjdprice']+'元，原内采单价'+response['gjyprice']+'元')){
+                this.pricelogdetApi.createpricelog(paramsData).then(data => {
+                  this.isv = false;
+                  this.toast.pop('success', '调价成功，请等待领导审核！');
+                  this.router.navigateByUrl('pricelog');
+                })
+              }
+            }else{
               this.pricelogdetApi.createpricelog(paramsData).then(data => {
                 this.isv = false;
                 this.toast.pop('success', '调价成功，请等待领导审核！');
                 this.router.navigateByUrl('pricelog');
               })
-            }            
-          }else{
-            this.pricelogdetApi.createpricelog(paramsData).then(data => {
-              this.isv = false;
-              this.toast.pop('success', '调价成功，请等待领导审核！');
-              this.router.navigateByUrl('pricelog');
-            })
-          }
-        });
-      }    
+            }
+          });
+        }
+      }
     } else {
       this.toast.pop('warning', '请你调整价格后提交');
     }

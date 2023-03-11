@@ -7,6 +7,7 @@ import { SettingsService } from 'app/core/settings/settings.service';
 import { ClassifyApiService } from 'app/dnn/service/classifyapi.service';
 import { CaigouService } from 'app/routes/caigou/caigou.service';
 import { QihuoService } from 'app/routes/qihuo/qihuo.service';
+import { ReceiveapiService } from 'app/routes/receive/receiveapi.service';
 import { BsModalRef, ModalDirective } from 'ngx-bootstrap';
 
 @Component({
@@ -75,7 +76,7 @@ export class CaigoudetimpComponent implements OnInit {
   };
   constructor(public bsModalRef: BsModalRef, public settings: SettingsService, private caigouApi: CaigouService,
     private router: Router, private classifyApi: ClassifyApiService,
-    private datepipe: DatePipe, private toast: ToasterService,
+    private datepipe: DatePipe, private toast: ToasterService,private receiveApi: ReceiveapiService,
     private qihuoapi: QihuoService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
@@ -330,6 +331,7 @@ export class CaigoudetimpComponent implements OnInit {
     }
     this.search['classifys'].push({ name: id, value: value });
   }
+  shoucustomerid;
   impcaigoudet() {
     this.cgdets = new Array();
     this.tbenjine = 0;
@@ -373,6 +375,7 @@ export class CaigoudetimpComponent implements OnInit {
         }
         console.log('hello');
         console.log(caigoudets[i].data);
+        this.shoucustomerid = caigoudets[i].data.sellerid;
         const caigoudet = { id: null, htjine: null, benjine: null };
         caigoudet['id'] = caigoudets[i].data.caigoudetid;
         caigoudet['chandi'] = caigoudets[i].data.chandi;
@@ -462,5 +465,27 @@ export class CaigoudetimpComponent implements OnInit {
         this.search['classifys'][element['value']] = element['defaultval'];
       }
     }
+  }
+  banks: Array<any>;
+  bankaccounts;
+  // 获取银行
+  getbank2() {
+    console.log(this);
+    this.banks = [{ value: '', label: '全部' }];
+    this.caigouApi.findbycustomerid(this.shoucustomerid).then(data => {
+      data.forEach(bank => {
+        this.banks.push({
+          value: bank['id'],
+          label: bank['bank']
+        });
+      });
+      this.bankaccounts = this.banks;
+    });
+  }
+  getcardno(bankcardid) {
+    console.log('getcardno');
+    this.receiveApi.getfukuanaccount(bankcardid).then((data) => {
+      this.model['shoubanknnum'] = data['fukuanaccount'];
+    });
   }
 }

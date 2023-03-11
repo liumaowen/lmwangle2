@@ -11,11 +11,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnechengbenComponent } from './onechengben/onechengben.component';
 import { WsonechengbenComponent } from './wsonechengben/wsonechengben.component';
+import { SheshuichengbenComponent } from './sheshuichengben/sheshuichengben.component';
 
 const routes: Routes = [
   { path: 'chengbenhesuan', component: ChengbenComponent, data: { 'title': '成本核算表' } },
   { path: 'wsonechengben', component: WsonechengbenComponent, data: { 'title': '维实个别计价表' } },
-  { path: 'onechengben', component: OnechengbenComponent, data: { 'title': '个别计价表' } }
+  { path: 'onechengben', component: OnechengbenComponent, data: { 'title': '个别计价表' } },
+  { path: 'sheshuichengben', component: SheshuichengbenComponent, data: { 'title': '涉税个别计价表' } }
 ];
 
 @NgModule({
@@ -32,7 +34,8 @@ const routes: Routes = [
   declarations: [
     ChengbenComponent,
     OnechengbenComponent,
-    WsonechengbenComponent
+    WsonechengbenComponent,
+    SheshuichengbenComponent
   ],
   exports: [RouterModule],
   providers: [ChengbenService]

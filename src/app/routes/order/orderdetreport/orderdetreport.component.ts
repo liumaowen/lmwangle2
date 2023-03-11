@@ -120,8 +120,8 @@ export class OrderdetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '支付类型', field: 'paytype', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '实付定金比例', field: 'shifudingjinbili', width: 60 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '规格性质', field: 'guigexingzhi', width: 90 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '实付定金比例', field: 'shifudingjinbili', width: 60 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '规格性质', field: 'guigexingzhi', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '规格', field: 'guige', width: 200 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', width: 90 },
@@ -167,6 +167,16 @@ export class OrderdetreportComponent implements OnInit {
           }
         }, valueFormatter: this.settings.valueFormatter3
       },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '已释放', field: 'cancelweight', width: 150 ,aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data) {
+            return Number(params.data['cancelweight']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter3
+    },
       {
         cellStyle: { 'text-align': 'right' }, headerName: '单价', field: 'pertprice', width: 60,
         valueFormatter: this.settings.valueFormatter2
@@ -230,8 +240,9 @@ export class OrderdetreportComponent implements OnInit {
           }
         }
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '调货类型', field: 'thtype', width: 150 },
-
+     
+      { cellStyle: { 'text-align': 'center' }, headerName: '调货类型', field: 'thtype', width: 150 }
+     
     ];
 
     this.listDetail();

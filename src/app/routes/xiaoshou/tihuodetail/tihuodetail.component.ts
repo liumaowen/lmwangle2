@@ -32,6 +32,7 @@ export class TihuodetailComponent implements OnInit {
   @ViewChild('parentModal') private uploaderModel: ModalDirective;
   //销售退货弹窗 
   @ViewChild('updateFeeModal') private updateFeeModal: ModalDirective;
+  @ViewChild('updatemanyFeeModal') private updatemanyFeeModal: ModalDirective;
   @ViewChild('uploadcarnumModal') private uploadcarnumModal: ModalDirective;
   @ViewChild('interestAddModal') private interestAddModal: ModalDirective;
   // 质押金使用金额填写
@@ -2001,12 +2002,101 @@ export class TihuodetailComponent implements OnInit {
       this.toast.pop('warning', '费用单位和实际费用单位重复！');
       return;
     }
+    this.updatefee['tihuoid']= this.tihuo.id;
     this.tihuoApi.updateFee(this.updatefee).then(() => {
       this.closeUpdateFeeModal();
       this.toast.pop('success', '费用修改成功');
       this.listFeeDetail();
     });
   }
+
+  //批量修改费用
+  showupdatemanyFee(){
+    if (this.tihuo['cuserid'] !== this.current.id) {
+      this.toast.pop('warning', '只有业务员才可以修改费用！！！');
+      return;
+    }
+    let feecollectLists = this.feegridOptionsforsaleman.api.getModel()['rowsToDisplay'];
+    const feecollectids = [];
+    for (let i = 0; i < feecollectLists.length; i++) {
+      if (feecollectLists[i].data.group && feecollectLists[i].selected) {
+        feecollectids.push(feecollectLists[i].data.group);
+      }
+    }
+    if (feecollectids.length < 2) {
+      this.toast.pop('warning', '请选择要修改的费用！！！');
+      return;
+    }
+    let types = null;
+    let typecount = 0;
+    let prices = null;
+    let pricecount = 0;
+    let feenames = null;
+    let feenamecount = 0;
+    for(let i = 0; i<feecollectLists.length; i++){
+      if (types !== feecollectLists[i].data.type) {
+        typecount++; types = feecollectLists[i].data.type;
+      }
+      if (prices !== feecollectLists[i].data.price) {
+        pricecount++; prices = feecollectLists[i].data.price;
+      }
+      if (feenames !== feecollectLists[i].data.feename) {
+        feenamecount++; feenames = feecollectLists[i].data.feename;
+      }
+      if(typecount >1){
+        this.toast.pop('warning', '批量修改费用时，请选择相同的费用类型！');
+        return;
+      }
+      if(pricecount>1){
+        this.toast.pop('warning', '批量修改费用时，请选择相同的单价！');
+        return;
+      }
+      if(feenamecount>1){
+        this.toast.pop('warning', '批量修改费用时，请选择相同的费用单位！');
+        return;
+      }
+    };
+    this.companyOfProduce = [];
+    this.actualfeecustomer = [];
+    this.updatemanyFeeModal.show();
+    this.updatefee = {};
+    this.updatefee['feecollectids'] = feecollectids;
+    this.updatefee['innerprice'] = feecollectLists[0].data.innerprice;
+  }
+
+  closeUpdatemanyFeeModal() {
+    this.updatemanyFeeModal.hide();
+  }
+  updatemanyFee() {
+    if (this.updatefee['innerprice'] < 0) {
+      this.toast.pop('warning', '请填写正确实付单价！');
+      return;
+    }
+    if (!this.companyOfProduce['code']) {
+      this.toast.pop('warning', '请选择费用单位！');
+      return;
+    }
+    this.updatefee['feecustomerid'] = this.companyOfProduce['code'];
+    if (this.updatefee['feecustomerid'] === '9545' && !this.actualfeecustomer) {
+      this.toast.pop('warning', '请选择实际费用单位！');
+      return;
+    }
+    this.updatefee['actualfeecustomerid'] = this.actualfeecustomer['code'];
+    if (this.updatefee['actualfeecustomerid'] === this.updatefee['feecustomerid']) {
+      this.toast.pop('warning', '费用单位和实际费用单位重复！');
+      return;
+    }
+    this.updatefee['tihuoid']= this.tihuo.id;
+    console.log(789);
+    console.log(this.updatefee);
+    this.tihuoApi.updateFee(this.updatefee).then(() => {
+      this. closeUpdatemanyFeeModal();
+      this.toast.pop('success', '费用修改成功');
+      this.listFeeDetail();
+    });
+  }
+
+
   // 确认费用
   confirmFee() {
     if (confirm('请检查下费用不需要修改，确定要提交吗？\n修改费用：业务员权限下，点击费用明细中汇总行的费用单位')) {

@@ -10,6 +10,7 @@ import { CaigoudetimpComponent } from 'app/dnn/shared/caigoudetimp/caigoudetimp.
 import { CustomerapiService } from 'app/routes/customer/customerapi.service';
 import { SelectComponent } from 'ng2-select';
 import { Cgorgtypes } from 'app/shared/const';
+import { ReceiveapiService } from 'app/routes/receive/receiveapi.service';
 
 @Component({
   selector: 'app-cgfukuan',
@@ -69,7 +70,9 @@ export class CgfukuanComponent implements OnInit {
     gn: '',
     orgid: '',
     sorgid: '',
-    month:''
+    month:'',
+    shoubankid:null,
+    shoubanknnum:''
   };
   // pageChanged(event: any): void {
   //   this.search['pagenum'] = event.page;
@@ -79,7 +82,7 @@ export class CgfukuanComponent implements OnInit {
   // };
   constructor(private toast: ToasterService, private datepipe: DatePipe,
     private customerApi: CustomerapiService, private caigouApi: CaigouService,
-    private router: Router, public settings: SettingsService,
+    private router: Router, public settings: SettingsService,private receiveApi: ReceiveapiService,
     private bsModalService: BsModalService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
@@ -228,7 +231,7 @@ export class CgfukuanComponent implements OnInit {
   addopen() {
     this.model = {
       paycustomerid: null, jine: null, shoucustomerid: null, bankid: null, account: null, beizhu: '', type: null,
-      kind: null, isft: false, sorgid: '', isqihuo: true, chandi:null,gn:null
+      kind: null, isft: false, sorgid: '', isqihuo: true, chandi:null,gn:null ,shoubankid:null, shoubanknnum:''
     };
     this.types = [{ id: '1', text: '现金' }, { id: '2', text: '电汇' }, { id: '3', text: '承兑' }, { id: '4', text: '转账' }];
     this.kinds = [{ id: '1', text: '定金' }, { id: '2', text: '货款' }, { id: '3', text: '费用' }];
@@ -420,5 +423,30 @@ export class CgfukuanComponent implements OnInit {
           this.querydata();
         });
     }
+  }
+  bankaccounts;
+    // 获取银行
+  getbank2() {
+    this.banks = [{ value: '', label: '全部' }];
+    this.caigouApi.findbycustomerid(this.model['shoucustomerid'].code).then(data => {
+      data.forEach(bank => {
+        this.banks.push({
+          value: bank['id'],
+          label: bank['bank']
+        });
+      });
+      this.bankaccounts = this.banks;
+    });
+  }
+  getcardno(bankcardid) {
+    this.receiveApi.getfukuanaccount(bankcardid).then((data) => {
+      this.model['shoubanknnum'] = data['fukuanaccount'];
+    });
+  }
+  selectnull(){
+    this.model = {
+      paycustomerid: null, jine: null, shoucustomerid: null, bankid: null, account: null, beizhu: '', type: null,
+      kind: null, isft: false, sorgid: '', isqihuo: true, chandi:null,gn:null ,shoubankid:null, shoubanknnum:''
+    };
   }
 }

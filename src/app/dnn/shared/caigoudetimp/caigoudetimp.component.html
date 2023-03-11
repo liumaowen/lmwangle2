@@ -165,7 +165,7 @@
                 </ng-select>
               </div>
             </div> -->
-            
+
             <!-- <div class="form-group mb fieldsetdnn row">
               <label class="col-sm-3 control-label">收货机构</label>
               <div class="col-sm-9">
@@ -193,6 +193,21 @@
               </div>
             </div>
             <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">收款银行</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="bankaccounts" [(ngModel)]="model['shoubankid']" (click)="getbank2()" 
+                 (onChange)="getcardno(model['shoubankid'])"
+                  [style]="{'width':'100%'}"></p-dropdown>
+                <!-- <wisk-usersearch [(user)]="cuser"></wisk-usersearch> -->
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">收款账号</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="" [(ngModel)]="model['shoubanknnum']" class="form-control" disabled="disabled" required/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
               <label class="col-sm-3 control-label">备注</label>
               <div class="col-sm-9">
                 <input [(ngModel)]="model['beizhu']" class="form-control" placeholder="请输入备注">
@@ -206,6 +221,7 @@
       </div>
     </div>
   </div>
+</div>
 <!-- 品名选择弹窗 -->
 <div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
 aria-hidden="true">

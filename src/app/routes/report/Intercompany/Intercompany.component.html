@@ -5,6 +5,8 @@
   </div>
   <div class="pull-right wide-show">
     <button type="button" (click)="openQueryDialog()" class="btn btn-info btn-bloc">查询</button>
+    <button type="button" (click)="showcreateneicaigoudialog()" class="btn btn-info btn-bloc">创建内部采购发票</button>
+    <button type="button" (click)="updateDandunDialog()" class="btn btn-info btn-bloc">修改</button>
   </div>
 </div>
 
@@ -27,7 +29,7 @@
       <div class="modal-body">
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">开始时间</label>
               <div class="col-sm-9  wiskind-calendar">
                 <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="end || maxDate"></p-calendar>
@@ -38,17 +40,17 @@
               <div class="col-sm-9  wiskind-calendar">
                 <p-calendar [(ngModel)]="end" placeholder="结束时间" [maxDate]="maxDate" [minDate]="start"></p-calendar>
               </div>
-            </div>
+            </div> -->
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">创建开始时间</label>
               <div class="col-sm-9  wiskind-calendar">
-                <p-calendar [(ngModel)]="orderstart" placeholder="开始时间" [maxDate]="end || maxDate"></p-calendar>
+                <p-calendar [(ngModel)]="orderstart" placeholder="开始时间" [maxDate]="end"></p-calendar>
               </div>
             </div>
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
               <label class="col-sm-3 control-label">创建结束时间</label>
               <div class="col-sm-9  wiskind-calendar">
-                <p-calendar [(ngModel)]="orderend" placeholder="结束时间" [maxDate]="maxDate" [minDate]="start"></p-calendar>
+                <p-calendar [(ngModel)]="orderend" placeholder="结束时间" [maxDate]="maxDate"></p-calendar>
               </div>
             </div>
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
@@ -102,6 +104,90 @@ aria-hidden="true">
         <h4 class="modal-title">物料分类码表报表</h4>
       </div>
       <app-mdmselectgn (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+<!-- 创建内采发票单 -->
+<div class="modal" bsModal #createneicaigoudialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecreateneicaigoudialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建内部采购发票单</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default" style="overflow:'inherit'">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">单吨（加/减）/元</label>
+              <div class="col-sm-9">
+                <input type="number" style="display:inline-block;width:95%;" class="form-control"
+                  [(ngModel)]="neicaigoufapiao['fapiaochae']" />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" style="display:inline-block;width:95%;" class="form-control"
+                  [(ngModel)]="neicaigoufapiao['beizhu']" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="reset()" class="btn btn-primary btn-large">重置</button>
+            <button type="button" (click)="createneicaigoufapiao()" class="btn btn-primary btn-large">创建</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 创建内采发票单 -->
+<div class="modal" bsModal #updateneicaigoudialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideupdateneicaigoudialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改内部采购发票单</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default" style="overflow:'inherit'">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">单吨（加/减）/元</label>
+              <div class="col-sm-9">
+                <input type="number" style="display:inline-block;width:95%;" class="form-control"
+                  [(ngModel)]="neicaigoufapiao['fapiaochae']" />
+              </div>
+            </div>
+            <!-- <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <input type="text" style="display:inline-block;width:95%;" class="form-control"
+                  [(ngModel)]="neicaigoufapiao['beizhu']" />
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="reset()" class="btn btn-primary btn-large">重置</button>
+            <button type="button" (click)="updateDandun()" class="btn btn-primary btn-large">修改</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

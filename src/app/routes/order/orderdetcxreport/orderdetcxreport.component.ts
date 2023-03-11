@@ -49,6 +49,7 @@ export class OrderdetcxreportComponent implements OnInit {
   // 定义过滤之后的集合
   filterConditionObj = {}; // {chandi:[],width:[]}
   maxDate = new Date();
+  search = {};
 
   // 0制单中、1核算运费中、2待付款"、3待提货、6完成、7取消、8撤销
 
@@ -81,14 +82,27 @@ export class OrderdetcxreportComponent implements OnInit {
       enableColResize: true,
       enableSorting: true,
       excelStyles: this.settings.excelStyles,
+      rowSelection: 'multiple',
+      suppressRowClickSelection: true,
       getContextMenuItems: this.settings.getContextMenuItems,
       enableFilter: true,
+      onCellValueChanged: (params) => {
+        console.log(params.data);
+        console.log(111);
+        this.search['billno'] = params.data['billno'];
+        this.search['cxbeizhu'] =  params.data['cxbeizhu'];
+
+        this.reportApi.modifyBeizhu(this.search); 
+      }
     };
     this.gridOptions.groupSuppressAutoColumn = true;
     this.gridOptions.columnDefs = [
       { field: 'group', rowGroup: true, headerName: '合计', hide: true, valueGetter: (params) => '合计' },
+      { cellStyle: { 'text-align': 'center' }, headerName: '生效月份', field: 'shengxiaomonth', width: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '业务员', field: 'cusername', width: 75 },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '单号', field: 'billno', width: 100,
+        cellStyle: { 'text-align': 'center' }, headerName: '销售合同单号', field: 'billno', width: 100,
         cellRenderer: (params) => {
           if (params.data) {
             if (null != params.data.billno && params.data.billno.substring(0, 2) === 'OR') {// 线上
@@ -109,119 +123,205 @@ export class OrderdetcxreportComponent implements OnInit {
           }
         }
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '是否关联CRM', field: 'islinkpro', width: 50 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '是否通知采购', field: 'isnoticecaigou', width: 50 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '订单状态', field: 'billstatus', width: 50 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '明细状态', field: 'iscancel', width: 50 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '业务员', field: 'salename', width: 75 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '类型', field: 'billtype', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '单据类别', field: 'dantype', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '运输类型', field: 'transporttype', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '产品类别', field: 'urge', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '支付类型', field: 'paytype', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '实付定金比例', field: 'shifudingjinbili', width: 60 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '规格性质', field: 'guigexingzhi', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '合同性质', field: 'billtype', width: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '订单状态', field: 'billstatus', width: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '采购合同类型', field: 'billkind', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', width: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', width: 90 },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '厚度', field: 'houdu', width: 60,
+      { cellStyle: { 'text-align': 'center' }, headerName: '厚度', field: 'houdu', width: 60,
         valueFormatter: this.settings.valueFormatter3
       },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '宽度', field: 'width', width: 60
-      },
+      {cellStyle: { 'text-align': 'center' }, headerName: '宽度', field: 'width', width: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '颜色', field: 'color', width: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '镀层', field: 'duceng', width: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '材质', field: 'caizhi', width: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '后处理', field: 'ppro', width: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '油漆种类', field: 'painttype', width: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '指导价格', field: 'zhidaodesc', width: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 80 },
-      // tslint:disable-next-line:max-line-length
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '数量', field: 'tcount', width: 60, aggFunc: 'sum', valueGetter: (params) => {
-
-          if (params.data) {
-            return Number(params.data['tcount']);
-          } else {
-            return '';
-          }
-        }, valueFormatter: (params) => {
-          try {
-            return this.numberPipe.transform(params.value, '1.0-0')
-          } catch (error) {
-            return null;
-          }
-        }
-      },
-      // tslint:disable-next-line:max-line-length
-      {
-        cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'tweight', width: 60, aggFunc: 'sum',
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '合同量', field: 'orderweight', width: 80 ,aggFunc: 'sum',
         valueGetter: (params) => {
-          if (params.data) {
-            return Number(params.data['tweight']);
-          } else {
-            return 0;
-          }
+        if (params.data && params.data['orderweight']) {
+          return Number(params.data['orderweight']);
+        } else {
+          return 0;
+        }
         }, valueFormatter: this.settings.valueFormatter3
       },
-      {
-        cellStyle: { 'text-align': 'right' }, headerName: '单价', field: 'pertprice', width: 60,
-        valueFormatter: this.settings.valueFormatter2
-      },
-      // tslint:disable-next-line:max-line-length
-      {
-        cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'jine', width: 100, aggFunc: 'sum',
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '已采购', field: 'yicaigouweight', width: 80,aggFunc: 'sum',
         valueGetter: (params) => {
-          if (params.data) {
-            return Number(params.data['jine']);
+        if (params.data && params.data['yicaigouweight']) {
+          return Number(params.data['yicaigouweight']);
+        } else {
+          return 0;
+        }
+        }, valueFormatter: this.settings.valueFormatter3
+      },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '入库量	（包含手工引入的量）', field: 'yirukuweight', width: 100 ,aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['yirukuweight']) {
+            return Number(params.data['yirukuweight']);
           } else {
             return 0;
           }
-        }, valueFormatter: this.settings.valueFormatter2
+          }, valueFormatter: this.settings.valueFormatter3
       },
-      {
-        cellStyle: { 'text-align': 'right' }, headerName: '考核价', field: 'kaoheprice', width: 65,
-        valueFormatter: this.settings.valueFormatter2
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '实提量', field: 'yitihuoweight', width: 80 ,aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['yitihuoweight']) {
+            return Number(params.data['yitihuoweight']);
+          } else {
+            return 0;
+          }
+          }, valueFormatter: this.settings.valueFormatter3
+       },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '释放吨位', field: 'shifangweight', width: 80 ,aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['shifangweight']) {
+            return Number(params.data['shifangweight']);
+          } else {
+            return 0;
+          }
+          }, valueFormatter: this.settings.valueFormatter3
       },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '退货吨位', field: 'tuihuoweight', width: 80 ,aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['tuihuoweight']) {
+            return Number(params.data['tuihuoweight']);
+          } else {
+            return 0;
+          }
+          }, valueFormatter: this.settings.valueFormatter3
+    },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '实际产出', field: 'shijiproduce', width: 80 ,aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['shijiproduce']) {
+            return Number(params.data['shijiproduce']);
+          } else {
+            return 0;
+          }
+          }, valueFormatter: this.settings.valueFormatter3
+    },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '实际提货', field: 'shijitihuo', width: 80 ,aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['shijitihuo']) {
+            return Number(params.data['shijitihuo']);
+          } else {
+            return 0;
+          }
+          }, valueFormatter: this.settings.valueFormatter3
+    },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '交货公差', field: 'shijigongcha', width: 80 
+    },
+      { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'cxbeizhu', width: 80,editable: true,valueGetter: (params) => {
+        if (params.data && params.data['cxbeizhu']) {
+          return params.data['cxbeizhu'];
+        } else {
+          return '';
+        }
+      }
+      }
+    
+      // { cellStyle: { 'text-align': 'center' }, headerName: '是否关联CRM', field: 'islinkpro', width: 50 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '是否通知采购', field: 'isnoticecaigou', width: 50 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '明细状态', field: 'iscancel', width: 50 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '单据类别', field: 'dantype', width: 100 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '运输类型', field: 'transporttype', width: 100 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '产品类别', field: 'urge', width: 100 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '仓库', field: 'cangkuname', width: 100 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '支付类型', field: 'paytype', width: 100 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '实付定金比例', field: 'shifudingjinbili', width: 60 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '规格性质', field: 'guigexingzhi', width: 90 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '油漆种类', field: 'painttype', width: 80 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '指导价格', field: 'zhidaodesc', width: 80 },
+      // {
+      //   cellStyle: { 'text-align': 'center' }, headerName: '数量', field: 'tcount', width: 60, aggFunc: 'sum', valueGetter: (params) => {
+
+      //     if (params.data) {
+      //       return Number(params.data['tcount']);
+      //     } else {
+      //       return '';
+      //     }
+      //   }, valueFormatter: (params) => {
+      //     try {
+      //       return this.numberPipe.transform(params.value, '1.0-0')
+      //     } catch (error) {
+      //       return null;
+      //     }
+      //   }
+      // },
+      // // tslint:disable-next-line:max-line-length
+      // {
+      //   cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'tweight', width: 60, aggFunc: 'sum',
+      //   valueGetter: (params) => {
+      //     if (params.data) {
+      //       return Number(params.data['tweight']);
+      //     } else {
+      //       return 0;
+      //     }
+      //   }, valueFormatter: this.settings.valueFormatter3
+      // },
+      // {
+      //   cellStyle: { 'text-align': 'right' }, headerName: '单价', field: 'pertprice', width: 60,
+      //   valueFormatter: this.settings.valueFormatter2
+      // },
+      // // tslint:disable-next-line:max-line-length
+      // {
+      //   cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'jine', width: 100, aggFunc: 'sum',
+      //   valueGetter: (params) => {
+      //     if (params.data) {
+      //       return Number(params.data['jine']);
+      //     } else {
+      //       return 0;
+      //     }
+      //   }, valueFormatter: this.settings.valueFormatter2
+      // },
+      // {
+      //   cellStyle: { 'text-align': 'right' }, headerName: '考核价', field: 'kaoheprice', width: 65,
+      //   valueFormatter: this.settings.valueFormatter2
+      // },
       // { cellStyle: { 'text-align': 'center' }, headerName: '联系地址', field: 'contactaddr', width: 100 },
       // { cellStyle: { 'text-align': 'center' }, headerName: '联系方式', field: 'contactway', width: 65 },
       // { cellStyle: { 'text-align': 'center' }, headerName: '联系人', field: 'contactman', width: 65 },
       /*{cellStyle: {"text-align": "center"}, headerName: '毛利单价', field: 'maoliprice', width: 65},
       {cellStyle: {"text-align": "center"}, headerName: '考核毛利', field: 'maolijine', width: 65},*/
-      { cellStyle: { 'text-align': 'center' }, headerName: '买方', field: 'buyername', width: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '卖方', field: 'sellername', width: 120 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '买方', field: 'buyername', width: 120 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '卖方', field: 'sellername', width: 120 },
       /* {cellStyle: {"text-align": "center"}, headerName: '资源号', field: 'grno', width: 100},*/
-      { cellStyle: { 'text-align': 'center' }, headerName: '制单人', field: 'cusername', width: 75 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '代理人', field: 'ausername', width: 75 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', width: 150 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '审核时间', field: 'vdate', width: 150 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '仓储费计算方式', field: 'settletype', width: 150 },
-      {
-        cellStyle: { 'text-align': 'right' }, headerName: '预估仓储费', field: 'storagefee', width: 100, aggFunc: 'sum',
-        valueGetter: (params) => {
-          if (params.data['storagefee']) {
-            return Number(params.data['storagefee']);
-          } else {
-            return '';
-          }
-        }, valueFormatter: this.settings.valueFormatter2
-      },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '库存id', field: 'kucunid', width: 75,
-        cellRenderer: (params) => {
-          if (params.data) {
-            if (null != params.data.kucunid) {
-              return '<a target="_blank" href="#/chain/' + params.data.kucunid + '">' + params.data.kucunid + '</a>';
-            }
-            return params.data.kucunid;
-          } else {
-            return '';
-          }
-        }
-      }
+      // { cellStyle: { 'text-align': 'center' }, headerName: '制单人', field: 'cusername', width: 75 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '代理人', field: 'ausername', width: 75 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '制单时间', field: 'cdate', width: 150 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '审核时间', field: 'vdate', width: 150 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '仓储费计算方式', field: 'settletype', width: 150 },
+      // {
+      //   cellStyle: { 'text-align': 'right' }, headerName: '预估仓储费', field: 'storagefee', width: 100, aggFunc: 'sum',
+      //   valueGetter: (params) => {
+      //     if (params.data['storagefee']) {
+      //       return Number(params.data['storagefee']);
+      //     } else {
+      //       return '';
+      //     }
+      //   }, valueFormatter: this.settings.valueFormatter2
+      // },
+      // {
+      //   cellStyle: { 'text-align': 'center' }, headerName: '库存id', field: 'kucunid', width: 75,
+      //   cellRenderer: (params) => {
+      //     if (params.data) {
+      //       if (null != params.data.kucunid) {
+      //         return '<a target="_blank" href="#/chain/' + params.data.kucunid + '">' + params.data.kucunid + '</a>';
+      //       }
+      //       return params.data.kucunid;
+      //     } else {
+      //       return '';
+      //     }
+      //   }
+      // }
 
     ];
 
@@ -245,7 +345,6 @@ export class OrderdetcxreportComponent implements OnInit {
     };
     this.gridOptions.api.exportDataAsExcel(params);
   }
-
   listDetail() {
     console.log(this.requestparams);
     if (!this.requestparams['billtype']) {
@@ -429,4 +528,28 @@ export class OrderdetcxreportComponent implements OnInit {
       }
     }
   }
+  @ViewChild('beizhuModal') private beizhuModal: ModalDirective;
+  beizhuuploadParam: any = { module: 'addbeizhu', count: 1, sizemax: 1, extensions: ['xls'] };
+  // 设置上传的格式
+  accept = ".xls, application/xls";
+    /**上传备注 */
+    uploadbeizhu() {
+      this.beizhuModal.show();
+    }
+    // 关闭上传弹窗
+    hideBeizhuDialog() {
+      this.beizhuModal.hide();
+    }
+      // 上传成功执行的回调方法
+    uploadsbeizhu($event) {
+      const addData = [$event.url];
+      if ($event.length !== 0) {
+        this.reportApi.addbeizhu(addData).then(data => {
+          this.listDetail();
+          this.toast.pop('success', '上传成功！');
+        });
+      }
+      this.listDetail();
+      this.hideBeizhuDialog();
+    }
 }

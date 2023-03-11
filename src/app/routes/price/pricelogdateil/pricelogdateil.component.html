@@ -105,10 +105,14 @@
 
 
 <!-- </form> -->
+<!-- 根据不同条件展示不同的aggrid-->
 
-<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 380)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
-  class="ag-blue" [gridOptions]="gridOptions">
+<ag-grid-angular *ngIf="!isbiansi" [ngStyle]="{'height': (settings.bodyHeight - 380)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+class="ag-blue" [gridOptions]="gridOptions">
 </ag-grid-angular>
 
+<ag-grid-angular *ngIf="isbiansi"  [ngStyle]="{'height': (settings.bodyHeight - 380)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptionsbiansi">
+</ag-grid-angular>
 
 <toaster-container></toaster-container>

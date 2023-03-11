@@ -212,6 +212,7 @@ export class AllotdetreportComponent implements OnInit {
           }
         ]
       },
+
       { cellStyle: { 'text-align': 'center' }, headerName: '鼓励类', field: 'urge', minWidth: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 60 },
@@ -244,7 +245,8 @@ export class AllotdetreportComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '代理人', field: 'ausername', minWidth: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: 'kucunid', field: 'kucunid', minWidth: 60 },
       { cellStyle: { 'text-align': 'center' }, headerName: '是否加工', field: 'isfp', minWidth: 60 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '审核人', field: 'vusername', minWidth: 60 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '审核人', field: 'vusername', minWidth: 60 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '订单类型', field: 'ordertype', minWidth: 60 },
     ];
   }
 

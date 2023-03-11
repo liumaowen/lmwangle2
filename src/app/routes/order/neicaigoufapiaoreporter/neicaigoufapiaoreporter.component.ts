@@ -24,6 +24,7 @@ export class NeicaigoufapiaoreporterComponent implements OnInit {
 
     this.gridOptions = {
       groupDefaultExpanded: -1,
+      rowSelection: 'multiple',
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
       rowDeselection: true,
@@ -43,6 +44,10 @@ export class NeicaigoufapiaoreporterComponent implements OnInit {
     // 设置aggird表格列
     this.gridOptions.columnDefs = [
       { field: 'group', rowGroup: true, headerName: '合计', hide: true, valueGetter: (params) => '合计' },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '选择', minWidth: 72, pinned: 'left',
+        checkboxSelection: (params) => params.data, headerCheckboxSelection: true, headerCheckboxSelectionFilteredOnly: true,
+      },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '单号', field: 'billno', minWidth: 100,
         cellRenderer: function (params) {
@@ -67,7 +72,9 @@ export class NeicaigoufapiaoreporterComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '审核人', field: 'vusername', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '卖方单位', field: 'sellername', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '买方单位', field: 'buyername', minWidth: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '是否审核', field: 'isv', minWidth: 100 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '是否审核', field: 'isv', minWidth: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '状态', field: 'status', minWidth: 100 },
+
     ];
   }
 
@@ -149,5 +156,30 @@ export class NeicaigoufapiaoreporterComponent implements OnInit {
     // 设定运行查询，再清除页面data变量
     this.listDetail();
     this.coles();
+  }
+  ids;
+  verify() {
+    this.ids = [];
+    const params = {};
+    const dets = this.gridOptions.api.getModel()['rowsToDisplay'];
+    if (dets.length > 0) {
+      for (let i = 0; i < dets.length; i++) {
+        if (dets[i].selected) {
+          this.ids.push(dets[i].data.id);
+        }
+      }
+    }
+    if (this.ids.length === 0) {
+      this.toast.pop('warning', '请选择要审核的明细！！！');
+      return '';
+    }
+    params['ids'] = this.ids;
+    console.log(params)
+    if(confirm('你确定要批量审核发票吗')){
+      this.orderApi.verifyneicaipiao(params).then(data => {
+        this.query();
+        this.toast.pop('success', '审核成功！');
+      });
+    }
   }
 }

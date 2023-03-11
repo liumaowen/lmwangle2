@@ -1,0 +1,229 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 自有品牌销量情况
+  <div class="pull-right wide-show">
+     <button type="button" (click)="showworkday()" class="btn btn-info btn-bloc">工作日</button>
+    <button *NgOpera="690" type="button" (click)="showdaigp()" class="btn btn-info btn-bloc">代钢品下单</button>
+    <button type="button" (click)="showplan()" class="btn btn-info btn-bloc">计划量</button> 
+    <button type="button" (click)="refresh()" class="btn btn-info btn-bloc">刷新</button>
+    <button type="button" (click)="gethistory()" class="btn btn-info btn-bloc">查询历史数据</button>
+    <button type="button" (click)="impyunfee()" class="btn btn-info btn-bloc">导出</button>
+  </div>
+  <div class="pull-right narrow-show">
+    <div class="btn-group" dropdown placement="bottom right">
+      <button dropdownToggle type="button" class="btn btn-info dropdown-toggle">菜单
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showworkday()">工作日</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem" *NgOpera="690">
+          <a class="dropdown-item" (click)="showdaigp()">代钢品下单</a>
+        </li>
+        <li class="divider dropdown-divider" *NgOpera="690"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="showplan()">计划量</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="listDetail()">刷新</a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="impyunfee()">导出</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-4 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 form-control-static">全年计划（t）:</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{model['yearplan']|number: '1.0-0'}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-4 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 form-control-static">截止目前完成（t）:</div>
+        <div class="col-md-7 col-xs-6 form-control-static">{{model['yearshitisum']|number: '1.0-0'}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-4 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">完成率:</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{model['finishrate']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-4 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 form-control-static">落后时间进度（t）:</div>
+        <div class="col-md-7 col-xs-6 form-control-static">{{model['backwardjindu']|number: '1.0-0'}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-4 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">全年工作日:</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{model['workdaySum']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-4 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 control-label form-control-static">剩余工作日:</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{model['yuworkday']}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class=" col-lg-4 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 form-control-static">月工作时间进度:</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{model['yuejindu']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-4 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 form-control-static">季工作时间进度:</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{model['jijindu']}}
+        </div>
+      </div>
+    </div>
+    <div class=" col-lg-4 col-md-6 ">
+      <div class="row">
+        <div class="col-md-5 col-xs-6 form-control-static">年工作时间进度:</div>
+        <div class="col-md-7 col-xs-6 form-control-static">
+          {{model['yearjindu']}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 255)+'px'}" #agGrid style="width: calc(100% + 40px);height:100%;margin:0 -20px;"
+  class="ag-blue" [gridOptions]="gridOptions">
+</ag-grid-angular>
+
+<toaster-container></toaster-container>
+
+<!--添加工作日弹窗-->
+<div class="modal" bsModal #workdayModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="workdaycoles()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">工作时间进度表<span style="font-size: 14px;">（工作日和已完成工作日可编辑）</span></h4>
+      </div>
+      <div class="modal-body">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 255)+'px'}" #agworkdayGrid style="width: 100%;height:100%;margin:0;" class="ag-blue" [gridOptions]="workdaygridOptions">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+</div>
+<!--各机构计划量弹窗-->
+<div class="modal" bsModal #orgplanModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <em class="fa fa-list-alt"></em> 机构计划量<span style="font-size: 14px;">（点击单元格可编辑）</span>
+        <div class="pull-right">
+          <button type="button" class="btn btn-info btn-bloc" (click)="showorg()"
+        style="margin-right:10px;">添加
+          </button>
+          <button type="button" class="close" aria-label="Close" (click)="orgplancoles()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 255)+'px'}" #agorgplanGrid style="width: 100%;height:100%;margin:0;" class="ag-blue" [gridOptions]="orgplangridOptions">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+</div>
+<!--各机构代钢品下单量弹窗-->
+<div class="modal" bsModal #daigpModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <em class="fa fa-list-alt"></em> 机构代钢品下单量<span style="font-size: 14px;">（点击单元格可编辑）</span>
+        <div class="pull-right">
+          <button type="button" class="close" aria-label="Close" (click)="daigpcoles()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 255)+'px'}" #agdaigpGrid style="width: 100%;height:100%;margin:0;" class="ag-blue" [gridOptions]="daigpgridOptions">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+</div>
+<!--选择机构弹窗-->
+<div class="modal" bsModal #orgModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <em class="fa fa-list-alt"></em> 选择机构名称
+        <div class="pull-right">
+          <button type="button" class="close" aria-label="Close" (click)="orgcoles()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">机构</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="orgs" [(ngModel)]="orgid" [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="addorg()" class="btn btn-primary btn-large">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--历史记录月份弹窗-->
+<div class="modal" bsModal #bakModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <em class="fa fa-list-alt"></em> 历史记录
+        <div class="pull-right">
+          <button type="button" class="close" aria-label="Close" (click)="bakcoles()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 255)+'px'}" #agbakGrid style="width: 100%;height:100%;margin:0;" class="ag-blue" [gridOptions]="bakOptions">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+</div>

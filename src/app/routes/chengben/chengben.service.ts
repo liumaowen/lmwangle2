@@ -37,5 +37,14 @@ export class ChengbenService {
             return data.json() as any[];
         })
     }
-
+    getcheckdatasheshui(param) {
+        return this.http.get('store/pub/onechengben/getcheckdatasheshui', { search: param }).toPromise().then(data => {
+            return data.json() as any[];
+        })
+    }
+    listsheshuichengben(param) {
+        return this.http.get('store/pub/onechengben/listsheshuichengben', { search: param }).toPromise().then(data => {
+            return data.json() as any[];
+        })
+    }
 }

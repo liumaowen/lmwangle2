@@ -1,0 +1,10 @@
+FROM harbor.wiskind.cn/td/gmerp-frontend-builder:v1.0 as build
+WORKDIR /gmerp
+COPY . /gmerp
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/system/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezoness
+RUN set -x && npm run buildgm
+
+FROM harbor.wiskind.cn/gy/nginx:1.23.2-alpine
+COPY --from=build /gmerp/gmerp /usr/share/nginx/html
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

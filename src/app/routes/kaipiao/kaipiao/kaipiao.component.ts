@@ -85,7 +85,21 @@ export class KaipiaoComponent implements OnInit {
 
     this.gridOptions.columnDefs = [
       { cellStyle: { 'text-align': 'center' }, headerName: '选择', width: 56, checkboxSelection: true },
-      { cellStyle: { 'text-align': 'center' }, headerName: '订单号', field: 'orderbill', width: 100 },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '订单号', field: 'orderbill', width: 100 ,
+        cellRenderer: function (params) {
+          if (params.data) {
+            if (params.data.orderbill.substring(0, 2) === 'QH') {
+              return '<a target="_blank" href="#/qihuo/' + params.data.orderbillid + '">' + params.data.orderbill + '</a>';
+            } else if (params.data.orderbill.substring(0, 2) === 'BO') {
+              return '<a target="_blank" href="#/businessorder/' + params.data.orderbillid + '">' + params.data.orderbill + '</a>';
+            } else {
+              return '<a target="_blank" href="#/order/' + params.data.orderbillid + '">' + params.data.orderbill + '</a>';
+            }
+          } 
+        }
+    },
+      {cellStyle: { 'text-align': 'center' }, headerName: '是否上传客户红章合同', field: 'isgaizhang', width: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '买方单位', field: 'maifangname', width: 180 },
       { cellStyle: { 'text-align': 'center' }, headerName: '卖方单位', field: 'seller', width: 180 },
       { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', width: 100 },

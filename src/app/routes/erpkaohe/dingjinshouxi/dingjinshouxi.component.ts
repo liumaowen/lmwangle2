@@ -28,7 +28,7 @@ export class DingjinshouxiComponent implements OnInit {
 
     this.gridOptions.columnDefs = [
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '期货订单号码', field: 'billno', width: 90,
+        cellStyle: { 'text-align': 'center' }, headerName: '期货订单号码', field: 'orderbillno', width: 90,
         cellRenderer: (params) => {
           return '<a target="_blank" href="#/qihuo/' + params.data.orderid + '">' + params.data.orderbillno + '</a>';
         }
@@ -84,7 +84,8 @@ export class DingjinshouxiComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '天数', field: 'count', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '变更后天数', field: 'count1', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '计息开始时间', field: 'startdate', width: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '计息结束时间', field: 'enddate', width: 120 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '计息结束时间', field: 'enddate', width: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '订单类型', field: 'ordertype', width: 100 }
     ];
   }
 

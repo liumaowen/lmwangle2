@@ -93,9 +93,9 @@ export class LongkucuninterestComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '长期库存量占比', field: 'longkucunrate', minWidth: 100
       },
-      { cellStyle: { 'text-align': 'center' }, headerName: '长期库存吨资金利息', field: 'duninterest', minWidth: 120,
-      valueFormatter: this.settings.valueFormatter
-      }
+      // { cellStyle: { 'text-align': 'center' }, headerName: '长期库存吨资金利息', field: 'duninterest', minWidth: 120,
+      // valueFormatter: this.settings.valueFormatter
+      // }
     ];
   }
 

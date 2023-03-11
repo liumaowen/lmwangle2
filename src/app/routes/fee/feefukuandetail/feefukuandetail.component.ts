@@ -1053,6 +1053,15 @@ export class FeefukuandetailComponent implements OnInit {
       this.feefukuandettail = {};
     });
   }
+  pushcbs(){
+    if(!this.feefukuan['paydate2']){
+      this.toast.pop('warning', '只有付款审核的付款单才能推送cbs！！！');
+      return;
+    }
+    this.feefukuanApi.pushcbs(this.feefukuan).then(() => {
+      
+    });
+  }
 
 
 }

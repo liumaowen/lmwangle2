@@ -187,6 +187,9 @@ export class ProducedetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '销售公司', field: 'sellername', minWidth: 80 , colId: 'sellername'},
       { cellStyle: { 'text-align': 'center' }, headerName: '费用单价', field: 'feeprice', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '费用金额', field: 'feejine', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '是否备货', field: 'beihuo', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '指导价格', field: 'zhidaojiagedesc', minWidth: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '鼓励类', field: 'urge', minWidth: 60 },
     ];
     this.getMyRole();
     // this.listDetail();

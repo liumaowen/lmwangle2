@@ -136,8 +136,8 @@ export class CgbuchafanliimportComponent implements OnInit {
         // { cellStyle: { 'text-align': 'right' }, headerName: '享受补贴量（吨）', field: 'weight', minWidth: 100 },
         // { cellStyle: { 'text-align': 'right' }, headerName: '补贴单价', field: 'price', minWidth: 80 },
         { cellStyle: { 'text-align': 'right' }, headerName: '预估返利金额', field: 'yugufanlijine', minWidth: 100 },
-        // { cellStyle: { 'text-align': 'right' }, headerName: '已补差金额', field: 'ybuchajine', minWidth: 100 },
-        // { cellStyle: { 'text-align': 'right' }, headerName: '未补差金额', field: 'wbuchajine', minWidth: 100 },
+        // { cellStyle: { 'text-align': 'right' }, headerName: '已返利金额', field: 'yfjine', minWidth: 100 },
+        // { cellStyle: { 'text-align': 'right' }, headerName: '未返金额', field: 'wfjine', minWidth: 100 },
         { cellStyle: { 'text-align': 'center' }, headerName: '返利id', field: 'fanlidetid', minWidth: 60 }
       ];
       this.fanlirulegridOptions = {

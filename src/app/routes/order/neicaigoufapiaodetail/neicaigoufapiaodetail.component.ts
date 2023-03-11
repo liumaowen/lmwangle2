@@ -137,7 +137,7 @@ export class NeicaigoufapiaodetailComponent implements OnInit {
   removebill() {
     if (confirm('你确定要删除吗？')) {
       this.orderApi.delmodel(this.route.params['value']['id']).then(data => {
-        this.router.navigateByUrl('saledetreport');
+        this.router.navigateByUrl('intercompany');
       });
     }
   }
@@ -153,7 +153,7 @@ export class NeicaigoufapiaodetailComponent implements OnInit {
         console.log(saleshourudets[i].data);
         if (!gn) {
           gn = saleshourudets[i].data.originalgn;
-        } else if (gn !== saleshourudets[i].data.gnid) {
+        } else if (gn !== saleshourudets[i].data.originalgn) {
           this.toast.pop('warning', '请选择相同的品名进行修改！！！');
           return;
         }

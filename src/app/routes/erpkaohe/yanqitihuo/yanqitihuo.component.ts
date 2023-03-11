@@ -65,6 +65,7 @@ export class YanqitihuoComponent implements OnInit {
           }
         }
       },
+
       { cellStyle: { 'text-align': 'center' }, headerName: '是否基料', field: 'isproorder', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '客户名称', field: 'customername', width: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '所属机构', field: 'orgname', width: 90 },
@@ -147,7 +148,8 @@ export class YanqitihuoComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '业务员', field: 'saleman', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '销售合同月份', field: 'salemonth', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 90 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '免息原因', field: 'cancelbeizhu', width: 90 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '免息原因', field: 'cancelbeizhu', width: 90 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '订单类型', field: 'ordertype', width: 90 },
     ];
   }
 

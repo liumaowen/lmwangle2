@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { UserchandiComponent } from './userchandi/userchandi.component';
 import { CustomerbehaviorComponent } from './customerbehavior/customerbehavior.component';
 import { CustomerchangeComponent } from './customerchange/customerchange.component';
+import {CustomersortComponent} from './customersort/customersort.component';
 
 const routes: Routes = [
   { path: 'customerreport', component: CustomerreportComponent, data: { 'title': '客户信息' } },
@@ -19,10 +20,11 @@ const routes: Routes = [
   { path: 'userchandi', component: UserchandiComponent, data: { 'title': '代理商' } },
   { path: 'customerbehavior', component: CustomerbehaviorComponent, data: { 'title': '线上客户行为分析表' } },
   { path: 'customerchange', component: CustomerchangeComponent, data: { 'title': '变更记录表' } },
+  { path: 'customersort', component: CustomersortComponent, data: { 'title': '各机构前十客户' } },
 ];
 
 @NgModule({
-  imports: [ 
+  imports: [
     CommonModule,
     CommonModule,
     AgGridModule,
@@ -36,6 +38,6 @@ const routes: Routes = [
     DataTableModule,
     FormsModule
   ],
-  declarations: [CustomerreportComponent,CustomerchaoqiComponent, UserchandiComponent, CustomerbehaviorComponent,CustomerchangeComponent]
+  declarations: [CustomerreportComponent,CustomerchaoqiComponent, UserchandiComponent, CustomerbehaviorComponent,CustomerchangeComponent,CustomersortComponent]
 })
 export class CustomerreportModule { }

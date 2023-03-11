@@ -79,7 +79,8 @@ export class TiaohuoshouxiComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '天数', field: 'count', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '计息开始时间', field: 'startdate', width: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '计息结束时间', field: 'enddate', width: 120 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '计息结束时间', field: 'enddate', width: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '订单类型', field: 'ordertype', width: 100 },
     ];
   }
 

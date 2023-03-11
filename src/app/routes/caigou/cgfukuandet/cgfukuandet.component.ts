@@ -17,7 +17,7 @@ export class CgfukuandetComponent implements OnInit {
   buyer: any;
   model: object = { id: '', bankid: null, account: null };
   flag: object = { tijiao: false, shenhe: false, fukuan: false, fuhe: false };
-  fukuanModel: any = { org: {}, paycustomer: {}, vuser: {}, shoucustomer: {}, payuser: {}, fuheuser: {} };
+  fukuanModel: any = { org: {}, paycustomer: {}, vuser: {}, shoucustomer: {}, payuser: {}, fuheuser: {} ,shoubank:{}};
   beizhu: any;
   modify = { id: '', beizhu: '' };
   fukuanModelmonth = null;

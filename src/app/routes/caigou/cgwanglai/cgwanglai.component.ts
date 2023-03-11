@@ -113,12 +113,13 @@ export class CgwanglaiComponent implements OnInit {
   ngOnInit() {
     if (this.route['params']) {
       const id = this.route['params']['value']['id'];
-      this.search['supplierid'] = id.split('abc')[0];
-      this.search['buyerid'] = id.split('abc')[1];
-      this.search['start'] = '2017-01-01';
-      console.log(this.search);
-      this.querydata();
-
+      if(id.length>3){
+        this.search['supplierid'] = id.split('abc')[0];
+        this.search['buyerid'] = id.split('abc')[1];
+        this.search['start'] = '2017-01-01';
+        console.log(this.search);
+        this.querydata();
+      }
     }
   }
   querydata() {

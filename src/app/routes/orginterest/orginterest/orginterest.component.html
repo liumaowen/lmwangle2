@@ -8,45 +8,67 @@
 
 <div class="viewpanel">
   <p-tabView [style]="{'padding-top': '3px'}">
-    <p-tabPanel header="资金占用利息汇总表"
+    <p-tabPanel header="资金占用利息汇总表" *ngIf="zj" 
       [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
-      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
-        style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+      <p style="height: 90px;">
+        1.每日预收利息=-（销售往来余额表账面余额*1%/30）+库存已全款/已完成利息-订单为线上及线下代销库存利息；<br>
+        2.每日预付利息=采购往来余额表账户余额*1%/30；<br>
+        3.每日库存利息=非全款库存结存金额*1%/30；<br>
+        4.当日可查询截止到前一天的资金占用利息；<br>
+      </p>
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 293)+'px'}" #agGrid
+        style="width: calc(100% + 22px);margin:0 -11px;margin-top:-5px;" class="ag-blue"
         [gridOptions]="gridOptions">
       </ag-grid-angular>
     </p-tabPanel>
-    <p-tabPanel header="预付利息汇总表"
+    <p-tabPanel header="预付利息汇总表" *ngIf="yufu" 
       [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
-      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
-        style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+      <p style="height: 45px;">
+        1.每日预付利息=采购往来余额表账户余额*1%/30；<br>
+        2.当日可查询截止到前一天的资金占用利息；<br>
+      </p>
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 248)+'px'}" #agGrid
+        style="width: calc(100% + 22px);margin:0 -11px;margin-top:-5px;" class="ag-blue"
         [gridOptions]="yufuGridOptions">
       </ag-grid-angular>
     </p-tabPanel>
-    <p-tabPanel header="库存利息汇总表"
+    <p-tabPanel header="库存利息汇总表" *ngIf="kucun" 
       [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
-      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
-        style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+      <p style="height: 45px;">
+        1.每日库存利息=非全款库存结存金额*1%/30；<br>
+        2.当日可查询截止到前一天的资金占用利息；<br>
+      </p>
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 248)+'px'}" #agGrid
+        style="width: calc(100% + 22px);margin:0 -11px;margin-top:-5px;" class="ag-blue"
         [gridOptions]="kucunGridOptions">
       </ag-grid-angular>
     </p-tabPanel>
-    <p-tabPanel header="品名利息汇总表"
+    <!-- <p-tabPanel header="品名利息汇总表"
       [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
-      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
-        style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+      <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 203)+'px'}" #agGrid
+        style="width: calc(100% + 22px);margin:0 -11px;margin-top:-5px;" class="ag-blue"
         [gridOptions]="gnGridOptions">
       </ag-grid-angular>
-    </p-tabPanel>
-    <p-tabPanel header="资源中心库存利息汇总表"
+    </p-tabPanel> -->
+    <p-tabPanel header="资源中心库存利息汇总表" *ngIf="zykucun" 
     [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
-    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
-      style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+    <p style="height: 45px;">
+      1.每日库存利息=非全款库存结存金额*1%/30；<br>
+      2.当日可查询截止到前一天的资金占用利息；<br>
+    </p>
+    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 248)+'px'}" #agGrid
+      style="width: calc(100% + 22px);margin:0 -11px;margin-top:-5px;" class="ag-blue"
       [gridOptions]="ziyuanKucunOptions">
     </ag-grid-angular>
   </p-tabPanel>
   <p-tabPanel header="中心级资金占用利息汇总表" *ngIf="center" 
     [headerStyle]="{'background-color': '#fff', 'border-color': '#ccc','border-bottom-color': 'rgba(0, 0, 0, 0)','margin-left': '5px'}">
-    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 150)+'px'}" #agGrid
-      style="width: calc(100% + 22px);height:100%;margin:0 -11px;margin-top:-5px;" class="ag-blue"
+    <p style="height: 45px;">
+      1.计算方式同第一张表《资金占用利息汇总表》，将月利率1%变为按年利率4.81%计算；<br>
+      2.当日可查询截止到前一天的资金占用利息；<br>
+    </p>
+    <ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 248)+'px'}" #agGrid
+      style="width: calc(100% + 22px);margin:0 -11px;margin-top:-5px;" class="ag-blue"
       [gridOptions]="ziyuanGridOptions">
     </ag-grid-angular>
   </p-tabPanel>

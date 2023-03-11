@@ -855,6 +855,10 @@ export class ProducedetailComponent implements OnInit {
       this.toast.pop('warning', '请填写单价!');
       return '';
     }
+    if(!this.producefee['accountdirection']){
+      this.toast.pop('warning', '请选择记账方向!');
+      return '';
+    }
     this.producefee['produceid'] = this.produce['id'];
     this.producefee['detids'] = this.detids;
     this.produceApi.createproducefee(this.producefee).then(data => {
@@ -960,6 +964,14 @@ export class ProducedetailComponent implements OnInit {
   }
 
   createFproduceFee() {
+    if(!this.producefee['accountdirection']){
+      this.toast.pop('warning', '请选择记账方向!');
+      return '';
+    }
+    if(!this.producefee['sellerid']){
+      this.toast.pop('warning', '请选择付费公司!');
+      return '';
+    }
     if (!this.producefee['feetype']) {
       this.toast.pop('warning', '请选择费用类型！');
       return '';

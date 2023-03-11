@@ -40,6 +40,7 @@ export class VoucherComponent implements OnInit {
     { flag: 19, name: '每刻报库存现金-考核', url: 'cashkaohe' },
     { flag: 20, name: '每刻报职工公用借款-考核', url: 'workerloankaohe' },
     { flag: 14, name: '每刻报自定义数据-考核', url: 'costomkaohe' },
+    { flag: 14, name: '每刻报自定义数据-涉税', url: 'costomsheshui' },
     { flag: 21, name: '每刻报银行存款-涉税', url: 'bankcunNcSheshui' },
     { flag: 22, name: '每刻报库存现金-涉税', url: 'cashtax' },
     { flag: 14, name: '每刻报核销借款-涉税', url: 'loantax' },
@@ -51,7 +52,8 @@ export class VoucherComponent implements OnInit {
     { flag: 14, name: '借款单-考核', url: 'loankaohevoucher' },
     { flag: 14, name: '内部采购发票卖方-涉税', url: 'neicaigoufapiaosellernc' },
     { flag: 14, name: '内部采购发票买方-涉税', url: 'neicaigoufapiaobuyernc' },
-
+    { flag: 15, name: '未开票收入凭证', url: 'weikaipiaonc' },
+    { flag: 16, name: '前期已做收入本期开票凭证', url: 'weikaipiaodaokounc' },
   ];
   selectedData: any = {};
   // 开始时间最大时间

@@ -151,4 +151,8 @@ export class FeefukuanapiService {
   modifytaxrate(id, search) {
     return this.http.put('store/api/feefukuan/modifytaxrate/' + id, search).toPromise();
   }
+
+  pushcbs(search) {
+    return this.http.put('store/api/feefukuan/pushcbs', search).toPromise();
+  }
 }

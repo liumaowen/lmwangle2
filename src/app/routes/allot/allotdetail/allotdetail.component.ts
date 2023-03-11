@@ -820,7 +820,7 @@ export class AllotdetailComponent implements OnInit {
   // 确认调出
   submitVerify() {
     // this.modifyAllot();
-    if (this.model['cperson']['realname'] && null != this.model['impcangkuid'] && this.model['impcangkuid'] != this.model['expcangkuid']) {
+    if (null != this.model['impcangkuid'] && this.model['impcangkuid'] != this.model['expcangkuid']) {
       const dets = [];
       const wuliuorderdets = this.wuliuOffergridOptions.api.getModel()['rowsToDisplay']; // 获取选中的提货单明细
       for (let i = 0; i < wuliuorderdets.length; i++) {
@@ -853,9 +853,9 @@ export class AllotdetailComponent implements OnInit {
       if (null == this.model['impcangkuid']) {
         this.toast.pop('warning', '调入仓库为必填信息!');
       }
-      if (null == this.model['cpersonid']) {
-        this.toast.pop('warning', '确认到货人为必填信息!');
-      }
+      // if (null == this.model['cpersonid']) {
+      //   this.toast.pop('warning', '确认到货人为必填信息!');
+      // }
       if (this.model['impcangkuid'] === this.model['expcangkuid']) {
         this.toast.pop('warning', '调出与调入仓库不能相同!');
       }

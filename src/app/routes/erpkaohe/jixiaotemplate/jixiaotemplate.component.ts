@@ -63,17 +63,21 @@ export class JixiaotemplateComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '岗位', headerClass: 'wis-ag-center', minWidth: 80, field: 'post' },
       { cellStyle: { 'text-align': 'center' }, headerName: '姓名', headerClass: 'wis-ag-center', minWidth: 80, field: 'name' },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '五分评价', headerClass: 'wis-ag-center', field: 'jixiaoE',
-        enableRowGroup: true, minWidth: 80, aggFunc: 'sum'
+        cellClass: 'text-center', headerName: '行为绩效', headerClass: 'wis-ag-center',
+        children: [
+         { 
+          cellStyle:  'text-center', headerName: '五分评价', field: 'jixiaoE', enableRowGroup: true, minWidth: 80, aggFunc: 'sum'
+        }
+        ]   
       },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '实发绩效', headerClass: 'wis-ag-center', field: 'shifajixiao',
         enableRowGroup: true, minWidth: 80, aggFunc: 'sum'
       },
-      {
-        cellStyle: { 'text-align': 'center' }, headerName: '绩效工资', headerClass: 'wis-ag-center', field: 'jixiaosalary',
-        enableRowGroup: true, minWidth: 80, aggFunc: 'sum'
-      },
+      // {
+      //   cellStyle: { 'text-align': 'center' }, headerName: '绩效工资', headerClass: 'wis-ag-center', field: 'jixiaosalary',
+      //   enableRowGroup: true, minWidth: 80, aggFunc: 'sum'
+      // },
       {
         cellStyle: { 'text-align': 'center' }, headerName: 'A（数量绩效）', headerClass: 'wis-ag-center', field: 'jixiaoA',
         enableRowGroup: true, minWidth: 80, aggFunc: 'sum'
@@ -106,6 +110,11 @@ export class JixiaotemplateComponent implements OnInit {
           },
           {
             cellClass: 'text-center', headerName: 'ERP无票费用 ', field: 'nopiaofee',
+            minWidth: 80, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+            aggFunc: 'sum'
+          },
+          {
+            cellClass: 'text-center', headerName: '加工费', field: 'jiagongfee',
             minWidth: 80, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
             aggFunc: 'sum'
           },
@@ -165,37 +174,41 @@ export class JixiaotemplateComponent implements OnInit {
             minWidth: 80, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
             aggFunc: 'sum'
           },
-
+           {
+            cellClass: 'text-center', headerName: '营销激励', field: 'yingxiaojili',
+            minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+            aggFunc: 'sum'
+          },
           {
             cellClass: 'text-center', headerName: '发票逾期 ', field: 'fapiaoyuqi',
             minWidth: 80, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
             aggFunc: 'sum'
           },
-          {
-            cellClass: 'text-center', headerName: '销量激励', field: 'salejili',
-            minWidth: 80, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
-            aggFunc: 'sum'
-          },
-          {
-            cellClass: 'text-center', headerName: '项目销量目标完成激励', field: 'salejilifinish',
-            minWidth: 120, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
-            aggFunc: 'sum'
-          },
-          {
-            cellClass: 'text-center', headerName: '材料终端客户激励个数激励', field: 'cailiaojiligeshu',
-            minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
-            aggFunc: 'sum'
-          },
-          {
-            cellClass: 'text-center', headerName: '特殊产品激励', field: 'specialjili',
-            minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
-            aggFunc: 'sum'
-          },
-          {
-            cellClass: 'text-center', headerName: '材料终端客户激励销量激励', field: 'cailiaojilixiaoliang',
-            minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
-            aggFunc: 'sum'
-          }
+          // {
+          //   cellClass: 'text-center', headerName: '销量激励', field: 'salejili',
+          //   minWidth: 80, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+          //   aggFunc: 'sum'
+          // },
+          // {
+          //   cellClass: 'text-center', headerName: '项目销量目标完成激励', field: 'salejilifinish',
+          //   minWidth: 120, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+          //   aggFunc: 'sum'
+          // },
+          // {
+          //   cellClass: 'text-center', headerName: '材料终端客户激励个数激励', field: 'cailiaojiligeshu',
+          //   minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+          //   aggFunc: 'sum'
+          // },
+          // {
+          //   cellClass: 'text-center', headerName: '特殊产品激励', field: 'specialjili',
+          //   minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+          //   aggFunc: 'sum'
+          // },
+          // {
+          //   cellClass: 'text-center', headerName: '材料终端客户激励销量激励', field: 'cailiaojilixiaoliang',
+          //   minWidth: 100, editable: false, valueFormatter: this.settings.valueFormatter2, enableRowGroup: true,
+          //   aggFunc: 'sum'
+          // }
         ]
       },
       {

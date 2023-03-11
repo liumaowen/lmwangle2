@@ -74,11 +74,22 @@ export class OnechengbenComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter3
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '上月库存金额', field: 'lastkucunjine', minWidth: 60, enableRowGroup: true,
+        cellStyle: { 'text-align': 'center' }, headerName: '上月库存金额（含返利）', field: 'lastkucunjine', minWidth: 60, enableRowGroup: true,
         aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['lastkucunjine']) {
             return Number(params.data['lastkucunjine']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '上月库存金额', field: 'lastkucunjine1', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['lastkucunjine1']) {
+            return Number(params.data['lastkucunjine1']);
           } else {
             return 0;
           }
@@ -430,7 +441,7 @@ export class OnechengbenComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '销售成本', field: 'xschengben', minWidth: 60, enableRowGroup: true,
+        cellStyle: { 'text-align': 'center' }, headerName: '销售成本（含返利）', field: 'xschengben', minWidth: 60, enableRowGroup: true,
         aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['xschengben']) {
@@ -441,11 +452,33 @@ export class OnechengbenComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '毛利金额', field: 'maolijine', minWidth: 60, enableRowGroup: true,
+        cellStyle: { 'text-align': 'center' }, headerName: '销售成本', field: 'xschengben1', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['xschengben1']) {
+            return Number(params.data['xschengben1']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '毛利金额（含返利）', field: 'maolijine', minWidth: 60, enableRowGroup: true,
         aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['maolijine']) {
             return Number(params.data['maolijine']);
+          } else {
+            return 0;
+          }
+        }, valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '毛利金额', field: 'maolijine1', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['maolijine1']) {
+            return Number(params.data['maolijine1']);
           } else {
             return 0;
           }
@@ -474,11 +507,23 @@ export class OnechengbenComponent implements OnInit {
         valueFormatter: this.settings.valueFormatter3
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '本月库存金额', field: 'kucunjine', minWidth: 60, enableRowGroup: true,
+        cellStyle: { 'text-align': 'center' }, headerName: '本月库存金额（含返利）', field: 'kucunjine', minWidth: 60, enableRowGroup: true,
         aggFunc: 'sum',
         valueGetter: (params) => {
           if (params.data && params.data['kucunjine']) {
             return Number(params.data['kucunjine']);
+          } else {
+            return 0;
+          }
+        },
+        valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '本月库存金额', field: 'kucunjine1', minWidth: 60, enableRowGroup: true,
+        aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data && params.data['kucunjine1']) {
+            return Number(params.data['kucunjine1']);
           } else {
             return 0;
           }

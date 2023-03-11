@@ -343,7 +343,7 @@ export class SalebilldetailComponent implements OnInit {
   getMyRole() {
     let myrole = JSON.parse(localStorage.getItem('myrole'));
     for (let i = 0; i < myrole.length; i++) {
-      if ((myrole[i] === 5 || myrole[i] === 19 || myrole[i] === 37 || myrole[i] === 44 || myrole[i] === 35) && !(myrole[i] === 41 || myrole[i] === 42)) {
+      if ((myrole[i] === 5 || myrole[i] === 19 || myrole[i] === 37 || myrole[i] === 44 || myrole[i] === 35 || myrole[i] === 77) && !(myrole[i] === 41 || myrole[i] === 42)) {
         this.caiwu = true;
       }
     }

@@ -92,6 +92,7 @@ export class TasklistComponent implements OnInit {
         });
       });
     });
+    this.tasklist['producemode'] = '2';
     this.createModal.show();
   }
   findWiskind() {

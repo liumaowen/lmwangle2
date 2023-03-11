@@ -157,6 +157,7 @@ export class SaledetreportComponent implements OnInit {
         valueFormatter: this.settings.valueFormatter2
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '合同性质', field: 'ordertype', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '销售订单类型', field: 'ordertype1', minWidth: 110 },
       { cellStyle: { 'text-align': 'center' }, headerName: '采购类型', field: 'caigoutype', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '制单人', field: 'cusername', width: 75 },

@@ -46,7 +46,7 @@ export class KucunkulingComponent implements OnInit {
   data = new Array<any>();
   // 查询弹窗对象
   @ViewChild('classicModal') private classicModal: ModalDirective;
-  @ViewChild('tuihuoModal') private tuihuoModal: ModalDirective;
+  // @ViewChild('tuihuoModal') private tuihuoModal: ModalDirective;
   yuanjigou = false;
   tuihuo: object = { ids: [], supplierid: '', beizhu: '', sorgid: '', innersalePrice: '' };
   // 机构
@@ -122,18 +122,18 @@ export class KucunkulingComponent implements OnInit {
     this.gridOptions.groupSuppressAutoColumn = true;
     // 设置aggird表格列
     this.gridOptions.columnDefs = [
-      { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', minWidth: 90 },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '品名', field: 'gn', minWidth: 90 },
       { cellStyle: { 'text-align': 'center' }, headerName: '产地', field: 'chandi', minWidth: 90 },
       {
          cellStyle: { 'text-align': 'center' }, headerName: '库存总重量', field: 'tweight', minWidth: 60
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '权重库龄', field: 'qzkuling', minWidth: 55 },
-      { 
+      {
         cellStyle: { 'text-align': 'center' }, headerName: '期货库存量', field: 'qhweight', minWidth: 60
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '期货权重库龄', field: 'qhkuling', minWidth: 55 },
-      { 
+      {
         cellStyle: { 'text-align': 'center' }, headerName: '现货库存量', field: 'xhweight', minWidth: 60
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '现货权重库龄', field: 'xhkuling', minWidth: 55 },

@@ -195,4 +195,18 @@ export class CustomerapiService {
       return data.json() as any[];
     });
   }
+  updtebank(search) {
+    return this.http.put('store/api/baccount/updatebank',search).toPromise();
+  }
+  deletebank(id) {
+    return this.http.delete('store/api/baccount/deletebank/' + id).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  getCustomerSortData(month): Promise<any> {
+    return this.http.get('store/api/customer/getCustomerSortData/' + month).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+
 }

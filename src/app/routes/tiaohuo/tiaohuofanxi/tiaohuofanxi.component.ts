@@ -54,7 +54,8 @@ export class TiaohuofanxiComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '月份', field: 'dingjinmonth', width: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '机构', field: 'orgname', width: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '业务员', field: 'cusername', width: 100 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '业务员', field: 'cusername', width: 100 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '订单类型', field: 'ordertype', width: 100 },
     ];
   }
 

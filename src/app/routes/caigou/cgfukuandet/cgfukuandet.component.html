@@ -111,6 +111,26 @@
     <div class="row ">
       <div class="col-md-6 fieldsetdnn padding-top-bottom-15">
         <div class="row">
+          <div class="col-xs-4 control-label form-control-static">收款银行:</div>
+          <div class="col-xs-8 ">
+            <input type="text" [(ngModel)]="fukuanModel['shoubank']['bank']" name="shoubankname" class="form-control"
+              disabled="disabled" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 fieldsetdnn padding-top-bottom-15">
+        <div class="row">
+          <div class="col-xs-4 control-label form-control-static">收款账号:</div>
+          <div class="col-xs-8 ">
+            <input type="text" [(ngModel)]="fukuanModel['shoubanknnum']" name="shoubanknnum" class="form-control"
+              disabled="disabled" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-md-6 fieldsetdnn padding-top-bottom-15">
+        <div class="row">
           <div class="col-xs-4 control-label form-control-static">付款类型:</div>
           <div class="col-xs-8 ">
             <div type="text" name="kind" class="form-control" disabled="disabled">{{fukuanModel['kind'] | cgfkkind}}

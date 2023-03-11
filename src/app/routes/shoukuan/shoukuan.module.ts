@@ -19,6 +19,9 @@ import { ShoukuanhuizongComponent } from './shoukuanhuizong/shoukuanhuizong.comp
 import { ZhiyajinComponent } from './zhiyajin/zhiyajin.component';
 import { ZhiyajindetailComponent } from './zhiyajindetail/zhiyajindetail.component';
 import { SelectModule } from 'ng2-select';
+import {ReceiptreportComponent} from './receiptreport/receiptreport.component';
+import {ShoukuandetComponent} from './receiptreport/shoukuandet/shoukuandet.component';
+import {ReceiptService} from './receiptreport/service/receipt.service';
 
 const routes: Routes = [
   { path: 'zhiyajin', component: ZhiyajinComponent, data: { 'title': '质押金收款' } },
@@ -30,6 +33,7 @@ const routes: Routes = [
   { path: 'innertransfer', component: InnertransferreportComponent, data: { 'title': '内部转账明细表' } },
   { path: 'innertransfer/:id', component: InnertransferdetailComponent, data: { 'title': '内部转账详情' } },
   { path: 'shoukuanhuizong', component: ShoukuanhuizongComponent, data: { 'title': '资金总体情况表' } },
+  { path: 'receiptreport', component: ReceiptreportComponent, data: { 'title': '收据明细表' } },
 ];
 
 @NgModule({
@@ -53,15 +57,21 @@ const routes: Routes = [
     InnertransferdetailComponent,
     ShoukuanhuizongComponent,
     ZhiyajinComponent,
-    ZhiyajindetailComponent],
+    ZhiyajindetailComponent,
+    ReceiptreportComponent,
+    ShoukuandetComponent
+  ],
   exports: [
     RouterModule
   ],
   providers: [
     ShoukuanstatusPipe,
     AgentuserPipe,
-    ShoukuanService
+    ShoukuanService,
+    ReceiptService
+  ],
+  entryComponents: [
+    ShoukuandetComponent
   ]
-
 })
 export class ShoukuanModule { }

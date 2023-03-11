@@ -240,6 +240,20 @@ export class MatchcardetailComponent implements OnInit {
             });
           }
         }
+      },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '是否全款', field: 'isquankuan', minWidth: 60,
+        cellRenderer: (params) => {
+          if (params.data) {
+            if (params.data.isquankuan) {
+              return '全款';
+            } else {
+              return '非全款';
+            }
+          } else {
+            return '';
+          }
+        }
       }
       
     ];

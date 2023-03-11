@@ -8,6 +8,7 @@ import { ReportService } from '../report.service';
 import { ColDef, GridOptions } from 'ag-grid';
 import { SettingsService } from '../../../core/settings/settings.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { OrderapiService } from 'app/routes/order/orderapi.service';
 
 const sweetalert = require('sweetalert');
 
@@ -32,12 +33,14 @@ export class IntercompanyComponent implements OnInit {
   gridOptions: GridOptions;
   // 品名选择弹窗
   @ViewChild('mdmgndialog') private mdmgndialog: ModalDirective;
+  @ViewChild('updateneicaigoudialog') private updateneicaigoudialog: ModalDirective;
   attrs = [];
   constructor(public settings: SettingsService,
-    private reportApi: ReportService, private classifyApi: ClassifyApiService, private toast: ToasterService,
+    private reportApi: ReportService, private classifyApi: ClassifyApiService, private toast: ToasterService,private orderApi: OrderapiService,
     private router: Router, private datepipe: DatePipe, private orgApi: OrgApiService) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
+      rowSelection: 'multiple',
       suppressAggFuncInHeader: true,
       enableRangeSelection: true,
       rowDeselection: true,
@@ -56,6 +59,11 @@ export class IntercompanyComponent implements OnInit {
 
     // 设置aggird表格列
     this.gridOptions.columnDefs = [
+      { field: 'group', rowGroup: true, headerName: '合计', hide: true, valueGetter: (params) => '合计' },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '选择', minWidth: 72, pinned: 'left',
+        checkboxSelection: (params) => params.data, headerCheckboxSelection: true, headerCheckboxSelectionFilteredOnly: true,
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '订单号', field: 'orderbillno', minWidth: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '订单状态', field: 'billstatus', minWidth: 50 },
       // { cellStyle: { 'text-align': 'center' }, headerName: '审核', field: 'isv', minWidth: 50 },
@@ -72,22 +80,80 @@ export class IntercompanyComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '材质', field: 'caizhi', minWidth: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '后处理', field: 'ppro', minWidth: 80 },
       { 
-        cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'weight', minWidth: 60 ,
+        cellStyle: { 'text-align': 'right' }, headerName: '重量', field: 'weight', minWidth: 60 , aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data) {
+            return Number(params.data['weight']);
+          } else {
+            return 0;
+          }
+        },
         valueFormatter: this.settings.valueFormatter3
       },
       { 
         cellStyle: { 'text-align': 'right' }, headerName: '价格', field: 'price', minWidth: 80,
         valueFormatter: this.settings.valueFormatter2},
       { 
-        cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'jine', minWidth: 100
+        cellStyle: { 'text-align': 'right' }, headerName: '金额', field: 'jine', minWidth: 100,aggFunc: 'sum',
+        valueGetter: (params) => {
+          if (params.data['jine']) {
+            return Number(params.data['jine']);
+          } else {
+            return '';
+          }
+        }
         ,valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '单吨（加/减）/元', field: 'fapiaochae', minWidth: 70,
+        // cellRenderer: (params) => {
+        //   if (params.data && (this.cuser['admin'] || this.cuser['finance'])) {
+        //     return params.data['fapiaochae'];
+        //   } else {
+        //     return '';
+        //   }
+        // },
+        valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '开票单价', field: 'fapiaoprice', minWidth: 70,
+        // cellRenderer: (params) => {
+        //   if (params.data && (this.cuser['admin'] || this.cuser['finance'])) {
+        //     return params.data['fapiaoprice'];
+        //   } else {
+        //     return '';
+        //   }
+        // },
+        valueFormatter: this.settings.valueFormatter2
+      },
+      {
+        cellStyle: { 'text-align': 'right' }, headerName: '开票金额', field: 'fapiaojine', minWidth: 70,
+        // cellRenderer: (params) => {
+        //   if (params.data && (this.cuser['admin'] || this.cuser['finance'])) {
+        //     return params.data['fapiaojine'];
+        //   } else {
+        //     return '';
+        //   }
+        // },
+        valueFormatter: this.settings.valueFormatter2
       },
       // { cellStyle: { 'text-align': 'center' }, headerName: '日期', field: 'cdate', minWidth: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '下单日期', field: 'orderdate', minWidth: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '订单明细状态', field: 'detstatus', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '库存Id', field: 'kucunid', minWidth: 80 },
       { cellStyle: { 'text-align': 'center' }, headerName: '采购公司', field: 'buyername', minWidth: 80 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '销售公司', field: 'sellername', minWidth: 80 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '销售公司', field: 'sellername', minWidth: 80 },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '是否涉税开票', field: 'sheshuikaipiao', minWidth: 75,
+        // cellRenderer: (params) => {
+        //   if (params.data && (this.cuser['admin'] || this.cuser['finance'])) {
+        //     return params.data['sheshuikaipiao'];
+        //   } else {
+        //     return '';
+        //   }
+        // }
+      },
+      { cellStyle: { 'text-align': 'center' }, headerName: '标记（测试）', field: 'neibudetid', minWidth: 80 },
     ];
   }
 
@@ -165,5 +231,83 @@ export class IntercompanyComponent implements OnInit {
       }
     }
   }
-  
+  // 创建内部采购发票
+  neicaigoufapiao: any = { fapiaochae: null, beizhu: null };
+  reset() {
+    this.neicaigoufapiao = { fapiaochae: null, beizhu: null };
+  }
+  impdata: any = [];
+  @ViewChild('createneicaigoudialog') private createneicaigoudialog: ModalDirective;
+  showcreateneicaigoudialog() {
+    this.impdata = [];
+    const saleshourudets = this.gridOptions.api.getModel()['rowsToDisplay'];
+    let sellerid = undefined;
+    let buyerid = undefined;
+    for (let i = 0; i < saleshourudets.length; i++) {
+      if (saleshourudets[i].data && saleshourudets[i].selected && saleshourudets[i].data.price) {
+        if(!sellerid){
+          sellerid = saleshourudets[i].data.sellerid
+        }
+        if(!buyerid){
+          buyerid = saleshourudets[i].data.buyerid
+        }
+        if(!saleshourudets[i].data.sellerid){
+          this.toast.pop('warning', '请选择已创建合同的明细！！！');
+          return;
+        }
+        if(sellerid !== saleshourudets[i].data.sellerid){
+          this.toast.pop('warning', '请选择同一个销售公司的明细！！！');
+          return;
+        }
+        if(buyerid !== saleshourudets[i].data.buyerid){
+          this.toast.pop('warning', '请选择同一个采购公司的明细！！！');
+          return;
+        }
+        this.impdata.push(saleshourudets[i].data);
+      }
+    }
+    if (this.impdata.length === 0) {
+      this.toast.pop('warning', '请选择明细！！！');
+      return;
+    }
+    this.createneicaigoudialog.show();
+  }
+  createneicaigoufapiao() {
+    this.neicaigoufapiao.list = this.impdata;
+    console.log(this.neicaigoufapiao);
+    this.orderApi.createneicaigoufapiao(this.neicaigoufapiao).then((response) => {
+      this.reset();
+      this.router.navigateByUrl('neicaigoufapiao/' + response);
+    });
+  }
+  hidecreateneicaigoudialog() {
+    this.createneicaigoudialog.hide();
+  }
+  params = {};
+  impdataids = [];
+  updateDandunDialog(){
+    this.impdataids = [];
+    const saleshourudets = this.gridOptions.api.getModel()['rowsToDisplay'];
+    for (let i = 0; i < saleshourudets.length; i++) {
+      if (saleshourudets[i].data && saleshourudets[i].selected && saleshourudets[i].data.fapiaochae) {
+        this.impdataids.push(saleshourudets[i].data.id);
+      }
+    }
+    if (this.impdataids.length === 0) {
+      this.toast.pop('warning', '请选择明细！！！');
+      return;
+    }
+    this.params['middleids'] = this.impdataids;
+    this.updateneicaigoudialog.show();
+  }
+  hideupdateneicaigoudialog(){
+    this.updateneicaigoudialog.hide();
+  }
+  updateDandun(){
+    this.params['fapiaochae'] = this.neicaigoufapiao['fapiaochae'];
+    this.params['beizhu'] = this.neicaigoufapiao['beizhu'];
+    this.orderApi.updateDandun(this.params).then((response) => {
+      this.hideupdateneicaigoudialog();
+    });
+  }
 }

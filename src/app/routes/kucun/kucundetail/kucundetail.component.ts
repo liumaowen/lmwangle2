@@ -38,8 +38,8 @@ export class KucundetailComponent implements OnInit {
   // 记录全部数量
   msglength;
   orgtypes: any = [{ value: '', label: '请选择机构' }, { value: '22427', label: '资源中心' }];
-  // 默认禁止选择
   disabled = true;
+  默认禁止选择
   //边丝调价非邯郸机构不允许查看
   isshowbiansitiaojia = false;
 
@@ -360,17 +360,27 @@ export class KucundetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '超期库龄', field: 'days', minWidth: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '原产地', field: 'originchandi', minWidth: 70, colId: 'originchandi' },
       { cellStyle: { 'text-align': 'center' }, headerName: '钢卷类型', field: 'ftype', minWidth: 80, colId: 'ftype' },
-      { cellStyle: { 'text-align': 'center' }, headerName: '销售公司', field: 'buyername2', minWidth: 80, colId: 'buyername2' }
+      { cellStyle: { 'text-align': 'center' }, headerName: '销售公司', field: 'buyername2', minWidth: 80, colId: 'buyername2' },
+      {
+        cellStyle: { 'text-align': 'center' }, headerName: '边丝调价备注', field: 'pricebeizhu', minWidth: 60, editable: true, valueGetter: (params) => {
+          if (params.data && params.data['pricebeizhu']) {
+            return params.data['pricebeizhu'];
+          } else {
+            return '';
+          }
+        }
+      },
     ];
     this.getMyRole2();
   }
 
   ngOnInit() {
     // this.listDetail();
-    const user = this.storage.getObject('cuser');
-    if (user.orgid === 16609) {
-      this.isshowbiansitiaojia = true;
-    }
+    // 20230208 增加边丝调价功能 放开针对邯郸加工中心的限制
+    // const user = this.storage.getObject('cuser');
+    // if (user.orgid === 16609) {
+      // this.isshowbiansitiaojia = true;
+    // }
     this.getMyRole();
   }
 
@@ -400,7 +410,7 @@ export class KucundetailComponent implements OnInit {
   listDetail() {
     this.gridOptions.api.setRowData([]);
     this.kucunapi.listDetail(this.search).then(data => {
-      console.log(data)
+      // console.log(data)
       this.msg = '';
       this.gridOptions.api.setRowData(data);
       this.gridOptions.columnApi.autoSizeAllColumns();
@@ -838,7 +848,7 @@ export class KucundetailComponent implements OnInit {
       this.toast.pop('warning', '请选择库存!');
       return;
     }
-    const param = { kucunids: null };
+    const param = { kucunids: [] };
     param.kucunids = kucunids;
     if (confirm('你确定标记这些库存中的货物不允许上架吗？')) {
       this.kucunapi.sign({ search: param }).then(data => {
@@ -863,7 +873,7 @@ export class KucundetailComponent implements OnInit {
       this.toast.pop('warning', '请选择库存!');
       return;
     }
-    const param = { kucunids: null };
+    const param = { kucunids: [] };
     param.kucunids = kucunids;
     if (confirm('你确定标记这些库存中的货物限时优惠吗？')) {
       this.kucunapi.youhui({ search: param }).then(data => {
@@ -904,21 +914,24 @@ export class KucundetailComponent implements OnInit {
   }
   //弹出框修改价格
   @ViewChild('biansitiaojiadialog') private biansitiaojiadialog: ModalDirective;
-  biansiprice = { price: null };
+  biansiprice = { price: null};
   showBiansiTiaojia() {
-    this.biansitiaojiadialog.show();
+    // const user = this.storage.getObject('cuser');
+    // if (user.orgid === 16609) {
+      this.biansitiaojiadialog.show();
+    // }
   }
   closeBiansitiaojia() {
     this.biansitiaojiadialog.hide();
   }
   //边丝边料调价
   biansitiaojia() {
-    if (!this.biansiprice.price) {
-      this.toast.pop('warning', '请填写价格后再提交');
-      return;
-    }
+    // if (!this.biansiprice.price) {
+    //   this.toast.pop('warning', '请填写价格后再提交');
+    //   return;
+    // }
     let list = [];
-    let kucunids = [];
+    const kucunids = [];
     list = this.gridOptions.api.getModel()['rowsToDisplay'];
     list.forEach(element => {
       if (element.selected) {
@@ -933,12 +946,16 @@ export class KucundetailComponent implements OnInit {
       this.toast.pop('warning', '请选择库存!');
       return;
     }
-    const param = { kucunids: null, price: null };
+    const param = { kucunids: [], price: null};
     param.kucunids = kucunids;
-    param.price = this.biansiprice.price;
+    // param.price = this.biansiprice.price;
     this.kucunapi.biansitiaojia(param).then(data => {
-      this.closeBiansitiaojia();
-      this.toast.pop('success', '请刷新库存查看价格！');
+      // this.closeBiansitiaojia();
+      // this.toast.pop('success', '请刷新库存查看价格！');
+      const templog = {};
+      templog['pricelogid'] = 0;
+      templog['priceids'] = kucunids;
+      this.router.navigate(['pricelogdet', 1], { queryParams: templog });
     });
   }
   // 查看质保书的路径
@@ -991,6 +1008,9 @@ export class KucundetailComponent implements OnInit {
     for (let i = 0; i < myrole.length; i++) {
       if (myrole[i] === 6 || myrole[i] === 21|| myrole[i] === 33 || myrole[i] === 34) {
         this.neiwuWaiwu = true;
+      }
+      if ((myrole[i] === 14 || myrole[i] === 21 ) && myrole[i] !== 63) {
+        this.isshowbiansitiaojia = true;
       }
     }
   }

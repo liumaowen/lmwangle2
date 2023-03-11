@@ -14,6 +14,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class SalebillcountComponent implements OnInit {
   @ViewChild('classicModal') private classicModal: ModalDirective;
+  @ViewChild('uploadbiaojiModal') private uploadbiaojiModal: ModalDirective;
+
   querys = { isonline: '', orgid: '' };
   gridOptions: GridOptions;
   constructor(public settings: SettingsService, private storage: StorageService, private orderApi: OrderapiService,
@@ -105,7 +107,8 @@ export class SalebillcountComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '实提时间', field: 'stdate', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '销售时间', field: 'saledate', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 150 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '标记未开票收入', field: 'weikaipiaoshouru', width: 150 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '标记未开票收入', field: 'weikaipiaoshouru', width: 150 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '明细ID', field: 'billid', width: 150 },
     ];
     this.kaipiaoList();
   }
@@ -169,12 +172,33 @@ export class SalebillcountComponent implements OnInit {
   }
   // 是否生成凭证
   makepingzheng() {
-    if ('你确定要对标记的明细生成未开票收入凭证吗？') {
+    if (confirm('你确定要对标记的明细生成未开票收入凭证吗？')) {
       this.orderApi.makepingzheng().then(data => {
         this.toast.pop('success', '凭证生成完成，请在钉钉群中查看信息！！！');
       });
     }
   }
+  uploadbiaoji() {
+    this.uploadbiaojiModal.show();
+  }
+  uploadParam2: any = { module: 'ruku', count: 1, sizemax: 5, extensions: ['xls'] };
+  // 设置上传文件类型
+  acceptnum = '.xls, application/xls';
+    // 关闭上传弹窗
+    hideuploadDialog() {
+      this.uploadbiaojiModal.hide();
+    }
+    uploadsbiaoji($event) {
+      const json: any = {};
+      json.url = [$event.url];
+      if ($event.length !== 0) {
+        this.orderApi.matchingbiaoji(json).then(data => {
+          this.toast.pop('success', '上传成功！');
+          this.hideuploadDialog();
+          this.query();
+        });
+      }
+    }
 
 
 }

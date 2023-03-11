@@ -34,7 +34,7 @@ export class InnersaleComponent implements OnInit {
 
   //分页点击查询
   pageChanged(event: any): void {
-    this.search['salemanid'] = this.current.id;
+    // this.search['salemanid'] = this.current.id;
     this.search['pagenum'] = event.page;
     this.search['pagesize'] = event.itemsPerPage;
     this.listDetail();

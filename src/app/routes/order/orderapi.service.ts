@@ -526,10 +526,72 @@ export class OrderapiService {
       return data.json() as any[];
     });
   }
-   //开票单上传发票
-   uploadfp3(search): Promise<any> {
+  //开票单上传发票
+  uploadfp3(search): Promise<any> {
     return this.http.put('store/api/advanceinvoice/uploadfp2', search).toPromise().then(data => {
       return data.json() as any;
+    });
+  }
+  verifyneicaipiao(search) {
+    return this.http.put('store/api/neicaigoufapiao/verifyneicaipiao', search).toPromise();
+  }
+  matchingbiaoji(model) {
+    return this.http.post('store/api/salebill/matchingbiaoji', model).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  updateDandun(search): Promise<any> {
+    return this.http.put('store/api/neicaigoufapiao/updatedandun', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  // 获取自有品牌销量情况
+  getprivatesaledet(search): Promise<any> {
+    return this.http.get('store/api/report/privatelabelsaledet', { search: search }).toPromise().then(data => {
+        return data.json() as any[];
+      });
+    }
+
+  // 删除自由品牌计划量
+  deleteprivateplan(search): Promise<any> {
+    return this.http.post('store/api/orgprivateplan/delete', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  // 获取自有品牌各机构计划量明细表
+  getprivateplanList(): Promise<any> {
+    return this.http.get('store/api/orgprivateplan/getOrgplanList').toPromise().then(data => {
+      return data.json() as any[];
+    });
+ }
+  // 修改机构计划量
+  updateprivateplan(search): Promise<any> {
+    return this.http.put('store/api/orgprivateplan/update', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+     // 添加机构计划量
+  createprivateplan(search): Promise<any> {
+    return this.http.post('store/api/orgprivateplan/create', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  /**自有品牌销量进度表历史记录月份 */
+  privatesalegroupByMonth() {
+    return this.http.get('store/api/report/privatesalegroupByMonth').toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+      // 修改机构代钢品下单量
+  updateprivatedaigp(search): Promise<any> {
+    return this.http.put('store/api/privatedaigp/update', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+  // 获取各机构代钢品下单量明细表
+  getprivateDaigpList(): Promise<any> {
+    return this.http.get('store/api/privatedaigp/getDaigpList').toPromise().then(data => {
+      return data.json() as any[];
     });
   }
 }

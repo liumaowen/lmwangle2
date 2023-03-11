@@ -70,4 +70,16 @@ export class PriceapiService {
   delpricelogdet(pricelogdetid) {
     return this.http.delete('store/api/pricelog/det/' + pricelogdetid).toPromise();
   }
+
+  getkucunSelect(search) {
+    return this.http.get('store/api/kucun/selected', { search: search }).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
+
+  createpricelogfromkucun(search) {
+    return this.http.post('store/api/kucun/createpricelog', search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

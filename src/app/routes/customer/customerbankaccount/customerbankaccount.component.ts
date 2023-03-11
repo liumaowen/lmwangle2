@@ -13,6 +13,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class CustomerbankaccountComponent implements OnInit {
 
   @ViewChild('classicModal') private classicModal: ModalDirective;
+  @ViewChild('updateModal') private updateModal: ModalDirective;
 
   tableData;
 
@@ -77,6 +78,28 @@ export class CustomerbankaccountComponent implements OnInit {
 
   hideclassicModal() {
     this.classicModal.hide();
+  }
+  showupdateModel(id){
+    this.bank['id'] = id;
+    this.updateModal.show();
+  }
+  hideupdateModal(){
+    this.updateModal.hide();
+  }
+  update() {
+    this.customerApi.updtebank(this.bank).then(data => {
+      this.toast.pop('success', '修改成功');
+      this.querydata();
+      this.hideupdateModal();
+    });
+  }
+  delete(id){
+    if(confirm("你确定要删除吗？")){
+      this.customerApi.deletebank(id).then(data => {
+        this.toast.pop('success', '删除成功');
+        this.querydata();
+      });
+    }
   }
 
 

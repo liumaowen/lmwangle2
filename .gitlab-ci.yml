@@ -1,0 +1,118 @@
+stages:
+  - test
+  - deploy
+  - notice
+
+pre-merge:
+  stage: test
+  image: dnn-node-dev
+  script:
+    - sleep 2
+    - echo post-merge
+  only:
+    - merge_requests
+  tags:
+    - docker
+
+deploy:test:
+  stage: deploy
+  image: dnn-deployer-novpn
+  script:
+    - echo stage1 image build and push
+    - docker login registry.cn-hangzhou.aliyuncs.com -u wiskindjt -p Wisdom123
+    - export DOCKER_IMAGE_TAG=$CI_COMMIT_SHORT_SHA-$(($(date '+%s%N') / 1000000))
+    - export DEPLOYMENT_IMAGE="registry.cn-hangzhou.aliyuncs.com/wiskind/gmerp-frontend-test:$DOCKER_IMAGE_TAG"
+    - docker build --no-cache -f Dockerfile-test -t $DEPLOYMENT_IMAGE . > /dev/null 2>&1
+    - docker push $DEPLOYMENT_IMAGE
+    - docker rmi $DEPLOYMENT_IMAGE
+    ########################################################################################################
+    - echo stage2 deploy to k8s test
+    - kubectl config use-context gm-noprod
+    # - kubectl get deploy -n gm-noprod
+    # change image version
+    - kubectl set image deploy dnn-gm-frontend-test *=$DEPLOYMENT_IMAGE -n gm-noprod
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'master'
+      when: manual
+    - when: never
+  tags:
+    - docker
+
+notice-success:test:
+  stage: notice
+  script:
+    - export MSG=$(jo msgtype=text text=$(jo content=$(date +%Y-%m-%d'T'%H:%M:%S)测试环境前端部署成功))
+    - >
+      curl -H 'Content-Type: application/json' -d $MSG 
+      'https://oapi.dingtalk.com/robot/send?access_token=a8a88814204bf5c31e22a126d0ecc7b31cd1d98df80fc7ea502816cdd517e6a2'
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'master'
+      when: on_success
+    - when: never
+  tags:
+    - td
+
+notice-failure:test:
+  stage: notice
+  script:
+    - export MSG=$(jo msgtype=text text=$(jo content=$(date +%Y-%m-%d'T'%H:%M:%S)测试环境前端部署失败))
+    - >
+      curl -H 'Content-Type: application/json' -d $MSG 
+      'https://oapi.dingtalk.com/robot/send?access_token=a8a88814204bf5c31e22a126d0ecc7b31cd1d98df80fc7ea502816cdd517e6a2'
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'master'
+      when: on_failure
+    - when: never
+  tags:
+    - td
+
+deploy:prod:
+  stage: deploy
+  script:
+    - echo stage1 image build and push
+    - docker logout harbor.wiskind.cn
+    - docker login harbor.wiskind.cn -u td -p Wsd@1234
+    - export DOCKER_IMAGE_TAG=$CI_COMMIT_SHORT_SHA-$(($(date '+%s%N') / 1000000))
+    - export DEPLOYMENT_IMAGE="harbor.wiskind.cn/td/gmerp/gmerp-frontend:$DOCKER_IMAGE_TAG"
+    - docker build --no-cache -f Dockerfile-gm -t $DEPLOYMENT_IMAGE . > /dev/null 2>&1
+    - docker push $DEPLOYMENT_IMAGE
+    - docker rmi $DEPLOYMENT_IMAGE
+    - docker logout harbor.wiskind.cn
+    ########################################################################################################
+    - echo stage2 deploy to k8s prod
+    - kubectl config use-context k8s@prod
+    - kubectl set image deploy gmerp-frontend *=$DEPLOYMENT_IMAGE -n td
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'prod'
+      when: manual
+    - when: never
+  tags:
+    - td
+
+notice-success:prod:
+  stage: notice
+  script:
+    - export MSG=$(jo msgtype=text text=$(jo content=$(date +%Y-%m-%d'T'%H:%M:%S)正式环境前端部署成功))
+    - >
+      curl -H 'Content-Type: application/json' -d $MSG 
+      'https://oapi.dingtalk.com/robot/send?access_token=a8a88814204bf5c31e22a126d0ecc7b31cd1d98df80fc7ea502816cdd517e6a2'
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'prod'
+      when: on_success
+    - when: never
+  tags:
+    - td
+
+notice-failure:prod:
+  stage: notice
+  script:
+    - export MSG=$(jo msgtype=text text=$(jo content=$(date +%Y-%m-%d'T'%H:%M:%S)正式环境前端部署失败))
+    - >
+      curl -H 'Content-Type: application/json' -d $MSG 
+      'https://oapi.dingtalk.com/robot/send?access_token=a8a88814204bf5c31e22a126d0ecc7b31cd1d98df80fc7ea502816cdd517e6a2'
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'prod'
+      when: on_failure
+    - when: never
+  tags:
+    - td

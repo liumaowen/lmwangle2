@@ -42,6 +42,12 @@ export class FeefukuandetComponent implements OnInit {
   companyOfCode;
 
   cuser;
+  excelStyles = [
+    {
+    //  必填 样式的ID，该id是唯一的字符串
+      id: 'invoicenostr',
+      dataType:'string'
+    }];
 
   types = [{ label: '全部', value: '' },
   { label: '汽运费', value: '1' },
@@ -135,7 +141,7 @@ export class FeefukuandetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '实际收款单位', field: 'actualfeecustomername', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '实际收款人', field: 'actrcustomername', width: 120 },
       { cellStyle: { 'text-align': 'center' }, headerName: '实际收款银行', field: 'actualbank', width: 120 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '实际收款账号', field: 'actualbaccount', width: 120 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '实际收款账号', field: 'actualbaccount', width: 120 ,cellClass: ['invoicenostr']},
       { cellStyle: { 'text-align': 'center' }, headerName: '部门', field: 'orgname', width: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '费用类型', field: 'types', width: 120 },
       { 
@@ -183,7 +189,7 @@ export class FeefukuandetComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '审核人', field: 'vusername', width: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '复核人', field: 'checkusername', width: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '付款人', field: 'payusername', width: 70 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '发票号码', field: 'fapiaono', width: 70 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '发票号码', field: 'fapiaono', width: 70,cellClass: ['invoicenostr']  },
       { cellStyle: { 'text-align': 'center' }, headerName: '支付方式', field: 'paytype', width: 70 },
       { cellStyle: { 'text-align': 'center' }, headerName: '会计科目', field: 'paycode', width: 70 },
 

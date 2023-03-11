@@ -191,6 +191,7 @@ export class OrginterestComponent implements OnInit {
           }
         }, valueFormatter: this.settings.valueFormatter2
       },
+      // { cellStyle: { 'text-align': 'center' }, headerName: '供应商', field: 'suppliername', width: 100 },
     ];
 
     this.gnGridOptions.columnDefs = [
@@ -311,11 +312,16 @@ export class OrginterestComponent implements OnInit {
 
   listDetail() {
     this.orginterestService.getAllTable(this.requestparams).then((response) => {
+      if(this.zj)
       this.gridOptions.api.setRowData(response.summaryList);
+      if(this.yufu)
       this.yufuGridOptions.api.setRowData(response.yufuSummaryList);
+      if(this.kucun)
       this.kucunGridOptions.api.setRowData(response.kucunSummaryList);
-      this.gnGridOptions.api.setRowData(response.gnSummaryList);
+      // this.gnGridOptions.api.setRowData(response.gnSummaryList);
+      if(this.zykucun)
       this.ziyuanKucunOptions.api.setRowData(response.ziyuanKucunSummary);
+      if(this.center)
       this.ziyuanGridOptions.api.setRowData(response.ziyuanSummaryList);
     });
   };
@@ -349,11 +355,27 @@ export class OrginterestComponent implements OnInit {
   }
   // 获取用户角色，如果登陆的用户不是财务，设置为不可见
   center:boolean = false;
+  zj:boolean = false;
+  yufu:boolean = false;
+  kucun:boolean = false;
+  zykucun:boolean = false;
   getMyRole() {
     let myrole = JSON.parse(localStorage.getItem('myrole'));
     for (let i = 0; i < myrole.length; i++) {
-      if (myrole[i] === 71) {
+      if (myrole[i] === 71 || myrole[i] === 1) {
         this.center = true;
+      }
+      if(myrole[i] === 72 || myrole[i] === 14 || myrole[i] === 1 || myrole[i] === 26){
+        this.zj = true;
+      }
+      if (myrole[i] === 73 || myrole[i] === 1) {
+        this.yufu = true;
+      }
+      if (myrole[i] === 74 || myrole[i] === 1) {
+        this.kucun = true;
+      }
+      if (myrole[i] === 75 || myrole[i] === 1) {
+        this.zykucun = true;
       }
     }
   }
