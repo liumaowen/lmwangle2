@@ -113,3 +113,32 @@
     </div>
   </div>
 </div>
+<div class="modal" bsModal #CreateModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideCreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">收据备注</label>
+              <div class="col-sm-9">
+                <input type="text" name="price" placeholder="请输入备注" class="form-control"[(ngModel)]="receiptData['createbeizhu']"/>
+              </div>
+            </div>
+            <span class="col-sm-3" style="color: red;">*非必填备注</span>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="createReceipt()" class="btn btn-primary btn-large">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

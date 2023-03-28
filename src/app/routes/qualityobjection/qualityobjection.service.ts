@@ -136,4 +136,9 @@ export class QualityobjectionService {
       return data.json() as any;
     });
   }
+  importkucun(search): Promise<any> {
+    return this.http.post('store/api/quality/importkucun', search).toPromise().then(data => {
+      return data.json() as any;
+    });
+  }
 }

@@ -65,6 +65,7 @@ import { ChengyunweightModule } from './chengyunweight/chengyunweight.module';
 import { WuliupushModule } from './wuliupush/wuliupush.module';
 import { IntercompanyModule } from './intercompany/intercompany.module';
 import { TiaohuoModule } from '../tiaohuo/tiaohuo.module';
+import {XmdReportModule} from '../xmd/xmd.module';
 
 
 
@@ -135,7 +136,8 @@ const routes: Routes = [
     ChengyunweightModule,
     WuliupushModule,
     IntercompanyModule,
-    TiaohuoModule
+    TiaohuoModule,
+    XmdReportModule
   ],
   declarations: [ReportComponent],
   exports: [

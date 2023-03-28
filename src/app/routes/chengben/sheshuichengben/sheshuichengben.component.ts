@@ -179,7 +179,7 @@ export class SheshuichengbenComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter3
       },
       {
-        cellStyle: { 'text-align': 'center' }, headerName: '本月进货估价量', field: 'benjinyuguprice', minWidth: 60, enableRowGroup: true,
+        cellStyle: { 'text-align': 'center' }, headerName: '本月进货估价单价', field: 'benjinyuguprice', minWidth: 60, enableRowGroup: true,
         valueGetter: (params) => {
           if (params.data && params.data['benjinyuguprice']) {
             return Number(params.data['benjinyuguprice']);

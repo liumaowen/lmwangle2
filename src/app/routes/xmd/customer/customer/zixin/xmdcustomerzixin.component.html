@@ -1,0 +1,198 @@
+<div>
+  <div class="button-toolbar clearfix mb">
+    <div class="btn-group">
+      <h4>
+        <em class="fa"></em>
+      </h4>
+    </div>
+
+    <div class="pull-right">
+      <button type="button" (click)="addzixin()" class="btn btn-info btn-sm margin-top-bottom-25">
+        添加
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-body" style="padding-top:0;">
+    <div class="panel panel-default" *ngIf="!tableData">
+      <div class="row" style="margin-left:0">
+        <h4 class="col-sm-12">没有数据！</h4>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="tableData">
+      <table class="table table-striped" [mfData]="tableData" #mf="mfDataTable" [mfActivePage]="querys['pagenum']"
+      [mfRowsOnPage]="querys['pagesize']">
+        <thead>
+          <tr>
+            <th style="width: 13%">
+              <mfDefaultSorter by="cdate">评价时间</mfDefaultSorter>
+            </th>
+            <th style="width: 11%">
+              <mfDefaultSorter by="eusername">评价人</mfDefaultSorter>
+            </th>
+            <th style="width: 13%">
+              <mfDefaultSorter by="zjshili">资金实力</mfDefaultSorter>
+            </th>
+            <th style="width: 13%">
+              <mfDefaultSorter by="companysize">公司规模</mfDefaultSorter>
+            </th>
+            <th style="width: 13%">
+              <mfDefaultSorter by="carnum">车辆数量</mfDefaultSorter>
+            </th>
+            <th style="width: 13%">
+              <mfDefaultSorter by="paypinlv">运费支付频率</mfDefaultSorter>
+            </th>
+            <th style="width: 11%">
+              <mfDefaultSorter by="safegrade">安全性</mfDefaultSorter>
+            </th>
+            <th style="width: 13%">
+              <mfDefaultSorter by="compensate">赔偿能力</mfDefaultSorter>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let model of mf.data">
+            <td>{{model.cdate | date:'yyyy-MM-dd HH:mm'}}</td>
+            <td>{{model.eusername}}</td>
+            <td>{{model.zjshili}}</td>
+            <td>{{model.companysize}}</td>
+            <td>{{model.carnum}}</td>
+            <td>{{model.paypinlv}}</td>
+            <td>{{model.safegrade}}</td>
+            <td>{{model.compensate}}</td>
+          </tr>
+        </tbody>
+        <tfoot *ngIf="totalItems>querys['pagesize']">
+          <tr>
+            <td colspan="10">
+              <pagination class="pagination-xs" [totalItems]="totalItems" [maxSize]="8" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+              nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+            </td>
+          </tr>
+          </tfoot>
+      </table>
+    </div>
+
+
+  </div>
+</div>
+
+
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">资信及运营情况评价</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+              <label class="col-sm-2 control-label" style="padding:0;float: none;">一、资金实力</label>
+              <div class="col-sm-10">
+                <div class="row mb col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+                  <label class="col-sm-10 control-label form-control-static">注册资金≥1000万及本司自营开票，证件齐全及缴纳保证金且有效，资金实力雄厚，诚信经营</label>
+                  <label class="col-sm-2 radio-inline c-radio">
+                    <input type="radio" value="10" name="zjshili" [(ngModel)]="zixin['zjshili']"/>
+                    <span class="fa fa-circle"></span>10分
+                  </label>
+                </div>
+                <div class="row mb col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+                  <label class="col-sm-10 control-label form-control-static">注册资金＜500万及本司自营开票，证件齐全及缴纳保证金且有效，资金一般，诚信经营</label>
+                  <label class="col-sm-2 radio-inline c-radio">
+                    <input type="radio" value="5" name="zjshili" [(ngModel)]="zixin['zjshili']"/>
+                    <span class="fa fa-circle"></span>5分
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 " style="border-bottom: 1px dashed #eee;"></div>
+            <div class="form-group mb fieldsetdnn col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+              <label class="col-sm-2 control-label" style="padding:0;">二、公司规模</label>
+              <div class="col-sm-10">
+                <div class="row mb col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+                  <label class="col-sm-10 control-label form-control-static">≥20人</label>
+                  <label class="col-sm-2 radio-inline c-radio">
+                    <input type="radio" value="2" name="companysize" [(ngModel)]="zixin['companysize']"/>
+                    <span class="fa fa-circle"></span>2分
+                  </label>
+                </div>
+                <div class="row mb col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+                  <label class="col-sm-10 control-label form-control-static">≥50人</label>
+                  <label class="col-sm-2 radio-inline c-radio">
+                    <input type="radio" value="5" name="companysize" [(ngModel)]="zixin['companysize']"/>
+                    <span class="fa fa-circle"></span>5分
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 " style="border-bottom: 1px dashed #eee;"></div>
+            <div class="form-group mb fieldsetdnn col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+              <label class="col-sm-2 control-label" style="padding:0;">三、车辆数量</label>
+              <div class="col-sm-10">
+                <div class="row mb col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+                  <label class="col-sm-10 control-label form-control-static">≥5辆</label>
+                  <label class="col-sm-2 radio-inline c-radio">
+                    <input type="radio" value="5" name="carnum" [(ngModel)]="zixin['carnum']"/>
+                    <span class="fa fa-circle"></span>5分
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 " style="border-bottom: 1px dashed #eee;"></div>
+            <div class="form-group mb fieldsetdnn col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+              <label class="col-sm-2 control-label" style="padding:0;">四、运费支付频率</label>
+              <div class="col-sm-10">
+                <div class="row mb col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+                  <label class="col-sm-10 control-label form-control-static">当月支付运费且卡天严格</label>
+                  <label class="col-sm-2 radio-inline c-radio">
+                    <input type="radio" value="2" name="paypinlv" [(ngModel)]="zixin['paypinlv']"/>
+                    <span class="fa fa-circle"></span>2分
+                  </label>
+                </div>
+                <div class="row mb col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+                  <label class="col-sm-10 control-label form-control-static">次月支付运费及发票准确无误，可与其协调具体付款时间</label>
+                  <label class="col-sm-2 radio-inline c-radio">
+                    <input type="radio" value="5" name="paypinlv" [(ngModel)]="zixin['paypinlv']"/>
+                    <span class="fa fa-circle"></span>5分
+                  </label>
+                </div>
+                <div class="row mb col-sm-12 row-flex flex-aligns" style="padding:0;float: none;">
+                  <label class="col-sm-10 control-label form-control-static">货物提完2个月以后支付运费</label>
+                  <label class="col-sm-2 radio-inline c-radio">
+                    <input type="radio" value="3" name="paypinlv" [(ngModel)]="zixin['paypinlv']"/>
+                    <span class="fa fa-circle"></span>3分
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 " style="border-bottom: 1px dashed #eee;"></div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-lg-2 control-label">安全性</label>
+              <div class="col-lg-8">
+                <input type="number" [(ngModel)]="zixin['safegrade']" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-lg-2 control-label">赔偿能力</label>
+              <div class="col-lg-8">
+                <input type="number" [(ngModel)]="zixin['compensate']" class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="save()" class="btn btn-primary btn-large">提交</button>
+          <button type="button" (click)="hideclassicModal()" class="btn btn-info btn-large">取消</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<toaster-container></toaster-container>

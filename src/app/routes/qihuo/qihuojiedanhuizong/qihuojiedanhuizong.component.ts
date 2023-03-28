@@ -31,7 +31,7 @@ export class QihuojiedanhuizongComponent implements OnInit {
       enableFilter: true,
     };
     this.gridOptions.onGridReady = this.settings.onGridReady;
-    this.gridOptions.groupSuppressAutoColumn = true;
+    // this.gridOptions.groupSuppressAutoColumn = true;
 
     // 设置aggird表格列
     this.gridOptions.columnDefs = [

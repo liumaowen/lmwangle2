@@ -22,7 +22,8 @@ deploy:test:
     - docker login registry.cn-hangzhou.aliyuncs.com -u wiskindjt -p Wisdom123
     - export DOCKER_IMAGE_TAG=$CI_COMMIT_SHORT_SHA-$(($(date '+%s%N') / 1000000))
     - export DEPLOYMENT_IMAGE="registry.cn-hangzhou.aliyuncs.com/wiskind/gmerp-frontend-test:$DOCKER_IMAGE_TAG"
-    - docker build --no-cache -f Dockerfile-test -t $DEPLOYMENT_IMAGE . > /dev/null 2>&1
+    - docker build --no-cache -f Dockerfile-test -t $DEPLOYMENT_IMAGE . 
+    # > /dev/null 2>&1
     - docker push $DEPLOYMENT_IMAGE
     - docker rmi $DEPLOYMENT_IMAGE
     ########################################################################################################

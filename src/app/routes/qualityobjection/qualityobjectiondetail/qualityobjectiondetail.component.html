@@ -224,7 +224,7 @@
       </div>
     </div>
   </div>
-  <div class="row fieldsetdnn" *ngIf = "qualityobjection['chulitype'] === 1 || qualityobjection['chulitype'] === 2">
+  <div class="row fieldsetdnn" *ngIf = "(qualityobjection['chulitype'] === 1 || qualityobjection['chulitype'] === 2) && qualityobjection['subtype'] === 1">
     <div class="col-lg-3 col-md-6">
       <div class="row">
         <div class="col-md-4 col-xs-6 control-label form-control-static" tooltip="销售处理类型">销售处理类型：</div>
@@ -302,6 +302,14 @@
         <div class="col-md-4 col-xs-6 control-label form-control-static">终止原因：</div>
         <div class="col-md-8 col-xs-6 form-control-static">
           {{qualityobjection['cancelbeizhu']}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">提报类型：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          {{qualityobjection['subtype']}}
         </div>
       </div>
     </div>

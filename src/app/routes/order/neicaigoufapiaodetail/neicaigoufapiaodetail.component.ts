@@ -8,6 +8,7 @@ import { ClassifyApiService } from 'app/dnn/service/classifyapi.service';
 import { StorageService } from 'app/dnn/service/storage.service';
 import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap';
 import { OrderapiService } from '../orderapi.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-neicaigoufapiaodetail',
@@ -36,7 +37,8 @@ export class NeicaigoufapiaodetailComponent implements OnInit {
 
   constructor(public settings: SettingsService, private toast: ToasterService,
     private route: ActivatedRoute, private storage: StorageService, private orderApi: OrderapiService,
-    private modalService: BsModalService, private router: Router, private classifyApi: ClassifyApiService) {
+    private modalService: BsModalService, private router: Router, private classifyApi: ClassifyApiService,
+    private datepipe: DatePipe) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       suppressAggFuncInHeader: true,
@@ -127,10 +129,12 @@ export class NeicaigoufapiaodetailComponent implements OnInit {
   }
 
   // 获取aggird 表格
+  model = {};
   listDetail() {
     console.log(this.route.params['value']);
     this.orderApi.getDetailAndList(this.route.params['value']['id']).then(data => {
-      this.neicaigoufapiao = data.neicaigoufapiao;
+      this.neicaigoufapiao = data.neicaigoufapiao.model;
+      this.model = data.neicaigoufapiao;
       this.gridOptions.api.setRowData(data.list);
     });
   }
@@ -143,6 +147,7 @@ export class NeicaigoufapiaodetailComponent implements OnInit {
   }
   // 修改开票品名和发票号
   @ViewChild('detmodifyModal') private detmodifyModal: ModalDirective;
+    @ViewChild('shenheModal') private shenheModal: ModalDirective;
   impdata: any = [];
   showDetmodify() {
     let gn = null;
@@ -199,10 +204,18 @@ export class NeicaigoufapiaodetailComponent implements OnInit {
       });
     }
   }
+  parms = {};
+  start = new Date();
+
+  maxDate = new Date();
+
+  end: Date;
   // 审核按钮
   verifybill() {
     if (confirm('你确定要审核吗？')) {
-      this.orderApi.verifyNeicaigoufapiaoVuser(this.route.params['value']['id'], {}).then(data => {
+      this.parms['vdate'] = this.datepipe.transform(this.start, 'yyyy-MM-dd');
+      this.parms['id'] = this.route.params['value']['id'];
+      this.orderApi.verifyNeicaigoufapiaoVuser(this.parms).then(data => {
         this.toast.pop('success', '审核成功');
         this.listDetail();
       });
@@ -235,6 +248,12 @@ export class NeicaigoufapiaodetailComponent implements OnInit {
       }
       this.listDetail();
     }
+  }
+  verifybillshow(){
+    this.shenheModal.show();
+  }
+  hideshenheModal(){
+    this.shenheModal.hide();
   }
 
 }

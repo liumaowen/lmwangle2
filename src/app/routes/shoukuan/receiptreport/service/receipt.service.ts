@@ -53,4 +53,10 @@ export class ReceiptService {
     });
   }
 
+  /**收据申请作废 */
+  zuofei(search): Promise<any> {
+    return this.http.post('store/api/receipt/cancel' , search).toPromise().then(data => {
+      return data.json() as any[];
+    });
+  }
 }

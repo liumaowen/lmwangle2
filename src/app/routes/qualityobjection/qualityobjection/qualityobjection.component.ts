@@ -114,7 +114,8 @@ export class QualityobjectionComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '销售赔付金额', field: 'salejine', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '销售赔付单号', field: 'salebillno', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '创建时间', field: 'cdate', minWidth: 100 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '创建人', field: 'cusername', minWidth: 80 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '创建人', field: 'cusername', minWidth: 80 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '提报类型', field: 'subtype', minWidth: 80 },
     ];
     this.gettype();
   }
@@ -201,4 +202,8 @@ export class QualityobjectionComponent implements OnInit {
       });
     });
   }
+  subtypes = [
+    { label: '提单质量异议', value: 1 },
+    { label: '库存质量异议', value: 2 }
+  ];
 }

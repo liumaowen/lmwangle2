@@ -39,7 +39,9 @@ export const routes = [
             { path: 'question', loadChildren: './question/question.module#QuestionModule' },
             { path: 'echarts', loadChildren: './echarts/echarts.module#EchartsModule' },
             { path: 'qualityobjection', loadChildren: './qualityobjection/qualityobjection.module#QualityobjectionModule' },
-            { path: 'mdm', loadChildren: './mdm/mdm.module#MdmModule' }
+            { path: 'mdm', loadChildren: './mdm/mdm.module#MdmModule' },
+            { path: 'xmdcustomer', loadChildren: './xmd/customer/xmdcustomer.module#XmdCustomerModule' },
+            // { path: 'mycustomer', loadChildren: './mycustomer/mycustomer.module#MycustomerModule' },
         ]
     },
     // Not lazy-loaded routes

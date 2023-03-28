@@ -386,7 +386,8 @@ export class AdvanceinvoicedetailComponent implements OnInit {
   }
 
   // tslint:disable-next-line:member-ordering
-  @ViewChild('classicModal') private classicModal: ModalDirective;
+  // @ViewChild('classicModal')
+  private classicModal: ModalDirective;
 
   showclassicModal() {
     this.classicModal.show();

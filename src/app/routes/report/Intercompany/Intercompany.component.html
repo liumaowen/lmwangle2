@@ -135,6 +135,12 @@ aria-hidden="true">
                   [(ngModel)]="neicaigoufapiao['beizhu']" />
               </div>
             </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">标记时间</label>
+              <div class="col-sm-9  wiskind-calendar">
+                <p-calendar [(ngModel)]="start" placeholder="开始时间" [maxDate]="end || maxDate"></p-calendar>
+              </div>
+            </div>
           </div>
         </div>
       </div>

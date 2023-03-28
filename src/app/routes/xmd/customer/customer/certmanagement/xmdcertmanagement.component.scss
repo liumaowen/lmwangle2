@@ -1,0 +1,32 @@
+/*水平方向盒子*/
+.row-flex {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -moz-box-orient: horizontal;
+  -moz-box-direction: normal;
+  flex-direction: row;
+  flex-flow: row;
+  -webkit-flex-direction: row;
+  /* flex-wrap:wrap;
+  -webkit-flex-wrap:wrap; */
+  box-sizing: border-box;
+}
+
+.flex-aligns {
+  -webkit-align-content: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+}

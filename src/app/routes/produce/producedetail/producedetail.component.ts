@@ -145,19 +145,19 @@ export class ProducedetailComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '是否入资源中心', field: 'iskucundetail', width: 110 },
       {
         cellStyle: { 'text-align': 'center' }, headerName: '成品类型', field: 'fptype', width: 90,
-        cellRenderer: (params) => {
-          if (params.data.fptype === 1) {
-            return '成品';
-          } else if (params.data.fptype === 2) {
-            return '余卷';
-          } else if (params.data.fptype === 3) {
-            return '边料';
-          } else if (params.data.fptype === 4) {
-            return '边丝';
-          } else {
-            return '';
-          }
-        }
+        // cellRenderer: (params) => {
+        //   if (params.data.fptype === 1) {
+        //     return '成品';
+        //   } else if (params.data.fptype === 2) {
+        //     return '余卷';
+        //   } else if (params.data.fptype === 3) {
+        //     return '边料';
+        //   } else if (params.data.fptype === 4) {
+        //     return '边丝';
+        //   } else {
+        //     return '';
+        //   }
+        // }
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 90 },
       {

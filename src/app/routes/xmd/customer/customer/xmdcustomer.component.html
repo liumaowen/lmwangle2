@@ -1,0 +1,257 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 新美达-客户管理
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="queryDialog()">查询</button>
+    <button type="button" class="btn btn-info btn-bloc" (click)="createDialog()">创建</button>
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="tableData">
+  <table class="table table-striped" [mfData]="tableData" #mf="mfDataTable" [mfRowsOnPage]="10">
+    <tbody>
+    <tr *ngFor="let model of mf.data">
+      <td class="row" style="width:100%;">
+        <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>编号:</label>
+          <a
+            [routerLink]="['/xmdcustomer', model.money?model.money.customer.id:'','edit']">{{model.money ? model.money.customer.id : ''}}</a>
+        </div>
+        <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>公司名称:</label> {{model.money ? model.money.customer.name : ''}}
+        </div>
+        <div class=" col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>税号:</label> {{model.money ? model.money.customer.taxno : ''}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>公司地址:</label>{{model.money ? model.money.customer.address : ''}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>开户行:</label>{{model.money ? model.money.customer.kaihubank : ''}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>开户账号:</label>{{model.money ? model.money.customer.kaihuaccount : ''}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>收票人:</label>{{model.money ? model.money.customer.shoupiaoren : ''}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>收票地址:</label>{{model.money ? model.money.customer.shoupiaoaddr : ''}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>是否电商用户:</label>{{model.money.customer.isonline| orderisonline}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>账户余额:</label>{{model.yue}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>累计购买量:</label>{{model.money ? model.money.tweight : ''}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>累计消费:</label>{{model.money ? model.money.usemoney : ''}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>创建人:</label>{{model.realname}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>创建时间:</label>{{model.money.customer.cdate|date:'yyyy-MM-dd'}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>供应商:</label>{{model.money.customer.issupplier|flag}}
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 form-control-static">
+          <label>业务负责人:</label>{{model.money ? model.money.customer.salename : ''}}
+        </div>
+
+      </td>
+    </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>querys['pagesize']">
+    <tr>
+      <td colspan="10">
+        <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="7" [(ngModel)]="currentPage"
+                    [rotate]="true" previousText="上一页" nextText="下一页" firstText="首页" lastText="尾页"
+                    [boundaryLinks]="true"
+                    (pageChanged)="pageChanged($event)"></pagination>
+        <!--        [rotate]="false"-->
+        <!-- <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator> -->
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+</div>
+
+<!--  查询弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">客户类型</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" name="i-radio4" [value]="false"
+                         [(ngModel)]="querys['isonline']"/>
+                  <span class="fa fa-circle"></span>线下客户
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" name="i-radio4" [value]="true"
+                         [(ngModel)]="querys['isonline']"/>
+                  <span class="fa fa-circle"></span>线上客户
+                </label>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">供应商</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio3" type="radio" name="i-radio5" [value]="false"
+                         [(ngModel)]="querys['issupplier']"/>
+                  <span class="fa fa-circle"></span>非供应商
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio4" type="radio" name="i-radio5" [value]="true"
+                         [(ngModel)]="querys['issupplier']"/>
+                  <span class="fa fa-circle"></span>供应商
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">公司名称</label>
+              <div class="col-sm-9">
+                <input type="text" name="addr" [(ngModel)]="querys['name']" placeholder="请输入单据编号"
+                       class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">业务负责人</label>
+              <div class="col-sm-9">
+                <wisk-usersearch [(user)]="userName"></wisk-usersearch>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">纳税人识别号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="querys['taxno']" placeholder="请输入纳税人识别号" class="form-control">
+              </div>
+            </div>
+
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">使用状态</label>
+              <div class="col-sm-9">
+                <label class="checkbox-inline c-checkbox">
+                  <input type="checkbox" value="true" [(ngModel)]="querys['isdel']"/>
+                  <span class="fa fa-check"></span>停用
+                </label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="query()" class="btn btn-primary btn-large">查询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 創建的彈窗 -->
+<div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <!-- <label class="col-sm-3 control-label">编号</label> -->
+              <div class="col-sm-offset-3 col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio11" type="radio" name="radio3" value="false" [(ngModel)]="model['isonline']"/>
+                  <span class="fa fa-circle"></span>线下客户
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">公司名称</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="model['name']" placeholder="请输入公司名称" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">用户性质</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio5" type="radio" name="radio5" value="0" [(ngModel)]="model['usernature']"/>
+                  <span class="fa fa-circle"></span>直接客户
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio6" type="radio" name="radio6" value="1" [(ngModel)]="model['usernature']"/>
+                  <span class="fa fa-circle"></span>流通商
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio7" type="radio" name="radio7" value="2" [(ngModel)]="model['usernature']"/>
+                  <span class="fa fa-circle"></span>终端客户
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">行业类别</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="categorys" [(ngModel)]="model['categoryid']" [style]="{'width':'100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <label class="col-sm-3 control-label">纳税人识别号</label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="model['taxno']" placeholder="请输入纳税人识别号" class="form-control">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+            <button type="button" (click)="addCustomer()" class="btn btn-primary btn-large">创建</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<toaster-container></toaster-container>

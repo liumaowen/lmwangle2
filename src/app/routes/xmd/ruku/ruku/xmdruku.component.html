@@ -1,0 +1,111 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt"></em> 新美达入库时序表
+  <div class="pull-right">
+    <button type="button" class="btn btn-info btn-bloc" (click)="open()">查询</button>
+    <!-- <button type="button" class="btn btn-info btn-bloc" (click)="rukuUploader()">上传入库单</button> -->
+    <!-- <a href="https://ossgm.oss-cn-hangzhou.aliyuncs.com/pub/gm/down/ImportRukudetail.xls">
+            <button type="button" class="btn btn-info btn-bloc">入库单模板下载</button>
+        </a> -->
+  </div>
+</div>
+
+<div class="panel panel-default" *ngIf="singleData">
+  <table class="table table-striped" [mfData]="singleData" #mf="mfDataTable" [mfActivePage]="search['pagenum']" [mfRowsOnPage]="search['pagesize']">
+    <tbody>
+      <tr *ngFor="let item of mf.data">
+        <td class="row" style="width:100%;">
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>编号:</label>
+            <a [routerLink]="['/xmdruku', item.id]">{{item.billno}}</a>
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>制单人:</label> {{item | agentuser}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>日期:</label> {{item.cdate | date:'yyyy-MM-dd HH:mm:ss'}}
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总数量:</label> {{item.tcount}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总重量:</label> {{item.tweight | number:"1.0-3"}}
+          </div>
+          <div class=" col-lg-2 col-md-3 col-sm-6 form-control-static">
+            <label>总长度:</label> {{item.tlength}}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="totalItems>search['pagesize']">
+      <tr>
+        <td colspan="10">
+          <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="8" [(ngModel)]="currentPage" [rotate]="true" previousText="上一页"
+            nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)"></pagination>
+          <!-- <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator> -->
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<toaster-container></toaster-container>
+
+<!-- 上传文件的弹窗 -->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="coles()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        <h4 class="modal-title">查询</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">单据id</label>
+              <div class="col-sm-9">
+                <input class="form-control" [(ngModel)]="querys['id']" placeholder="单据id" type="number">
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">开始日期</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <p-calendar [(ngModel)]="querys['start']" placeholder="开始日期" [maxDate]="querys['end'] || endmax"></p-calendar>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">结束日期</label>
+              <div class="col-sm-9 wiskind-calendar">
+                <p-calendar [(ngModel)]="querys['end']" placeholder="结束日期" [maxDate]="endmax" [minDate]="querys['start']"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="select()" class="btn btn-primary btn-large">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--添加质保书提交显示上传质保书弹窗-->
+<div class="modal" bsModal #parentModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="uploads($event)"></wisk-uploader>
+
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>

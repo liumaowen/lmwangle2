@@ -1,0 +1,62 @@
+<div>
+  <div class="button-toolbar clearfix mb">
+    <div class="btn-group">
+      <h4>
+        <em class="fa"></em>
+      </h4>
+    </div>
+
+  </div>
+
+  <div class="modal-body" style="padding-top:0;">
+    <div class="panel panel-default" *ngIf="!tableData">
+      <div class="row" style="margin-left:0">
+        <h4 class="col-sm-12">没有数据！</h4>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="tableData">
+      <table class="table table-striped" [mfData]="tableData" #mf="mfDataTable" [mfRowsOnPage]="100">
+        <thead>
+        <tr>
+          <th style="width: 25%">
+            <mfDefaultSorter by="lianxiren">当前余额</mfDefaultSorter>
+          </th>
+          <th style="width: 25%">
+            <mfDefaultSorter by="phone">往来</mfDefaultSorter>
+          </th>
+          <th style="width: 25%">
+            <mfDefaultSorter by="city">用途</mfDefaultSorter>
+          </th>
+          <th style="width: 25%">
+            <mfDefaultSorter by="city">创建时间</mfDefaultSorter>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let model of mf.data">
+          <td>{{model.curryue|number:"1.2-2"}}</td>
+          <td>{{model.moneyuse}}</td>
+          <td>{{model.type}}</td>
+          <td>{{model.cdate}}</td>
+        </tr>
+        </tbody>
+        <tfoot *ngIf="totalItems>querys['pagesize']">
+        <tr>
+          <td colspan="10">
+            <pagination class="pagination-md" [totalItems]="totalItems" [maxSize]="7" [(ngModel)]="currentPage"
+                        [rotate]="true" previousText="上一页"
+                        nextText="下一页" firstText="首页" lastText="尾页" [boundaryLinks]="true" [rotate]="false"
+                        (pageChanged)="pageChanged($event)"></pagination>
+            <!-- <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator> -->
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+
+  </div>
+</div>
+
+
+<toaster-container></toaster-container>

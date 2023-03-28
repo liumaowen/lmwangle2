@@ -9,6 +9,7 @@ import { QualityobjectionService } from '../qualityobjection.service';
 import { TihuodetimportComponent } from './tihuodetimport/tihuodetimport.component';
 import { ClassifyApiService } from 'app/dnn/service/classifyapi.service';
 import { StorageService } from 'app/dnn/service/storage.service';
+import { KucunqualityimportComponent } from './../../../dnn/shared/kucunqualityimport/kucunqualityimport.component';
 
 const sweetalert = require('sweetalert');
 @Component({
@@ -96,7 +97,7 @@ export class QualityobjectiondetailComponent implements OnInit {
     this.gridOptions.columnDefs = [
       { cellStyle: { 'text-align': 'center' }, headerName: '提货单号', field: 'tihuobillno', minWidth: 100,
         cellRenderer: (params) => {
-          if (params.data) {
+          if (params.data.tihuoid) {
             return '<a target="_blank" href="#/tihuo/' + params.data.tihuoid + '">' + params.data.tihuobillno + '</a>';
           } else {
             return '';
@@ -198,7 +199,11 @@ export class QualityobjectiondetailComponent implements OnInit {
   /**打开引入明细弹窗 */
   showimporttihuodet() {
     this.bsModalService.config.class = 'modal-all';
-    this.bsModalRef = this.bsModalService.show(TihuodetimportComponent);
+    if(this.qualityobjection['subtype'] === '提单质量异议'){
+      this.bsModalRef = this.bsModalService.show(TihuodetimportComponent);
+    }else if(this.qualityobjection['subtype'] === '库存质量异议'){
+      this.bsModalRef = this.bsModalService.show(KucunqualityimportComponent);
+    }
     this.bsModalRef.content.parentThis = this;
   }
   hideimporttihuodet() {

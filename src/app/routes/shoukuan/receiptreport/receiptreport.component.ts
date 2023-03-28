@@ -9,6 +9,7 @@ import {ToasterService} from 'angular2-toaster';
 import {ShoukuandetComponent} from './shoukuandet/shoukuandet.component';
 import {ReceiptService} from './service/receipt.service';
 import {StorageService} from '../../../dnn/service/storage.service';
+const sweetalert = require('sweetalert');
 
 @Component({
   selector: 'app-receiptreport',
@@ -24,7 +25,10 @@ export class ReceiptreportComponent implements OnInit {
     repaymentdate: '',
     comment: '',
     type: '2',
-    beizhu: ''
+    beizhu: '',
+    cancelbeizhu:'',
+    receiptid:'',
+    createbeizhu:''
   };
   start = new Date();
   maxDate = new Date();
@@ -77,16 +81,8 @@ export class ReceiptreportComponent implements OnInit {
     this.gridOptions.groupSuppressAutoColumn = true;
     this.gridOptions.columnDefs = [
       {cellStyle: {'text-align': 'center'}, headerName: '选择', width: 50, checkboxSelection: true, suppressMenu: true},
-      {
-        cellStyle: {'text-align': 'center'}, headerName: '单号', field: 'billno', width: 100,
-        cellRenderer: function (params) {
-          if (params.data) {
-            return '<a target="_blank" href="#/receipt/' + params.data.id + '">' + params.data.billno + '</a>';
-          } else {
-            return '合计';
-          }
-        },
-      },
+      { cellStyle: {'text-align': 'center'}, headerName: '序号', field: 'num', width: 100},
+      { cellStyle: {'text-align': 'center'}, headerName: '单号', field: 'billno', width: 100},
       {cellStyle: {'text-align': 'center'}, headerName: '类型', field: 'type', width: 100},
       {cellStyle: {'text-align': 'center'}, headerName: '客户名称', field: 'paycustomername', width: 150},
       {
@@ -100,6 +96,7 @@ export class ReceiptreportComponent implements OnInit {
         }, valueFormatter: this.settings.valueFormatter2
       },
       {cellStyle: {'text-align': 'center'}, headerName: '收款公司', field: 'receivecustomername', width: 150},
+      {cellStyle: {'text-align': 'center'}, headerName: '预计还款日', field: 'repaymentdate', width: 150},
       {cellStyle: {'text-align': 'center'}, headerName: '制单人', field: 'cusername', width: 80},
       {cellStyle: {'text-align': 'center'}, headerName: '创建时间', field: 'cdate', width: 150},
       {cellStyle: {'text-align': 'center'}, headerName: '审核人', field: 'vusername', width: 80},
@@ -107,6 +104,28 @@ export class ReceiptreportComponent implements OnInit {
       {cellStyle: {'text-align': 'center'}, headerName: '审核状态', field: 'vstatus', width: 150},
       {cellStyle: {'text-align': 'center'}, headerName: '说明', field: 'comment', width: 100},
       {cellStyle: {'text-align': 'center'}, headerName: '备注', field: 'beizhu', width: 100},
+      {
+        cellStyle: {'text-align': 'center'}, headerName: '是否超期', field: 'ischaoqi', width: 100,
+        cellRenderer: (params) => {
+          return params.data.ischaoqi ? '是' : '否';
+        }
+      },
+      {
+        cellStyle: {'text-align': 'center'}, headerName: '已作废', field: 'iscancel', width: 100,
+        cellRenderer: (params) => {
+          return params.data.iscancel ? '是' : '否';
+        }
+      },
+      {
+        cellStyle: {'text-align': 'center'}, headerName: '已还单', field: 'isrepay', width: 100,
+        cellRenderer: (params) => {
+          if(params.data.isrepay == null && params.data.type == '已收款开收据'){
+            return '';
+          }else{
+            return params.data.isrepay ? '是' : '否';
+          }
+        }
+      },
     ];
     this.listDetail();
   }
@@ -212,15 +231,20 @@ export class ReceiptreportComponent implements OnInit {
   }
 
   @ViewChild('createModal') private createModal: ModalDirective;
+  @ViewChild('zuofeiModal') private zuofeiModal: ModalDirective;
 
+  showzuofeiModal() {
+    this.zuofeiModal.show();
+  }
+  hidezuofeiModal() {
+    this.zuofeiModal.hide();
+  }
   showCreateModal() {
     this.createModal.show();
   }
-
   hideCreateModal() {
     this.createModal.hide();
   }
-
   createReceipt() {
     console.log(this.receiptData);
     console.log(this.createCompanys);
@@ -339,6 +363,48 @@ export class ReceiptreportComponent implements OnInit {
       } else {
         window.open(data.msg);
       }
+    });
+  }
+
+  zuofei() {
+    const receiptid = [];
+    const receiptSelected = this.gridOptions.api.getModel()['rowsToDisplay']; // 获取选中的订单明细。
+    for (let i = 0; i < receiptSelected.length; i++) {
+      if (receiptSelected[i].data && receiptSelected[i].selected) {
+        receiptid.push(receiptSelected[i].data.id);
+      }
+    }
+    if (receiptid.length < 1) {
+      this.toast.pop('warning', '请选择明细！！！');
+      return;
+    }
+    if(receiptid.length > 2){
+      this.toast.pop('warning', '请选择其中一条明细进行操作！！！');
+      return;
+    }
+    if (!this.receiptData['cancelbeizhu']) {
+      this.toast.pop('warning', '请输入作废收据原因！！');
+      return '';
+    }
+    console.log(receiptid);
+    console.log(123);
+    this.receiptData["receiptid"] = receiptid[0];
+    sweetalert({
+      title: '你确定要作废吗',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#23b7e5',
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      closeOnConfirm: false
+    }, () => {
+      console.log(this.receiptData)
+      this.receiptApi.zuofei(this.receiptData).then(data => {
+        this.toast.pop('success', '作废成功');
+        this.listDetail();
+        this.hidezuofeiModal();
+      });
+      sweetalert.close();
     });
   }
 }

@@ -464,8 +464,8 @@ export class OrderapiService {
       return data.json() as any[];
     });
   }
-  verifyNeicaigoufapiaoVuser(id, search) {
-    return this.http.put('store/api/neicaigoufapiao/verify/' + id, search).toPromise().then(data => {
+  verifyNeicaigoufapiaoVuser(search) {
+    return this.http.put('store/api/neicaigoufapiao/verify/' , search).toPromise().then(data => {
       return data.json() as any[];
     });
   }

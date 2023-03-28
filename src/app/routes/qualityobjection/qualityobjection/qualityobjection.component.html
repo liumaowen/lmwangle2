@@ -92,7 +92,14 @@
               </div>
             </div> -->
             <div class="row fieldsetdnn">
-              <label class="col-sm-3 control-label required">类型</label>
+              <label class="col-sm-3 control-label required">提报类型</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="subtypes" [(ngModel)]="qualityobjection['subtype']" [style]="{'width':'calc(100%)'}"
+                  [placeholder]="'请选择异议类型'" filter="true"></p-dropdown>
+              </div>
+            </div>
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label required">质量异议类型</label>
               <div class="col-sm-9">
                 <p-dropdown [options]="types" [(ngModel)]="qualityobjection['typeid']" [style]="{'width':'calc(100%)'}"
                   [placeholder]="'请选择异议类型'" filter="true"></p-dropdown>

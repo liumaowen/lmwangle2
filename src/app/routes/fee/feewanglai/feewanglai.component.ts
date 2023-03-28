@@ -16,8 +16,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class FeewanglaiComponent implements OnInit {
 
   maxDate = new Date();
-
-  start = new Date(this.maxDate.getFullYear() + '-' + (this.maxDate.getMonth() + 1) + '-01');
+  
+  start = new Date('2017-01-01');
+  // start = new Date(this.maxDate.getFullYear() + '-' + (this.maxDate.getMonth() + 1) + '-01');
 
   end;
 

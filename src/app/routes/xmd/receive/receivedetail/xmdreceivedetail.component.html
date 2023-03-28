@@ -1,0 +1,456 @@
+<div class="content-heading">
+  <em class="fa fa-book"></em> 新美达收款登记单
+  <div class="pull-right">
+    <button *ngIf="model['isv']" type="button" (click)="createzhiyajindialog()"
+        class="btn btn-info btn-sm margin-top-bottom-25">转为质押金
+    </button>
+    <button *ngIf="model['isv']" type="button" (click)="contractUploader()"
+      class="btn btn-info btn-sm margin-top-bottom-25">上传质押金合同
+    </button>
+    <button *ngIf="model['isv']" type="button" (click)="lookContract()"
+      class="btn btn-info btn-sm margin-top-bottom-25">查看合同
+    </button>
+    <span *NgOpera="124">
+      <button *ngIf="model['isrefund'] && model['isv']" type="button" (click)="shoukuanlode()"
+        class="btn btn-info btn-sm margin-top-bottom-25">生成PDF
+      </button>
+    </span>
+    <span *NgOpera="124">
+    <button *ngIf="model['isrefund'] && model['isv']" type="button" (click)="print()"
+      class="btn btn-info btn-sm margin-top-bottom-25">打印预览
+    </button>
+    </span>
+    <button *ngIf="model['status']|submitverify" type="button" (click)="submitverify()"
+      class="btn btn-info btn-sm margin-top-bottom-25">提交审核
+    </button>
+    <!-- 制单中的退款单线下客户 -->
+    <button *ngIf="model['status'] == 1 && model['isrefund'] && !model['paycustomer']['isonline'] && !model['orgisv']"
+      type="button" (click)="orgAuditThrough(model['id'])" class="btn btn-info btn-sm margin-top-bottom-25">机构审核
+    </button>
+    <button *ngIf="model['status'] == 1 && iscaiwubu" type="button" (click)="auditThrough(model['id'])"
+        class="btn btn-info btn-sm margin-top-bottom-25">财务审核
+      </button>
+    <button *ngIf="model['status'] == 1" type="button" (click)="refuse()"
+      class="btn btn-info btn-sm margin-top-bottom-25">拒审
+    </button>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 form-control-static">编号:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['billno']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">客户单位:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['paycustomer']['name']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model['shoukuantype'] != 4 && model['shoukuantype'] != 5 && '0' > model['jine']"
+    class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">退款账号</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['refundaccunt']" class="form-control" [disabled]="model['isv']" />
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model['shoukuantype'] != 4 && model['shoukuantype'] != 5 && '0' > model['jine']"
+    class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">退款开户行</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['refundbankname']" class="form-control" [disabled]="model['isv']" />
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model['shoukuantype'] != 4 && model['shoukuantype'] != 5 && '0' > model['jine']"
+    class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">大额支付行号:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['daehanghao']" class="form-control" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">金额:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['jine']" class="form-control" required [disabled]="model['isv']" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款公司:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <p-dropdown [options]="receivecustomer"  [(ngModel)]="model['receivecustomerid']"
+          [style]="{'width':'100%','height':'35px'}" (onChange)="getreceivebank(model['receivecustomerid'])"
+          [disabled]="model['isv']"></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="ngflag['select']" class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款银行:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <p-dropdown [options]="receivebanks" [(ngModel)]="model['shoukuanbankid']"
+          [style]="{'width':'100%','height':'35px'}" (onChange)="getcardno1(model['shoukuanbankid'])"
+          [disabled]="model['isv']"></p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="ngflag['text']" class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款银行:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['shoukuanbankname']" class="form-control" disabled="disabled" required />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款账户:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['shoukuanaccount']" class="form-control" disabled="disabled" required />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">创建人:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <span class="form-control" disabled="disabled">{{model | agentuser}}</span>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款机构:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['org']['name']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款类型:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <p-dropdown [options]="shoukuantypes" [(ngModel)]="model['shoukuantype']"
+          [style]="{'width':'100%','height':'35px'}" [disabled]="model['isv']">
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">备注:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['beizhu']" class="form-control" [disabled]="model['isv']" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">收款时间:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <p-calendar [(ngModel)]="actualdatetime" placeholder="收款时间" [maxDate]="endmax"></p-calendar>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">创建时间:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['cdate']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">线上/线下:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <span class="form-control" disabled>
+          {{model['paycustomer']?(model['paycustomer']['isonline']?'线上':'线下'):''}}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">审核人:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <span class="form-control" disabled>
+          {{model.vuser?model.vuser['realname']:''}}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model['shoukuantype'] === 5" class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">转账金额:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['zhuanzhangjine']" class="form-control" required
+          [disabled]="model['isv']" />
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model['shoukuantype'] === 5" class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">转账公司:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="model['zhuanzhangcustomer']['name']" class="form-control" disabled="disabled" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">业务员:</div>
+      <div class="col-md-8 col-xs-6 form-control-static input-group" style="padding-left:15px;padding-right:15px;">
+        <input disabled type="text" class="form-control" [(ngModel)]="gpsalemanname" />
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default btn-width" (click)="addsalemanDialog()">
+            <i class="fa fa-caret-down"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">业务员机构:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <input type="text" [(ngModel)]="gporgname" class="form-control" disabled="false" />
+      </div>
+    </div>
+  </div>
+  <div class=" col-lg-6 col-md-6 fieldsetdnn">
+    <div class="row">
+      <div class="col-md-4 col-xs-6 control-label form-control-static">会计科目:</div>
+      <div class="col-md-8 col-xs-6 form-control-static">
+        <p-dropdown [options]="kuaijikemus" [(ngModel)]="model['kuaijikemu']" [style]="{'width':'100%','height':'35px'}"
+          [disabled]="model['isv']?true:!flag['audit']"></p-dropdown>
+        <p style="color:red;padding-left: 10px;">财务人员填写！</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<toaster-container></toaster-container>
+
+
+<!--创建银行弹窗-->
+<div class="modal" bsModal #createModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建</h4>
+      </div>
+      <!-- <form name="form1" class="form-horizontal" (ngSubmit)="addbankaccount()"> -->
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">客户银行</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入客户银行名称" [(ngModel)]="bank['bank']" class="form-control" required />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">银行支行</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入银行所在支行" [(ngModel)]="bank['branch']" class="form-control" required />
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+              <label class="col-sm-3 control-label">客户账号</label>
+              <div class="col-sm-9">
+                <input type="text" placeholder="请输入客户银行账号" [(ngModel)]="bank['account']" class="form-control"
+                  required />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <!-- <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重填</button> -->
+          <button type="button" (click)="addbankaccount()" class="btn btn-primary btn-large">创建</button>
+        </div>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>
+</div>
+
+
+<!--业务员弹窗-->
+<div class="modal" bsModal #userModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidecreateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <form name="form1" class="form-horizontal" (ngSubmit)="addbankaccount()">
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                <label class="col-sm-3 control-label">业务员</label>
+                <div class="col-sm-9">
+                  <wisk-usersearch [(user)]="suser"></wisk-usersearch>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-inline text-center">
+            <!-- <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重填</button> -->
+            <button type="button" (click)="submitsaleman()" class="btn btn-primary btn-large">创建</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--收款类型为转账弹窗-->
+<div class="modal" bsModal #zhuanzhang="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidezhuanzhang()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">转账公司</label>
+              <div class="col-sm-9">
+                <wisk-findbysale [(company)]="buyer"></wisk-findbysale>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="savezhuanzhang()" class="btn btn-primary btn-large">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideclassicModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">业务员选择</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12">
+              <wisk-usersearch [(user)]="saleman"></wisk-usersearch>
+            </div>
+
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="closeThisDialog()" class="btn btn-info btn-large">选择</button>
+          <button type="button" (click)="hideclassicModal()" class="btn btn-primary btn-large">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 生成质押金 -->
+<div class="modal" bsModal #zhiyajindialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closezhiyajindialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">创建质押金</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">ERP欠款客户名称</label>
+              <div class="col-sm-9">
+                <div class="col-sm-9">
+                  <wisk-companysearch [(company)]="companys"></wisk-companysearch>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">质押到期日</label>
+              <div class="col-sm-9">
+                <div class="col-sm-9">
+                  <p-calendar [(ngModel)]="zhiyajin['zhiyadaoqiri']" placeholder="质押到期日"></p-calendar>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12">
+              <label class="col-sm-3 control-label">备注</label>
+              <div class="col-sm-9">
+                <div class="col-sm-9">
+                  <input type="text" [(ngModel)]="zhiyajin['beizhu']" class="form-control" />
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+          <button type="button" (click)="commitzhiyajin()" class="btn btn-primary btn-large">创建</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 上传合同 -->
+<div class="modal" bsModal #hetongdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideuploadDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="upcontract($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>

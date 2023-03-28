@@ -21,7 +21,7 @@ export class CgfukuanComponent implements OnInit {
   paycustomerdisabled = false; // 付款公司不可点
   @ViewChild('selectModal') private selectModal: ModalDirective;
   @ViewChild('addModal') private addModal: ModalDirective;
-  @ViewChild('defaultGroup1') public nselect1: SelectComponent;
+  // @ViewChild('defaultGroup1') public nselect1: SelectComponent;
   @ViewChild('defaultGroup2') public nselect2: SelectComponent;
   @ViewChild('defaultGroup3') public nselect3: SelectComponent;
   // 品名选择弹窗

@@ -78,6 +78,16 @@ export class FavoritelistComponent implements OnInit {
         valueFormatter: this.settings.valueFormatter3
       },
       { cellStyle: { 'text-align': 'center' }, suppressMenu: true, headerName: '米数', field: 'length', minWidth: 50 },
+      { 
+        cellStyle: { 'text-align': 'center' }, headerName: '吨米数', field: 'dunmishu', minWidth: 60 ,
+        valueGetter: (params) => {
+          if (params.data && params.data['weight'] && params.data['length']) {
+            return Number(params.data['length']/params.data['weight']);
+          } else {
+            return 0;
+          }
+      }, valueFormatter: this.settings.valueFormatter4
+      },
       { cellStyle: { 'text-align': 'center' }, headerName: '资源号', field: 'grno', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '捆包号', field: 'kunbaohao', minWidth: 100 },
       { cellStyle: { 'text-align': 'center' }, headerName: '后处理', field: 'ppro', minWidth: 80 },

@@ -68,7 +68,7 @@ export class PrivatesaledetComponent implements OnInit {
                 return 0;
               }
             },
-            valueFormatter: this.settings.valueFormatter
+            valueFormatter: this.settings.valueFormatter4
           },
           { cellStyle: { 'text-align': 'center' }, headerName: '当月接单量', field: 'yuejiedan', minWidth: 100,
             valueGetter: (params) => {

@@ -1,0 +1,1354 @@
+<div class="content-heading">
+  <em class="fa fa-list-alt">采购订单</em>
+  <div *ngIf="caigou['status']!==3" class="pull-right">
+    <!-- <button class="btn btn-info btn-bloc" type="button" (click)="subReview()">提交审核</button> -->
+    <button type="button" (click)="openmodifymain()" class="btn btn-info btn-sm margin-top-bottom-25">修改订单</button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="showgcinfodialog()">合同月份修改</button>
+    <button class="btn btn-info btn-bloc" type="button" (click)=" ordermodalchangeshow()">生成PDF</button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="print()">打印预览</button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="importdet()"
+            *ngIf="caigou['kind']===1 || caigou['kind']===3 ">引入期货合同
+    </button>
+    <button class="btn btn-info btn-bloc" type="button" (click)="addmdmdet()">插行</button>
+    <button class="btn btn-info btn-bloc" style="background-color:red;border-color:red;color:#ffffff;" type="button"
+            (click)="deletecaigou()">删除采购合同
+    </button>
+  </div>
+</div>
+
+<div class="panel panel-default wis-auto">
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">供应商：</div>
+        <div class="col-md-8 col-xs-6 form-control-static" (click)="opensupplier()"
+             [tooltip]="caigou['seller'] | customer">{{caigou['seller'] | customer}}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">采购单位：</div>
+        <div class="col-md-8 col-xs-6 form-control-static" (click)="openbuyer()"
+             [tooltip]="caigou['buyer'] | customer">{{caigou['buyer'] | customer}}</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">机构：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['org'] | org}}</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">交货地点：</div>
+        <div class="col-md-6 col-xs-5 form-control-static" [tooltip]="caigou['jiaohuoaddr']">
+          <input class="form-control" type="text" [(ngModel)]="caigou['jiaohuoaddr']" disabled/>
+        </div>
+        <a class="col-md-2 col-xs-2 form-control-static" (click)="openaddr()" style="color:red;padding:7px 0;">修改</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">合同编号：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['billno']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">合同性质：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['kind'] | caigoukind}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">采购类型：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['type'] | caigoutype}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">单据类别：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou | dantype}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单人：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou | agentuser}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">制单时间：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['cdate']}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">产地：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['chandi']}}</div>
+      </div>
+    </div>
+    <div class=" col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">备注：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">
+          <input class="form-control" type="text" [(ngModel)]="cg['beizhu']" (blur)="modbeizhu()"/>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">维实品牌：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['isweishi'] | flag}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row fieldsetdnn">
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static" tooltip="钢厂下单月份">钢厂下单月份：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['month'] | date:'yyyy-MM'}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">交货区域：</div>
+        <div class="col-md-6 col-xs-5 form-control-static" [tooltip]="caigou['areaname']">
+          <input class="form-control" type="text" [(ngModel)]="caigou['areaname']" disabled/>
+        </div>
+        <a class="col-md-2 col-xs-2 form-control-static" (click)="openarea()" style="color:red;padding:7px 0;">修改</a>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核人：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['vuser'].realname}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="row">
+        <div class="col-md-4 col-xs-6 control-label form-control-static">审核时间：</div>
+        <div class="col-md-8 col-xs-6 form-control-static">{{caigou['vdate']}}</div>
+      </div>
+    </div> -->
+
+  <!-- <div class="row fieldsetdnn">
+    <div class=" col-lg-12 col-md-12">
+      <div class="row">
+        <div class="col-md-2 col-xs-6 control-label form-control-static">备注：</div>
+        <div class="col-md-10 col-xs-6 form-control-static">
+          <input class="form-control" type="text" [(ngModel)]="cg['beizhu']" (blur)="modbeizhu()" />
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+
+<ag-grid-angular [ngStyle]="{'height': (settings.bodyHeight - 380)+'px'}" #agGrid
+                 style="width: calc(100% + 40px);height:100%;margin:0 -20px;" class="ag-blue"
+                 [gridOptions]="gridOptions">
+</ag-grid-angular>
+<!--修改采购单位对话框-->
+<div class="modal" bsModal #buyerModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="buyerclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">填写采购单位</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">采购单位</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="companyIsWiskind" [(ngModel)]="buyer['buyerid']"
+                            [style]="{'width':'100%','font-size':'15px'}" [filter]="true" filterBy="label,value.name">
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirmbuyer()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加普通明细对话框-->
+<div class="modal" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">插行</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form [formGroup]="form" class="form-validate mb-lg" role="form" name="form" novalidate=""
+                  (ngSubmit)="add()">
+              <div [hidden]="nextflag">
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">品名：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown name="gn" [options]="gns" (onChange)="selectedgn($event.value)" placeholder="选择品名"
+                                [style]="{'width': '100%', 'border-color': 'red'}" [filter]="true">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">产地：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown name="chandi" [options]="chandis" (onChange)="selectedchandi($event.value)"
+                                placeholder="选择产地" [filter]="true"
+                                [style]="{'width': '100%', 'border-color': 'red'}"
+                                [disabled]="!isChandi">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div *ngIf="showGuige" style="display:inline-block">
+                  <div class="form-group mb fieldsetdnn col-sm-12 col-md-6" *ngFor="let item of attrs">
+                    <label class="col-sm-4 control-label">
+                      <span style="float: right;">{{item.label}}：</span>
+                    </label>
+                    <div class="col-sm-8">
+                      <p-dropdown [options]="item.options" placeholder='选择{{item.label}}'
+                                  (onChange)="selectedguige($event.value,item.name)"
+                                  [style]="{'width': '100%', 'border-color': 'red'}" [filter]="true">
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div [hidden]="!nextflag">
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">采购单价：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="price" [(ngModel)]="det['price']" class="form-control"/>
+                    <span
+                      *ngIf="form.controls['price'].hasError('required') && (form.controls['price'].dirty || form.controls['price'].touched)"
+                      class="text-danger">请填写采购单价</span>
+                    <span
+                      *ngIf="form.controls['price'].hasError('pattern') && (form.controls['price'].dirty || form.controls['price'].touched)"
+                      class="text-danger">请填写正确的格式</span>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">采购量：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="caigouweight" [(ngModel)]="det['caigouweight']"
+                           class="form-control" style="border-color: red;"/>
+                    <span
+                      *ngIf="form.controls['caigouweight'].hasError('required') && (form.controls['caigouweight'].dirty || form.controls['caigouweight'].touched)"
+                      class="text-danger">请填写采购量</span>
+                    <span
+                      *ngIf="form.controls['caigouweight'].hasError('pattern') && (form.controls['caigouweight'].dirty || form.controls['caigouweight'].touched)"
+                      class="text-danger">请填写正确的格式</span>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">结算单价：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="jiesuanprice" [(ngModel)]="det['jiesuanprice']"
+                           class="form-control"/>
+                    <span
+                      *ngIf="form.controls['jiesuanprice'].hasError('required') && (form.controls['jiesuanprice'].dirty || form.controls['jiesuanprice'].touched)"
+                      class="text-danger">请填写结算单价</span>
+                    <span
+                      *ngIf="form.controls['jiesuanprice'].hasError('pattern') && (form.controls['jiesuanprice'].dirty || form.controls['jiesuanprice'].touched)"
+                      class="text-danger">请填写正确的格式</span>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">收货机构：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <wisk-orglist [(org)]="det['orgid']"></wisk-orglist>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">货权转移：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <ng-select #defaultGroup formControlName="zhuanhuo" [allowClear]="true" [items]="zhuanhuos"
+                               style="border-color: red;" (selected)="selectezhuanhuo($event)"
+                               placeholder="请选择转货类型">
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">交货期限：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <div class="wiskind-calendar">
+                      <p-calendar formControlName="jiaohuodate" [(ngModel)]="jiaohuodate" placeholder="交货期限"
+                                  [minDate]="jiaohuodatemin" (onSelect)="selectstart()"></p-calendar>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">单卷重：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown [options]="oneweights" placeholder='单卷重' formControlName="weight"
+                                [(ngModel)]="det['weight']" [filter]="true"
+                                [style]="{'width': '100%', 'border-color': 'red','height':'35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">用途：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown [options]="yongtus" placeholder='用途' formControlName="yongtu"
+                                [(ngModel)]="det['yongtu']" [filter]="true"
+                                [style]="{'width': '100%', 'border-color': '','height':'35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">数量公差：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="gongcha" [(ngModel)]="det['gongcha']" placeholder="填写数量公差"
+                           class="form-control"/>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">厚度公差：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown [options]="houdugongchas" placeholder='厚度公差' formControlName="houdugongcha"
+                                [(ngModel)]="det['houdugongcha']" [filter]="true"
+                                [style]="{'width': '100%', 'border-color': '','height':'35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">宽度公差：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown [options]="widthgongchas" placeholder='宽度公差' formControlName="widthgongcha"
+                                [(ngModel)]="det['widthgongcha']" [filter]="true"
+                                [style]="{'width': '100%', 'border-color': '','height':'35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">备注：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="beizhu" [(ngModel)]="det['beizhu']" placeholder="填写备注"
+                           class="form-control"/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-inline text-center">
+                <div [hidden]="nextflag">
+                  <button type="button" (click)="next()" class="btn btn-primary btn-large">下一步</button>
+                </div>
+                <div [hidden]="!nextflag">
+                  <button type="button" (click)="fanhui()" class="btn btn-primary btn-large">返回</button>
+                  <button type="submit" class="btn btn-primary btn-large">添加</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加mdm明细对话框-->
+<div class="modal" bsModal #mdmclassicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <button type="button" (click)="querymat()" style="float: right;margin-right:15px;" class="btn btn-primary"
+                *ngIf="!nextflag">
+          查询
+        </button>
+        <input type="text" style="float: right;width: 150px;height: 30px;margin: 0 10px" [(ngModel)]="det['matcode']"
+               placeholder="请输入物料编码" class="form-control" *ngIf="!nextflag"/>
+        <h4 class="modal-title">插行</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form [formGroup]="form" class="form-validate mb-lg" role="form" novalidate=""
+                  (ngSubmit)="addmdm()">
+              <div [hidden]="nextflag">
+                <div class="form-group mb fieldsetdnn row row col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">品名：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input formControlName="gn" (click)="mdmgndialog.show()" [(ngModel)]="goodscode['gn']"
+                           class="form-control" placeholder="请选择品名" readonly>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn row row col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">分类描述：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input formControlName="categorydesc" [(ngModel)]="goodscode['categorydesc']" class="form-control"
+                           placeholder="请选择品名" disabled>
+                  </div>
+                </div>
+                <div *ngIf="showGuige" style="display:inline-block">
+                  <div class="form-group mb fieldsetdnn row col-md-6" *ngFor="let item of attrs">
+                    <label class="col-sm-4 control-label requiredlabel">
+                      <span style="float: right;" [ngClass]="{'requiredbefore':item.isrequired}">{{item.name}}：</span>
+                    </label>
+                    <div class="col-sm-8">
+                      <p-dropdown [options]="item.options" name="" placeholder='请选择{{item.label}}'
+                                  [(ngModel)]="goodscode[item.value]" (onChange)="selectattr(item,$event.value)"
+                                  [ngModelOptions]="{standalone: true}" [filter]="true" [style]="{'width': '100%'}">
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div [hidden]="!nextflag">
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">采购单价：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="price" [(ngModel)]="det['price']" class="form-control"/>
+                    <span
+                      *ngIf="form.controls['price'].hasError('required') && (form.controls['price'].dirty || form.controls['price'].touched)"
+                      class="text-danger">请填写采购单价</span>
+                    <span
+                      *ngIf="form.controls['price'].hasError('pattern') && (form.controls['price'].dirty || form.controls['price'].touched)"
+                      class="text-danger">请填写正确的格式</span>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">采购量：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="caigouweight" [(ngModel)]="det['caigouweight']"
+                           class="form-control" style="border-color: red;"/>
+                    <span
+                      *ngIf="form.controls['caigouweight'].hasError('required') && (form.controls['caigouweight'].dirty || form.controls['caigouweight'].touched)"
+                      class="text-danger">请填写采购量</span>
+                    <span
+                      *ngIf="form.controls['caigouweight'].hasError('pattern') && (form.controls['caigouweight'].dirty || form.controls['caigouweight'].touched)"
+                      class="text-danger">请填写正确的格式</span>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">结算单价：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="jiesuanprice" [(ngModel)]="det['jiesuanprice']"
+                           class="form-control"/>
+                    <span
+                      *ngIf="form.controls['jiesuanprice'].hasError('required') && (form.controls['jiesuanprice'].dirty || form.controls['jiesuanprice'].touched)"
+                      class="text-danger">请填写结算单价</span>
+                    <span
+                      *ngIf="form.controls['jiesuanprice'].hasError('pattern') && (form.controls['jiesuanprice'].dirty || form.controls['jiesuanprice'].touched)"
+                      class="text-danger">请填写正确的格式</span>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">收货机构：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <wisk-orglist [(org)]="det['orgid']"></wisk-orglist>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">货权转移：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown [options]="zhuanhuos" placeholder="请选择转货类型"
+                                [(ngModel)]="det['zhuanhuo']" [ngModelOptions]="{standalone: true}" [filter]="true"
+                                [style]="{'width': '100%', 'border-color': 'red','height':'35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">交货期限：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <div class="wiskind-calendar">
+                      <p-calendar formControlName="jiaohuodate" [(ngModel)]="jiaohuodate" placeholder="交货期限"
+                                  [minDate]="jiaohuodatemin" (onSelect)="selectstart()"></p-calendar>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6" *ngFor="let item of chandigongchas">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">{{item.name}}：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <p-dropdown [options]="item.options" placeholder='请选择{{item.name}}'
+                                [(ngModel)]="det[item.value]" [ngModelOptions]="{standalone: true}" [filter]="true"
+                                [style]="{'width': '100%', 'border-color': 'red','height':'35px'}">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">数量公差：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="gongcha" [(ngModel)]="det['gongcha']" placeholder="填写数量公差"
+                           class="form-control"/>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">结算方式：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <label class="radio-inline c-radio">
+                      <input id="inlineradio1" type="radio" [value]="1" formControlName="jiesuantype-radio"
+                             [(ngModel)]="det['jiesuantype']"/>
+                      <span class="fa fa-circle"></span>后结
+                    </label>
+                    <label class="radio-inline c-radio">
+                      <input id="inlineradio2" type="radio" [value]="2" formControlName="jiesuantype-radio"
+                             [(ngModel)]="det['jiesuantype']"/>
+                      <span class="fa fa-circle"></span>锁单
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
+                  <label class="col-sm-4 control-label">
+                    <span style="float: right;">备注：</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" formControlName="beizhu" [(ngModel)]="det['beizhu']" placeholder="填写备注"
+                           class="form-control"/>
+                  </div>
+                </div>
+              </div>
+              <div class="form-inline text-center">
+                <div [hidden]="nextflag">
+                  <button type="button" (click)="nextdialog1()" class="btn btn-primary btn-large">下一步</button>
+                </div>
+                <div [hidden]="!nextflag">
+                  <button type="button" (click)="fanhui()" class="btn btn-primary btn-large">返回</button>
+                  <button type="submit" class="btn btn-primary btn-large">添加</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 品名选择弹窗 -->
+<div class="modal" bsModal #mdmgndialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="mdmgndialog.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">物料分类码表报表</h4>
+      </div>
+      <app-mdmselectgn [mdmgnsearch]="mdmgnsearch" (select)="selectgn($event)"></app-mdmselectgn>
+    </div>
+  </div>
+</div>
+<!--修改供应商对话框-->
+<div class="modal" bsModal #supplierModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="supplierclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">填写供应商</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">供应商：</span>
+              </label>
+              <div class="col-sm-9">
+                <wisk-suppliersearch [(company)]="supplier['supplierid']"></wisk-suppliersearch>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirmsupplier()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--修改采购量对话框-->
+<div class="modal" bsModal #weightModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="weightclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改采购量</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">采购量：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modifyweight['caigouweight']" class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirmweight()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--添加未定价价格对话框-->
+<div class="modal" bsModal #priceModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="priceclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加采购单价</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">采购单价：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="modifyprice['price']" class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirmprice()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>
+<!--颜色，色号修改-->
+<div class="modal" bsModal #colormodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closecolormodifydialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">颜色，色号修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">颜色：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="colors" placeholder="选择颜色" [style]="{'width': '100%'}"
+                            [(ngModel)]="color['id']"
+                            [filter]="true">
+                </p-dropdown>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="modifycolor()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 修改物料编码弹出框 -->
+<div class="modal" bsModal #gcmodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closegcmodify()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">规格属性修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">属性值：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="values" [(ngModel)]="newattrid" placeholder="选择要修改的值" [filter]="true"
+                            [style]="{'width': '100%'}"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="modifygc()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改交货地址弹出框 -->
+<div class="modal" bsModal #addrmodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closeaddr()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">交货地点修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">交货地点：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="jiaohuoaddrs" placeholder="选择要修改的值" [(ngModel)]="cg['jiaohuoaddr']"
+                            [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="jiaohuoaddr()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改area弹出框 -->
+<div class="modal" bsModal #areamodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closearea()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">区域修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">区域：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="areas" placeholder="选择要修改的值" [(ngModel)]="cg['areaid']"
+                            [style]="{'width': '100%'}">
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="submitarea()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改公差弹出框 -->
+<div class="modal" bsModal #gongchamodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closegongchamodify()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">公差修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">属性值：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="gongchas" [(ngModel)]="gongchaModel['name']" placeholder="选择要修改的值"
+                            [style]="{'width': '100%'}"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="modifygongcha()" class="btn btn-primary btn-large">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改数量公差 -->
+<div class="modal" bsModal #countmodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closecount()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改数量公差</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">数量公差：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="gongchaModel['name']" class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="modifygongcha()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改交货日期 -->
+<div class="modal" bsModal #dateModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closedateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改交货日期</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">交货日期：</span>
+              </label>
+              <div class="col-sm-9">
+                <div class="wiskind-calendar">
+                  <p-calendar [(ngModel)]="jiaohuodate" placeholder="交货期限" [minDate]="jiaohuodatemin"
+                              (onSelect)="selectstart()"></p-calendar>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="datemodify()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改备注 -->
+<div class="modal" bsModal #beizhumodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closebeizhu()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改备注</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">备注：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="gongchaModel['name']" class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="modifygongcha()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #jiesuanmodify="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closejiesuan()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">结算价格</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">结算价格：</span>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" [(ngModel)]="gongchaModel['name']" class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="modifygongcha()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 钢厂信息修改 -->
+<div class="modal" bsModal #gcinfodialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closegcinfodialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">钢厂下单月份:</label>
+              <div class="col-sm-9">
+                <wisk-yearmonthselect (select)="selectmonth($event)"></wisk-yearmonthselect>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="modifygcinfo()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 提醒盖章 -->
+<div class="modal" bsModal #gaizhanglog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closegaizhanglog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-md-2 control-label">盖章人</label>
+              <div class="col-md-8">
+                <wisk-usersearch [(user)]="gzuser"></wisk-usersearch>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="submitgaizhang()" class="btn btn-primary btn-large">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 上传合同 -->
+<div class="modal" bsModal #hetongdialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="false">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideuploadDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">上传队列</h4>
+      </div>
+      <wisk-uploader [uploadParam]="uploadParam" [accept]="accept" (select)="upcontract($event)"></wisk-uploader>
+      <div class="form-inline">
+      </div>
+    </div>
+  </div>
+</div>
+<!--修改收货机构对话框-->
+<div class="modal" bsModal #orgModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="orgclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改收货机构</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">机构</span>
+              </label>
+              <div class="col-sm-9">
+                <wisk-orglist [(org)]="modifyorg['orgid']"></wisk-orglist>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="confirmorg()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--费用添加弹出窗口-->
+<div class="modal" bsModal #addFeeModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="feeadddialogclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title pull-left">预估费用</h4>
+        <font color="red">　　　　　　　　　温馨提示：0为钢厂代运，1为我司承运</font>
+      </div>
+
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn col-sm-12 col-md-12"></div>
+            <div class="row">
+              <div class="col-sm-2 text-center">
+                <label class="col-sm-12 control-label form-control-static">费用类型</label>
+              </div>
+              <div class="col-sm-2 text-center">
+                <label class="col-sm-12 control-label form-control-static">费用单价</label>
+              </div>
+              <div class="col-sm-2 text-center">
+                <label class="col-sm-12 control-label form-control-static">费用单位</label>
+              </div>
+              <div class="col-sm-3 text-center">
+                <label class="col-sm-12 control-label form-control-static">承运类型</label>
+              </div>
+              <div class="col-sm-3 text-center">
+                <label class="col-sm-12 control-label form-control-static">
+                  <span *ngIf="!isshowInput" class="label label-info" (click)="showInput()">插入费用</span>
+                  <span *ngIf="isshowInput" class="label label-info" (click)="showInput()">取消插入</span>
+                </label>
+              </div>
+            </div>
+            <div class="row" *ngIf="isshowInput">
+              <div class="col-sm-2">
+                <p-dropdown [options]="feetypes" [(ngModel)]="feemodel['feetype']" placeholder="选择费用类型"
+                            [style]="{'width': 'calc(100% - 30px)','margin': '0 15px'}">
+                </p-dropdown>
+              </div>
+              <div class="col-sm-2">
+                <input style="width:calc(100% - 30px); margin: 0 15px" class="form-control"
+                       [(ngModel)]="feemodel['price']" placeholder="请输入费用单价" required>
+              </div>
+              <div class="col-sm-2">
+                <wis-feecompanysearch [(company)]="feemodel['feecustomer']"></wis-feecompanysearch>
+              </div>
+
+              <div class="col-sm-3"
+                   *ngIf="(this.feemodel['feetype'] === '1' || this.feemodel['feetype'] === '2' || this.feemodel['feetype'] === '3')">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" name="iscarries-radio" [value]="1"
+                         [(ngModel)]="feemodel['chengyun']"/>
+                  <span class="fa fa-circle"></span>我司承运
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" name="iscarries-radio" [value]="0"
+                         [(ngModel)]="feemodel['chengyun']"/>
+                  <span class="fa fa-circle"></span>钢厂代运
+                </label>
+
+                <!-- <p-dropdown [options]="categorys" [(ngModel)]="feemodel['chengyun']" placeholder="选择费用类型"
+                  [style]="{'width': 'calc(100% - 30px)','margin': '0 15px'}">
+                </p-dropdown> -->
+              </div>
+
+              <div class="col-sm-3 text-center">
+                <button type="button" (click)="insertline()" class="btn btn-primary btn-large">插入费用</button>
+              </div>
+            </div>
+            <div class="row fieldsetdnn" *ngFor="let item of lines;index as i;">
+              <div class="col-sm-2 text-center">
+                <span>{{item.type|feetype}}</span>
+              </div>
+              <div class="col-sm-2 text-center">
+                <span>{{item.yuguprice}}</span>
+              </div>
+              <div class="col-sm-2 text-center">
+                <span>{{item.feecustomer}}</span>
+              </div>
+              <div class="col-sm-2 text-center">
+                <span>{{item.chengyun}}</span>
+              </div>
+              <div class="col-sm-3 text-center">
+                  <span style="padding-left: 80px" (click)="delorderfee(i,item.yuguprice)">
+                    <a>删除</a>
+                  </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="form-inline text-center">
+          <div class="form-inline text-center">
+            <button type="button" (click)="addYuguFee()" class="btn btn-primary btn-large">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--选择结算方式-->
+<div class="modal" bsModal #jiesuantypeModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="jiesuantypclose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">结算方式</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">结算方式</label>
+              <div class="col-sm-9">
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio1" type="radio" [value]="1" [(ngModel)]="jstype['jiesuantype']"/>
+                  <span class="fa fa-circle"></span>后结
+                </label>
+                <label class="radio-inline c-radio">
+                  <input id="inlineradio2" type="radio" [value]="2" [(ngModel)]="jstype['jiesuantype']"/>
+                  <span class="fa fa-circle"></span>锁单
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button type="button" (click)="selectNull()" class="btn btn-info btn-large">重选</button>
+        <button (click)="confirmjstype()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改交货仓库 -->
+<div class="modal" bsModal #cangkuModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" aria-label="Close" (click)="closecangku()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改交货仓库</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row fieldsetdnn">
+              <label class="col-sm-3 control-label">
+                <span style="float: right;">交货仓库：</span>
+              </label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="cangku" [(ngModel)]=" gongchaModel['name']" [style]="{'width':'100%'}"
+                            [filter]="true" filterBy="label,value.name"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline text-center">
+        <button (click)="modifygongcha()" class="btn btn-primary btn-large">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--  选择模板的弹窗 -->
+<div class="modal" bsModal #ordermodalchange="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideordermodalchange()">
+          <!-- 关闭的是选择模板的hide -->
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">模板选择</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="col-sm-9">
+              <p-dropdown [options]="ordermodal1" placeholder="选择模板" [(ngModel)]="changeordermodal1['ordermodal1']"
+                          [style]="{'width': '100%'}">
+              </p-dropdown>
+            </div>
+            <div class="form-inline text-center">
+              <button type="button" (click)="shownoticewuliuyuan()" class="btn btn-primary btn-large">确定打印</button>
+              <!--  -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 修改主表信息 -->
+<div class="modal" bsModal #mainmodifydialog="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closemaindialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">合同性质：</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="kinds" [(ngModel)]="editcaigou['kind']" placeholder="请选择合同性质"
+                            [style]="{'width':'calc(100%)'}"></p-dropdown>
+              </div>
+            </div>
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">采购类型：</label>
+              <div class="col-sm-9">
+                <p-dropdown [options]="types" [(ngModel)]="editcaigou['type']" [style]="{'width':'calc(100%)'}"
+                            [placeholder]="'请选择采购类型'"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="modifymain()" class="btn btn-primary btn-large">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { OrgApiService } from './orgapi.service';
 import { ClassifyApiService } from './classifyapi.service';
 import {MoneyService} from "./money.service";
 import { AddressparseService } from './address_parse';
+import { XmdapiService } from './xmdapi.service';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { AddressparseService } from './address_parse';
         ClassifyApiService,
         OrgApiService,
         MoneyService,
-        AddressparseService
+        AddressparseService,
+        XmdapiService
   ],
   declarations: []
 })

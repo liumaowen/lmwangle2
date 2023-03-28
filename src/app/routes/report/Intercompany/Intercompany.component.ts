@@ -274,7 +274,7 @@ export class IntercompanyComponent implements OnInit {
   }
   createneicaigoufapiao() {
     this.neicaigoufapiao.list = this.impdata;
-    console.log(this.neicaigoufapiao);
+    this.neicaigoufapiao.start = this.datepipe.transform(this.start, 'yyyy-MM-dd');
     this.orderApi.createneicaigoufapiao(this.neicaigoufapiao).then((response) => {
       this.reset();
       this.router.navigateByUrl('neicaigoufapiao/' + response);

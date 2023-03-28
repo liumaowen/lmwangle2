@@ -1,6 +1,8 @@
 <div class="content-heading">
   <em class="fa fa-list-alt"></em>收据明细表
   <div class="pull-right">
+    <button  type="button" (click)="showzuofeiModal()"class="btn btn-info btn-sm margin-top-bottom-25"
+    style="background-color:red;border-color:red;color:#ffffff;">收据作废</button>
     <button type="button" (click)="showShoukuandetDialog(true)" class="btn btn-info btn-bloc">已收款开收据</button>
     <button type="button" (click)="showCreateModal()" class="btn btn-info btn-bloc">未收款开收据</button>
     <button type="button" (click)="showShoukuandetDialog(false)" class="btn btn-info btn-bloc">还单</button>
@@ -130,14 +132,14 @@
               </div>
             </div>
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
-              <label class="col-sm-3 control-label">说明</label>
+              <label class="col-sm-3 control-label">开据原因</label>
               <div class="col-sm-9">
                 <input type="text" name="price" placeholder="请输入说明" class="form-control"
                        [(ngModel)]="receiptData['comment']"/>
               </div>
             </div>
             <div class="form-group mb fieldsetdnn col-sm-12 col-md-6">
-              <label class="col-sm-3 control-label">备注</label>
+              <label class="col-sm-3 control-label">收据备注</label>
               <div class="col-sm-9">
                 <input type="text" name="price" placeholder="请输入备注" class="form-control"
                        [(ngModel)]="receiptData['beizhu']"/>
@@ -147,6 +149,34 @@
         </div>
         <div class="form-inline text-center">
           <button type="button" (click)="createReceipt()" class="btn btn-primary btn-large">开具收据</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #zuofeiModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hidezuofeiModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">作废</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group mb fieldsetdnn row">
+              <label class="col-sm-3 control-label">作废原因</label>
+              <div class="col-sm-9">
+                <input type="text" name="price" placeholder="请输入原因" class="form-control"[(ngModel)]="receiptData['cancelbeizhu']"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline text-center">
+          <button type="button" (click)="zuofei()" class="btn btn-primary btn-large">作废收据</button>
         </div>
       </div>
     </div>

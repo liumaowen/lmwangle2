@@ -206,7 +206,8 @@ export class SaledetreportComponent implements OnInit {
       },
       { cellStyle: { 'text-align': 'center' }, headerName: '对外开票日期', field: 'salebilldate', width: 75 },
       { cellStyle: { 'text-align': 'center' }, headerName: 'gcid', field: 'gcid', width: 60 },
-      { cellStyle: { 'text-align': 'center' }, headerName: '供应商', field: 'suppliername', width: 60 }
+      { cellStyle: { 'text-align': 'center' }, headerName: '供应商', field: 'suppliername', width: 60 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '库存id', field: 'kucunid', width: 60 }
     ];
     this.getMyRole();
 

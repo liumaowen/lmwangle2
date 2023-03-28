@@ -91,6 +91,11 @@ import { ToasterModule } from 'angular2-toaster';
 import { ProducemodePipe } from './pipe/producemode.pipe';
 import { isLinshicangkuPipe } from './pipe/islinshicangku.pipe';
 import { JiesuanmouldPipe } from './pipe/jiesuanmould.pipe';
+import { XmdiskcompanysearchComponent } from './xmdwiskcompanysearch/xmdwiskcompanysearch.component';
+import { XmdkucundetimportComponent } from './xmdkucundetimport/xmdkucundetimport.component';
+import { XmdwiskfindbysaleComponent } from './xmdwiskfindbysale/xmdwiskfindbysale.component';
+import { XmdmdmselectgnComponent } from './xmdmdmselectgn/xmdmdmselectgn.component';
+import { XmdWisksuppliersearchComponent } from './xmdwisksuppliersearch/xmdwisksuppliersearch.component';
 
 
 @NgModule({
@@ -150,7 +155,9 @@ import { JiesuanmouldPipe } from './pipe/jiesuanmould.pipe';
     Ordertype1Pipe,
     OrderyunshutypePipe,
     WisksuppliersearchComponent,
+    XmdWisksuppliersearchComponent,
     WiskfindbysaleComponent,
+    XmdwiskfindbysaleComponent,
     CgtuihuostatusPipe,
     WiskfindproduceComponent,
     WiskfindbybillnoComponent,
@@ -190,7 +197,10 @@ import { JiesuanmouldPipe } from './pipe/jiesuanmould.pipe';
     YearselectComponent,
     ProducemodePipe,
     isLinshicangkuPipe,
-    JiesuanmouldPipe
+    JiesuanmouldPipe,
+    XmdiskcompanysearchComponent,
+    XmdkucundetimportComponent,
+    XmdmdmselectgnComponent
   ],
   exports: [
     IsTranslatedPipe,
@@ -231,7 +241,9 @@ import { JiesuanmouldPipe } from './pipe/jiesuanmould.pipe';
     Ordertype1Pipe,
     OrderyunshutypePipe,
     WisksuppliersearchComponent,
+    XmdWisksuppliersearchComponent,
     WiskfindbysaleComponent,
+    XmdwiskfindbysaleComponent,
     CgtuihuostatusPipe,
     WiskfindproduceComponent,
     WiskfindbybillnoComponent,
@@ -269,9 +281,12 @@ import { JiesuanmouldPipe } from './pipe/jiesuanmould.pipe';
     ZaitukucunimportComponent,
     YearselectComponent,
     isLinshicangkuPipe,
-    JiesuanmouldPipe
+    JiesuanmouldPipe,
+    XmdiskcompanysearchComponent,
+    XmdkucundetimportComponent,
+    XmdmdmselectgnComponent
   ],
-  entryComponents: [MdmselectgnComponent]
+  entryComponents: [MdmselectgnComponent,XmdkucundetimportComponent]
 })
 export class WiskSharedsModule {
   static forRoot(): ModuleWithProviders {

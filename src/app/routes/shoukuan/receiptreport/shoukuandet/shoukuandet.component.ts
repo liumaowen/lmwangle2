@@ -28,7 +28,9 @@ export class ShoukuandetComponent implements OnInit {
     // 已到款开收据
     type: '1',
     beizhu: '',
-    shoukuanids: []
+    shoukuanids: [],
+    cancelbeizhu:'',
+    createbeizhu:''
   };
   start = new Date();
   maxDate = new Date();
@@ -117,7 +119,9 @@ export class ShoukuandetComponent implements OnInit {
       {cellStyle: {'text-align': 'center'}, headerName: '收款账号', field: 'shoukuanaccount', width: 120},
       {cellStyle: {'text-align': 'center'}, headerName: '收款类型', field: 'shoukuantype', width: 90},
       {cellStyle: {'text-align': 'center'}, headerName: '制单人', field: 'cusername', width: 80},
-      {cellStyle: {'text-align': 'center'}, headerName: '备注', field: 'beizhu', width: 90}
+      {cellStyle: {'text-align': 'center'}, headerName: '未开收据金额', field: 'noreceiptjine', width: 120},
+      {cellStyle: {'text-align': 'center'}, headerName: '备注', field: 'beizhu', width: 90},
+     
     ];
   }
 
@@ -228,13 +232,16 @@ export class ShoukuandetComponent implements OnInit {
   }
 
   @ViewChild('classicModal') private classicModal: ModalDirective;
+  @ViewChild('CreateModal') private CreateModal: ModalDirective;
 
   showclassicModal() {
     this.classicModal.show();
   }
-
   hideclassicModal() {
     this.classicModal.hide();
+  }
+  hideCreateModal(){
+    this.CreateModal.hide();
   }
 
   /**
@@ -242,7 +249,8 @@ export class ShoukuandetComponent implements OnInit {
    */
   createOrRepayment() {
     if (this.isdaokuan) {
-      this.createReceipt();
+      this.CreateModal.show();
+      // this.createReceipt();
     } else {
       this.repayment();
     }
@@ -252,7 +260,7 @@ export class ShoukuandetComponent implements OnInit {
    * 已到款开收据
    * @private
    */
-  private createReceipt() {
+ createReceipt() {
     const result = this.getSelectedRows();
     if (!result.flag) {
       this.toast.pop('warnig', result.message);
@@ -262,6 +270,8 @@ export class ShoukuandetComponent implements OnInit {
     this.receiptData.shoukuanids = result.data;
     this.receiptApi.create(this.receiptData).then((response) => {
       console.log(response);
+      this.listDetail();
+      this.hideCreateModal();
     });
   }
 

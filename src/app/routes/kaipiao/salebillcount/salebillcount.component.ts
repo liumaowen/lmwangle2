@@ -6,6 +6,7 @@ import { StorageService } from './../../../dnn/service/storage.service';
 import { GridOptions } from 'ag-grid/main';
 import { SettingsService } from './../../../core/settings/settings.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-salebillcount',
@@ -15,11 +16,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class SalebillcountComponent implements OnInit {
   @ViewChild('classicModal') private classicModal: ModalDirective;
   @ViewChild('uploadbiaojiModal') private uploadbiaojiModal: ModalDirective;
-
+  @ViewChild('weikaipiaoModal') private weikaipiaoModal: ModalDirective;
   querys = { isonline: '', orgid: '' };
+  start = new Date();
+
+  maxDate = new Date();
+
+  end: Date;
   gridOptions: GridOptions;
   constructor(public settings: SettingsService, private storage: StorageService, private orderApi: OrderapiService,
-    private toast: ToasterService, private classifyApi: ClassifyApiService) {
+    private toast: ToasterService, private classifyApi: ClassifyApiService,private datePipe: DatePipe) {
     this.gridOptions = {
       groupDefaultExpanded: -1,
       rowSelection: 'multiple',
@@ -109,6 +115,7 @@ export class SalebillcountComponent implements OnInit {
       { cellStyle: { 'text-align': 'center' }, headerName: '备注', field: 'beizhu', width: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '标记未开票收入', field: 'weikaipiaoshouru', width: 150 },
       { cellStyle: { 'text-align': 'center' }, headerName: '明细ID', field: 'billid', width: 150 },
+      { cellStyle: { 'text-align': 'center' }, headerName: '标记时间', field: 'biaojidate', width: 150 },
     ];
     this.kaipiaoList();
   }
@@ -151,6 +158,7 @@ export class SalebillcountComponent implements OnInit {
     this.gridOptions.api.exportDataAsExcel(params);
   }
   // 标记是否未开票收入
+  requestparams = {};
   markWeikaipiao() {
     let impdata = new Array();
     const weifapiaos = this.gridOptions.api.getModel()['rowsToDisplay'];
@@ -165,7 +173,8 @@ export class SalebillcountComponent implements OnInit {
     }
     console.log(impdata);
     if (confirm('你确定要标记为未开票收入吗？')) {
-      this.orderApi.setweikaipiaoshouru({ list: impdata }).then(data => {
+      this.requestparams['start'] = this.datePipe.transform(this.start, 'yyyy-MM-dd');
+      this.orderApi.setweikaipiaoshouru({ list: impdata ,start: this.requestparams['start']}).then(data => {
         this.toast.pop('success', '标记成功！！！');
       });
     }
@@ -198,6 +207,13 @@ export class SalebillcountComponent implements OnInit {
           this.query();
         });
       }
+    }
+
+    weikaipiaoshow(){
+      this.weikaipiaoModal.show();
+    }
+    hideweikaipiaoModal() {
+      this.weikaipiaoModal.hide();
     }
 
 

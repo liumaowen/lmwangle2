@@ -17,6 +17,9 @@ export class MdmService {
   gnMdmgn(search): Promise<any> {
     return this.http.get('store/api/mdm/getMdmgn', { search: search }).toPromise();
   }
+  xmdgnMdmgn(search): Promise<any> {
+    return this.http.get('store/api/mdm/xmdgetMdmgn', { search: search }).toPromise();
+  }
   getMdmAttributeDic(search): Promise<any> {
     return this.http.get('store/api/mdm/getMdmAttributeDic', { search: search }).toPromise().then(data => {
       return data.json() as any[];
